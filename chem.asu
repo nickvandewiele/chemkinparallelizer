@@ -1,0 +1,20 @@
+10
+species=pinanol(1)       mw=154.254363
+species=ISOLINALOOL      mw=154.254363
+species=LINALOOL         mw=154.254363
+species=CH4(5)           mw=16.043030
+species=BIRAD1           mw=154.254363
+species=BIRAD2           mw=154.254363
+species=TERPINEOL        mw=154.254363
+species=PLINOL           mw=154.254363
+species=ISOPLINOL        mw=154.254363
+species=DMO              mw=154.254363
+8
+reaction=pinanol(1)<=>BIRAD1                                                                                                                 
+reaction=pinanol(1)<=>BIRAD2                                                                                                                 
+reaction=BIRAD1<=>LINALOOL                                                                                                                   
+reaction=LINALOOL<=>PLINOL                                                                                                                   
+reaction=ISOLINALOOL<=>ISOPLINOL                                                                                                             
+reaction=ISOPLINOL<=>DMO                                                                                                                     
+reaction=BIRAD1<=>TERPINEOL                                                                                                                  
+reaction=BIRAD2<=>ISOLINALOOL                                                                                                                

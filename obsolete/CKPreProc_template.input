@@ -1,0 +1,4 @@
+IN_CHEM_INPUT=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\chem_kevin.inp
+OUT_CHEM_OUTPUT=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\chem.out
+OUT_CHEM_ASC=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\chem.asc
+OUT_CHEM_SPECIES=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\chem.asu

@@ -1,0 +1,3869 @@
+
+
+     *****************************************************************
+     *                     CHEMKIN Release 4.1.1                     *
+     *                      AURORA Application                       *
+     *         PERFECTLY STIRRED OR PLUG FLOW REACTOR MODEL          *
+     * Copyright(c) 1997-2007 Reaction Design.  All Rights Reserved. *
+     *****************************************************************
+
+
+
+                WORKING SPACE REQUIREMENTS
+                 PROVIDED        REQUIRED 
+ LOGICAL               89             89
+ INTEGER             1701           1701
+ REAL                8045           8045
+ CHARACTER             54             54
+
+This problem requires      0.061MB of memory for the REAL array.
+
+Initializing CHEMKIN Gas-phase Library, a component of CHEMKIN Release 4.1.1.  Build date: Aug 6, 2007
+This and All Other CHEMKIN(R) Libraries are Copyright (c) 1997-2007 Reaction Design.  All rights reserved.
+
+
+LICENSE INFORMATION: 
+ 
+
+LicNum: 2190
+ Licensed to Universiteit Gent
+ Contact: Guy Marin
+ Expiring: 31-mar-2011
+                                                                                                                                                                                                                                                                                                                                                                                                                                         
+
+           KEYWORD INPUT 
+
+          MOMEN OFF   ! Turn off Momentum Equation                                                                                                                                                                                                                                                                    
+          PLUG   ! Plug Flow Reactor                                                                                                                                                                                                                                                                                  
+          RTIME ON   ! Turn on Residence Time Calculation                                                                                                                                                                                                                                                             
+          TGIV   ! Fix Gas Temperature                                                                                                                                                                                                                                                                                
+          !Surface_Temperature   ! Surface Temperature Same as Gas Temperature                                                                                                                                                                                                                                        
+          FLRT 0.09915   ! Mass Flow Rate (g/sec)                                                                                                                                                                                                                                                                     
+          PRES 1.13496145   ! Pressure (atm)                                                                                                                                                                                                                                                                          
+          TPRO 0.0 526.15   ! Temperature (K)                                                                                                                                                                                                                                                                         
+  WARNING... OTHER GAS-ENERGY RELATED PROBLEM TYPE HAS
+   BEEN GIVEN, THEY WILL BE MODIFIED OR OVERWRITTEN BY  THIS KEYWORD
+          TPRO 19.0 590.15   ! Temperature (K)                                                                                                                                                                                                                                                                        
+          TPRO 29.0 673.15   ! Temperature (K)                                                                                                                                                                                                                                                                        
+          TPRO 48.0 763.15   ! Temperature (K)                                                                                                                                                                                                                                                                        
+          TPRO 67.0 816.15   ! Temperature (K)                                                                                                                                                                                                                                                                        
+          TPRO 86.0 823.15   ! Temperature (K)                                                                                                                                                                                                                                                                        
+          TPRO 105.0 823.15   ! Temperature (K)                                                                                                                                                                                                                                                                       
+          TPRO 134.0 823.15   ! Temperature (K)                                                                                                                                                                                                                                                                       
+          TPRO 147.0 823.15   ! Temperature (K)                                                                                                                                                                                                                                                                       
+          VIS 0.0   ! Mixture Viscosity (g/cm-sec)                                                                                                                                                                                                                                                                    
+          DIAM 0.4   ! Diameter (cm)                                                                                                                                                                                                                                                                                  
+          XEND 147.5   ! Ending Axial Position (cm)                                                                                                                                                                                                                                                                   
+          XSTR 0.0   ! Starting Axial Position (cm)                                                                                                                                                                                                                                                                   
+          REAC CH4(5) 0.895   ! Reactant Fraction (mole fraction)                                                                                                                                                                                                                                                     
+          REAC pinanol(1) 0.105   ! Reactant Fraction (mole fraction)                                                                                                                                                                                                                                                 
+          GFAC 1.0   ! Gas Reaction Rate Multiplier                                                                                                                                                                                                                                                                   
+          END                                                                                                                                                                                                                                                                                                         
+ PLUG WARNING: MOMENTUM EQ IS TURNED BACK ON BECAUSE
+             - VISCOSITY IS GIVEN
+
+========================================================================================================================
+     KINETICS MECHANISM:
+        Total number of gas phase species     =   10
+        Total number of gas phase reactions     =    8
+        Total number of surface materials =    1
+
+        Material:  MATERIAL1 
+          Total number of surface phase species =    0
+          Total number of surface phases =    0
+          Total number of bulk phase species =    0
+          Total number of bulk phases =    0
+          Total number of surface phase reactions =    0
+========================================================================================================================
+
+
+========================================================================================================================
+     REACTOR #    1 CONDITIONS FOR INLET NAMED: INLET1
+          Inlet mass flow rate =   9.915E-02 gm/sec
+               (which, based on an estimated reactor density =   8.032E-04 gm/cm^3 
+                       and  on a residence time  =    0.00     sec
+                      produces an estimated reactor volume) =    18.5     cm^3 
+
+
+          Inlet temperature =  526.15     Kelvin
+          Inlet pressure (assumed equal to reactor pressure) =    1.13     atm
+          Inlet density = 8.03224E-04 gm/cm^3 
+          Inlet mean molecular weight =  30.555     gm/mole
+          Inlet molar flow rate      = 3.24494E-03 moles/sec
+          Inlet volumetric flow rate =  123.44     cm^3/sec 
+               (based on reactor pressure and inlet temperature)
+                                     =  4763.4     SCCM
+                                     =  4.7634     SLPM
+
+     INLET CONDITIONS FOR GAS PHASE MOLECULAR SPECIES IN INLET1
+
+   Species        mole_frac     moles/sec       gm/sec       cm^3/sec        SCCM            SLPM
+------------------------------------------------------------------------------------------------------
+    pinanol(1)   0.10500       3.40719E-04   5.25574E-02    12.961        500.15       0.50015    
+    ISOLINALOO    0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    LINALOOL      0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    CH4(5)       0.89500       2.90423E-03   4.65926E-02    110.48        4263.2        4.2632    
+    BIRAD1        0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    BIRAD2        0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    TERPINEOL     0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    PLINOL        0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    ISOPLINOL     0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+    DMO           0.0000        0.0000        0.0000        0.0000        0.0000        0.0000    
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   0.0000E+00 cm
+
+               RESIDENCE TIME                 0.0000E+00  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   8.0322E-04  GM/CM^3
+               VELOCITY                        982.3      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -7.5074E-07  CAL/S/CM^3
+               TEMPERATURE (FIXED)             526.1      K
+               SURF TEMP, MATERIAL1             526.1500  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =   0.000           LINALOOL        =   0.000    
+    CH4(5)          =  0.8950           BIRAD1          =   0.000           BIRAD2          =   0.000    
+    TERPINEOL       =   0.000           PLINOL          =   0.000           ISOPLINOL       =   0.000    
+    DMO             =   0.000    
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4750E+00 cm
+
+               RESIDENCE TIME                 1.4945E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.9571E-04  GM/CM^3
+               VELOCITY                        991.6      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       7.6454E-10  CAL/S/CM^3
+               TEMPERATURE (FIXED)             531.1      K
+               SURF TEMP, MATERIAL1             531.1184  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.7906E-26
+    CH4(5)          =  0.8950           BIRAD1          =  2.5751E-25       BIRAD2          =  3.1656E-25
+    TERPINEOL       = -1.5248E-34       PLINOL          =  1.3393E-32       ISOPLINOL       = -4.5461E-27
+    DMO             = -7.9610E-34
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.9500E+00 cm
+
+               RESIDENCE TIME                 2.9751E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.8833E-04  GM/CM^3
+               VELOCITY                        1001.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -9.5352E-09  CAL/S/CM^3
+               TEMPERATURE (FIXED)             536.1      K
+               SURF TEMP, MATERIAL1             536.0868  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8759E-26
+    CH4(5)          =  0.8950           BIRAD1          =  5.3849E-25       BIRAD2          =  6.6130E-25
+    TERPINEOL       = -5.8030E-36       PLINOL          =  3.4010E-32       ISOPLINOL       = -1.0279E-26
+    DMO             = -4.0576E-33
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.4250E+00 cm
+
+               RESIDENCE TIME                 4.4421E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.8108E-04  GM/CM^3
+               VELOCITY                        1010.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.4149E-08  CAL/S/CM^3
+               TEMPERATURE (FIXED)             541.1      K
+               SURF TEMP, MATERIAL1             541.0552  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8725E-26
+    CH4(5)          =  0.8950           BIRAD1          =  1.1175E-24       BIRAD2          =  1.3710E-24
+    TERPINEOL       =  4.3499E-34       PLINOL          =  6.0195E-32       ISOPLINOL       = -1.7465E-26
+    DMO             = -1.1629E-32
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.9000E+00 cm
+
+               RESIDENCE TIME                 5.8956E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.7397E-04  GM/CM^3
+               VELOCITY                        1019.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -3.3712E-08  CAL/S/CM^3
+               TEMPERATURE (FIXED)             546.0      K
+               SURF TEMP, MATERIAL1             546.0237  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8559E-26
+    CH4(5)          =  0.8950           BIRAD1          =  2.2803E-24       BIRAD2          =  2.7946E-24
+    TERPINEOL       =  1.6886E-33       PLINOL          =  9.2840E-32       ISOPLINOL       = -2.6422E-26
+    DMO             = -2.6376E-32
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.3750E+00 cm
+
+               RESIDENCE TIME                 7.3359E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.6699E-04  GM/CM^3
+               VELOCITY                        1029.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.7829E-07  CAL/S/CM^3
+               TEMPERATURE (FIXED)             551.0      K
+               SURF TEMP, MATERIAL1             550.9921  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8563E-26
+    CH4(5)          =  0.8950           BIRAD1          =  4.5012E-24       BIRAD2          =  5.5113E-24
+    TERPINEOL       =  5.2040E-33       PLINOL          =  1.3328E-31       ISOPLINOL       = -3.7552E-26
+    DMO             = -5.2919E-32
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.8500E+00 cm
+
+               RESIDENCE TIME                 8.7633E-03  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.6013E-04  GM/CM^3
+               VELOCITY                        1038.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       3.2533E-08  CAL/S/CM^3
+               TEMPERATURE (FIXED)             556.0      K
+               SURF TEMP, MATERIAL1             555.9605  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8578E-26
+    CH4(5)          =  0.8950           BIRAD1          =  9.3122E-24       BIRAD2          =  1.1386E-23
+    TERPINEOL       =  1.6175E-32       PLINOL          =  1.8340E-31       ISOPLINOL       = -5.1359E-26
+    DMO             = -9.9262E-32
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0325E+01 cm
+
+               RESIDENCE TIME                 1.0178E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.5339E-04  GM/CM^3
+               VELOCITY                        1047.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       3.0552E-09  CAL/S/CM^3
+               TEMPERATURE (FIXED)             560.9      K
+               SURF TEMP, MATERIAL1             560.9289  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8591E-26
+    CH4(5)          =  0.8950           BIRAD1          =  1.8281E-23       BIRAD2          =  2.2327E-23
+    TERPINEOL       =  4.6937E-32       PLINOL          =  2.4526E-31       ISOPLINOL       = -6.8407E-26
+    DMO             = -1.7650E-31
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1800E+01 cm
+
+               RESIDENCE TIME                 1.1580E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.4677E-04  GM/CM^3
+               VELOCITY                        1057.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -5.8338E-07  CAL/S/CM^3
+               TEMPERATURE (FIXED)             565.9      K
+               SURF TEMP, MATERIAL1             565.8974  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8596E-26
+    CH4(5)          =  0.8950           BIRAD1          =  3.4371E-23       BIRAD2          =  4.1942E-23
+    TERPINEOL       =  1.2712E-31       PLINOL          =  3.2134E-31       ISOPLINOL       = -8.9365E-26
+    DMO             = -3.0149E-31
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3275E+01 cm
+
+               RESIDENCE TIME                 1.2970E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.4027E-04  GM/CM^3
+               VELOCITY                        1066.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.7212E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             570.9      K
+               SURF TEMP, MATERIAL1             570.8658  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3383E-20       LINALOOL        =  4.8599E-26
+    CH4(5)          =  0.8950           BIRAD1          =  6.3671E-23       BIRAD2          =  7.7636E-23
+    TERPINEOL       =  3.3112E-31       PLINOL          =  4.1454E-31       ISOPLINOL       = -1.1503E-25
+    DMO             = -4.9959E-31
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4750E+01 cm
+
+               RESIDENCE TIME                 1.4348E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.3387E-04  GM/CM^3
+               VELOCITY                        1075.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -3.3326E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             575.8      K
+               SURF TEMP, MATERIAL1             575.8342  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  4.8607E-26
+    CH4(5)          =  0.8950           BIRAD1          =  1.1783E-22       BIRAD2          =  1.4356E-22
+    TERPINEOL       =  8.4568E-31       PLINOL          =  5.2829E-31       ISOPLINOL       = -1.4635E-25
+    DMO             = -8.0816E-31
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.6225E+01 cm
+
+               RESIDENCE TIME                 1.5714E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.2759E-04  GM/CM^3
+               VELOCITY                        1084.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -3.7224E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             580.8      K
+               SURF TEMP, MATERIAL1             580.8026  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  4.8627E-26
+    CH4(5)          =  0.8950           BIRAD1          =  2.2648E-22       BIRAD2          =  2.7563E-22
+    TERPINEOL       =  2.1698E-30       PLINOL          =  6.6658E-31       ISOPLINOL       = -1.8442E-25
+    DMO             = -1.2808E-30
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.7700E+01 cm
+
+               RESIDENCE TIME                 1.7068E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.2142E-04  GM/CM^3
+               VELOCITY                        1094.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.5854E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             585.8      K
+               SURF TEMP, MATERIAL1             585.7710  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  4.8685E-26
+    CH4(5)          =  0.8950           BIRAD1          =  4.3846E-22       BIRAD2          =  5.3298E-22
+    TERPINEOL       =  5.6965E-30       PLINOL          =  8.3427E-31       ISOPLINOL       = -2.3054E-25
+    DMO             = -1.9983E-30
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.9175E+01 cm
+
+               RESIDENCE TIME                 1.8411E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   7.1421E-04  GM/CM^3
+               VELOCITY                        1105.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       2.3374E-08  CAL/S/CM^3
+               TEMPERATURE (FIXED)             591.7      K
+               SURF TEMP, MATERIAL1             591.6800  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  4.8841E-26
+    CH4(5)          =  0.8950           BIRAD1          =  9.3985E-22       BIRAD2          =  1.1395E-21
+    TERPINEOL       =  1.4950E-29       PLINOL          =  1.0379E-30       ISOPLINOL       = -2.8644E-25
+    DMO             = -3.0811E-30
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.0650E+01 cm
+
+               RESIDENCE TIME                 1.9733E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.9972E-04  GM/CM^3
+               VELOCITY                        1128.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       3.4077E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             603.9      K
+               SURF TEMP, MATERIAL1             603.9225  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  5.0128E-26
+    CH4(5)          =  0.8950           BIRAD1          =  4.0836E-21       BIRAD2          =  4.9358E-21
+    TERPINEOL       =  8.4886E-29       PLINOL          =  1.3349E-30       ISOPLINOL       = -3.6678E-25
+    DMO             = -5.0646E-30
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.2125E+01 cm
+
+               RESIDENCE TIME                 2.1028E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.8580E-04  GM/CM^3
+               VELOCITY                        1150.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.4808E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             616.2      K
+               SURF TEMP, MATERIAL1             616.1650  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  6.1749E-26
+    CH4(5)          =  0.8950           BIRAD1          =  1.5776E-20       BIRAD2          =  1.9017E-20
+    TERPINEOL       =  6.6914E-28       PLINOL          =  1.8590E-30       ISOPLINOL       = -4.9192E-25
+    DMO             = -9.1794E-30
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.3600E+01 cm
+
+               RESIDENCE TIME                 2.2297E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.7243E-04  GM/CM^3
+               VELOCITY                        1173.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.5168E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             628.4      K
+               SURF TEMP, MATERIAL1             628.4075  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  1.4330E-25
+    CH4(5)          =  0.8950           BIRAD1          =  5.3178E-20       BIRAD2          =  6.3984E-20
+    TERPINEOL       =  4.4796E-27       PLINOL          =  3.2787E-30       ISOPLINOL       = -6.8236E-25
+    DMO             = -1.7762E-29
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.5075E+01 cm
+
+               RESIDENCE TIME                 2.3542E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.5957E-04  GM/CM^3
+               VELOCITY                        1196.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -4.1588E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             640.6      K
+               SURF TEMP, MATERIAL1             640.6500  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3382E-20       LINALOOL        =  7.3977E-25
+    CH4(5)          =  0.8950           BIRAD1          =  1.8153E-19       BIRAD2          =  2.1802E-19
+    TERPINEOL       =  3.0164E-26       PLINOL          =  1.2918E-29       ISOPLINOL       = -9.6612E-25
+    DMO             = -3.5756E-29
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.6550E+01 cm
+
+               RESIDENCE TIME                 2.4764E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.4719E-04  GM/CM^3
+               VELOCITY                        1219.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.2356E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             652.9      K
+               SURF TEMP, MATERIAL1             652.8925  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3381E-20       LINALOOL        =  4.1951E-24
+    CH4(5)          =  0.8950           BIRAD1          =  5.5139E-19       BIRAD2          =  6.6140E-19
+    TERPINEOL       =  1.6950E-25       PLINOL          =  7.3895E-29       ISOPLINOL       = -1.3817E-24
+    DMO             = -7.2883E-29
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.8025E+01 cm
+
+               RESIDENCE TIME                 2.5962E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.3527E-04  GM/CM^3
+               VELOCITY                        1242.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -3.6530E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             665.1      K
+               SURF TEMP, MATERIAL1             665.1350  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3381E-20       LINALOOL        =  2.1262E-23
+    CH4(5)          =  0.8950           BIRAD1          =  1.4240E-18       BIRAD2          =  1.7068E-18
+    TERPINEOL       =  8.1428E-25       PLINOL          =  4.7529E-28       ISOPLINOL       = -1.9826E-24
+    DMO             = -1.4862E-28
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   2.9500E+01 cm
+
+               RESIDENCE TIME                 2.7140E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.2545E-04  GM/CM^3
+               VELOCITY                        1262.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       4.0267E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             675.6      K
+               SURF TEMP, MATERIAL1             675.5685  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3828E-20       LINALOOL        =  1.7617E-22
+    CH4(5)          =  0.8950           BIRAD1          =  6.8185E-18       BIRAD2          =  8.0864E-18
+    TERPINEOL       =  6.3490E-24       PLINOL          =  5.9346E-27       ISOPLINOL       = -2.8464E-24
+    DMO             = -3.0291E-28
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.0975E+01 cm
+
+               RESIDENCE TIME                 2.8303E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.1904E-04  GM/CM^3
+               VELOCITY                        1275.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       6.4487E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             682.6      K
+               SURF TEMP, MATERIAL1             682.5554  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3826E-20       LINALOOL        =  6.5737E-22
+    CH4(5)          =  0.8950           BIRAD1          =  1.2925E-17       BIRAD2          =  1.5299E-17
+    TERPINEOL       =  2.2904E-23       PLINOL          =  3.8046E-26       ISOPLINOL       = -3.9566E-24
+    DMO             = -5.7786E-28
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.2450E+01 cm
+
+               RESIDENCE TIME                 2.9454E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.1277E-04  GM/CM^3
+               VELOCITY                        1288.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       8.7627E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             689.5      K
+               SURF TEMP, MATERIAL1             689.5422  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3824E-20       LINALOOL        =  2.0243E-21
+    CH4(5)          =  0.8950           BIRAD1          =  2.4243E-17       BIRAD2          =  2.8637E-17
+    TERPINEOL       =  6.8052E-23       PLINOL          =  1.7686E-25       ISOPLINOL       = -5.3047E-24
+    DMO             = -1.0367E-27
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.3925E+01 cm
+
+               RESIDENCE TIME                 3.0594E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.0661E-04  GM/CM^3
+               VELOCITY                        1301.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.5056E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             696.5      K
+               SURF TEMP, MATERIAL1             696.5291  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3818E-20       LINALOOL        =  5.6235E-21
+    CH4(5)          =  0.8950           BIRAD1          =  4.4348E-17       BIRAD2          =  5.2290E-17
+    TERPINEOL       =  1.8286E-22       PLINOL          =  6.6093E-25       ISOPLINOL       = -6.9371E-24
+    DMO             = -1.7750E-27
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.5400E+01 cm
+
+               RESIDENCE TIME                 3.1722E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   6.0058E-04  GM/CM^3
+               VELOCITY                        1314.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.1539E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             703.5      K
+               SURF TEMP, MATERIAL1             703.5159  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3804E-20       LINALOOL        =  1.4801E-20
+    CH4(5)          =  0.8950           BIRAD1          =  7.9694E-17       BIRAD2          =  9.3803E-17
+    TERPINEOL       =  4.6550E-22       PLINOL          =  2.2235E-24       ISOPLINOL       = -8.9039E-24
+    DMO             = -2.9294E-27
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.6875E+01 cm
+
+               RESIDENCE TIME                 3.2839E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.9467E-04  GM/CM^3
+               VELOCITY                        1327.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.2955E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             710.5      K
+               SURF TEMP, MATERIAL1             710.5027  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3772E-20       LINALOOL        =  3.7103E-20
+    CH4(5)          =  0.8950           BIRAD1          =  1.4224E-16       BIRAD2          =  1.6712E-16
+    TERPINEOL       =  1.1299E-21       PLINOL          =  6.8665E-24       ISOPLINOL       = -1.1256E-23
+    DMO             = -4.6780E-27
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.8350E+01 cm
+
+               RESIDENCE TIME                 3.3946E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.8888E-04  GM/CM^3
+               VELOCITY                        1340.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.5358E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             717.5      K
+               SURF TEMP, MATERIAL1             717.4896  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3692E-20       LINALOOL        =  9.2053E-20
+    CH4(5)          =  0.8950           BIRAD1          =  2.5721E-16       BIRAD2          =  3.0158E-16
+    TERPINEOL       =  2.7131E-21       PLINOL          =  2.0416E-23       ISOPLINOL       = -1.4050E-23
+    DMO             = -7.2792E-27
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   3.9825E+01 cm
+
+               RESIDENCE TIME                 3.5041E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.8319E-04  GM/CM^3
+               VELOCITY                        1353.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.2408E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             724.5      K
+               SURF TEMP, MATERIAL1             724.4764  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.3489E-20       LINALOOL        =  2.2434E-19
+    CH4(5)          =  0.8950           BIRAD1          =  4.5226E-16       BIRAD2          =  5.2926E-16
+    TERPINEOL       =  6.4045E-21       PLINOL          =  5.8273E-23       ISOPLINOL       = -1.7343E-23
+    DMO             = -1.1109E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.1300E+01 cm
+
+               RESIDENCE TIME                 3.6126E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.7762E-04  GM/CM^3
+               VELOCITY                        1366.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -8.2733E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             731.5      K
+               SURF TEMP, MATERIAL1             731.4633  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.2995E-20       LINALOOL        =  5.3061E-19
+    CH4(5)          =  0.8950           BIRAD1          =  7.6608E-16       BIRAD2          =  8.9502E-16
+    TERPINEOL       =  1.4689E-20       PLINOL          =  1.6422E-22       ISOPLINOL       = -2.1156E-23
+    DMO             = -1.6683E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.2775E+01 cm
+
+               RESIDENCE TIME                 3.7201E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.7215E-04  GM/CM^3
+               VELOCITY                        1379.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.1943E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             738.5      K
+               SURF TEMP, MATERIAL1             738.4501  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -1.1825E-20       LINALOOL        =  1.2158E-18
+    CH4(5)          =  0.8950           BIRAD1          =  1.2636E-15       BIRAD2          =  1.4743E-15
+    TERPINEOL       =  3.2664E-20       PLINOL          =  4.5312E-22       ISOPLINOL       = -2.5395E-23
+    DMO             = -2.4666E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.4250E+01 cm
+
+               RESIDENCE TIME                 3.8265E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.6678E-04  GM/CM^3
+               VELOCITY                        1392.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -4.1160E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             745.4      K
+               SURF TEMP, MATERIAL1             745.4370  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -9.1249E-21       LINALOOL        =  2.7121E-18
+    CH4(5)          =  0.8950           BIRAD1          =  2.0765E-15       BIRAD2          =  2.4198E-15
+    TERPINEOL       =  7.0776E-20       PLINOL          =  1.2172E-21       ISOPLINOL       = -2.9645E-23
+    DMO             = -3.5798E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.5725E+01 cm
+
+               RESIDENCE TIME                 3.9320E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.6151E-04  GM/CM^3
+               VELOCITY                        1405.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -5.0974E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             752.4      K
+               SURF TEMP, MATERIAL1             752.4238  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     = -2.6896E-21       LINALOOL        =  6.0764E-18
+    CH4(5)          =  0.8950           BIRAD1          =  3.5341E-15       BIRAD2          =  4.1133E-15
+    TERPINEOL       =  1.5393E-19       PLINOL          =  3.2563E-21       ISOPLINOL       = -3.2503E-23
+    DMO             = -5.0565E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.7200E+01 cm
+
+               RESIDENCE TIME                 4.0365E-02  SEC
+               MASS FLOW RATE                 9.9149E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.5634E-04  GM/CM^3
+               VELOCITY                        1418.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.4295E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             759.4      K
+               SURF TEMP, MATERIAL1             759.4106  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.3687E-20       LINALOOL        =  1.3899E-17
+    CH4(5)          =  0.8950           BIRAD1          =  6.6106E-15       BIRAD2          =  7.6527E-15
+    TERPINEOL       =  3.4194E-19       PLINOL          =  8.4581E-21       ISOPLINOL       = -3.0230E-23
+    DMO             = -6.8430E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   4.8675E+01 cm
+
+               RESIDENCE TIME                 4.1400E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.5222E-04  GM/CM^3
+               VELOCITY                        1429.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.1584E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             765.1      K
+               SURF TEMP, MATERIAL1             765.0644  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.1834E-20       LINALOOL        =  3.1624E-17
+    CH4(5)          =  0.8950           BIRAD1          =  9.9394E-15       BIRAD2          =  1.1487E-14
+    TERPINEOL       =  7.5695E-19       PLINOL          =  2.2953E-20       ISOPLINOL       = -9.3098E-24
+    DMO             = -8.2153E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.0150E+01 cm
+
+               RESIDENCE TIME                 4.2430E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.4927E-04  GM/CM^3
+               VELOCITY                        1436.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       7.3828E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             769.2      K
+               SURF TEMP, MATERIAL1             769.1789  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1519E-19       LINALOOL        =  6.0590E-17
+    CH4(5)          =  0.8950           BIRAD1          =  1.3322E-14       BIRAD2          =  1.5378E-14
+    TERPINEOL       =  1.4234E-18       PLINOL          =  5.5474E-20       ISOPLINOL       =  4.9404E-23
+    DMO             = -6.9495E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.1625E+01 cm
+
+               RESIDENCE TIME                 4.3454E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.4634E-04  GM/CM^3
+               VELOCITY                        1444.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       9.6994E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             773.3      K
+               SURF TEMP, MATERIAL1             773.2934  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.2167E-19       LINALOOL        =  1.0751E-16
+    CH4(5)          =  0.8950           BIRAD1          =  1.7813E-14       BIRAD2          =  2.0537E-14
+    TERPINEOL       =  2.4829E-18       PLINOL          =  1.2391E-19       ISOPLINOL       =  1.8753E-22
+    DMO             =  3.4509E-26
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.3100E+01 cm
+
+               RESIDENCE TIME                 4.4473E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.4345E-04  GM/CM^3
+               VELOCITY                        1452.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       4.7899E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             777.4      K
+               SURF TEMP, MATERIAL1             777.4078  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  3.9646E-19       LINALOOL        =  1.8198E-16
+    CH4(5)          =  0.8950           BIRAD1          =  2.3713E-14       BIRAD2          =  2.7306E-14
+    TERPINEOL       =  4.1361E-18       PLINOL          =  2.5492E-19       ISOPLINOL       =  4.6892E-22
+    DMO             =  3.4902E-25
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.4575E+01 cm
+
+               RESIDENCE TIME                 4.5486E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.4058E-04  GM/CM^3
+               VELOCITY                        1460.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.5607E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             781.5      K
+               SURF TEMP, MATERIAL1             781.5223  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  6.7537E-19       LINALOOL        =  2.9748E-16
+    CH4(5)          =  0.8950           BIRAD1          =  3.1419E-14       BIRAD2          =  3.6137E-14
+    TERPINEOL       =  6.6597E-18       PLINOL          =  4.8955E-19       ISOPLINOL       =  9.9505E-22
+    DMO             =  1.0893E-24
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.6050E+01 cm
+
+               RESIDENCE TIME                 4.6494E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.3775E-04  GM/CM^3
+               VELOCITY                        1467.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -7.2076E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             785.6      K
+               SURF TEMP, MATERIAL1             785.6368  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1216E-18       LINALOOL        =  4.7571E-16
+    CH4(5)          =  0.8950           BIRAD1          =  4.1488E-14       BIRAD2          =  4.7662E-14
+    TERPINEOL       =  1.0494E-17       PLINOL          =  8.9968E-19       ISOPLINOL       =  1.9489E-21
+    DMO             =  2.6854E-24
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.7525E+01 cm
+
+               RESIDENCE TIME                 4.7497E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.3495E-04  GM/CM^3
+               VELOCITY                        1475.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -8.8966E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             789.8      K
+               SURF TEMP, MATERIAL1             789.7512  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.8177E-18       LINALOOL        =  7.4502E-16
+    CH4(5)          =  0.8950           BIRAD1          =  5.4736E-14       BIRAD2          =  6.2807E-14
+    TERPINEOL       =  1.6203E-17       PLINOL          =  1.5855E-18       ISOPLINOL       =  3.5957E-21
+    DMO             =  5.8213E-24
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   5.9000E+01 cm
+
+               RESIDENCE TIME                 4.8494E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.3217E-04  GM/CM^3
+               VELOCITY                        1483.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       2.5882E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             793.9      K
+               SURF TEMP, MATERIAL1             793.8657  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.9093E-18       LINALOOL        =  1.1569E-15
+    CH4(5)          =  0.8950           BIRAD1          =  7.2410E-14       BIRAD2          =  8.2976E-14
+    TERPINEOL       =  2.4803E-17       PLINOL          =  2.7381E-18       ISOPLINOL       =  6.4542E-21
+    DMO             =  1.1946E-23
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.0475E+01 cm
+
+               RESIDENCE TIME                 4.9486E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.2942E-04  GM/CM^3
+               VELOCITY                        1490.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       9.6436E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             798.0      K
+               SURF TEMP, MATERIAL1             797.9802  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  4.6355E-18       LINALOOL        =  1.7892E-15
+    CH4(5)          =  0.8950           BIRAD1          =  9.5223E-14       BIRAD2          =  1.0897E-13
+    TERPINEOL       =  3.7796E-17       PLINOL          =  4.6784E-18       ISOPLINOL       =  1.1415E-20
+    DMO             =  2.3770E-23
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.1950E+01 cm
+
+               RESIDENCE TIME                 5.0474E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.2670E-04  GM/CM^3
+               VELOCITY                        1498.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.8800E-03  CAL/S/CM^3
+               TEMPERATURE (FIXED)             802.1      K
+               SURF TEMP, MATERIAL1             802.0947  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.3278E-18       LINALOOL        =  2.7467E-15
+    CH4(5)          =  0.8950           BIRAD1          =  1.2403E-13       BIRAD2          =  1.4177E-13
+    TERPINEOL       =  5.7183E-17       PLINOL          =  7.9204E-18       ISOPLINOL       =  1.9950E-20
+    DMO             =  4.6273E-23
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.3425E+01 cm
+
+               RESIDENCE TIME                 5.1456E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.2401E-04  GM/CM^3
+               VELOCITY                        1506.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -3.3374E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             806.2      K
+               SURF TEMP, MATERIAL1             806.2091  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1490E-17       LINALOOL        =  4.1846E-15
+    CH4(5)          =  0.8950           BIRAD1          =  1.6048E-13       BIRAD2          =  1.8325E-13
+    TERPINEOL       =  8.5868E-17       PLINOL          =  1.3291E-17       ISOPLINOL       =  3.4495E-20
+    DMO             =  8.8603E-23
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.4900E+01 cm
+
+               RESIDENCE TIME                 5.2433E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.2135E-04  GM/CM^3
+               VELOCITY                        1513.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -5.0580E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             810.3      K
+               SURF TEMP, MATERIAL1             810.3236  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.7876E-17       LINALOOL        =  6.3301E-15
+    CH4(5)          =  0.8950           BIRAD1          =  2.0816E-13       BIRAD2          =  2.3745E-13
+    TERPINEOL       =  1.2806E-16       PLINOL          =  2.2061E-17       ISOPLINOL       =  5.8904E-20
+    DMO             =  1.6647E-22
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.6375E+01 cm
+
+               RESIDENCE TIME                 5.3405E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1871E-04  GM/CM^3
+               VELOCITY                        1521.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.1245E-02  CAL/S/CM^3
+               TEMPERATURE (FIXED)             814.4      K
+               SURF TEMP, MATERIAL1             814.4381  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.7790E-17       LINALOOL        =  9.5678E-15
+    CH4(5)          =  0.8950           BIRAD1          =  2.7381E-13       BIRAD2          =  3.1193E-13
+    TERPINEOL       =  1.9081E-16       PLINOL          =  3.6346E-17       ISOPLINOL       =  9.9774E-20
+    DMO             =  3.0889E-22
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.7850E+01 cm
+
+               RESIDENCE TIME                 5.4373E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1742E-04  GM/CM^3
+               VELOCITY                        1525.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.2508E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             816.5      K
+               SURF TEMP, MATERIAL1             816.4715  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  4.2157E-17       LINALOOL        =  1.4152E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.1042E-13       BIRAD2          =  3.5334E-13
+    TERPINEOL       =  2.7863E-16       PLINOL          =  5.9978E-17       ISOPLINOL       =  1.6932E-19
+    DMO             =  5.7772E-22
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   6.9325E+01 cm
+
+               RESIDENCE TIME                 5.5340E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1708E-04  GM/CM^3
+               VELOCITY                        1526.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.2145E-04  CAL/S/CM^3
+               TEMPERATURE (FIXED)             817.0      K
+               SURF TEMP, MATERIAL1             817.0150  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.7815E-17       LINALOOL        =  1.9120E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.2116E-13       BIRAD2          =  3.6550E-13
+    TERPINEOL       =  3.7371E-16       PLINOL          =  9.4770E-17       ISOPLINOL       =  2.7370E-19
+    DMO             =  1.0543E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.0800E+01 cm
+
+               RESIDENCE TIME                 5.6306E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1673E-04  GM/CM^3
+               VELOCITY                        1527.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.2708E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             817.6      K
+               SURF TEMP, MATERIAL1             817.5584  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.4234E-17       LINALOOL        =  2.4312E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.3224E-13       BIRAD2          =  3.7805E-13
+    TERPINEOL       =  4.7305E-16       PLINOL          =  1.3865E-16       ISOPLINOL       =  4.0652E-19
+    DMO             =  1.7509E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.2275E+01 cm
+
+               RESIDENCE TIME                 5.7272E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1639E-04  GM/CM^3
+               VELOCITY                        1528.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       8.3930E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             818.1      K
+               SURF TEMP, MATERIAL1             818.1018  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  9.1514E-17       LINALOOL        =  2.9757E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.4369E-13       BIRAD2          =  3.9102E-13
+    TERPINEOL       =  5.7720E-16       PLINOL          =  1.9285E-16       ISOPLINOL       =  5.7171E-19
+    DMO             =  2.7371E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.3750E+01 cm
+
+               RESIDENCE TIME                 5.8237E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1605E-04  GM/CM^3
+               VELOCITY                        1529.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.5417E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             818.6      K
+               SURF TEMP, MATERIAL1             818.6452  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.0976E-16       LINALOOL        =  3.5485E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.5553E-13       BIRAD2          =  4.0442E-13
+    TERPINEOL       =  6.8672E-16       PLINOL          =  2.5876E-16       ISOPLINOL       =  7.7371E-19
+    DMO             =  4.1025E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.5225E+01 cm
+
+               RESIDENCE TIME                 5.9201E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1570E-04  GM/CM^3
+               VELOCITY                        1530.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       7.7214E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             819.2      K
+               SURF TEMP, MATERIAL1             819.1887  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.2904E-16       LINALOOL        =  4.1516E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.6775E-13       BIRAD2          =  4.1826E-13
+    TERPINEOL       =  8.0198E-16       PLINOL          =  3.3748E-16       ISOPLINOL       =  1.0160E-18
+    DMO             =  5.9462E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.6700E+01 cm
+
+               RESIDENCE TIME                 6.0165E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1536E-04  GM/CM^3
+               VELOCITY                        1531.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       3.3295E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             819.7      K
+               SURF TEMP, MATERIAL1             819.7321  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.4941E-16       LINALOOL        =  4.7862E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.8038E-13       BIRAD2          =  4.3255E-13
+    TERPINEOL       =  9.2320E-16       PLINOL          =  4.2966E-16       ISOPLINOL       =  1.3009E-18
+    DMO             =  8.3426E-21
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.8175E+01 cm
+
+               RESIDENCE TIME                 6.1128E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1502E-04  GM/CM^3
+               VELOCITY                        1532.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.8104E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             820.3      K
+               SURF TEMP, MATERIAL1             820.2755  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.7092E-16       LINALOOL        =  5.4539E-14
+    CH4(5)          =  0.8950           BIRAD1          =  3.9342E-13       BIRAD2          =  4.4731E-13
+    TERPINEOL       =  1.0507E-15       PLINOL          =  5.3626E-16       ISOPLINOL       =  1.6313E-18
+    DMO             =  1.1397E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   7.9650E+01 cm
+
+               RESIDENCE TIME                 6.2090E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1468E-04  GM/CM^3
+               VELOCITY                        1533.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       2.0814E-05  CAL/S/CM^3
+               TEMPERATURE (FIXED)             820.8      K
+               SURF TEMP, MATERIAL1             820.8189  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.9364E-16       LINALOOL        =  6.1565E-14
+    CH4(5)          =  0.8950           BIRAD1          =  4.0689E-13       BIRAD2          =  4.6255E-13
+    TERPINEOL       =  1.1847E-15       PLINOL          =  6.5826E-16       ISOPLINOL       =  2.0105E-18
+    DMO             =  1.5223E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.1125E+01 cm
+
+               RESIDENCE TIME                 6.3052E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1434E-04  GM/CM^3
+               VELOCITY                        1534.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -1.6409E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             821.4      K
+               SURF TEMP, MATERIAL1             821.3623  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.1764E-16       LINALOOL        =  6.8960E-14
+    CH4(5)          =  0.8950           BIRAD1          =  4.2080E-13       BIRAD2          =  4.7828E-13
+    TERPINEOL       =  1.3258E-15       PLINOL          =  7.9688E-16       ISOPLINOL       =  2.4426E-18
+    DMO             =  1.9962E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.2600E+01 cm
+
+               RESIDENCE TIME                 6.4013E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1400E-04  GM/CM^3
+               VELOCITY                        1535.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -2.9069E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             821.9      K
+               SURF TEMP, MATERIAL1             821.9058  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.4299E-16       LINALOOL        =  7.6742E-14
+    CH4(5)          =  0.8950           BIRAD1          =  4.3516E-13       BIRAD2          =  4.9453E-13
+    TERPINEOL       =  1.4741E-15       PLINOL          =  9.5321E-16       ISOPLINOL       =  2.9310E-18
+    DMO             =  2.5745E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.4075E+01 cm
+
+               RESIDENCE TIME                 6.4974E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1366E-04  GM/CM^3
+               VELOCITY                        1536.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       2.7654E-06  CAL/S/CM^3
+               TEMPERATURE (FIXED)             822.4      K
+               SURF TEMP, MATERIAL1             822.4492  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.6977E-16       LINALOOL        =  8.4931E-14
+    CH4(5)          =  0.8950           BIRAD1          =  4.5000E-13       BIRAD2          =  5.1131E-13
+    TERPINEOL       =  1.6300E-15       PLINOL          =  1.1284E-15       ISOPLINOL       =  3.4798E-18
+    DMO             =  3.2717E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.5550E+01 cm
+
+               RESIDENCE TIME                 6.5934E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1332E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION       1.4313E-07  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.0      K
+               SURF TEMP, MATERIAL1             822.9926  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  2.9805E-16       LINALOOL        =  9.3547E-14
+    CH4(5)          =  0.8950           BIRAD1          =  4.6532E-13       BIRAD2          =  5.2863E-13
+    TERPINEOL       =  1.7940E-15       PLINOL          =  1.3238E-15       ISOPLINOL       =  4.0931E-18
+    DMO             =  4.1039E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.7025E+01 cm
+
+               RESIDENCE TIME                 6.6893E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5491E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  3.2750E-16       LINALOOL        =  1.0249E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  1.9643E-15       PLINOL          =  1.5417E-15       ISOPLINOL       =  4.7787E-18
+    DMO             =  5.0996E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.8500E+01 cm
+
+               RESIDENCE TIME                 6.7853E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5442E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  3.5694E-16       LINALOOL        =  1.1144E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.1350E-15       PLINOL          =  1.7862E-15       ISOPLINOL       =  5.5497E-18
+    DMO             =  6.3184E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   8.9975E+01 cm
+
+               RESIDENCE TIME                 6.8812E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5385E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  3.8632E-16       LINALOOL        =  1.2036E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.3057E-15       PLINOL          =  2.0475E-15       ISOPLINOL       =  6.3745E-18
+    DMO             =  7.6927E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.1450E+01 cm
+
+               RESIDENCE TIME                 6.9772E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5324E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  4.1564E-16       LINALOOL        =  1.2927E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.4764E-15       PLINOL          =  2.3278E-15       ISOPLINOL       =  7.2600E-18
+    DMO             =  9.2553E-20
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.2925E+01 cm
+
+               RESIDENCE TIME                 7.0731E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5268E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  4.4491E-16       LINALOOL        =  1.3816E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.6471E-15       PLINOL          =  2.6245E-15       ISOPLINOL       =  8.1979E-18
+    DMO             =  1.0991E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.4400E+01 cm
+
+               RESIDENCE TIME                 7.1690E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5236E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  4.7411E-16       LINALOOL        =  1.4703E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.8178E-15       PLINOL          =  2.9397E-15       ISOPLINOL       =  9.1944E-18
+    DMO             =  1.2933E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.5875E+01 cm
+
+               RESIDENCE TIME                 7.2650E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5193E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.0325E-16       LINALOOL        =  1.5588E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  2.9885E-15       PLINOL          =  3.2736E-15       ISOPLINOL       =  1.0250E-17
+    DMO             =  1.5097E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.7350E+01 cm
+
+               RESIDENCE TIME                 7.3609E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5117E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.3234E-16       LINALOOL        =  1.6471E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  3.1592E-15       PLINOL          =  3.6266E-15       ISOPLINOL       =  1.1367E-17
+    DMO             =  1.7500E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   9.8825E+01 cm
+
+               RESIDENCE TIME                 7.4569E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5084E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.6135E-16       LINALOOL        =  1.7352E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  3.3299E-15       PLINOL          =  3.9988E-15       ISOPLINOL       =  1.2544E-17
+    DMO             =  2.0156E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0030E+02 cm
+
+               RESIDENCE TIME                 7.5528E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.5001E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  5.9031E-16       LINALOOL        =  1.8232E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  3.5006E-15       PLINOL          =  4.3902E-15       ISOPLINOL       =  1.3782E-17
+    DMO             =  2.3081E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0177E+02 cm
+
+               RESIDENCE TIME                 7.6488E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4963E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  6.1920E-16       LINALOOL        =  1.9109E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  3.6713E-15       PLINOL          =  4.8008E-15       ISOPLINOL       =  1.5080E-17
+    DMO             =  2.6286E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0325E+02 cm
+
+               RESIDENCE TIME                 7.7447E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4901E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  6.4802E-16       LINALOOL        =  1.9985E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  3.8420E-15       PLINOL          =  5.2305E-15       ISOPLINOL       =  1.6439E-17
+    DMO             =  2.9785E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0472E+02 cm
+
+               RESIDENCE TIME                 7.8406E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4840E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  6.7679E-16       LINALOOL        =  2.0859E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.0127E-15       PLINOL          =  5.6793E-15       ISOPLINOL       =  1.7856E-17
+    DMO             =  3.3589E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0620E+02 cm
+
+               RESIDENCE TIME                 7.9366E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4787E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.0549E-16       LINALOOL        =  2.1731E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.1834E-15       PLINOL          =  6.1470E-15       ISOPLINOL       =  1.9334E-17
+    DMO             =  3.7715E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0767E+02 cm
+
+               RESIDENCE TIME                 8.0325E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4752E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.3413E-16       LINALOOL        =  2.2601E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.3541E-15       PLINOL          =  6.6337E-15       ISOPLINOL       =  2.0870E-17
+    DMO             =  4.2174E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.0915E+02 cm
+
+               RESIDENCE TIME                 8.1285E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4722E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.6271E-16       LINALOOL        =  2.3469E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.5248E-15       PLINOL          =  7.1393E-15       ISOPLINOL       =  2.2465E-17
+    DMO             =  4.6980E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1062E+02 cm
+
+               RESIDENCE TIME                 8.2244E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4632E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  7.9122E-16       LINALOOL        =  2.4335E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.6955E-15       PLINOL          =  7.6637E-15       ISOPLINOL       =  2.4119E-17
+    DMO             =  5.2147E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1210E+02 cm
+
+               RESIDENCE TIME                 8.3203E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4580E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  8.1968E-16       LINALOOL        =  2.5199E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  4.8662E-15       PLINOL          =  8.2069E-15       ISOPLINOL       =  2.5831E-17
+    DMO             =  5.7687E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1357E+02 cm
+
+               RESIDENCE TIME                 8.4163E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4548E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  8.4807E-16       LINALOOL        =  2.6061E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.0369E-15       PLINOL          =  8.7688E-15       ISOPLINOL       =  2.7600E-17
+    DMO             =  6.3613E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1505E+02 cm
+
+               RESIDENCE TIME                 8.5122E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4507E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  8.7640E-16       LINALOOL        =  2.6922E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.2076E-15       PLINOL          =  9.3493E-15       ISOPLINOL       =  2.9427E-17
+    DMO             =  6.9939E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1652E+02 cm
+
+               RESIDENCE TIME                 8.6082E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4413E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  9.0467E-16       LINALOOL        =  2.7781E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.3783E-15       PLINOL          =  9.9485E-15       ISOPLINOL       =  3.1312E-17
+    DMO             =  7.6676E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1800E+02 cm
+
+               RESIDENCE TIME                 8.7041E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4370E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  9.3288E-16       LINALOOL        =  2.8637E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.5490E-15       PLINOL          =  1.0566E-14       ISOPLINOL       =  3.3253E-17
+    DMO             =  8.3838E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.1947E+02 cm
+
+               RESIDENCE TIME                 8.8001E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4384E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  9.6102E-16       LINALOOL        =  2.9492E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.7197E-15       PLINOL          =  1.1202E-14       ISOPLINOL       =  3.5250E-17
+    DMO             =  9.1436E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2095E+02 cm
+
+               RESIDENCE TIME                 8.8960E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4290E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  9.8911E-16       LINALOOL        =  3.0346E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  5.8904E-15       PLINOL          =  1.1857E-14       ISOPLINOL       =  3.7304E-17
+    DMO             =  9.9484E-19
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2242E+02 cm
+
+               RESIDENCE TIME                 8.9919E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4163E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.0171E-15       LINALOOL        =  3.1197E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.0611E-15       PLINOL          =  1.2530E-14       ISOPLINOL       =  3.9414E-17
+    DMO             =  1.0799E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2390E+02 cm
+
+               RESIDENCE TIME                 9.0879E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4211E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.0451E-15       LINALOOL        =  3.2046E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.2318E-15       PLINOL          =  1.3221E-14       ISOPLINOL       =  4.1580E-17
+    DMO             =  1.1698E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2537E+02 cm
+
+               RESIDENCE TIME                 9.1838E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4213E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.0730E-15       LINALOOL        =  3.2894E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.4025E-15       PLINOL          =  1.3931E-14       ISOPLINOL       =  4.3801E-17
+    DMO             =  1.2645E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2685E+02 cm
+
+               RESIDENCE TIME                 9.2798E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4040E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1009E-15       LINALOOL        =  3.3740E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.5731E-15       PLINOL          =  1.4659E-14       ISOPLINOL       =  4.6077E-17
+    DMO             =  1.3642E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2832E+02 cm
+
+               RESIDENCE TIME                 9.3757E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3989E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1286E-15       LINALOOL        =  3.4584E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.7438E-15       PLINOL          =  1.5405E-14       ISOPLINOL       =  4.8408E-17
+    DMO             =  1.4690E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.2980E+02 cm
+
+               RESIDENCE TIME                 9.4716E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.4020E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1564E-15       LINALOOL        =  3.5426E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  6.9145E-15       PLINOL          =  1.6169E-14       ISOPLINOL       =  5.0793E-17
+    DMO             =  1.5790E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3127E+02 cm
+
+               RESIDENCE TIME                 9.5676E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3933E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.1840E-15       LINALOOL        =  3.6266E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.0852E-15       PLINOL          =  1.6951E-14       ISOPLINOL       =  5.3232E-17
+    DMO             =  1.6944E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3275E+02 cm
+
+               RESIDENCE TIME                 9.6635E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3846E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.2116E-15       LINALOOL        =  3.7105E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.2559E-15       PLINOL          =  1.7751E-14       ISOPLINOL       =  5.5725E-17
+    DMO             =  1.8153E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3422E+02 cm
+
+               RESIDENCE TIME                 9.7595E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3831E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.2392E-15       LINALOOL        =  3.7942E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.4266E-15       PLINOL          =  1.8569E-14       ISOPLINOL       =  5.8272E-17
+    DMO             =  1.9418E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3570E+02 cm
+
+               RESIDENCE TIME                 9.8554E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3778E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.2667E-15       LINALOOL        =  3.8777E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.5973E-15       PLINOL          =  1.9405E-14       ISOPLINOL       =  6.0872E-17
+    DMO             =  2.0739E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3717E+02 cm
+
+               RESIDENCE TIME                 9.9514E-02  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3717E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.2941E-15       LINALOOL        =  3.9610E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.7680E-15       PLINOL          =  2.0258E-14       ISOPLINOL       =  6.3526E-17
+    DMO             =  2.2119E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.3865E+02 cm
+
+               RESIDENCE TIME                 1.0047E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3656E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.3215E-15       LINALOOL        =  4.0441E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  7.9387E-15       PLINOL          =  2.1130E-14       ISOPLINOL       =  6.6231E-17
+    DMO             =  2.3558E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4012E+02 cm
+
+               RESIDENCE TIME                 1.0143E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3638E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.3488E-15       LINALOOL        =  4.1271E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.1094E-15       PLINOL          =  2.2019E-14       ISOPLINOL       =  6.8990E-17
+    DMO             =  2.5058E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4160E+02 cm
+
+               RESIDENCE TIME                 1.0239E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3580E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.3760E-15       LINALOOL        =  4.2099E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.2801E-15       PLINOL          =  2.2926E-14       ISOPLINOL       =  7.1800E-17
+    DMO             =  2.6620E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4307E+02 cm
+
+               RESIDENCE TIME                 1.0335E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3462E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.4032E-15       LINALOOL        =  4.2925E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.4508E-15       PLINOL          =  2.3851E-14       ISOPLINOL       =  7.4662E-17
+    DMO             =  2.8245E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4455E+02 cm
+
+               RESIDENCE TIME                 1.0431E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3471E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.4304E-15       LINALOOL        =  4.3750E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.6215E-15       PLINOL          =  2.4793E-14       ISOPLINOL       =  7.7576E-17
+    DMO             =  2.9934E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4602E+02 cm
+
+               RESIDENCE TIME                 1.0527E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3519E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.4575E-15       LINALOOL        =  4.4572E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.7922E-15       PLINOL          =  2.5752E-14       ISOPLINOL       =  8.0541E-17
+    DMO             =  3.1688E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+========================================================================================================================
+                              PSPRNT: Printing of current solution from DDASPK:
+========================================================================================================================
+
+
+   DDASPK Plug-flow Solution at Distance =   1.4750E+02 cm
+
+               RESIDENCE TIME                 1.0623E-01  SEC
+               MASS FLOW RATE                 9.9150E-02  GM/SEC
+               PRESSURE                        1.135      ATM
+               MASS DENSITY                   5.1321E-04  GM/CM^3
+               VELOCITY                        1537.      CM/S
+               CROSS-FLOW AREA                0.1257      CM^2
+               LOCAL DADX                      0.000      CM
+               INT. SURFACE AREA PER LENGTH    1.257      CM
+               EXT. SURFACE AREA PER LENGTH    1.257      CM
+               GAS CHEM HEAT PRODUCTION      -6.3405E-12  CAL/S/CM^3
+               TEMPERATURE (FIXED)             823.2      K
+               SURF TEMP, MATERIAL1             823.1555  K  (same as gas temp)
+
+
+   REACTOR GAS PHASE MOLE FRACTIONS 
+
+    pinanol(1)      =  0.1050           ISOLINALOOL     =  1.4845E-15       LINALOOL        =  4.5393E-13
+    CH4(5)          =  0.8950           BIRAD1          =  4.7001E-13       BIRAD2          =  5.3394E-13
+    TERPINEOL       =  8.9629E-15       PLINOL          =  2.6729E-14       ISOPLINOL       =  8.3557E-17
+    DMO             =  3.3508E-18
+ 
+   Volatile Organic Compounds (ppm):  1.9450E+06
+   Unburned Hydrocarbons      (ppm):  8.9500E+05
+ 
+
+========================================================================================================================
+
+
+
+
+          THE SPECIFIED END DISTANCE HAS BEEN REACHED
+
+
+
+========================================================================================================================
+     PEAK TEMPERATURE AND PRESSURE INFORMATION:
+          Peak gas temperature =    823.2     K
+          Peak gas pressure    =   1.1500E+06 dyne/cm^2
+========================================================================================================================
+
+
+
+***NOTE:  There are WARNING messages in the printout above***
+
+ Total CPUtime: 2 (seconds)

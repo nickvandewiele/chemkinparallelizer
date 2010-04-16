@@ -1,0 +1,54 @@
+Control Panel > Regional Options
+
+	Decimal sumbol = .
+	List separator = ,
+
+
+Format reactor_input.csv
+
+REACTOR	length(m)		diameter(m)
+SPCS		name1			name2			...	!use same nomenclature as in reaction mechanism
+MW		Mw_spcs1(g/mol)	Mw_spcs1(g/mol)	...
+RUN		name1			name2			...		TEMP		temp_position1(m)		temp_position2(m)		...		PRESS		press_position1	...
+run_nr.	flow1(g/h)		flow2(g/h)		...				temp1(°C)			temp1(°C)			...				press1(bar)		...
+
+added by Nick Vandewiele (31/03/2010):
+=====================================
+If parameter estimation/optimization is to be performed, the chemistry input file (usually chem.inp) needs to be 'cleaned' by ChemClean (download from: http://c3.nuigalway.ie/software.html). Moreover, the Species thermodynamics need to be in the same file as the reaction mechanism.
+
+added by Nick Vandewiele (08/04/2010): feature available in v7 of NBMT
+=====================================
+When in parity plot mode (0), experimental data can be provide in mass fractions (instead of the standard molar flow rates). This facilitates the comparison of model predictions with experimental data.
+
+added by Nick Vandewiele (09/04/2010):required files for a correct functioning of NBMT
+=====================================
+-chemkindata.dtd (required file by Chemkin for postprocessing conversion of xml file)
+-INPUT.txt (main input file with pointers to working directory, etc)
+-chemkin chemistry input file (e.g. chem.inp): TD data of species must be included in a proper way
+-reactor_input.csv: excel generated summary of reactor input files
+-exp_data.csv: experimental data of output variables (containing mass fractions in case parity plots are generated)
+-reactor_input_template.inp: template file of a reactor setup configuration that will be used to generated the reactor input files from the excel reactor_input.csv file
+
+added by Nick Vandewiele (09/04/2010): NBMT is suitable for Chemkin 4.1, not for Chemkin 4.5
+=====================================
+added by Nick Vandewiele (12/04/2010):
+=====================================
+modifications:
+-NBMT's parity mode is now fixed. getSpeciesNames in the Par_Est type is replaced by the more robust method from the CK_emulation type, employing the .asu file as a reference for species names
+
+NBMT is suitable for Chemkin 4.5 (Pro-version) if:
+-reactor input file does not contain keywords that cannot be interpreted by the Pro version
+-if absolute path in INPUT.txt is changed to the Pro directory (duh!)
+-(counting semaphore >) 1 if (# Pro-license == 1) will produce errors (empirically determined). As a consequence, changes in the source code have to be made in order for NBMT to work properly
+
+solver convergence can sometimes be enhanced by adding NONNEGATIVE keyword in the separte reactor input files. (advice from KVG)
+
+v9: out.println("NNEG") in reactor input parser
+
+added by Nick Vandewiele (14/04/2010)
+=====================================
+release 'Man vs Wild' containing major modifications:
+-new INPUT.txt format, containing an additional optimization section
+-optimization procedures uses mass fractions for optimization instead of molar flows (used in earlier versions)
+-up to 8 reactions can be varied for a least SSQ fit. each of the 3 modified Arrhenius parameters can be varied. the fixed ones and the 'loose' ones ought to be specified in the INPUT.txt file
+-minor improvements to robustness and user-friendliness are added

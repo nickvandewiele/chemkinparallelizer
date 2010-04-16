@@ -1,0 +1,14 @@
+IN_THERM_DB=
+IN_CHEM_INPUT=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\chem_kevin.inp
+IN_SURF_INPUT=
+IN_TRANS_DB=
+FIT_TRANSPORT_PROPERTIES=0
+OUT_CHEM_OUTPUT=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin_gas.out
+OUT_CHEM_ASC=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin_gas.asc
+OUT_CHEM_SPECIES=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin_gas.asu
+OUT_SURF_OUTPUT=
+OUT_SURF_ASC=
+OUT_SURF_SPECIES=
+OUT_TRAN_OUTPUT=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin_gtran.out
+OUT_TRAN_ASC=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin_gtran.asc
+OUT_XML_PARAMETERS=C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_v2_multithreading\test-kevin.xml

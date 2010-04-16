@@ -1,0 +1,19 @@
+Control Panel > Regional Options
+
+	Decimal sumbol = .
+	List separator = ,
+
+
+Format reactor_input.csv
+
+REACTOR	length(m)		diameter(m)
+SPCS		name1			name2			...	!use same nomenclature as in reaction mechanism
+MW		Mw_spcs1(g/mol)	Mw_spcs1(g/mol)	...
+RUN		name1			name2			...		TEMP		temp_position1(m)		temp_position2(m)		...		PRESS		press_position1	...
+run_nr.	flow1(g/h)		flow2(g/h)		...				temp1(°C)			temp1(°C)			...				press1(bar)		...
+
+added by Nick Vandewiele (31/03/2010):
+If parameter estimation/optimization is to be performed, the chemistry input file (usually chem.inp) needs to be 'cleaned' by ChemClean (download from: http://c3.nuigalway.ie/software.html). Moreover, the Species thermodynamics need to be in the same file as the reaction mechanism.
+
+added by Nick Vandewiele (08/04/2010): feature available in v7 of NBMT
+When in parity plot mode (0), experimental data can be provide in mass fractions (instead of the standard molar flow rates). This facilitates the comparison of model predictions with experimental data.

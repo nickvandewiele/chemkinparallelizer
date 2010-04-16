@@ -1,0 +1,18 @@
+//Working Directory:
+C:/Documents and Settings/nmvdewie/My Documents/chemkin/Parameter_Estimation_v2_multithreading/
+//Chemkin Directory:
+C:/Program Files/Reaction/chemkin41_pc
+//Chemistry input filename:
+chem.inp
+//Experimental database:(leave blank line if file is not required for run mode)
+exp_data.csv
+// database with reactor setup data (leave blank line if file is not required for run mode)
+reactor_input_pieter.csv
+//Number of experiments:
+35
+//Number of parameters:(fill 0 if not required for run mode)
+0
+//Maximum number of evaluations:(fill 0 if not required for run mode)
+0
+//model prediction 'parity plots' mode(0) or parameter estimation mode(1) or Excel postprocessing sheets (2)
+0

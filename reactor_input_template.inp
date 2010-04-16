@@ -1,0 +1,15 @@
+MOMEN ON   ! Turn on Momentum Equation
+PLUG   ! Plug Flow Reactor
+RTIME ON   ! Turn on Residence Time Calculation
+TGIV   ! Fix Gas Temperature
+VIS 0.0   ! Mixture Viscosity (g/cm-sec)
+GFAC 1.0   ! Gas Reaction Rate Multiplier
+XSTR 0.0   ! Starting Axial Position (cm)
+FLRT 1.67   ! Mass Flow Rate (g/sec)
+PPRO 0.0 1.973846   ! Pressure (atm)
+TPRO 0.0 824.15   ! Temperature (K)
+DIAM 0.9   ! Diameter (cm)
+XEND 1400.0   ! Ending Axial Position (cm)
+REAC n-C4H10 0.386232862   ! Reactant Fraction (mole fraction)
+REAC H2O 0.613767138   ! Reactant Fraction (mole fraction)
+END

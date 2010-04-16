@@ -1,0 +1,24 @@
+MOMEN OFF   ! Turn off Momentum Equation
+PLUG   ! Plug Flow Reactor
+RTIME ON   ! Turn on Residence Time Calculation
+TGIV   ! Fix Gas Temperature
+!Surface_Temperature   ! Surface Temperature Same as Gas Temperature
+FLRT 0.099461111   ! Mass Flow Rate (g/sec)
+PRES 1.13496145   ! Pressure (atm)
+TPRO 0.0 516.15   ! Temperature (K)
+TPRO 19.0 568.15   ! Temperature (K)
+TPRO 29.0 648.15   ! Temperature (K)
+TPRO 48.0 730.15   ! Temperature (K)
+TPRO 67.0 778.15   ! Temperature (K)
+TPRO 86.0 783.15   ! Temperature (K)
+TPRO 105.0 783.15   ! Temperature (K)
+TPRO 134.0 782.15   ! Temperature (K)
+TPRO 147.0 782.15   ! Temperature (K)
+VIS 0.0   ! Mixture Viscosity (g/cm-sec)
+DIAM 0.4   ! Diameter (cm)
+XEND 147.5   ! Ending Axial Position (cm)
+XSTR 0.0   ! Starting Axial Position (cm)
+REAC CH4(5) 0.895   ! Reactant Fraction (mole fraction)
+REAC pinanol(1) 0.105   ! Reactant Fraction (mole fraction)
+GFAC 1.0   ! Gas Reaction Rate Multiplier
+END

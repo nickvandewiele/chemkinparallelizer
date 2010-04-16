@@ -1,0 +1,1387 @@
+PARITY PLOT MODE
+Here is the standard output of the command:
+
+Open C CKPreProcess input C:/Documents and Settings/nmvdewie/My Documents/chemkin/Parameter_Estimation_man_vs_wild/CKPreProc_template.input
+
+BEGIN processing of Gas-phase Kinetics mechanism
+Open Fortran Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem-comparison.inp
+Open Fortran Gas-phase Kinetics output C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem.out
+Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem.asc
+Call C chemsize for mechanism parameters
+Open C Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem-comparison.inp
+Call Fortran CKDIM for memory requirements
+Call Fortran CKCLEN for character-string length
+Call Fortran CKINTP to process mechanism
+Running Command Mode
+END Gas-phase Kinetics processing
+
+BEGIN post-processing Gas-phase Kinetics linkfile
+Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem.asc
+Call Fortran CKLEN for memory requirements
+Call Fortran CKCLEN for character-string size
+Call Fortran CKINIT to fill work arrays
+
+Initializing CHEMKIN Gas-phase Library, a component of CHEMKIN Release 4.1.1.  Build date: Aug 6, 2007
+This and All Other CHEMKIN(R) Libraries are Copyright (c) 1997-2007 Reaction Design.  All rights reserved.
+
+
+LICENSE INFORMATION: 
+ 
+
+LicNum: 2190
+ Licensed to Universiteit Gent
+ Contact: Guy Marin
+ Expiring: 31-mar-2011
+                                                                                                                                                                                                                                                                                                                                                                                                                                         
+Call Fortran CKINDX for mechanism parameters
+Call Fortran CKWT for Species Weights
+Call Fortran CKSYMS for Species Names
+Call Fortran CKSYMR for ReactionStrings
+Running Command Mode
+Call C PrintGasSpecies to print species data
+Open C Gas-phase Kinetics species file C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\chem.asu
+END post-processing Gas-phase Kinetics linkfile
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Initial chemistry input file contains no errors. Proceed to parameter estimation!
+Thread 0 was started
+license acquired!pinanol-raden_p1.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+Here is the standard output of the command:
+
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p1\XMLdata.zip  deleted true
+license released!pinanol-raden_p1.inp
+Thread 1 was started
+license acquired!pinanol-raden_p3.inp
+Thread 2 was started
+license acquired!pinanol-raden_p5.inp
+File copied.
+Thread 3 was started
+license acquired!pinanol-raden_p7.inp
+Thread 4 was started
+Thread 5 was started
+File copied.
+Thread 6 was started
+File copied.
+Thread 7 was started
+license acquired!pinanol-raden_p13.inp
+Thread 8 was started
+license acquired!pinanol-raden_p11.inp
+File copied.
+File copied.
+license acquired!pinanol-raden_p9.inp
+license acquired!pinanol-raden_p15.inp
+File copied.
+File copied.
+license acquired!pinanol-raden_p17.inp
+Thread 9 was started
+File copied.
+Thread 10 was started
+license acquired!pinanol-raden_p21.inp
+license acquired!pinanol-raden_p19.inp
+Thread 11 was started
+File copied.
+File copied.
+Thread 12 was started
+Thread 13 was started
+Thread 14 was started
+Thread 15 was started
+Thread 16 was started
+Thread 17 was started
+Thread 18 was started
+Thread 19 was started
+Thread 20 was started
+Thread 21 was started
+Thread 22 was started
+Thread 23 was started
+Thread 24 was started
+Thread 25 was started
+Thread 26 was started
+Thread 27 was started
+Thread 28 was started
+Thread 29 was started
+Thread 30 was started
+Thread 31 was started
+Thread 32 was started
+Thread 33 was started
+Thread 34 was started
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard output of the command:
+
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p19\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p23.inp
+File copied.
+license released!pinanol-raden_p19.inp
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard output of the command:
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p3\XMLdata.zip  deleted true
+Running Command Mode
+license released!pinanol-raden_p3.inp
+license acquired!pinanol-raden_p25.inp
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+File copied.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p11\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p21\XMLdata.zip  deleted true
+File copied.
+File copied.
+license released!pinanol-raden_p11.inp
+license acquired!pinanol-raden_p27.inp
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+license acquired!pinanol-raden_p29.inp
+File copied.
+license released!pinanol-raden_p21.inp
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p13\XMLdata.zip  deleted true
+license released!pinanol-raden_p13.inp
+license acquired!pinanol-raden_p31.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p7\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p9\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p17\XMLdata.zip  deleted true
+license released!pinanol-raden_p7.inp
+license acquired!pinanol-raden_p33.inp
+File copied.
+license released!pinanol-raden_p9.inp
+license acquired!pinanol-raden_p35.inp
+File copied.
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+license released!pinanol-raden_p17.inp
+license acquired!pinanol-raden_p37.inp
+Here is the standard error of the command (if any):
+
+File copied.
+Running Command Mode
+File copied.
+File copied.
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard output of the command:
+
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p15\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+File copied.
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+File copied.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p5\XMLdata.zip  deleted true
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+license released!pinanol-raden_p5.inp
+license acquired!pinanol-raden_p39.inp
+license acquired!pinanol-raden_p41.inp
+File copied.
+File copied.
+license released!pinanol-raden_p15.inp
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p23\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p43.inp
+license released!pinanol-raden_p23.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p27\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p25\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p45.inp
+File copied.
+license released!pinanol-raden_p25.inp
+license acquired!pinanol-raden_p47.inp
+File copied.
+license released!pinanol-raden_p27.inp
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p29\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p39\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+license acquired!pinanol-raden_p49.inp
+license released!pinanol-raden_p39.inp
+File copied.
+license released!pinanol-raden_p29.inp
+license acquired!pinanol-raden_p51.inp
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p31\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+license released!pinanol-raden_p31.inp
+license acquired!pinanol-raden_p53.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p35\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+license acquired!pinanol-raden_p55.inp
+File copied.
+license released!pinanol-raden_p35.inp
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p37\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p57.inp
+File copied.
+license released!pinanol-raden_p37.inp
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p33\XMLdata.zip  deleted true
+license released!pinanol-raden_p33.inp
+license acquired!pinanol-raden_p59.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p41\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p61.inp
+license released!pinanol-raden_p41.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p43\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+license released!pinanol-raden_p43.inp
+license acquired!pinanol-raden_p63.inp
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p45\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p47\XMLdata.zip  deleted true
+license acquired!pinanol-raden_p65.inp
+File copied.
+license released!pinanol-raden_p45.inp
+license acquired!pinanol-raden_p67.inp
+license released!pinanol-raden_p47.inp
+File copied.
+File copied.
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p53\XMLdata.zip  deleted true
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+Here is the standard error of the command (if any):
+
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p51\XMLdata.zip  deleted true
+Here is the standard error of the command (if any):
+
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p57\XMLdata.zip  deleted true
+File copied.
+File copied.
+Here is the standard output of the command:
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+license released!pinanol-raden_p51.inp
+license acquired!pinanol-raden_p69.inp
+File copied.
+license released!pinanol-raden_p57.inp
+license released!pinanol-raden_p53.inp
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p49\XMLdata.zip  deleted true
+license released!pinanol-raden_p49.inp
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+Running Command Mode
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p63\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p55\XMLdata.zip  deleted true
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p61\XMLdata.zip  deleted true
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p59\XMLdata.zip  deleted true
+license released!pinanol-raden_p61.inp
+license released!pinanol-raden_p63.inp
+license released!pinanol-raden_p59.inp
+license released!pinanol-raden_p55.inp
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Running Command Mode
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p65\XMLdata.zip  deleted true
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p67\XMLdata.zip  deleted true
+license released!pinanol-raden_p65.inp
+license released!pinanol-raden_p67.inp
+Running Command Mode
+
+License CHEMKIN Checked In
+License AURORA Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+File copied.
+File copied.
+Here is the standard output of the command:
+
+Running Command Mode
+
+License CHEMKIN Checked In
+Licenses Released
+Here is the standard error of the command (if any):
+
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+'CMD.EXE' is not recognized as an internal or external command,
+operable program or batch file.
+C:\Documents and Settings\nmvdewie\My Documents\chemkin\Parameter_Estimation_man_vs_wild\temp_ pinanol-raden_p69\XMLdata.zip  deleted true
+license released!pinanol-raden_p69.inp
+Time needed for Parity Mode to finish: (sec) 15
+Time needed for this program to finish: (sec) 15
