@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 public class ParameterEstimationDriver {
-
+//this comment is added to verify version control system
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -95,12 +95,12 @@ public class ParameterEstimationDriver {
 			
 		String [] reactor_inputs = new String[no_experiments];
 		//int[] exp_no = {1,3,5,11,27,29,33,35,37,45,47,49,53,65,69};
-		int [] exp_no = {1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69};
+/*		int [] exp_no = {1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69};
 		for (int j = 0; j < no_experiments; j++){
 			reactor_inputs[j] = "pinanol-raden_p"+exp_no[j]+".inp";	
 		}
-
-//		reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
+*/
+		reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
 		
 		switch(mode){
 			case 0:	System.out.println("PARITY PLOT MODE");
