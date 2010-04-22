@@ -1,4 +1,5 @@
 bin/
+obsolete/
 /butanol-1.csv
 /butanol.csv
 /chem_butane.inp
@@ -19,3 +20,4 @@ bin/
 /exp_data-nick-massfr.csv
 /exp_data-nick.csv
 /exp_data.csv
+
