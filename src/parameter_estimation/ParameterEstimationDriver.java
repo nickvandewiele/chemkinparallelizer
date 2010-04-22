@@ -6,6 +6,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 //this comment is a test written by steven pyl
+
+/**
+ * comment added to test eclipse + git + github functionality by nmvdewie
+ */
 public class ParameterEstimationDriver {
 //this comment is added to verify version control system
 	/**
