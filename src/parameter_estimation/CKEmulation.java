@@ -16,6 +16,7 @@ public class CKEmulation extends Thread{
 	public String chemkinDir;
 	private String binDir;
 	private String reactorDir;
+	private String outputDir;
 	
 	private Runtime r;
 	
@@ -57,24 +58,25 @@ public class CKEmulation extends Thread{
 	
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
-	public CKEmulation(String workingDir, String chemkinDir, Runtime runtime, String c_i){
+	public CKEmulation(String workingDir, String chemkinDir, String outputDir, Runtime runtime, String c_i){
 		this.workingDir = workingDir;
 		this.chemkinDir = chemkinDir;
+		this.outputDir = outputDir;
 		binDir = this.chemkinDir+"/bin/";
 		r = runtime;
 		chem_inp = c_i;
 	}
 	
 	//constructor for creating CKSolnList.txt
-	public CKEmulation(String workingDir, String chemkinDir, Runtime runtime, String c_i, String rs, boolean f){
-		this( workingDir,  chemkinDir,  runtime,  c_i);
+	public CKEmulation(String workingDir, String chemkinDir, String outputDir, Runtime runtime, String c_i, String rs, boolean f){
+		this( workingDir,  chemkinDir,  outputDir, runtime,  c_i);
 		reactor_setup = rs;
 		first = f;
 	}
 	
 	//constructor for running 'classical' Chemkin routines
-	public CKEmulation(String workingDir, String chemkinDir, Runtime runtime, String c_i, String rs, boolean f, Semaphore s, boolean excel, boolean massfrac){
-		this( workingDir,  chemkinDir,  runtime,  c_i,  rs,  f);
+	public CKEmulation(String workingDir, String chemkinDir, String outputDir, Runtime runtime, String c_i, String rs, boolean f, Semaphore s, boolean excel, boolean massfrac){
+		this(workingDir, chemkinDir, outputDir, runtime,  c_i,  rs,  f);
 		int length = rs.length();
 		reactor_out = rs.substring(0,(length-4))+".out";
 	
@@ -145,7 +147,7 @@ public class CKEmulation extends Thread{
 			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			if (flag_excel){
 				File excel_file = new File(reactorDir+ckcsv_name);
-				File dummy = new File (workingDir+ckcsv_name+"_"+reactor_setup);
+				File dummy = new File (outputDir+ckcsv_name+"_"+reactor_setup+".csv");
 				excel_file.renameTo(dummy);
 			}
 			//delete complete reactorDir folder:

@@ -54,7 +54,7 @@ public class Param_Est extends Paths{
 		
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
 		c.checkChemInput();
 		
 		// take initial guesses from chem.inp file:
@@ -90,6 +90,7 @@ public class Param_Est extends Paths{
 		
 		out.println();
 		out.close();
+		moveFile(outputDir, "params.txt");
 		
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);
@@ -296,7 +297,7 @@ public class Param_Est extends Paths{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
 		c.checkChemInput();
 		c.join();
 			
@@ -305,6 +306,7 @@ public class Param_Est extends Paths{
 		boolean flag_massfrac = true;
 		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList, flag_toExcel, flag_massfrac);
 		ckp.getModelValues();
+		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
@@ -314,7 +316,7 @@ public class Param_Est extends Paths{
 		
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
 		c.checkChemInput();
 		c.join();
 		
@@ -338,9 +340,12 @@ public class Param_Est extends Paths{
 			out.println();
 		}
 		out.close();
+		moveOutputFiles();
+		moveFile(outputDir, "parity.csv");
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for Parity Mode to finish: (sec) "+timeTook);
 	}
+	
 	public void print(double [][] d){
 		for (int i = 0; i < d.length; i++) {
 			for (int j = 0; j < d[0].length; j++){
@@ -349,4 +354,6 @@ public class Param_Est extends Paths{
 		}
 		System.out.println();
 	}
+	
+	
 }

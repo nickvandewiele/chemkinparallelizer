@@ -108,16 +108,19 @@ public class ParameterEstimationDriver {
 		
 		switch(mode){
 			case 0:	System.out.println("PARITY PLOT MODE");
-					Param_Est p0 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_experiments, experiments_db, beta_min, beta_max, maxeval); 
+					Param_Est p0 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_experiments, experiments_db, beta_min, beta_max, maxeval);
+					p0.createOutputDir();
 					p0.getParity();
 					break;
 			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");
-					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions); 
+					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions);
+					p1.createOutputDir();
 					p1.optimizeParameters();
 					p1.getParity();
 					break;
 			case 2: System.out.println("EXCEL POSTPROCESSING MODE");
 					Param_Est p2 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs);
+					p2.createOutputDir();
 					p2.getExcelFiles();
 					break;
 		}

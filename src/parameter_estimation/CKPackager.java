@@ -48,7 +48,6 @@ public class CKPackager extends Paths{
 		List<Map<String,Double>> list = new ArrayList<Map<String,Double>>();
 		CKEmulation [] dummy = new CKEmulation[no_experiments];
 		Runtime rt = Runtime.getRuntime();
-
 		Semaphore semaphore = new Semaphore(no_licenses);
 		for (int i = 0; i < no_experiments; i++) {
 			
@@ -57,7 +56,7 @@ public class CKPackager extends Paths{
 				flag_CKSolnList = false;
 			}
 					
-			dummy[i] = new CKEmulation(workingDir, chemkinDir, rt, chem_inp, reactor_inputs[i], flag_CKSolnList, semaphore, flag_toExcel, flag_massfrac);
+			dummy[i] = new CKEmulation(workingDir, chemkinDir, outputDir, rt, chem_inp, reactor_inputs[i], flag_CKSolnList, semaphore, flag_toExcel, flag_massfrac);
 			
 			//start a new thread that redirects to the run() method, which contains the sequential chemkin procedure (chem -> CKReactorPlugFlow -> GetSolution ->...)
 			dummy[i].start();

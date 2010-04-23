@@ -213,6 +213,7 @@ public class Rosenbrock extends Paths{
 		}
 		
 		out.close();
+		moveFile(outputDir, "output.txt");
 		
 		//convert 1D vector back to matrix [][] notation:
 		counter = 0;
