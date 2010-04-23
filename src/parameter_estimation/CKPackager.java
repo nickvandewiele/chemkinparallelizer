@@ -16,9 +16,6 @@ public class CKPackager extends Paths{
 	public List<Map<String,Double>> list_CKEmulations;
 	public int no_experiments;
 	
-	//no_licenses sets the limiting number for the counting semaphore
-	int no_licenses = 10;
-	
 	boolean flag_CKSolnList;
 	boolean flag_toExcel = false;
 	
@@ -26,20 +23,20 @@ public class CKPackager extends Paths{
 	boolean flag_massfrac = true;
 
 	//constructor for parameter optimization option, flag_massfrac remains false:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i,  boolean flag){
-		super(wd, cd, c_inp, r_i);
+	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic, boolean flag){
+		super(wd, cd, c_inp, r_i, no_lic);
 		no_experiments = r_i.length;
 		flag_CKSolnList = flag;
 	}
 	
 	//constructor for model predictions in mass fractions, used for parity plot mode:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i,  boolean flag, boolean massfrac){
-		this( wd, cd, c_inp, r_i, flag);
+	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic,  boolean flag, boolean massfrac){
+		this( wd, cd, c_inp, r_i, no_lic, flag);
 		this.flag_massfrac = massfrac;
 	}
 	//constructor for toExcel option:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i,  boolean flag, boolean toExcel, boolean massfrac){
-		this( wd, cd, c_inp, r_i, flag);
+	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic,  boolean flag, boolean toExcel, boolean massfrac){
+		this( wd, cd, c_inp, r_i, no_lic, flag);
 		this.flag_toExcel = toExcel;
 		this.flag_massfrac = massfrac;
 	}

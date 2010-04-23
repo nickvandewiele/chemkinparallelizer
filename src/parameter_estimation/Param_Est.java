@@ -21,12 +21,12 @@ public class Param_Est extends Paths{
 	
 
 	// constructor used for checking the validity of chemistry input file:
-	public Param_Est(String wd, String cd, String c_inp, String [] r_inp){
-		super(wd,cd, c_inp, r_inp);
+	public Param_Est(String wd, String cd, String c_inp, String [] r_inp, int no_lic){
+		super(wd,cd, c_inp, r_inp, no_lic);
 	}
 	//construct for parity mode:
-	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval){
-		this( wd,  cd, c_inp, reac_inp);
+	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval){
+		this( wd,  cd, c_inp, reac_inp, no_lic);
 		no_exp = no_experiments;
 		exp_name = experiments_name;
 		betamin = bmin;
@@ -35,8 +35,8 @@ public class Param_Est extends Paths{
 	}
 	
 	//constructor used for parameter optimization option:
-	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns){
-		this( wd,  cd, c_inp, reac_inp, no_experiments, experiments_name, bmin, bmax, m_eval);
+	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns){
+		this( wd,  cd, c_inp, reac_inp, no_lic, no_experiments, experiments_name, bmin, bmax, m_eval);
 		fix_reactions = f_rxns;
 	}
 /**
@@ -70,7 +70,7 @@ public class Param_Est extends Paths{
 		
 		// create Rosenbrock instance:
 		System.out.println("Start of Rosenbrock!");
-		Rosenbrock rosenbrock = new Rosenbrock(workingDir, chemkinDir, maxeval, beta, reactor_inputs, chem_inp, betamin, betamax, fix_reactions);
+		Rosenbrock rosenbrock = new Rosenbrock(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions);
 		
 		//call optimization routine:
 		beta = rosenbrock.getOptimizedParams(exp);
@@ -272,7 +272,7 @@ public class Param_Est extends Paths{
 	public List<Map<String,Double>> getModelPredictions (){
 		List<Map<String,Double>> model;
 		boolean flag_CKSolnList = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
 		model = ckp.getModelValues();
 		return model;
 	}
@@ -285,7 +285,7 @@ public class Param_Est extends Paths{
 		List<Map<String,Double>> model;
 		boolean flag_CKSolnList = true;
 		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList, flag_massfrac);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList, flag_massfrac);
 		model = ckp.getModelValues();
 		return model;
 	}
@@ -304,7 +304,7 @@ public class Param_Est extends Paths{
 		boolean flag_CKSolnList = true;
 		boolean flag_toExcel = true;
 		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList, flag_toExcel, flag_massfrac);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList, flag_toExcel, flag_massfrac);
 		ckp.getModelValues();
 		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;

@@ -42,8 +42,8 @@ public class Rosenbrock extends Paths{
 	public int [][] fix_reactions;
 	
 	//constructor:
-	public Rosenbrock (String wd, String cd, int m, double [][] b_old, String[] r_inp, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns){
-		super(wd, cd, c_inp, r_inp);
+	public Rosenbrock (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns){
+		super(wd, cd, c_inp, r_inp, no_lic);
 		maxeval = m;
 		beta_old = b_old;
 		beta_min = b_min;
@@ -102,7 +102,7 @@ public class Rosenbrock extends Paths{
 		
 		//evaluate model predictions with initial guesses:
 		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
 		model = ckp.getModelValues();
 		
 		//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
@@ -160,7 +160,7 @@ public class Rosenbrock extends Paths{
 					
 					//model predictions with new parameter guesses is called:
 					update_chemistry_input(dummy_beta_new);
-					CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, flag_CKSolnList);
+					CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
 					model = ckp_new.getModelValues();
 					
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
