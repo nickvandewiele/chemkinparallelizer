@@ -5,11 +5,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-//this comment is a test written by steven pyl
 
-/**
- * comment added to test eclipse + git + github functionality by nmvdewie
- */
 public class ParameterEstimationDriver {
 //this comment is added to verify version control system
 	/**
@@ -43,6 +39,9 @@ public class ParameterEstimationDriver {
 		String experiments_db = in.readLine();
 		
 		in.readLine();
+		boolean flag_reactor_db = Boolean.parseBoolean(in.readLine());
+		
+		in.readLine();
 		String reactor_setups_db = in.readLine();
 		
 		in.readLine();
@@ -59,6 +58,20 @@ public class ParameterEstimationDriver {
 		in.readLine();
 		int mode = Integer.parseInt(in.readLine());
 
+		//REACTOR INPUT FILE NAMES:
+		in.readLine();
+		
+		String [] reactor_inputs = new String[no_experiments];
+		if (!flag_reactor_db){
+				for (int i = 0; i < no_experiments; i++){
+					reactor_inputs[i] = in.readLine(); 
+				}
+		}
+		else {
+			in.readLine();
+		}
+	
+		
 		//OPTIMIZATION SECTION: modified Arrhenius parameters [A, n, Ea]: 1 = loose, parameter will be varied; 0 = fixed, parameter will be fixed
 		in.readLine();
 		
@@ -79,14 +92,15 @@ public class ParameterEstimationDriver {
 				fix_reactions[i][j] = Integer.parseInt(s[j]);
 			}
 		}
-		boolean b = check_no_parameters(fix_reactions, no_params);
-		if (!b) {
+		boolean flag_no_parameters = check_no_parameters(fix_reactions, no_params);
+		if (!flag_no_parameters) {
 			System.out.println("Number of parameters to be fitted provided in INPUT.txt does not equal the number of ones you specified in the optimization section in INPUT.txt!");
 			System.exit(-1);
 		}
 		else {
 			//do nothing, continue
 		}
+		
 		in.close();
 		
 		String template = "reactor_input_template.inp";
@@ -99,15 +113,18 @@ public class ParameterEstimationDriver {
 				beta_max[i][j]=1e20;
 			}
 		}
-			
-		String [] reactor_inputs = new String[no_experiments];
-		//int[] exp_no = {1,3,5,11,27,29,33,35,37,45,47,49,53,65,69};
-		int [] exp_no = {1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69};
-		for (int j = 0; j < no_experiments; j++){
-			reactor_inputs[j] = "pinanol-raden_p"+exp_no[j]+".inp";	
+		
+		if (flag_reactor_db){
+			reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
 		}
-
-//		reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
+		else {
+/*			int[] exp_no = {1,3,5,11,27,29,33,35,37,45,47,49,53,65,69};
+			int [] exp_no = {1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69};
+			for (int j = 0; j < no_experiments; j++){
+				reactor_inputs[j] = "pinanol-raden_p"+exp_no[j]+".inp";	
+			}
+*/
+		}
 		
 		switch(mode){
 			case 0:	System.out.println("PARITY PLOT MODE");
