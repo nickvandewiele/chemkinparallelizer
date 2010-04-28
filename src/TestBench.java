@@ -1,6 +1,7 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class TestBench {
 
@@ -10,7 +11,12 @@ public class TestBench {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws Exception{
-		String osname = System.getProperty("os.name");
-		System.out.println(osname);
+		Set<String> s  = new HashSet<String>();
+		s.add("Hond");
+		s.add("Kat");
+		s.add("Giraf");
+		for(Iterator<String> it = s.iterator(); it.hasNext();){
+			System.out.println(it.next());
+		}
 	}
 }

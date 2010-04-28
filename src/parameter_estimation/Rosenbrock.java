@@ -110,7 +110,7 @@ public class Rosenbrock extends Paths{
 		
 		// function evaluation in initial point
 		Function f = new Function(model,exp);
-		double initial = f.return_value();
+		double initial = f.return_initialSSQ();
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
@@ -165,7 +165,7 @@ public class Rosenbrock extends Paths{
 					
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
 					Function f_new = new Function(model,exp);
-					double trial = f_new.return_value();
+					double trial = f_new.return_SSQ();
 					out.println("Trial SSQ: "+trial);
 					if(trial < current){
 						out.println("Woohoo! trial < current!");
