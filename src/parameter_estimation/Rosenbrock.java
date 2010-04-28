@@ -92,6 +92,7 @@ public class Rosenbrock extends Paths{
 		
 		//actual Rosenbrock optimization starts here:
 		PrintWriter out = new PrintWriter(new FileWriter("output.txt"));
+		PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ.csv"));
 		int neval = 1;
 		out.println("Current evaluation no.: "+neval);
 
@@ -110,10 +111,12 @@ public class Rosenbrock extends Paths{
 		
 		// function evaluation in initial point
 		Function f = new Function(model,exp);
-		double initial = f.return_initialSSQ();
+		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
+		double initial = f.return_SSQ();
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
+		out_SSQ.println(neval+","+initial);
 		
 		// Set all flags to 2, i.e. no success has been achieved in direction i
 		int [] flag = new int [dummy_beta_old.length];
@@ -171,6 +174,7 @@ public class Rosenbrock extends Paths{
 						out.println("Woohoo! trial < current!");
 						out.println("Old SSQ: "+current);
 						out.println("New SSQ: "+trial);
+						out_SSQ.println(neval+","+trial);
 						for (int j = 0; j < dummy_beta_old.length; j++) {
 							dummy_beta_old[j] = dummy_beta_new[j];
 						}
@@ -186,6 +190,7 @@ public class Rosenbrock extends Paths{
 					}
 					else {
 						out.println("Damn. trial SSQ > current SSQ...");
+						out_SSQ.println(neval+","+trial);
 						dummy_e[i] = fail * dummy_e[i];
 						//If flag(i) == 0, at least one success has been followed by a least one failure in direction i.
 						if (flag[i] == 1){
@@ -213,7 +218,9 @@ public class Rosenbrock extends Paths{
 		}
 		
 		out.close();
+		out_SSQ.close();
 		moveFile(outputDir, "output.txt");
+		moveFile(outputDir, "SSQ.csv");
 		
 		//convert 1D vector back to matrix [][] notation:
 		counter = 0;
