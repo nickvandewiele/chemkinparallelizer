@@ -17,7 +17,7 @@ import java.util.Map;
  * Ghent University <BR>
  * The Rosenbrock type performs the actual parameter optimization. Function type is called to calculate the Sum of Squared Errors (SSQ) <BR>
  */
-public class Rosenbrock extends Paths{
+public class Optimization extends Paths{
 
 	/**
 	 * @param args
@@ -41,8 +41,17 @@ public class Rosenbrock extends Paths{
 	public double [][] beta_max;
 	public int [][] fix_reactions;
 	
+	//attributes used for parsing 2D matrices to 1D vectors:
+	int total_no_parameters;
+	int [] dummy_fix_reactions;
+	double [] dummy_beta_new;
+	double [] dummy_beta_old;
+	double [] dummy_e;
+	double [] dummy_beta_min;
+	double [] dummy_beta_max;
+	
 	//constructor:
-	public Rosenbrock (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns){
+	public Optimization (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns){
 		super(wd, cd, c_inp, r_inp, no_lic);
 		maxeval = m;
 		beta_old = b_old;
@@ -59,19 +68,22 @@ public class Rosenbrock extends Paths{
 			}
 		}
 	}
+	/**
+	 * convert2D_to_1D() will initialize the 1D vectors derived from the 2D matrices containing parameter data to be used in optimization routine
+	 */
+	public void convert2D_to_1D(){
+		//for programming ease of the optimization algorithm, the double [][] matrix b_old (containing parameters per reaction)
+		//will be converted to a 1D vector:
 		
-	public double [][] getOptimizedParams(List<Map<String,Double>> exp) throws IOException{
+		//initialize new 1D vectors:
+		total_no_parameters = fix_reactions.length * fix_reactions[0].length;
 		
-		//for programming ease of the optimization algorithm, the double [][] matrix b_old (containing parameters per reaction) will be converted to a 1D vector:
-		
-		int total_no_parameters = fix_reactions.length * fix_reactions[0].length;
-		
-		int [] dummy_fix_reactions = new int[total_no_parameters];
-		double [] dummy_beta_new = new double[total_no_parameters];
-		double [] dummy_beta_old = new double[total_no_parameters];
-		double [] dummy_e = new double[total_no_parameters];
-		double [] dummy_beta_min = new double[total_no_parameters];
-		double [] dummy_beta_max = new double[total_no_parameters];
+		dummy_fix_reactions = new int[total_no_parameters];
+		dummy_beta_new = new double[total_no_parameters];
+		dummy_beta_old = new double[total_no_parameters];
+		dummy_e = new double[total_no_parameters];
+		dummy_beta_min = new double[total_no_parameters];
+		dummy_beta_max = new double[total_no_parameters];
 		
 		//copy values of [][] matrices to [] vectors:
 		int counter = 0;
@@ -86,11 +98,46 @@ public class Rosenbrock extends Paths{
 				counter++;
 			}
 		}
+	}
+	/**
+	 * 
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
+		//update_chemistry_input will insert new parameter_guesses array into chem_inp
+		update_chemistry_input(parameter_guesses);
+		
+		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
+		CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
+		model = ckp_new.getModelValues();
+		return model;
+	}
+	
+	public double check_lower_upper_bounds(double d, double lower, double upper, PrintWriter out){
+		double dummy = d; 
+		if (d < lower) {
+			out.println("New parameter guess has exceeded user-defined lower limits!");
+			out.println("new guesses will be equal to user-defined lower limits");
+			dummy = lower;
+		}
+		else if (d > upper) {
+			out.println("New parameter guess has exceeded user-defined upper limits!");
+			out.println("new guesses will be equal to user-defined upper limits");
+			dummy = upper;
+		}
+		else {
+			//do nothing
+		}
+		return dummy;
+	}
+	public double [][] rosenbrock(List<Map<String,Double>> exp) throws Exception{
+		
+		convert2D_to_1D();
 		
 		//basis needs to be declared with the correct dimensions:
 		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
 		
-		//actual Rosenbrock optimization starts here:
 		PrintWriter out = new PrintWriter(new FileWriter("output.txt"));
 		PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ.csv"));
 		int neval = 1;
@@ -99,18 +146,13 @@ public class Rosenbrock extends Paths{
 		// initialization of basis: OK
 		basis = basis_init(basis);
 		
-		boolean flag_CKSolnList = true;
-		
 		//evaluate model predictions with initial guesses:
-		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
-		model = ckp.getModelValues();
-		
-		//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
-		flag_CKSolnList = false;
+		//flag_CKSolnList = true
+		List<Map<String,Double>> model = getModelValues(dummy_beta_old,true);
 		
 		// function evaluation in initial point
 		Function f = new Function(model,exp);
+		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
 		double initial = f.return_SSQ();
 		System.out.println("Initial SSQ: "+initial);
@@ -133,17 +175,11 @@ public class Rosenbrock extends Paths{
 					
 					//Parameters are slightly changed in the direction of basisvector 'i' to beta_new(j), j=1..np
 					for (int j = 0; j < dummy_beta_new.length; j++) {
+
+						//new parameter trials:
 						dummy_beta_new[j] = dummy_beta_old[j] + dummy_e[i]*basis[j][i];
-						if (dummy_beta_new[j] < dummy_beta_min[j]) {
-							out.println("New parameter guess has exceeded user-defined lower limits!");
-							out.println("new guesses will be equal to user-defined lower limits");
-							dummy_beta_new[j] = dummy_beta_min[j];
-						}
-						if (dummy_beta_new[j] > dummy_beta_max[j]) {
-							out.println("New parameter guess has exceeded user-defined upper limits!");
-							out.println("new guesses will be equal to user-defined upper limits");
-							dummy_beta_new[j] = dummy_beta_max[j];
-						}
+						dummy_beta_new[j] = check_lower_upper_bounds(dummy_beta_new[j], dummy_beta_min[j], dummy_beta_max[j], out);
+						
 					}
 					
 					System.out.println("Beta new (to be tested): ");
@@ -162,13 +198,14 @@ public class Rosenbrock extends Paths{
 					System.out.println("Evaluation no. "+neval);
 					
 					//model predictions with new parameter guesses is called:
-					update_chemistry_input(dummy_beta_new);
-					CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
-					model = ckp_new.getModelValues();
+					//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
+					//flag_CKSolnList = false
+					model = getModelValues(dummy_beta_new,false);
 					
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
 					Function f_new = new Function(model,exp);
 					double trial = f_new.return_SSQ();
+					
 					out.println("Trial SSQ: "+trial);
 					if(trial < current){
 						out.println("Woohoo! trial < current!");
@@ -223,7 +260,7 @@ public class Rosenbrock extends Paths{
 		moveFile(outputDir, "SSQ.csv");
 		
 		//convert 1D vector back to matrix [][] notation:
-		counter = 0;
+		int counter = 0;
 		for (int i = 0; i < fix_reactions.length; i++) {
 			for (int j = 0; j < fix_reactions[0].length; j++){
 				beta_old[i][j] = dummy_beta_old[counter];

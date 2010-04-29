@@ -46,10 +46,9 @@ public class Param_Est extends Paths{
  * <LI>reading the experimental database and store these values for the response variables</LI>
  * <LI>calling the actual optimization routine, i.e. the Rosenbrock algorithm</LI>
  * <LI>writing the optimized kinetic parameters to a params.txt file</LI>	
- * @throws IOException
- * @throws InterruptedException
+ * @throws Exception 
  */
-	public void optimizeParameters() throws IOException, InterruptedException{
+	public void optimizeParameters() throws Exception{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
@@ -70,10 +69,10 @@ public class Param_Est extends Paths{
 		
 		// create Rosenbrock instance:
 		System.out.println("Start of Rosenbrock!");
-		Rosenbrock rosenbrock = new Rosenbrock(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions);
+		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions);
 		
 		//call optimization routine:
-		beta = rosenbrock.getOptimizedParams(exp);
+		beta = optimization.rosenbrock(exp);
 		
 		//print optimized parameters:
 		System.out.println("New values of parameters are: ");
