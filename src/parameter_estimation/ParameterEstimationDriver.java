@@ -13,6 +13,7 @@ public class ParameterEstimationDriver {
 	 */
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
+		
 		//input file will be searched in working directory under the name INPUT.txt:
 		BufferedReader in = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/INPUT.txt"));
 		

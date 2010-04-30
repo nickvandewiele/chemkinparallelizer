@@ -72,7 +72,7 @@ public class Param_Est extends Paths{
 		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions);
 		
 		//call optimization routine:
-		beta = optimization.rosenbrock(exp);
+		beta = optimization.optimize(exp);
 		
 		//print optimized parameters:
 		System.out.println("New values of parameters are: ");
