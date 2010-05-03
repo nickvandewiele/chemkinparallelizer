@@ -4,6 +4,18 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+/**
+ * Rosenbrock algorithm developed by Nick Vandewiele, February 2010 <BR>
+ * inspired by B. Debrabandere's fortran implementation <BR>
+ * adopted from "Computational Techniques for Chemical Engineers", by H.H. Rosenbrock and C. Storey <BR>
+ * Ghent University <BR>
+ * The Rosenbrock type performs the actual parameter optimization. Function type is called to calculate the Sum of Squared Errors (SSQ) <BR>
+ * 
+ * Rosenbrock algorithm uses two types as server classes:
+ * 	-Optimization: provides getModelValues method (that calls update_chemistry_input to adjust chemistry input file) and 
+ *   attributes like total_no_parameters, maxeval. Rosenbrock delegates this to Optimization type
+ * 	-Function
+ */
 
 public class Rosenbrock{
 	/**
@@ -32,7 +44,7 @@ public class Rosenbrock{
 	 * this requires to mess in the external source code...
 	 * TODO: how to create an optimization code that does not require the addition of Optimization type in its source code? 
 	 */
-	public Optimization optimization;
+	private Optimization optimization;
 
 	public Rosenbrock(Optimization o, double efrac, double succ, double fail) {
 		optimization = o;
@@ -217,7 +229,7 @@ public class Rosenbrock{
 
 	/**
 	* 
-	 * @param bbasis
+	* @param bbasis
 	* @return An orthonormal basis is derived and returned from the matrix basis using the Gram-Schmidt algorithm
 	*/
 	public double[][] gramschmidt (double[][] bbasis) {

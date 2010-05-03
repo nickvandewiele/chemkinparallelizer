@@ -10,12 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Rosenbrock algorithm developed by Nick Vandewiele, February 2010 <BR>
- * inspired by B. Debrabandere's fortran implementation <BR>
- * adopted from "Computational Techniques for Chemical Engineers", by H.H. Rosenbrock and C. Storey <BR>
- * Ghent University <BR>
- * The Rosenbrock type performs the actual parameter optimization. Function type is called to calculate the Sum of Squared Errors (SSQ) <BR>
+/**Optimization type is to be seen as the 'driver' class of the broad set of optimization algorithms available, e.g. Rosenbrock.
+ * Optimization type will condition the variables of NBMT in such a way that the actual optimization routine has to be modified to
+ * serve for NBMT as little as possible. It does so, for instance, by converting the 2D parameter containers (double [][]) to 
+ * 1D vectors (double[]), a format that is more natural to traditional optimization routines.
+ * 
+ * Also, the Optimization type will serve as a server class to the specific optimization routine (e.g. Rosenbrock) to provide methods
+ * that access model values getModelValues, attributes e.g. total no_parameters, maximum number of evaluations
+ * 
+ * @author nmvdewie
+ *
  */
 public class Optimization extends Paths{
 	public int maxeval;
@@ -26,19 +30,19 @@ public class Optimization extends Paths{
 	public int[][] fix_reactions;
 	
 
-	public double[] dummy_beta_old;
-	public double[] dummy_beta_new;
-	public double[] dummy_beta_min;
-	public double[] dummy_beta_max;
-	public int[] dummy_fix_reactions;
+	private double[] dummy_beta_old;
+	private double[] dummy_beta_new;
+	private double[] dummy_beta_min;
+	private double[] dummy_beta_max;
+	private int[] dummy_fix_reactions;
 	
-	public int total_no_parameters;
+	private int total_no_parameters;
 
 	/**
 	 * Rosenbrock serves as server class to Optimization.
 	 * it will execute the actual optimization
 	 */
-	public Rosenbrock rosenbrock;
+	private Rosenbrock rosenbrock;
 
 	//constructor:
 	public Optimization (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns){
