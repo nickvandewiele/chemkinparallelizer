@@ -51,6 +51,11 @@ public class ParameterEstimationDriver {
 		in.readLine();
 		int no_params = Integer.parseInt(in.readLine());
 
+		//optimization flags:
+		in.readLine();
+		boolean flag_Rosenbrock = Boolean.parseBoolean(in.readLine());
+		in.readLine();
+		boolean flag_LM = Boolean.parseBoolean(in.readLine());
 		
 		in.readLine();
 		int maxeval = Integer.parseInt(in.readLine());
@@ -133,7 +138,7 @@ public class ParameterEstimationDriver {
 					p0.getParity();
 					break;
 			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");
-					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions);
+					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions, flag_Rosenbrock, flag_LM);
 					p1.createOutputDir();
 					p1.optimizeParameters();
 					p1.getParity();
@@ -308,5 +313,6 @@ public class ParameterEstimationDriver {
 		if (counter == no_params) return true;
 		else return false;
 	}
+
 
 }

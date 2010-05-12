@@ -22,10 +22,10 @@ public class Rosenbrock{
 	 * @param args
 	 */
 	public int maxeval;
-	public double efrac;
+	public double EFRAC; //rosenbrock parameter
+	public double SUCC; //rosenbrock parameter
+	public double FAIL; //rosenbrock parameter
 	public double[][] basis;
-	public double succ;
-	public double fail;
 
 	public int total_no_parameters;
 
@@ -33,6 +33,9 @@ public class Rosenbrock{
 	public double[] dummy_beta_new;
 	public double[] dummy_beta_min;
 	public double[] dummy_beta_max;
+	/**
+	 * TODO the fix_reactions vector should not be part of Rosenbrock anymore. do it like LM!
+	 */
 	public int[] dummy_fix_reactions;
 	
 	public double[] dummy_e;
@@ -48,26 +51,26 @@ public class Rosenbrock{
 
 	public Rosenbrock(Optimization o, double efrac, double succ, double fail) {
 		optimization = o;
-		this.efrac = efrac;
-		this.succ = succ;
-		this.fail = fail;
+		this.EFRAC = efrac;
+		this.SUCC = succ;
+		this.FAIL = fail;
 		this.dummy_beta_old = o.get_dummy_beta_old();
-		this.dummy_beta_new = o.get_dummy_beta_new();
+		this.dummy_beta_new = new double[dummy_beta_old.length];
 		this.dummy_beta_min = o.get_dummy_beta_min();
 		this.dummy_beta_max = o.get_dummy_beta_max();
 		this.dummy_fix_reactions = o.get_dummy_fix_reactions();
 		this.dummy_e = new double[o.get_total_no_parameters()];
 		for (int i = 0; i < dummy_beta_old.length; i++) {
-				dummy_e[i] = dummy_beta_old[i] * efrac;	
+				dummy_e[i] = dummy_beta_old[i] * EFRAC;	
 		}
 	}
 
-	public double [] return_optimized_parameters(List<Map<String,Double>> exp) throws Exception{
+	public double [] return_optimized_parameters() throws Exception{
 		//basis needs to be declared with the correct dimensions:
 		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
 
-		PrintWriter out = new PrintWriter(new FileWriter("output.txt"));
-		PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ.csv"));
+		PrintWriter out = new PrintWriter(new FileWriter("output_Rosenbrock.txt"));
+		PrintWriter out_Rosenbrock = new PrintWriter (new FileWriter("SSQ_Rosenbrock.csv"));
 		int neval = 1;
 		out.println("Current evaluation no.: "+neval);
 
@@ -79,14 +82,14 @@ public class Rosenbrock{
 		List<Map<String,Double>> model = optimization.getModelValues(dummy_beta_old,true);
 		
 		// function evaluation in initial point
-		Function f = new Function(model,exp);
+		Function f = new Function(model,optimization.getExp());
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
-		double initial = f.return_SSQ();
+		double initial = f.getSSQ();
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
-		out_SSQ.println(neval+","+initial);
+		out_Rosenbrock.println(neval+","+initial);
 		
 		// Set all flags to 2, i.e. no success has been achieved in direction i
 		int [] flag = new int [dummy_beta_old.length];
@@ -131,15 +134,15 @@ public class Rosenbrock{
 					model = optimization.getModelValues(dummy_beta_new,false);
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
-					Function f_new = new Function(model,exp);
-					double trial = f_new.return_SSQ();
+					Function f_new = new Function(model,optimization.getExp());
+					double trial = f_new.getSSQ();
 					
 					out.println("Trial SSQ: "+trial);
 					if(trial < current){
 						out.println("Woohoo! trial < current!");
 						out.println("Old SSQ: "+current);
 						out.println("New SSQ: "+trial);
-						out_SSQ.println(neval+","+trial);
+						out_Rosenbrock.println(neval+","+trial);
 						
 						//put new successful parameter guesses in the old ones, which will eventually be returned
 						for (int j = 0; j < dummy_beta_old.length; j++) {
@@ -150,7 +153,7 @@ public class Rosenbrock{
 						for (int j = 0; j < d.length; j++) {
 							d[j] = d[j] + dummy_e[j];
 						}
-						dummy_e[i] = succ * dummy_e[i];
+						dummy_e[i] = SUCC * dummy_e[i];
 						// If flag(i) .EQ. 1, at least one success has occurred along direction i
 						if (flag[i] == 2) {
 							flag[i] = 1;
@@ -158,8 +161,8 @@ public class Rosenbrock{
 					}
 					else {
 						out.println("Damn. trial SSQ > current SSQ...");
-						out_SSQ.println(neval+","+trial);
-						dummy_e[i] = fail * dummy_e[i];
+						out_Rosenbrock.println(neval+","+trial);
+						dummy_e[i] = FAIL * dummy_e[i];
 						//If flag(i) == 0, at least one success has been followed by a least one failure in direction i.
 						if (flag[i] == 1){
 							flag[i] = 0;
@@ -186,7 +189,7 @@ public class Rosenbrock{
 		}
 		
 		out.close();
-		out_SSQ.close();
+		out_Rosenbrock.close();
 				
 		return dummy_beta_old;
 	}

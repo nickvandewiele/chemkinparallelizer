@@ -19,6 +19,10 @@ public class Param_Est extends Paths{
 	public double [][] betamax;
 	public int [][] fix_reactions;
 	
+	//optimization flags:
+	public boolean flag_Rosenbrock;
+	public boolean flag_LM;
+	
 
 	// constructor used for checking the validity of chemistry input file:
 	public Param_Est(String wd, String cd, String c_inp, String [] r_inp, int no_lic){
@@ -35,9 +39,11 @@ public class Param_Est extends Paths{
 	}
 	
 	//constructor used for parameter optimization option:
-	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns){
+	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns, boolean flag_Rosenbrock, boolean flag_LM){
 		this( wd,  cd, c_inp, reac_inp, no_lic, no_experiments, experiments_name, bmin, bmax, m_eval);
 		fix_reactions = f_rxns;
+		this.flag_Rosenbrock = flag_Rosenbrock;
+		this.flag_LM = flag_LM;
 	}
 /**
  * optimizeParameters is the method that will optimize the kinetic parameters. It does so by:<BR>
@@ -67,9 +73,9 @@ public class Param_Est extends Paths{
 		//System.out.println(exp.toString());
 		
 		
-		// create Rosenbrock instance:
-		System.out.println("Start of Rosenbrock!");
-		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions);
+
+
+		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions, flag_Rosenbrock, flag_LM, exp);
 		
 		//call optimization routine:
 		beta = optimization.optimize(exp);

@@ -8,7 +8,10 @@ import java.util.Set;
 
 public class Function {
 	public List<Map<String,Double>> model;
-	public List<Map<String,Double>> exp;
+	private List<Map<String,Double>> exp;
+
+	// resid is a double[no_experiments] that contains the residual value (y - f(x,beta)) for each experiment separately.
+	private double [][] resid;
 	public double[][]covariance;
 	public double function_value;
 	
@@ -16,46 +19,29 @@ public class Function {
 		model = m;
 		exp = e;
 		covariance = new double[e.size()][e.get(0).size()];
+		resid = new double[exp.size()][e.get(0).size()];
 	}
 	
-	//defines the function to be minimized
-	//SSQ : sum(model - exp)²
-	//double func;
-	//test function: rosenbrock banana's function, minimum for {x = 1, y = 1} of fun = 0
-	//func = (1-x[0])*(1-x[0])+100*(x[1]-x[0]*x[0])*(x[1]-x[0]*x[0]);
-	//func = 1+(params[0]*params[1])*(params[0]*params[1]);
-	
-	//sum: dummy var that will be used to calculate SSQ
-	public double return_SSQ(){
+	/**
+	 * getSSQ returns the sum of residuals.
+	 * @return
+	 */
+	public double getSSQ(){
+		computeResid();
 		Double sum = 0.0;
-		double SSQ=0.0;
-		Map<String,Double> cov = covariance();
-		//check if size of experiment list is equal to size of model list:
-		if (exp.size() != model.size()) {
-			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
-		}
-		else {
-			//Loop over all experiments in experimental ArrayList:
-			for(int i=0;i<exp.size();i++)
-			{
-				//Loop over all keys in experiment i:
-				for ( String s : exp.get(i).keySet()){
-					Double e = exp.get(i).get(s);
-					Double m = model.get(i).get(s);
-					System.out.println(s);
-					System.out.println("Variance: "+cov.get(s));
-					sum = sum + (1 / cov.get(s) * (e-m) * (e-m));
-				}
+		for (int i = 0; i < resid.length; i++){
+			for (int j = 0; j < resid[0].length; j++){
+				sum += resid[i][j]*resid[i][j];
 			}
-			SSQ = sum.doubleValue();
 		}
-		return SSQ;
+		
+		return sum;
 	}
 	/**
 	 * initialSSQ is identical to SSQ except for the variances, which are calculated using only experimental data
 	 * @return
 	 */
-	public double return_initialSSQ(){
+	public double getInitialSSQ(){
 		Double sum = 0.0;
 		double SSQ=0.0;
 		Map<String,Double> cov = initial_covariance();
@@ -113,7 +99,7 @@ public class Function {
 	 * variance-covariance 'matrix' (in reality vector) based on error (y_i (experimental) - y^_i (model)) assuming that response variables are uncorrelated
 	 * @return
 	 */
-	public Map<String,Double> covariance(){
+	public Map<String,Double> getCovariance(){
 		Map<String,Double> covariance = new HashMap<String,Double>();
 		Set<String> response_vars = exp.get(0).keySet();
 		Double average = 0.0;
@@ -137,5 +123,49 @@ public class Function {
 		
 		return covariance;
 	}
+	/**
+	 * computeResid computes every weigthed residual per experiment per response variable, i.e. (computed - observed) / sigma
+	 */
+	public void computeResid(){
+		Map<String,Double> cov = getCovariance();
 		
+		// we want to have a fixed order in which the keys are called, therefore we put the response var names in a String []
+		String [] species_names = new String [exp.get(0).size()];
+		int counter = 0;
+		for (String s : exp.get(0).keySet()){
+			species_names[counter] = s;
+			counter++;
+		}
+		
+		//initiation of resid:
+		resid = new double[exp.size()][exp.get(0).size()];
+		
+
+		if (exp.size() != model.size()) {//check if size of experiment list is equal to size of model list:
+			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
+		}
+		else {
+			for(int i=0;i<exp.size();i++)//Loop over all experiments in experimental ArrayList:
+			{
+				for (int j = 0; j < species_names.length; j++){
+					Double e = exp.get(i).get(species_names[j]);
+					Double m = model.get(i).get(species_names[j]);
+					resid[i][j] = (1 / Math.sqrt(cov.get(species_names[j]))) * (m-e) ;
+				}
+/*				for ( String s : exp.get(i).keySet()){//Loop over all keys in experiment i:
+					Double e = exp.get(i).get(s);
+					Double m = model.get(i).get(s);
+					System.out.println(s);
+				
+					sum = sum + (1 / cov.get(s)) * (m-e) ;
+				}
+*/				
+
+			}
+		}
+	}
+	public double [][] getResid(){
+		computeResid();
+		return resid;
+	}
 }
