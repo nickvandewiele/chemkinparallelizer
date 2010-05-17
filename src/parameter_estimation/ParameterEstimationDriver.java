@@ -1,5 +1,6 @@
 package parameter_estimation;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -40,6 +41,12 @@ public class ParameterEstimationDriver {
 		
 		in.readLine();
 		boolean flag_reactor_db = Boolean.parseBoolean(in.readLine());
+		if (flag_reactor_db){
+			if(!(new File("reactor_input_template.inp").exists())){
+				System.out.println("reactor_input_template.inp was not found in the working directory!");
+				System.exit(-1);
+			}
+		}
 		
 		in.readLine();
 		String reactor_setups_db = in.readLine();
@@ -122,14 +129,7 @@ public class ParameterEstimationDriver {
 		if (flag_reactor_db){
 			reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
 		}
-		else {
-/*			int[] exp_no = {1,3,5,11,27,29,33,35,37,45,47,49,53,65,69};
-			int [] exp_no = {1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,49,51,53,55,57,59,61,63,65,67,69};
-			for (int j = 0; j < no_experiments; j++){
-				reactor_inputs[j] = "pinanol-raden_p"+exp_no[j]+".inp";	
-			}
-*/
-		}
+
 		
 		switch(mode){
 			case 0:	System.out.println("PARITY PLOT MODE");
