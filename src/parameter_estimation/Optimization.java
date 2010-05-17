@@ -118,7 +118,7 @@ public class Optimization extends Paths{
 			double succ = 3.0;
 			double fail = -0.5;
 			System.out.println("Start of Rosenbrock!");
-			rosenbrock = new Rosenbrock(this, efrac, succ, fail);
+			rosenbrock = new Rosenbrock(this, efrac, succ, fail, maxeval);
 			beta_new = convert_1D_to_2D(rosenbrock.return_optimized_parameters());
 		}
 		
@@ -127,10 +127,19 @@ public class Optimization extends Paths{
 			nbmtmultiDhost = new NBMTmultiDHost(this);
 			beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
 		}
-		moveFile(outputDir, "output.txt");
-		moveFile(outputDir, "SSQ.csv");
-		moveFile(outputDir, "LM.txt");
-		
+
+		// Rosenbrock monitors:
+		if(new File("SSQ_Rosenbrock.csv").exists())
+			moveFile(outputDir, "SSQ_Rosenbrock.csv");
+		if(new File("output_Rosenbrock.txt").exists())
+			moveFile(outputDir, "output_Rosenbrock.txt");
+
+		//LM monitors:
+		if(new File("LM.txt").exists())
+			moveFile(outputDir, "LM.txt");
+		if(new File("SSQ_LM.txt").exists())
+			moveFile(outputDir, "SSQ_LM.txt");
+				
 		return beta_new;
 	}
 	

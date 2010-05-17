@@ -76,6 +76,7 @@ class LMmultiD
     // Ref: M.Lampton, Computers in Physics v.11 pp.110-115 1997.
     {
         PrintWriter out = new PrintWriter(new FileWriter("LM.txt"));
+        PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ_LM.txt"));
     	sos = myH.dComputeResid();
     	
         if (sos==BIGVAL)
@@ -158,6 +159,8 @@ class LMmultiD
             printArray(delta,out);
             
             sos = myH.dNudge(delta);         // try it out.
+            out_SSQ.println("SSQ: "+sos);
+            
             if (sos==BIGVAL)
             {
                 System.out.println("LMinner failed SOS step"); 
@@ -187,7 +190,7 @@ class LMmultiD
         boolean done = (rrise>-LMTOL) || (lambda>LAMBDAMAX); 
         
         out.close();
-        
+        out_SSQ.close();
         return done; 
     }
 
