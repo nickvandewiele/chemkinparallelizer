@@ -49,11 +49,12 @@ public class Rosenbrock{
 	 */
 	private Optimization optimization;
 
-	public Rosenbrock(Optimization o, double efrac, double succ, double fail) {
+	public Rosenbrock(Optimization o, double efrac, double succ, double fail, int maxeval) {
 		optimization = o;
 		this.EFRAC = efrac;
 		this.SUCC = succ;
 		this.FAIL = fail;
+		this.maxeval = maxeval;
 		this.dummy_beta_old = o.get_dummy_beta_old();
 		this.dummy_beta_new = new double[dummy_beta_old.length];
 		this.dummy_beta_min = o.get_dummy_beta_min();
@@ -70,7 +71,7 @@ public class Rosenbrock{
 		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
 
 		PrintWriter out = new PrintWriter(new FileWriter("output_Rosenbrock.txt"));
-		PrintWriter out_Rosenbrock = new PrintWriter (new FileWriter("SSQ_Rosenbrock.csv"));
+		PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ_Rosenbrock.csv"));
 		int neval = 1;
 		out.println("Current evaluation no.: "+neval);
 
@@ -89,7 +90,7 @@ public class Rosenbrock{
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
-		out_Rosenbrock.println(neval+","+initial);
+		out_SSQ.println(neval+","+initial);
 		
 		// Set all flags to 2, i.e. no success has been achieved in direction i
 		int [] flag = new int [dummy_beta_old.length];
@@ -142,7 +143,7 @@ public class Rosenbrock{
 						out.println("Woohoo! trial < current!");
 						out.println("Old SSQ: "+current);
 						out.println("New SSQ: "+trial);
-						out_Rosenbrock.println(neval+","+trial);
+						out_SSQ.println(neval+","+trial);
 						
 						//put new successful parameter guesses in the old ones, which will eventually be returned
 						for (int j = 0; j < dummy_beta_old.length; j++) {
@@ -161,7 +162,7 @@ public class Rosenbrock{
 					}
 					else {
 						out.println("Damn. trial SSQ > current SSQ...");
-						out_Rosenbrock.println(neval+","+trial);
+						out_SSQ.println(neval+","+trial);
 						dummy_e[i] = FAIL * dummy_e[i];
 						//If flag(i) == 0, at least one success has been followed by a least one failure in direction i.
 						if (flag[i] == 1){
@@ -189,7 +190,7 @@ public class Rosenbrock{
 		}
 		
 		out.close();
-		out_Rosenbrock.close();
+		out_SSQ.close();
 				
 		return dummy_beta_old;
 	}
