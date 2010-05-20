@@ -26,7 +26,7 @@ class LMmultiD
     private final double LMBOOST    =  2.0;     // damping increase per failed step
     private final double LMSHRINK   = 0.10;     // damping decrease per successful step
     private final double LAMBDAZERO = 0.001;    // initial damping
-    private final double LAMBDAMAX  =  1E9;     // max damping
+    private final double LAMBDAMAX  =  1E3;     // max damping
     private final double LMTOL      = 1E-12;    // exit tolerance
     private final double BIGVAL = 9.876543E+210; 
  
@@ -170,6 +170,8 @@ class LMmultiD
             
             if (rrise <= 0.0)                // good step!
             {
+               out.println("lambda: "+lambda);
+               System.out.println("lambda: "+lambda);
                lambda *= LMSHRINK;           // shrink lambda
                break;                        // leave lmInner.
             }
@@ -191,7 +193,7 @@ class LMmultiD
         return done; 
     }
 
-    private double gaussj( double[][] a, int N )
+    public double gaussj( double[][] a, int N )
     // Inverts the double array a[N][N] by Gauss-Jordan method
     // M.Lampton UCB SSL (c)2003, 2005
     {
@@ -299,4 +301,5 @@ class LMmultiD
     	out.println();
     	System.out.println();
     }
+    
 } //-----------end of class LM--------------------

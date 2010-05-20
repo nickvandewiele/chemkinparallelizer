@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import stat.Statistics;
 
 import levenberg.multi.NBMTmultiDHost;
 
@@ -40,6 +41,9 @@ public class Optimization extends Paths{
 	
 	private int total_no_parameters;
 	
+	public int getTotal_no_parameters() {
+		return total_no_parameters;
+	}
 	boolean flag_rosenbrock;
 	boolean flag_LM;
 	
@@ -126,10 +130,24 @@ public class Optimization extends Paths{
 			System.out.println("Start of Levenberg-Marquardt!");
 			nbmtmultiDhost = new NBMTmultiDHost(this);
 			beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
+			Statistics s = new Statistics(this);
+			PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
+			out.println("Variances of response variables:");
+			out.println(this.nbmtmultiDhost.getFunction().getCovariance());
+			out.println("Variance-covariance of parameter estimations:");
+			s.printMatrix(s.get_Var_Covar(), out);
+			out.println("t-values of individual significance of parameter estimations:");
+			s.printArray(s.getT_values(), out);
+			out.println("tabulated t-value for alpha = 5%");
+			out.println(s.getTabulated_t_value());
+			s.printMatrix(s.getConfidence_intervals(), out);
+			out.close();
+			
 		}
 		moveFile(outputDir, "output.txt");
 		moveFile(outputDir, "SSQ.csv");
 		moveFile(outputDir, "LM.txt");
+		moveFile(outputDir, "statistics.txt");
 		
 		return beta_new;
 	}
@@ -333,5 +351,8 @@ public class Optimization extends Paths{
 			}
 		}
 		return dummy_beta;
+	}
+	public NBMTmultiDHost getNBMTmultiDHost(){
+		return nbmtmultiDhost;
 	}
 }

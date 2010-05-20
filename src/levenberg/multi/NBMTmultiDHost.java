@@ -17,6 +17,10 @@ public class NBMTmultiDHost implements LMhostmultiD {
     private double parms[];  // starting point
     
     private Optimization optimization;
+    private Function function;
+    private LMmultiD myLM;
+    
+    private boolean additive_finite_difference = false; //additive implies that step in parameter direction will be regardless of parameter value
     
     public NBMTmultiDHost(Optimization o) throws Exception
     {
@@ -33,8 +37,8 @@ public class NBMTmultiDHost implements LMhostmultiD {
     	for (int i=0; i<NPARMS; i++)
           System.out.println("Start parm["+i+"] = "+parms[i]); 
 
-        LMmultiD myLM = new LMmultiD(this, NPARMS, NPTS, NRESP); // run the minimizer
-
+        myLM = new LMmultiD(this, NPARMS, NPTS, NRESP); // run the minimizer
+        
         for (int i=0; i<NPARMS; i++)
           System.out.println("End parm["+i+"]   = "+parms[i]); 
     }
@@ -43,16 +47,26 @@ public class NBMTmultiDHost implements LMhostmultiD {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and two-sided finite difference.
 	    // If current parms[] is bad, returns false.  
-	    
+		// df/dx = ( f(x+h) - f(x-h) ) / 2h
+		// 1st step: reset parameters to x+h, calculate f(x+h), df/dx = f(x+h)
+		// 2nd step: reset parameters to x-h, calculate f(x-h), df/dx -= f(x-h)
+		// 3rd step: df/dx *= 1/2h
+		// 4th step: reset parameters to x (by adding h to x)
 	        double delta[] = new double[NPARMS];
 	        double FACTOR = 0.5 / DELTAP; 
 	        double d=0; 
 
 	        for (int j=0; j<NPARMS; j++)
 	        {
-	            for (int k=0; k<NPARMS; k++)
-	            	//previously:delta[k] = (k==j) ? DELTAP : 0.0;
-	              delta[k] = (k==j) ? parms[k] * DELTAP : 0.0;
+	            for (int k=0; k<NPARMS; k++){
+	            	if(additive_finite_difference){
+	            		delta[k] = (k==j) ? DELTAP : 0.0;
+	            	}
+	            	else{
+	            		delta[k] = (k==j) ? parms[k] * DELTAP : 0.0;	
+	            	}
+	            }
+	              
 
 	            d = dNudge(delta); // resid at pplus
 	            if (d==BIGVAL)
@@ -66,8 +80,14 @@ public class NBMTmultiDHost implements LMhostmultiD {
 	            	}
 	            } 
 
-	            for (int k=0; k<NPARMS; k++)
-	              delta[k] = (k==j) ? -2*parms[k]*DELTAP : 0.0;
+	            for (int k=0; k<NPARMS; k++){
+	            	if(additive_finite_difference){
+	            		delta[k] = (k==j) ? -2*DELTAP : 0.0;
+	            	}
+	            	else{
+	            		delta[k] = (k==j) ? -2*parms[k] * DELTAP : 0.0;	
+	            	}
+	            }
 
 	            d = dNudge(delta); // resid at pminus
 	            if (d==BIGVAL)
@@ -87,8 +107,15 @@ public class NBMTmultiDHost implements LMhostmultiD {
 	            	}
 	            	
 	            }
-	            for (int k=0; k<NPARMS; k++)
-	              delta[k] = (k==j) ? parms[k]*DELTAP : 0.0;
+	            for (int k=0; k<NPARMS; k++){
+	            	if(additive_finite_difference){
+	            		delta[k] = (k==j) ? DELTAP : 0.0;
+	            	}
+	            	else{
+	            		delta[k] = (k==j) ? parms[k] * DELTAP : 0.0;	
+	            	}         
+	            }
+
 
 	            d = dNudge(delta);  
 	            if (d==BIGVAL)
@@ -107,6 +134,11 @@ public class NBMTmultiDHost implements LMhostmultiD {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and one-sided forward finite difference.
 		// df/dx = ( f(x+h) - f(x) ) / h
+		// 1st step: df/dx = -f(x)
+		// 2nd step: calculate f(x+h)
+		// 3rd step: df/dx += f(x+h)
+		// 4th step: df/dx *= 1/h
+		// 5th step: reset parameters to central point (substracting h from x)
 	    // If current parms[] is bad, returns false.  
 	    
 	        double delta[] = new double[NPARMS];
@@ -121,8 +153,14 @@ public class NBMTmultiDHost implements LMhostmultiD {
 	        		}
 	        	}   
      	
-	        	for (int k=0; k<NPARMS; k++)
-	              delta[k] = (k==j) ? parms[k]*DELTAP : 0.0;
+	        	for (int k=0; k<NPARMS; k++){
+	        		if(additive_finite_difference){
+	            		delta[k] = (k==j) ? DELTAP : 0.0;
+	            	}
+	            	else{
+	            		delta[k] = (k==j) ? parms[k] * DELTAP : 0.0;	
+	            	}
+	            }
 
 	            d = dNudge(delta); // resid at pplus
 	            if (d==BIGVAL)
@@ -141,9 +179,15 @@ public class NBMTmultiDHost implements LMhostmultiD {
 	            		jac[i][j][k] *= FACTOR;	
 	            	}
 	            }
-	            for (int k=0; k<NPARMS; k++)
-		              delta[k] = (k==j) ? parms[k]*DELTAP : 0.0;
-
+	            for (int k=0; k<NPARMS; k++){//reset parameters to central point
+	            	if(additive_finite_difference){
+	            		delta[k] = (k==j) ? -DELTAP : 0.0;
+	            	}
+	            	else{
+	            		delta[k] = (k==j) ? -parms[k] * DELTAP : 0.0;	
+	            	}
+	            }
+	            	
 		        d = dNudge(delta);  
 		        if (d==BIGVAL)
 		        	{
@@ -159,9 +203,9 @@ public class NBMTmultiDHost implements LMhostmultiD {
 		/**
 		 * TODO deal with CKSolnList flag, employed in .getModelValues()
 		 */
-		Function f = new Function (optimization.getModelValues(optimization.buildFullParamVector(parms),true), optimization.getExp());
-		resid = f.getResid();
-		return f.getSSQ();
+		function = new Function (optimization.getModelValues(optimization.buildFullParamVector(parms),true), optimization.getExp());
+		resid = function.getResid();
+		return function.getSSQ();
 	}
 
 	public double dGetJac(int i, int j, int k) {
@@ -194,6 +238,17 @@ public class NBMTmultiDHost implements LMhostmultiD {
 	 * @author nmvdewie
 	 */
 	public double [] return_optimized_parameters(){
+		return parms;
+	}
+	public Function getFunction(){
+		return function;
+	}
+
+	public LMmultiD getMyLM() {
+		return myLM;
+	}
+
+	public double[] getParms() {
 		return parms;
 	}
 }

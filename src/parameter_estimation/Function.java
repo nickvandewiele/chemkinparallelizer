@@ -12,13 +12,12 @@ public class Function {
 
 	// resid is a double[no_experiments] that contains the residual value (y - f(x,beta)) for each experiment separately.
 	private double [][] resid;
-	public double[][]covariance;
+	private Map<String,Double> covariance = new HashMap<String,Double>();
 	public double function_value;
 	
 	public Function (List<Map<String,Double>> m, List<Map<String,Double>> e){
 		model = m;
 		exp = e;
-		covariance = new double[e.size()][e.get(0).size()];
 		resid = new double[exp.size()][e.get(0).size()];
 	}
 	
@@ -100,7 +99,7 @@ public class Function {
 	 * @return
 	 */
 	public Map<String,Double> getCovariance(){
-		Map<String,Double> covariance = new HashMap<String,Double>();
+		covariance = new HashMap<String,Double>();
 		Set<String> response_vars = exp.get(0).keySet();
 		Double average = 0.0;
 		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
@@ -111,10 +110,10 @@ public class Function {
 			}
 			dummy = dummy / exp.size();
 			average = dummy;
-			
+
 			Double dummy2 = 0.0;
 			for (int i = 0; i < exp.size(); i++){
-				dummy2 = dummy2 + (((exp.get(i).get(s) - model.get(i).get(s)) - average) * (exp.get(i).get(s) - model.get(i).get(s)));
+				dummy2 = dummy2 + Math.pow((exp.get(i).get(s) - model.get(i).get(s)) - average,2);
 			}
 			dummy2 = dummy2 / exp.size();
 			
