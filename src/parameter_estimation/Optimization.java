@@ -126,7 +126,7 @@ public class Optimization extends Paths{
 			beta_new = convert_1D_to_2D(rosenbrock.return_optimized_parameters());
 		}
 		
-		else if(flag_LM){
+		if(flag_LM){
 			System.out.println("Start of Levenberg-Marquardt!");
 			nbmtmultiDhost = new NBMTmultiDHost(this);
 			beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
@@ -134,13 +134,19 @@ public class Optimization extends Paths{
 			PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
 			out.println("Variances of response variables:");
 			out.println(this.nbmtmultiDhost.getFunction().getCovariance());
+			out.println();
 			out.println("Variance-covariance of parameter estimations:");
 			s.printMatrix(s.get_Var_Covar(), out);
+			out.println();
 			out.println("t-values of individual significance of parameter estimations:");
 			s.printArray(s.getT_values(), out);
+			out.println();
 			out.println("tabulated t-value for alpha = 5%");
 			out.println(s.getTabulated_t_value());
+			out.println();
+			out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
 			s.printMatrix(s.getConfidence_intervals(), out);
+			out.println();
 			out.close();
 			
 		}

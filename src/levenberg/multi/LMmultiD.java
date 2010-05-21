@@ -26,7 +26,7 @@ class LMmultiD
     private final double LMBOOST    =  2.0;     // damping increase per failed step
     private final double LMSHRINK   = 0.10;     // damping decrease per successful step
     private final double LAMBDAZERO = 0.001;    // initial damping
-    private final double LAMBDAMAX  =  1E3;     // max damping
+    private final double LAMBDAMAX  =  1E6	;     // max damping
     private final double LMTOL      = 1E-12;    // exit tolerance
     private final double BIGVAL = 9.876543E+210; 
  
