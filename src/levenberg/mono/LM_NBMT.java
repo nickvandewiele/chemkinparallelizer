@@ -1,4 +1,4 @@
-package levenberg.multi;
+package levenberg.mono;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -20,19 +20,19 @@ import java.io.PrintWriter;
   *
   *  @author: M.Lampton UCB SSL (c) 2005
   */
-class LMmultiD    
+class LM_NBMT    
 {
     private final int    LMITER     =  100;     // max number of L-M iterations
     private final double LMBOOST    =  2.0;     // damping increase per failed step
     private final double LMSHRINK   = 0.10;     // damping decrease per successful step
     private final double LAMBDAZERO = 0.001;    // initial damping
-    private final double LAMBDAMAX  =  1E6	;     // max damping
+    private final double LAMBDAMAX  =  1E3;     // max damping
     private final double LMTOL      = 1E-12;    // exit tolerance
     private final double BIGVAL = 9.876543E+210; 
  
     private double sos, sosprev, lambda;
 
-    private LMhostmultiD myH = null;    // overwritten by constructor
+    private NBMTHost myH = null;    // overwritten by constructor
     private int nadj = 0;         // overwritten by constructor
     private int npts = 0;         // overwritten by constructor
     private int nresp = 0;         // overwritten by constructor
@@ -42,7 +42,7 @@ class LMmultiD
     private double[][] alpha;     // local, JT.J matrix
     private double[][] amatrix;   // local, alpha' matrix = JT.J + lambda*I
 
-    public LMmultiD(LMhostmultiD gH, int gnadj, int gnpts, int nresp) throws Exception
+    public LM_NBMT(NBMTHost gH, int gnadj, int gnpts, int nresp) throws Exception
     // Constructor sets up fields and drives iterations. 
     {
         myH = gH;
@@ -60,22 +60,27 @@ class LMmultiD
         PrintWriter out = new PrintWriter(new FileWriter("LM.txt"));
         do
         {
-            done = bLMiter();
+            done = bLMiter(out);
             niter++;
+            
+            out.println("New parameters: ");
+            myH.printArray(myH.getParms(),out);
             System.out.println("niter: "+niter);
             out.println("niter: "+niter);
+            
         } 
         while (!done && (niter<LMITER));
         out.close();
+
     }
 
-    private boolean bLMiter( ) throws Exception
+    private boolean bLMiter(PrintWriter out ) throws Exception
     // Each call performs one LM iteration. 
     // Returns true if done with iterations; false=wants more. 
     // Global nadj, npts; needs nadj, myH to be preset. 
     // Ref: M.Lampton, Computers in Physics v.11 pp.110-115 1997.
     {
-        PrintWriter out = new PrintWriter(new FileWriter("LM.txt"));
+        //PrintWriter out = new PrintWriter(new FileWriter("LM.txt"));
         PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ_LM.txt"));
     	sos = myH.dComputeResid();
     	
@@ -90,25 +95,24 @@ class LMmultiD
         out.println("sosprev: "+sosprev);
         //out.println("bLMiter..sos= "+sos);
         
-        if (!myH.bBuildJacobian_forward())
+        //if (!myH.bBuildJacobian_forward())
+        if (!myH.bBuildJacobian())
         {
         	
         	System.out.println("bLMiter finds bBuildJacobian()=false"); 
             return false;
         }
         
-        System.out.println("jacobian[i][j][k]: ");
-    	out.println("jacobian[i][j][k]: ");
-    	print3DMatrix(myH.dGetFullJac(),out);
+        System.out.println("jacobian[i][j]: ");
+    	out.println("jacobian[i][j]: ");
+    	printMatrix(myH.dGetFullJac(),out);
     	
         for (int k=0; k<nadj; k++)      // get downhill gradient beta
         {
             beta[k] = 0.0;
-            for (int i=0; i<npts; i++){
-            	for (int j = 0; j < nresp; j++){
-            		beta[k] -= myH.dGetResid(i,j)*myH.dGetJac(i,k,j);
-            	}
-            }
+            for (int i=0; i<npts*nresp; i++)
+            		beta[k] -= myH.dGetResid(i)*myH.dGetJac(i,k);
+            
         }
         
         System.out.println("beta[i]: ");
@@ -119,12 +123,10 @@ class LMmultiD
           for (int j=0; j<nadj; j++)
           {
               alpha[j][k] = 0.0;
-              for (int i=0; i<npts; i++){
-            	  for (int l = 0; l < nresp; l++){
-            		  alpha[j][k] += myH.dGetJac(i,j,l)*myH.dGetJac(i,k,l);	  
-            	  }
-              }
+              for (int i=0; i<npts*nresp; i++)
+            		  alpha[j][k] += myH.dGetJac(i,j)*myH.dGetJac(i,k);	  	  
           }
+        
         System.out.println("alpha[i][j]: ");
         out.println("alpha[i][j]: ");
         printMatrix(alpha,out);
@@ -191,7 +193,7 @@ class LMmultiD
         } while (lambda<LAMBDAMAX);
         boolean done = (rrise>-LMTOL) || (lambda>LAMBDAMAX); 
         
-        out.close();
+        //out.close();
         out_SSQ.close();
         return done; 
     }
@@ -288,21 +290,6 @@ class LMmultiD
     	out.println();
     	System.out.println();
     }
-    public void print3DMatrix(double [][][] d,PrintWriter out){
-    	for (int i = 0; i < d.length; i++) {
-			for (int j = 0; j < d[0].length; j++) {
-				for (int k = 0; k < d[0][0].length; k++) {
-					out.print(d[i][j][k]+" ");
-					System.out.print(d[i][j][k]+" ");			
-				}
-				out.println();
-		    	System.out.println();
-			}
-			out.println();
-	    	System.out.println();
-		}
-    	out.println();
-    	System.out.println();
-    }
+    
     
 } //-----------end of class LM--------------------

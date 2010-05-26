@@ -27,11 +27,14 @@ public Statistics(Optimization optimization){
  * variance-covariance matrix of parameter estimations
  */
 public void calc_var_covar(){
-	double sos = optimization.getNBMTmultiDHost().getFunction().getSSQ();
-	double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
-	no_experiments = J.length;
-	no_parameters = J[0].length;
-	no_responses = J[0][0].length;
+	//double sos = optimization.getNBMTmultiDHost().getFunction().getSSQ();
+	double sos = optimization.getNBMTHost().getFunction().getSSQ();
+	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
+	double [][] J = optimization.getNBMTHost().dGetFullJac();
+	
+	no_experiments = optimization.getNBMTHost().getNPTS();
+	no_parameters = optimization.getNBMTHost().getNPARMS();
+	no_responses = optimization.getNBMTHost().getNRESP();
 	var_covar = new double[no_parameters][no_parameters];
 	
 	JTJ = new double[no_parameters][no_parameters];
@@ -40,11 +43,8 @@ public void calc_var_covar(){
         for (int j=0; j < no_parameters; j++)
         {
             JTJ[j][k] = 0.0;
-            for (int i=0; i < no_experiments; i++){
-          	  for (int l = 0; l < no_responses; l++){
-          		  JTJ[j][k] += J[i][j][l] * J[i][k][l];	  
-          	  }
-            }
+            for (int i=0; i < no_experiments * no_responses; i++)
+          		  JTJ[j][k] += J[i][j] * J[i][k];	           	             
         }
 	JTJminus1 = JTJ;//prevents gaussj from overwriting JTJ
 	JTJminus1 = gaussj(JTJminus1, JTJminus1.length); //inverse matrix of JTJ
@@ -67,7 +67,8 @@ public void calc_F_value(){
  * t-value for significance of individual parameter estimation with respect to zero
  */
 public void calc_t_values(){
-	double [] params = optimization.getNBMTmultiDHost().getParms();
+	//double [] params = optimization.getNBMTmultiDHost().getParms();
+	double [] params = optimization.getNBMTHost().getParms();
 	
 	t_values = new double[params.length];
 	for (int i = 0; i < t_values.length; i++) {
@@ -80,7 +81,8 @@ public void calc_t_values(){
  * 95% confidence intervals
  */
 public void calc_confidence_intervals(){
-	double [] params = optimization.getNBMTmultiDHost().getParms();
+	//double [] params = optimization.getNBMTmultiDHost().getParms();
+	double [] params = optimization.getNBMTHost().getParms();
 	confidence_intervals = new double[no_parameters][3];
 	
 	calc_tabulated_t();
@@ -96,7 +98,7 @@ public void calc_confidence_intervals(){
  * tabulated two-sided t-value for n*v-p experiments for an accumulated probability of 1-alpha/2
  */
 public void calc_tabulated_t(){
-	tabulated_t_value = Probability.studentTInverse(alpha, no_experiments*no_responses-no_parameters);
+	tabulated_t_value = Probability.studentTInverse(alpha, no_experiments*no_responses - no_parameters);
 }
 public double[][] gaussj( double[][] a, int N )
 // Inverts the double array a[N][N] by Gauss-Jordan method

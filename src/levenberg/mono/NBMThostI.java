@@ -1,7 +1,7 @@
-package levenberg.multi;
-//---LMhostmultiD interface class declares five abstract methods---------
+package levenberg.mono;
+//---LMhost interface class declares five abstract methods---------
 
-interface LMhostmultiD
+public interface NBMThostI
 {
     double dComputeResid() throws Exception;
     // Allows LM to evaluate a starting point. 
@@ -14,14 +14,13 @@ interface LMhostmultiD
     boolean bBuildJacobian() throws Exception;
     // Allows LM to request a new Jacobian.
 
-    double dGetResid(int i, int j);
+    double dGetResid(int i);
     // Allows LM to access one element of the resid[] vector. 
 
-    double dGetJac(int i, int j, int k);
+    double dGetJac(int i, int j);
     // Allows LM to access one element of the Jacobian matrix. 
 
 	boolean bBuildJacobian_forward() throws Exception;
 
-	double[][][] dGetFullJac();
-	
+	double[][] dGetFullJac();
 }

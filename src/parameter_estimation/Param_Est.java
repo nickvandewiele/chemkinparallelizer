@@ -13,6 +13,8 @@ public class Param_Est extends Paths{
 	
 	public int no_exp;
 	public String exp_name;
+	private List<Map<String, Double>> exp;
+	private List<Map<String,Double>> model;
 	
 	public double [][] beta;
 	public double [][] betamin;
@@ -71,9 +73,6 @@ public class Param_Est extends Paths{
 		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
 		exp = experiments_parser();
 		//System.out.println(exp.toString());
-		
-		
-
 
 		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions, flag_Rosenbrock, flag_LM, exp);
 		
@@ -177,7 +176,7 @@ public class Param_Est extends Paths{
 	 * @throws IOException
 	 */
 	public List<Map<String, Double>> experiments_parser ()throws IOException{
-		List<Map<String, Double>> exp = new ArrayList<Map<String, Double>>();
+		exp = new ArrayList<Map<String, Double>>();
 		try {
 			//read experimental data file:
 			BufferedReader in = new BufferedReader (new FileReader(exp_name));
@@ -287,7 +286,6 @@ public class Param_Est extends Paths{
 	 * @return
 	 */
 	public List<Map<String,Double>> getModelPredictions_massfrac(){
-		List<Map<String,Double>> model;
 		boolean flag_CKSolnList = true;
 		boolean flag_massfrac = true;
 		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList, flag_massfrac);
@@ -359,6 +357,36 @@ public class Param_Est extends Paths{
 		}
 		System.out.println();
 	}
-	
+	public List<Map<String, Double>> getExp() {
+		return exp;
+	}
+	public List<Map<String, Double>> getModel() {
+		return model;
+	}
+	public void getStatistics() throws Exception{
+		long time = System.currentTimeMillis();
+		
+		//check if initial input file is error-free:
+		Runtime r = Runtime.getRuntime();
+		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
+		c.checkChemInput();
+		
+		// take initial guesses from chem.inp file:
+		beta = initial_guess();
+		System.out.println("Initial Guesses of parameters are:");
+		print(beta);
+		
+		//read experimental data:
+		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
+		exp = experiments_parser();
+		//System.out.println(exp.toString());
+
+		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions, flag_Rosenbrock, flag_LM, exp);
+		
+		optimization.calcStatistics();
+		//moveOutputFiles();
+		long timeTook = (System.currentTimeMillis() - time)/1000;
+	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);	    	    
+	}
 	
 }

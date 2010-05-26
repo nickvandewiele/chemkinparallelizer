@@ -7,11 +7,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import stat.Statistics;
 
-import levenberg.multi.NBMTmultiDHost;
+import levenberg.mono.NBMTHost;
 
 /**Optimization type is to be seen as the 'driver' class of the broad set of optimization algorithms available, e.g. Rosenbrock.
  * Optimization type will condition the variables of NBMT in such a way that the actual optimization routine has to be modified to
@@ -46,6 +49,7 @@ public class Optimization extends Paths{
 	}
 	boolean flag_rosenbrock;
 	boolean flag_LM;
+
 	
 	private List<Map<String,Double>> exp;
 
@@ -58,7 +62,8 @@ public class Optimization extends Paths{
 /**
  * TODO name NBMTHost is not chosen very well... modify it! 
  */
-	private NBMTmultiDHost nbmtmultiDhost;
+	//private NBMTmultiDHost nbmtmultiDhost;
+	private NBMTHost nbmthost;
 
 	//constructor:
 	public Optimization (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns, boolean f_r, boolean f_L, List<Map<String,Double>>exp){
@@ -114,7 +119,12 @@ public class Optimization extends Paths{
 		}
 	}	
 	public double [][] optimize(List<Map<String,Double>> exp) throws Exception{
-		
+		Set<String> response_vars = exp.get(0).keySet();
+		PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
+		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
+			out_species.println((String)it.next());
+		}
+		out_species.close();
 		convert_2D_to_1D();
 		if(flag_rosenbrock){
 			//Rosenbrock parameters:
@@ -128,12 +138,17 @@ public class Optimization extends Paths{
 		
 		if(flag_LM){
 			System.out.println("Start of Levenberg-Marquardt!");
-			nbmtmultiDhost = new NBMTmultiDHost(this);
-			beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
-			Statistics s = new Statistics(this);
+			//nbmtmultiDhost = new NBMTmultiDHost(this);
+			nbmthost = new NBMTHost(this);
+			//beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
+			beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
+/*			Statistics s = new Statistics(this);
 			PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
-			out.println("Variances of response variables:");
-			out.println(this.nbmtmultiDhost.getFunction().getCovariance());
+			//out.println("Variances of response variables:");
+			//out.println(this.nbmtmultiDhost.getFunction().getCovariance());
+			out.println("Averages of response variables:");
+			//out.println(this.nbmtmultiDhost.getFunction().calcAverage());
+			out.println(this.nbmthost.getFunction().calcAverage());
 			out.println();
 			out.println("Variance-covariance of parameter estimations:");
 			s.printMatrix(s.get_Var_Covar(), out);
@@ -148,7 +163,9 @@ public class Optimization extends Paths{
 			s.printMatrix(s.getConfidence_intervals(), out);
 			out.println();
 			out.close();
-			
+			if(new File("statistics.txt").exists())
+				moveFile(outputDir, "statistics.txt");
+*/			
 		}
 
 
@@ -163,9 +180,8 @@ public class Optimization extends Paths{
 			moveFile(outputDir, "LM.txt");
 		if(new File("SSQ_LM.txt").exists())
 			moveFile(outputDir, "SSQ_LM.txt");
-		if(new File("statistics.txt").exists())
-			moveFile(outputDir, "statistics.txt");
-		
+		if(new File("response_vars.txt").exists())
+			moveFile(outputDir, "response_vars.txt");
 
 		return beta_new;
 	}
@@ -370,7 +386,41 @@ public class Optimization extends Paths{
 		}
 		return dummy_beta;
 	}
-	public NBMTmultiDHost getNBMTmultiDHost(){
+/*	public NBMTmultiDHost getNBMTmultiDHost(){
 		return nbmtmultiDhost;
 	}
+*/
+	public NBMTHost getNBMTHost(){
+		return nbmthost;
+	}
+	public void calcStatistics() throws Exception{
+		convert_2D_to_1D();
+		nbmthost = new NBMTHost(this, true);
+		nbmthost.bBuildJacobian();
+		//beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
+		Statistics s = new Statistics(this);
+		PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
+		//out.println("Variances of response variables:");
+		//out.println(this.nbmtmultiDhost.getFunction().getCovariance());
+		out.println("Averages of response variables:");
+		//out.println(this.nbmtmultiDhost.getFunction().calcAverage());
+		out.println(this.nbmthost.getFunction().calcAverage());
+		out.println();
+		out.println("Variance-covariance of parameter estimations:");
+		s.printMatrix(s.get_Var_Covar(), out);
+		out.println();
+		out.println("t-values of individual significance of parameter estimations:");
+		s.printArray(s.getT_values(), out);
+		out.println();
+		out.println("tabulated t-value for alpha = 5%");
+		out.println(s.getTabulated_t_value());
+		out.println();
+		out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
+		s.printMatrix(s.getConfidence_intervals(), out);
+		out.println();
+		out.close();
+		if(new File("statistics.txt").exists())
+			moveFile(outputDir, "statistics.txt");
+	}
+
 }
