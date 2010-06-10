@@ -49,6 +49,7 @@ public class Optimization extends Paths{
 	}
 	boolean flag_rosenbrock;
 	boolean flag_LM;
+	boolean weighted_regression;
 
 	
 	private List<Map<String,Double>> exp;
@@ -77,6 +78,7 @@ public class Optimization extends Paths{
 		
 		flag_rosenbrock = f_r;
 		flag_LM = f_L;
+//		weighted_regression = w_r;
 		
 		this.exp = exp;
 	}
@@ -418,9 +420,24 @@ public class Optimization extends Paths{
 		out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
 		s.printMatrix(s.getConfidence_intervals(), out);
 		out.println();
+		out.println("ANOVA: ");//Analysis of Variance:
+		out.println("SRES: ");
+		out.println(s.getSRES());
+		out.println("SREG: ");
+		out.println(s.getSREG());
+		out.println("calculated F-value: ");
+		out.println(s.getF_value());
+/*		
+		out.println("tabulated F-value: ");
+		out.println(s.getTabulated_F_value());
+*/		
 		out.close();
 		if(new File("statistics.txt").exists())
 			moveFile(outputDir, "statistics.txt");
+	}
+
+	public boolean isWeighted_regression() {
+		return weighted_regression;
 	}
 
 }

@@ -492,12 +492,13 @@ public class CKEmulation extends Thread{
 	        while ((s = stdInput_p.readLine()) != null) {
 	            System.out.println(s);
 	        }
-	        
+	        stdInput_p.close();
 	   // read any errors from the attempted command
 	        System.out.println("Here is the standard error of the command (if any):\n");
 	        while ((s = stdError_p.readLine()) != null) {
 	            System.out.println(s);
 	        }
+	        stdError_p.close();
 	        
 			p.waitFor();
 	        p.destroy();
@@ -523,12 +524,13 @@ public class CKEmulation extends Thread{
 	        while ((s = stdInput_p.readLine()) != null) {
 	            System.out.println(s);
 	        }
-	        
+	        stdInput_p.close();
 	   // read any errors from the attempted command
 	        System.out.println("Here is the standard error of the command (if any):\n");
 	        while ((s = stdError_p.readLine()) != null) {
 	            System.out.println(s);
 	        }
+	        stdError_p.close();
 	        
 			p.waitFor();
 	        p.destroy();

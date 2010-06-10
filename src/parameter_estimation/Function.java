@@ -18,6 +18,9 @@ public class Function {
 	public double function_value;
 	private String [] species_names;
 	
+	//boolean weighted_regression determines whether a weighted or an unweighted regression will be applied.
+	private boolean weighted_regression = true;
+	
 	public Function (List<Map<String,Double>> m, List<Map<String,Double>> e){
 		model = m;
 		exp = e;
@@ -26,10 +29,37 @@ public class Function {
 	}
 	
 	/**
+	 * returns the sum of the regression (model) values
+	 * 
+	 * @return
+	 */
+	public double getSREG(){
+		if (weighted_regression) calcAverage();
+		
+		species_names = new String [exp.get(0).size()];
+		int counter = 0;
+		for (String s : exp.get(0).keySet()){
+			species_names[counter] = s;
+			counter++;
+		}
+		double dummy = 0.0;
+		for(int i=0;i<model.size();i++)//Loop over all experiments in experimental ArrayList:
+			for (int j = 0; j < species_names.length; j++){
+				Double m = model.get(i).get(species_names[j]);
+				
+				if(weighted_regression)
+					dummy += Math.pow(m/(average.get(species_names[j])),2);
+				else 
+					dummy += Math.pow(m,2);
+			}
+		
+		return dummy;
+	}
+	/**
 	 * getSSQ returns the sum of residuals.
 	 * @return
 	 */
-	public double getSSQ(){
+	public double getSRES(){
 		computeResid();
 		Double sum = 0.0;
 /*		for (int i = 0; i < resid.length; i++){
@@ -154,7 +184,7 @@ public class Function {
 	 */
 	public void computeResid(){
 		//Map<String,Double> cov = getCovariance();
-		calcAverage();
+		if (weighted_regression) calcAverage();
 		
 		// we want to have a fixed order in which the keys are called, therefore we put the response var names in a String []
 		species_names = new String [exp.get(0).size()];
@@ -188,7 +218,12 @@ public class Function {
 				for (int j = 0; j < species_names.length; j++){
 					Double e = exp.get(i).get(species_names[j]);
 					Double m = model.get(i).get(species_names[j]);
-					resid[counter] = (m-e)/(average.get(species_names[j]));
+					
+					if(weighted_regression)
+						resid[counter] = (m-e)/(average.get(species_names[j]));
+					else 
+						resid[counter] = (m-e);
+					
 					counter++;
 				}
 				

@@ -1,4 +1,6 @@
 package stat;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import levenberg.multi.*;
@@ -16,7 +18,11 @@ public class Statistics {
 	private double alpha = 0.05; //uncertainty used in tests of significance of parameter estimations
 	
 	private Optimization optimization;
+	private double SREG;
+	private double SRES;
+	private double F_value;
 	private double tabulated_t_value;//t_(1-alpha/2)
+	private double tabulated_F_value;
 	private double[][] confidence_intervals; 
 	
 public Statistics(Optimization optimization){
@@ -25,12 +31,16 @@ public Statistics(Optimization optimization){
 
 /**
  * variance-covariance matrix of parameter estimations
+ * @throws IOException 
  */
-public void calc_var_covar(){
+public void calc_var_covar() throws IOException{
 	//double sos = optimization.getNBMTmultiDHost().getFunction().getSSQ();
-	double sos = optimization.getNBMTHost().getFunction().getSSQ();
+	double sos = optimization.getNBMTHost().getFunction().getSRES();
 	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
 	double [][] J = optimization.getNBMTHost().dGetFullJac();
+	PrintWriter out = new PrintWriter(new FileWriter("check-var.txt"));
+	out.println("Jacobian: ");
+	printMatrix(J, out);
 	
 	no_experiments = optimization.getNBMTHost().getNPTS();
 	no_parameters = optimization.getNBMTHost().getNPARMS();
@@ -46,8 +56,13 @@ public void calc_var_covar(){
             for (int i=0; i < no_experiments * no_responses; i++)
           		  JTJ[j][k] += J[i][j] * J[i][k];	           	             
         }
+	out.println("JTJ: ");
+	printMatrix(JTJ,out);
 	JTJminus1 = JTJ;//prevents gaussj from overwriting JTJ
 	JTJminus1 = gaussj(JTJminus1, JTJminus1.length); //inverse matrix of JTJ
+	out.println("JTJminus1");
+	printMatrix(JTJminus1,out);
+	out.close();
 	
 /*	double s_squared = sos/(no_experiments - no_parameters);
 	
@@ -60,8 +75,11 @@ public void calc_var_covar(){
 	var_covar = JTJminus1;
 	
 }
-public void calc_F_value(){
-	
+public void calc_ANOVA() throws Exception{
+	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
+	SREG = function.getSREG();
+	SRES = function.getSRES();
+	F_value = (SREG/no_parameters) / (SRES/(no_experiments * no_responses - no_parameters));
 }
 /**
  * t-value for significance of individual parameter estimation with respect to zero
@@ -79,8 +97,9 @@ public void calc_t_values(){
 
 /**
  * 95% confidence intervals
+ * @throws IOException 
  */
-public void calc_confidence_intervals(){
+public void calc_confidence_intervals() throws IOException{
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
 	confidence_intervals = new double[no_parameters][3];
@@ -100,6 +119,11 @@ public void calc_confidence_intervals(){
 public void calc_tabulated_t(){
 	tabulated_t_value = Probability.studentTInverse(alpha, no_experiments*no_responses - no_parameters);
 }
+/*
+public void calc_tabulated_F(){
+	tabulated_F_value = (Probability.chiSquare(no_parameters, 1-alpha)/no_parameters) / (Probability.chiSquare(no_experiments * no_responses - no_parameters, 1-alpha)/(no_experiments * no_responses - no_parameters));
+}
+*/
 public double[][] gaussj( double[][] a, int N )
 // Inverts the double array a[N][N] by Gauss-Jordan method
 // M.Lampton UCB SSL (c)2003, 2005
@@ -173,7 +197,7 @@ public double[][] gaussj( double[][] a, int N )
     //return det;
     return a;
 }
-public double [][] get_Var_Covar(){
+public double [][] get_Var_Covar() throws IOException{
 	calc_var_covar();
 	return var_covar;
 }
@@ -224,8 +248,29 @@ public double getTabulated_t_value() {
 	calc_tabulated_t();
 	return tabulated_t_value;
 }
-public double[][] getConfidence_intervals() {
+public double[][] getConfidence_intervals() throws IOException {
 	calc_confidence_intervals();
 	return confidence_intervals;
 }
+
+public double getSREG() throws Exception {
+	calc_ANOVA();
+	return SREG;
+}
+
+public double getSRES() throws Exception {
+	calc_ANOVA();
+	return SRES;
+}
+
+public double getF_value() throws Exception {
+	calc_ANOVA();
+	return F_value;
+}
+/*
+public double getTabulated_F_value() {
+	calc_tabulated_F();
+	return tabulated_F_value;
+}
+*/
 }

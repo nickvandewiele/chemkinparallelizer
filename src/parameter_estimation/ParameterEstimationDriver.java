@@ -57,7 +57,11 @@ public class ParameterEstimationDriver {
 		//number of parameters to be fitted:
 		in.readLine();
 		int no_params = Integer.parseInt(in.readLine());
-
+/*
+		//weighted regression:
+		in.readLine();
+		boolean weighted_regression = Boolean.parseBoolean(in.readLine());
+*/		
 		//optimization flags:
 		in.readLine();
 		boolean flag_Rosenbrock = Boolean.parseBoolean(in.readLine());
@@ -137,13 +141,13 @@ public class ParameterEstimationDriver {
 					p0.createOutputDir();
 					p0.getParity();
 					Function f = new Function(p0.getModel(),p0.getExp());
-					System.out.println("SSQ is: "+f.getSSQ());
+					System.out.println("SSQ is: "+f.getSRES());
 					break;
 			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");
 					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions, flag_Rosenbrock, flag_LM);
 					p1.createOutputDir();
 					p1.optimizeParameters();
-					//p1.getStatistics();
+					p1.getStatistics();
 					p1.getParity();
 					break;
 			case 2: System.out.println("EXCEL POSTPROCESSING MODE");
@@ -154,7 +158,7 @@ public class ParameterEstimationDriver {
 			case 3: System.out.println("STATISTICS MODE");
 					Param_Est p3 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions, flag_Rosenbrock, flag_LM);
 					p3.createOutputDir();
-					//p3.getStatistics();
+					p3.getStatistics();
 					p3.getParity();
 		}
 		long timeTook = (System.currentTimeMillis() - time)/1000;

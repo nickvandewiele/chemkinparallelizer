@@ -8,7 +8,7 @@ import parameter_estimation.Optimization;
 public class NBMTHost implements NBMThostI {
 
 	//--------constants---------------
-    protected final double DELTAP = 1e-6;
+    protected final double DELTAP = 1e-4;//1e-6
     protected final double BIGVAL = 9.876543E+210; 
     protected int NPTS, NPARMS, NRESP, NEXPL; //modified by constructor
 
@@ -89,11 +89,11 @@ public class NBMTHost implements NBMThostI {
 	            for (int k=0; k<NPARMS; k++){
 	            	if(additive_finite_difference){
 	            		delta[k] = (k==j) ? DELTAP : 0.0;
-	            		FACTOR = 0.5 / DELTAP;
+	            		if (k==j) FACTOR = 0.5 / DELTAP;
 	            	}
 	            	else{
 	            		delta[k] = (k==j) ? parms[k] * DELTAP : 0.0;
-	            		FACTOR = 0.5 / (DELTAP * parms[k]);
+	            		if (k==j) FACTOR = 0.5 / (DELTAP * parms[k]);
 	            	}
 	            }
 	              
@@ -230,7 +230,7 @@ public class NBMTHost implements NBMThostI {
 		 */
 		function = new Function (optimization.getModelValues(optimization.buildFullParamVector(parms),true), optimization.getExp());
 		resid = function.getResid();
-		return function.getSSQ();
+		return function.getSRES();
 	}
 
 	public double dGetJac(int i, int j) {

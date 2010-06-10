@@ -86,7 +86,7 @@ public class Rosenbrock{
 		Function f = new Function(model,optimization.getExp());
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
-		double initial = f.getSSQ();
+		double initial = f.getSRES();
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
@@ -136,7 +136,7 @@ public class Rosenbrock{
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
 					Function f_new = new Function(model,optimization.getExp());
-					double trial = f_new.getSSQ();
+					double trial = f_new.getSRES();
 					
 					out.println("Trial SSQ: "+trial);
 					if(trial < current){
