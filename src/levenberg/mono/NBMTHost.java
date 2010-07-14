@@ -1,5 +1,6 @@
 package levenberg.mono;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import parameter_estimation.Function;
@@ -25,7 +26,7 @@ public class NBMTHost implements NBMThostI {
     
     private boolean additive_finite_difference = false; //additive implies that step in parameter direction will be regardless of parameter value
     
-    public NBMTHost(Optimization o) throws Exception
+    public NBMTHost(Optimization o) throws IOException, InterruptedException
     {
     	this.optimization = o;
     	this.parms = optimization.retrieve_fitted_parameters();
@@ -55,7 +56,7 @@ public class NBMTHost implements NBMThostI {
      * @throws Exception
      */
     
-    public NBMTHost(Optimization o, boolean stat) throws Exception
+    public NBMTHost(Optimization o, boolean stat) throws IOException, InterruptedException
     {
     	this.optimization = o;
     	this.parms = optimization.retrieve_fitted_parameters();
@@ -70,7 +71,7 @@ public class NBMTHost implements NBMThostI {
 
        
     }
-	public boolean bBuildJacobian() throws Exception {
+	public boolean bBuildJacobian() throws IOException, InterruptedException {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and two-sided finite difference.
 	    // If current parms[] is bad, returns false.  
@@ -154,7 +155,7 @@ public class NBMTHost implements NBMThostI {
 	 * Jacobian with forward finite difference, to limit the number of extra "getModelValues()" calls,
 	 * 1 instead of 2 for the two-sided finite difference method
 	 */
-	public boolean bBuildJacobian_forward() throws Exception {
+	public boolean bBuildJacobian_forward() throws IOException, InterruptedException {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and one-sided forward finite difference.
 		// df/dx = ( f(x+h) - f(x) ) / h
@@ -222,7 +223,7 @@ public class NBMTHost implements NBMThostI {
 	        }
 	        return true; 
 	}
-	public double dComputeResid() throws Exception {
+	public double dComputeResid() throws IOException, InterruptedException {
 		// Evaluates residual matrix for parms[].
 		// Returns sum-of-squares.
 		/**
@@ -248,7 +249,7 @@ public class NBMTHost implements NBMThostI {
 	        return resid[i];
 	    }
 
-	public double dNudge(double[] dp) throws Exception {
+	public double dNudge(double[] dp) throws IOException, InterruptedException {
 		// Allows LM to modify parms[] and reevaluate.
 	    // Returns sum-of-squares for nudged params.
 	    // This is the only place that parms[] are modified.

@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class ParameterEstimationDriver {
 	 * @param args
 	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		long time = System.currentTimeMillis();
 		
 		//input file will be searched in working directory under the name INPUT.txt:
@@ -165,7 +166,7 @@ public class ParameterEstimationDriver {
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for this program to finish: (sec) "+timeTook);
 	}
-	public static String[] reactor_inputs_parser(String workingDir, String experiments, String template, int no_experiments) throws Exception{
+	public static String[] reactor_inputs_parser(String workingDir, String experiments, String template, int no_experiments) throws IOException{
 		ArrayList<String> reactor_inputs = new ArrayList<String>();
 		
 	//read first line of excel input:

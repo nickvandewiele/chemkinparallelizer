@@ -56,7 +56,7 @@ public class Param_Est extends Paths{
  * <LI>writing the optimized kinetic parameters to a params.txt file</LI>	
  * @throws Exception 
  */
-	public void optimizeParameters() throws Exception{
+	public void optimizeParameters() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
@@ -186,9 +186,11 @@ public class Param_Est extends Paths{
 			String[] st_species = species_names.split(",");
 			String dummy = in.readLine();
 			//System.out.println(dummy);
+			
+			Map <String, Double> exp_molrates = new HashMap <String, Double>();
 			while(dummy!=null){
+				exp_molrates.clear();
 				String[] st_dummy = dummy.split(",");
-				HashMap <String, Double> exp_molrates = new HashMap <String, Double>();
 				for (int j = 0; j < st_species.length; j++) {
 					exp_molrates.put(st_species[j],Double.parseDouble(st_dummy[j]));	
 				}
@@ -296,7 +298,7 @@ public class Param_Est extends Paths{
 	 * this routine produces model predictions without comparing them to experimental data
 	 * @throws Exception 
 	 */
-	public void getExcelFiles() throws Exception{
+	public void getExcelFiles() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
@@ -314,7 +316,7 @@ public class Param_Est extends Paths{
 	    System.out.println("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 
-	public void getParity() throws IOException, Exception{
+	public void getParity() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
@@ -363,7 +365,7 @@ public class Param_Est extends Paths{
 	public List<Map<String, Double>> getModel() {
 		return model;
 	}
-	public void getStatistics() throws Exception{
+	public void getStatistics() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:

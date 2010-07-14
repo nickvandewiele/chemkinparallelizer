@@ -109,7 +109,7 @@ public class Optimization extends Paths{
 			}
 		}
 	}	
-	public double [][] optimize(List<Map<String,Double>> exp) throws Exception{
+	public double [][] optimize(List<Map<String,Double>> exp) throws IOException, InterruptedException{
 		Set<String> response_vars = exp.get(0).keySet();
 		PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
 		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
@@ -187,7 +187,7 @@ public class Optimization extends Paths{
 		return totalNoParameters;
 	}
 	
-	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
+	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws IOException, InterruptedException{
 		//update_chemistry_input will insert new parameter_guesses array into chem_inp
 		update_chemistry_input(parameter_guesses);
 		
@@ -330,7 +330,7 @@ public class Optimization extends Paths{
 	public NBMTHost getNBMTHost(){
 		return nbmthost;
 	}
-	public void calcStatistics() throws Exception{
+	public void calcStatistics() throws IOException, InterruptedException{
 		convert2Dto1D();
 		nbmthost = new NBMTHost(this, true);
 		nbmthost.bBuildJacobian();

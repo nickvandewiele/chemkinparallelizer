@@ -1,6 +1,7 @@
 package parameter_estimation;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class Rosenbrock{
 		}
 	}
 
-	public double [] returnOptimizedParameters() throws Exception{
+	public double [] returnOptimizedParameters() throws IOException, InterruptedException{
 		//basis needs to be declared with the correct dimensions:
 		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
 

@@ -1,6 +1,7 @@
 package levenberg.mono;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
@@ -42,7 +43,7 @@ class LM_NBMT
     private double[][] alpha;     // local, JT.J matrix
     private double[][] amatrix;   // local, alpha' matrix = JT.J + lambda*I
 
-    public LM_NBMT(NBMTHost gH, int gnadj, int gnpts, int nresp) throws Exception
+    public LM_NBMT(NBMTHost gH, int gnadj, int gnpts, int nresp) throws IOException, InterruptedException
     // Constructor sets up fields and drives iterations. 
     {
         myH = gH;
@@ -74,7 +75,7 @@ class LM_NBMT
 
     }
 
-    private boolean bLMiter(PrintWriter out ) throws Exception
+    private boolean bLMiter(PrintWriter out ) throws IOException, InterruptedException
     // Each call performs one LM iteration. 
     // Returns true if done with iterations; false=wants more. 
     // Global nadj, npts; needs nadj, myH to be preset. 

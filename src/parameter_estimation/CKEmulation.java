@@ -41,8 +41,8 @@ public class CKEmulation extends Thread{
 	public double molar_flow;
 
 	//species_fractions will be mol fractions or mass fractions depending on the flag massfrac. Anywho, the fractions are directly read through read_ckcsv
-	public HashMap<String,Double> species_fractions;
-	public HashMap<String,Double> species_molar_rates;
+	public Map<String,Double> species_fractions;
+	public Map<String,Double> species_molar_rates;
 	
 	//'first' is flag that tells you if the CKSolnList needs to be constructed or not.
 	boolean first;
@@ -128,7 +128,7 @@ public class CKEmulation extends Thread{
 			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
 			if (!flag_excel){
 				//String name_data_ckcsv = "data_ckcsv"+j;
-				HashMap<String,Double> temp = readCkcsv();
+				Map<String,Double> temp = readCkcsv();
 				
 				//convert to a HashMap with the real species names (cut of Mass_fraction_ or Mole_fraction_:
 				species_fractions = convertMassfractions(temp);
@@ -143,11 +143,11 @@ public class CKEmulation extends Thread{
 			}
 			//delete complete reactorDir folder:
 			deleteDir(new File(reactorDir));
-			
+/*			
 			//wait for semaphore release until directory is completely deleted, don't know if this works...
 			while(new File(reactorDir).exists()){
 			}
-			
+*/			
 			//when all Chemkin routines are finished, release the semaphore:
  			semaphore.release();
  			
@@ -163,7 +163,7 @@ public class CKEmulation extends Thread{
 	 * calls the .bat file that sets environment variables for proper use of future Chemkin calls<BR>
 	 * @throws Exception
 	 */
-	public void callBat () throws Exception {
+	public void callBat () throws IOException, InterruptedException {
 		String [] setup_environment = {binDir+"run_chemkin_env_setup.bat"};
 		executeCKRoutine(setup_environment);
 	}
@@ -172,11 +172,11 @@ public class CKEmulation extends Thread{
 	 * call the Chemkin preprocessor chem and produces the linking file (.asc)
 	 * @throws Exception
 	 */
-	public void callChem () throws Exception {
+	public void callChem () throws IOException, InterruptedException {
 		String [] preprocess = {binDir+"chem","-i",reactorDir+chem_inp,"-o",reactorDir+chem_out,"-c",reactorDir+chem_asc};
 		executeCKRoutine(preprocess);
 	}
-	public void call_PreProcess() throws Exception {
+	public void call_PreProcess() throws IOException, InterruptedException {
 		setCKPreProcess_Input();
 		String [] preprocess = {binDir+"CKPreProcess","-i",workingDir+preProc_inp};
 		executeCKRoutine(preprocess);
@@ -185,7 +185,7 @@ public class CKEmulation extends Thread{
 	 * call a Chemkin reactor model (ic: CKReactorPlugFlow) executable	
 	 * @throws Exception
 	 */
-	public void callReactor () throws Exception {
+	public void callReactor () throws IOException, InterruptedException {
 		String [] name_input_PFR = {binDir+"CKReactorPlugFlow","-i",reactorDir+reactor_setup,"-o",reactorDir+reactor_out};
 		executeCKRoutine(name_input_PFR, new File(reactorDir));
 	}
@@ -195,7 +195,7 @@ public class CKEmulation extends Thread{
 	 * @param flag_massfrac if true: GetSolution prints mass fractions instead of mole fractions (used for Excel Postprocessing and Parity mode)
 	 * @throws Exception
 	 */
-	public  void callGetSol (boolean flag_massfrac) throws Exception {
+	public  void callGetSol (boolean flag_massfrac) throws IOException, InterruptedException {
 		//String abbrev_path = cd+"data/abbreviations.csv";
 		if (flag_massfrac){
 			String [] progGetSol = {binDir+"GetSolution","-nosen","-norop","-mass",reactorDir+xml};
@@ -226,8 +226,8 @@ public class CKEmulation extends Thread{
 	 * the data will be stored in a LinkedList, chosen for its flexibility<BR>
 	 * @throws IOException
 	 */
-	private HashMap<String, Double> readCkcsv () throws IOException {
-		HashMap <String, Double> dummy= new HashMap<String, Double>();
+	private Map<String, Double> readCkcsv () throws IOException {
+		Map <String, Double> dummy= new HashMap<String, Double>();
 		BufferedReader in = new BufferedReader(new FileReader(reactorDir+ckcsv_name));
 		
 		String temp =in.readLine();
@@ -245,10 +245,11 @@ public class CKEmulation extends Thread{
 		//position of end point values is retrieved from size of LinkedList of the distance:
 
 		// read total mass flow rate:
+		list_temp = new LinkedList<String>();
 		do {
-			temp =in.readLine();
+			list_temp.clear();
+			temp = in.readLine();
 			st_temp = temp.split(", ");
-			list_temp = new LinkedList<String>();
 			for (int i=0;i<st_temp.length;i++){
 				list_temp.add(st_temp[i]);
 			}
@@ -256,16 +257,17 @@ public class CKEmulation extends Thread{
 		mass_flow = Double.parseDouble(list_temp.get(list_temp.size()-1));
 		
 		//read all species' mole fractions, number of species is unknown
+		list_temp = new LinkedList<String>();
 		do {
+			list_temp.clear();
 			temp =in.readLine();
 			st_temp = temp.split(", ");
-			list_temp = new LinkedList<String>();
 			for (int i=0;i<st_temp.length;i++){
 				list_temp.add(st_temp[i]);
 			}
 			if(!(list_temp.get(0)).equals("Molecular_weight")){				
 				dummy.put((String)list_temp.get(0), Double.parseDouble(list_temp.get(list_temp.size()-1)));
-				//System.out.println(data.toString());
+				
 			}
 		} while (!(list_temp.get(0)).equals("Molecular_weight"));
 
@@ -280,8 +282,8 @@ public class CKEmulation extends Thread{
 	 * @param m
 	 * @return
 	 */
-	private HashMap<String,Double> convertMassfractions(HashMap<String,Double> m){
-		HashMap<String, Double> dummy = new HashMap<String, Double> ();
+	private Map<String,Double> convertMassfractions(Map<String,Double> m){
+		Map<String, Double> dummy = new HashMap<String, Double> ();
 		//loop through keys
 		for ( String s : m.keySet()){
 				//omit substring "Mass_fraction_" from key, i.e. take substring starting from character at position 14
@@ -297,8 +299,8 @@ public class CKEmulation extends Thread{
 	 * @param m the HashMap generated from the read_ckcsv method containing species molfractions
 	 * @return
 	 */
-	private HashMap<String,Double> convertMolrates(HashMap<String,Double> m){
-		HashMap<String, Double> dummy = new HashMap<String, Double> ();
+	private Map<String,Double> convertMolrates(Map<String,Double> m){
+		Map<String, Double> dummy = new HashMap<String, Double> ();
 		//loop through keys
 		for ( String s : m.keySet()){
 				//omit substring "Mole_fraction_" from key, i.e. take substring starting from character at position 14
@@ -658,7 +660,7 @@ public class CKEmulation extends Thread{
 		      }
 		   }
 		}
-	 public void setCKPreProcess_Input()throws Exception{
+	 public void setCKPreProcess_Input()throws IOException, InterruptedException{
 		 //in windows: user.dir needs to be followed by "\", in *nix by "/"... 
 		 String osname = System.getProperty("os.name");
 		 if (osname.equals("Linux")){

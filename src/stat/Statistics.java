@@ -37,7 +37,7 @@ public Statistics(Optimization optimization){
  * variance-covariance matrix of parameter estimations
  * @throws IOException 
  */
-public void calc_var_covar() throws IOException{
+public void calc_var_covar() throws IOException, InterruptedException{
 	//double sos = optimization.getNBMTmultiDHost().getFunction().getSSQ();
 	double sos = optimization.getNBMTHost().getFunction().getSRES();
 	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
@@ -79,7 +79,7 @@ public void calc_corr(){
         	corr[k][j] = var_covar[k][j] / Math.sqrt(var_covar[k][k]*var_covar[j][j]);
         }
 }
-public void calc_ANOVA() throws Exception{
+public void calc_ANOVA() throws IOException, InterruptedException{
 	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
 	SREG = function.getSREG();
 	SRES = function.getSRES();
@@ -103,7 +103,7 @@ public void calc_t_values(){
  * 95% confidence intervals
  * @throws IOException 
  */
-public void calc_confidence_intervals() throws IOException{
+public void calc_confidence_intervals() throws IOException, InterruptedException{
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
 	confidence_intervals = new double[no_parameters][3];
@@ -201,11 +201,11 @@ public double[][] gaussj( double[][] a, int N )
     //return det;
     return a;
 }
-public double [][] get_Var_Covar() throws IOException{
+public double [][] get_Var_Covar() throws IOException, InterruptedException{
 	calc_var_covar();
 	return var_covar;
 }
-public double [][] get_Corr() throws IOException{
+public double [][] get_Corr() throws IOException, InterruptedException{
 	calc_corr();
 	return corr;
 }
@@ -256,22 +256,22 @@ public double getTabulated_t_value() {
 	calc_tabulated_t();
 	return tabulated_t_value;
 }
-public double[][] getConfidence_intervals() throws IOException {
+public double[][] getConfidence_intervals() throws IOException, InterruptedException {
 	calc_confidence_intervals();
 	return confidence_intervals;
 }
 
-public double getSREG() throws Exception {
+public double getSREG() throws IOException, InterruptedException {
 	calc_ANOVA();
 	return SREG;
 }
 
-public double getSRES() throws Exception {
+public double getSRES() throws IOException, InterruptedException {
 	calc_ANOVA();
 	return SRES;
 }
 
-public double getF_value() throws Exception {
+public double getF_value() throws IOException, InterruptedException {
 	calc_ANOVA();
 	return F_value;
 }
