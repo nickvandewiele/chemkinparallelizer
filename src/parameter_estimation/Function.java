@@ -15,11 +15,11 @@ public class Function {
 	private double [] resid;
 	private Map<String,Double> covariance = new HashMap<String,Double>();
 	private Map<String,Double> average = new HashMap<String,Double>();
-	public double function_value;
-	private String [] species_names;
+	public double functionValue;
+	private String [] speciesNames;
 	
 	//boolean weighted_regression determines whether a weighted or an unweighted regression will be applied.
-	private boolean weighted_regression = true;
+	private boolean weightedRegression = true;
 	
 	public Function (List<Map<String,Double>> m, List<Map<String,Double>> e){
 		model = m;
@@ -34,21 +34,21 @@ public class Function {
 	 * @return
 	 */
 	public double getSREG(){
-		if (weighted_regression) calcAverage();
+		if (weightedRegression) calcAverage();
 		
-		species_names = new String [exp.get(0).size()];
+		speciesNames = new String [exp.get(0).size()];
 		int counter = 0;
 		for (String s : exp.get(0).keySet()){
-			species_names[counter] = s;
+			speciesNames[counter] = s;
 			counter++;
 		}
 		double dummy = 0.0;
 		for(int i=0;i<model.size();i++)//Loop over all experiments in experimental ArrayList:
-			for (int j = 0; j < species_names.length; j++){
-				Double m = model.get(i).get(species_names[j]);
+			for (int j = 0; j < speciesNames.length; j++){
+				Double m = model.get(i).get(speciesNames[j]);
 				
-				if(weighted_regression)
-					dummy += Math.pow(m/(average.get(species_names[j])),2);
+				if(weightedRegression)
+					dummy += Math.pow(m/(average.get(speciesNames[j])),2);
 				else 
 					dummy += Math.pow(m,2);
 			}
@@ -82,10 +82,8 @@ public class Function {
 		double SSQ=0.0;
 		Map<String,Double> cov = initial_covariance();
 		//check if size of experiment list is equal to size of model list:
-		if (exp.size() != model.size()) {
-			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
-		}
-		else {
+		if (exp.size() == model.size()) {
+			
 			//Loop over all experiments in experimental ArrayList:
 			for(int i=0;i<exp.size();i++)
 			{
@@ -99,6 +97,9 @@ public class Function {
 				}
 			}
 			SSQ = sum.doubleValue();
+		}
+		else {
+			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
 		}
 		return SSQ;
 	}
@@ -184,13 +185,13 @@ public class Function {
 	 */
 	public void computeResid(){
 		//Map<String,Double> cov = getCovariance();
-		if (weighted_regression) calcAverage();
+		if (weightedRegression) calcAverage();
 		
 		// we want to have a fixed order in which the keys are called, therefore we put the response var names in a String []
-		species_names = new String [exp.get(0).size()];
+		speciesNames = new String [exp.get(0).size()];
 		int counter = 0;
 		for (String s : exp.get(0).keySet()){
-			species_names[counter] = s;
+			speciesNames[counter] = s;
 			counter++;
 		}
 				
@@ -215,12 +216,12 @@ public class Function {
 */
 			counter = 0;
 			for(int i=0;i<exp.size();i++)//Loop over all experiments in experimental ArrayList:
-				for (int j = 0; j < species_names.length; j++){
-					Double e = exp.get(i).get(species_names[j]);
-					Double m = model.get(i).get(species_names[j]);
+				for (int j = 0; j < speciesNames.length; j++){
+					Double e = exp.get(i).get(speciesNames[j]);
+					Double m = model.get(i).get(speciesNames[j]);
 					
-					if(weighted_regression)
-						resid[counter] = (m-e)/(average.get(species_names[j]));
+					if(weightedRegression)
+						resid[counter] = (m-e)/(average.get(speciesNames[j]));
 					else 
 						resid[counter] = (m-e);
 					
@@ -244,6 +245,6 @@ public class Function {
 	}
 
 	public String[] getSpecies_names() {
-		return species_names;
+		return speciesNames;
 	}
 }

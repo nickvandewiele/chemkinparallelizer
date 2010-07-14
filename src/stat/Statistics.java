@@ -8,10 +8,11 @@ import parameter_estimation.*;
 import cern.jet.stat.Probability;
 
 public class Statistics {
-	int no_experiments;
-	int no_parameters;
-	int no_responses;
+	private int no_experiments;
+	private int no_parameters;
+	private int no_responses;
 	private double [][] var_covar; //variance-covariance matrix of parameter estimations
+	private double [][] corr; //correlation matrix of parameter estimations
 	private double [][] JTJ;//curvature matrix, transpose(Jacobian).Jacobian
 	private double [][] JTJminus1;//inverse of curvature matrix, equal to covariance matrix of parameter estimations
 	private double [] t_values; //array of t_values of individual significance of fitted parameters
@@ -27,6 +28,9 @@ public class Statistics {
 	
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
+	no_experiments = optimization.getNBMTHost().getNPTS();
+	no_parameters = optimization.getNBMTHost().getNPARMS();
+	no_responses = optimization.getNBMTHost().getNRESP();
 }
 
 /**
@@ -38,13 +42,8 @@ public void calc_var_covar() throws IOException{
 	double sos = optimization.getNBMTHost().getFunction().getSRES();
 	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
 	double [][] J = optimization.getNBMTHost().dGetFullJac();
-	PrintWriter out = new PrintWriter(new FileWriter("check-var.txt"));
-	out.println("Jacobian: ");
-	printMatrix(J, out);
 	
-	no_experiments = optimization.getNBMTHost().getNPTS();
-	no_parameters = optimization.getNBMTHost().getNPARMS();
-	no_responses = optimization.getNBMTHost().getNRESP();
+	
 	var_covar = new double[no_parameters][no_parameters];
 	
 	JTJ = new double[no_parameters][no_parameters];
@@ -56,13 +55,10 @@ public void calc_var_covar() throws IOException{
             for (int i=0; i < no_experiments * no_responses; i++)
           		  JTJ[j][k] += J[i][j] * J[i][k];	           	             
         }
-	out.println("JTJ: ");
-	printMatrix(JTJ,out);
+	
 	JTJminus1 = JTJ;//prevents gaussj from overwriting JTJ
 	JTJminus1 = gaussj(JTJminus1, JTJminus1.length); //inverse matrix of JTJ
-	out.println("JTJminus1");
-	printMatrix(JTJminus1,out);
-	out.close();
+	
 	
 /*	double s_squared = sos/(no_experiments - no_parameters);
 	
@@ -74,6 +70,14 @@ public void calc_var_covar() throws IOException{
 */	
 	var_covar = JTJminus1;
 	
+}
+public void calc_corr(){
+	corr = new double[var_covar.length][var_covar[0].length];
+	for (int k=0; k < no_parameters; k++)      // calculate curvature matrix JTJ
+        for (int j=0; j < no_parameters; j++)
+        {
+        	corr[k][j] = var_covar[k][j] / Math.sqrt(var_covar[k][k]*var_covar[j][j]);
+        }
 }
 public void calc_ANOVA() throws Exception{
 	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
@@ -201,6 +205,10 @@ public double [][] get_Var_Covar() throws IOException{
 	calc_var_covar();
 	return var_covar;
 }
+public double [][] get_Corr() throws IOException{
+	calc_corr();
+	return corr;
+}
 public void printArray(double [] d, PrintWriter out){
 	for (int i = 0; i < d.length; i++) {
 		out.print(d[i]+" ");
@@ -273,4 +281,17 @@ public double getTabulated_F_value() {
 	return tabulated_F_value;
 }
 */
+
+public int getNo_experiments() {
+	return no_experiments;
+}
+
+
+public int getNo_parameters() {
+	return no_parameters;
+}
+
+public int getNo_responses() {
+	return no_responses;
+}
 }

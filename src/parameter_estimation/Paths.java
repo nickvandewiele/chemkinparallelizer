@@ -12,20 +12,20 @@ public class Paths {
 	protected String workingDir;
 	protected String chemkinDir;
 	protected String chem_inp;
-	protected String [] reactor_inputs;
-	protected int no_experiments;
+	protected String [] reactorInputs;
+	protected int noExperiments;
 	protected String outputDir;
 
 	//no_licenses sets the limiting number for the counting semaphore
-	protected int no_licenses;
+	protected int noLicenses;
 	
 	public Paths (String wd, String cd, String c_inp, String [] r_inp, int no_lic){
 		workingDir = wd;
 		chemkinDir = cd;
 		chem_inp = c_inp;
-		reactor_inputs = r_inp;
+		reactorInputs = r_inp;
 		outputDir = workingDir+"output/";
-		no_licenses = no_lic;
+		noLicenses = no_lic;
 		
 	}
 	protected void createOutputDir (){

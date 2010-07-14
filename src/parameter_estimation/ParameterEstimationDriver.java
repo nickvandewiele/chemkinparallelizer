@@ -78,13 +78,14 @@ public class ParameterEstimationDriver {
 		in.readLine();
 		
 		String [] reactor_inputs = new String[no_experiments];
-		if (!flag_reactor_db){
-				for (int i = 0; i < no_experiments; i++){
-					reactor_inputs[i] = in.readLine(); 
-				}
+		if (flag_reactor_db){
+			in.readLine();
 		}
 		else {
-			in.readLine();
+			for (int i = 0; i < no_experiments; i++){
+				reactor_inputs[i] = in.readLine(); 
+			}
+		
 		}
 	
 		

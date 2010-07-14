@@ -11,19 +11,19 @@ public class Param_Est extends Paths{
 	
 	public int maxeval;
 	
-	public int no_exp;
-	public String exp_name;
+	public int noExp;
+	public String expName;
 	private List<Map<String, Double>> exp;
 	private List<Map<String,Double>> model;
 	
 	public double [][] beta;
 	public double [][] betamin;
 	public double [][] betamax;
-	public int [][] fix_reactions;
+	public int [][] fixReactions;
 	
 	//optimization flags:
-	public boolean flag_Rosenbrock;
-	public boolean flag_LM;
+	public boolean flagRosenbrock;
+	public boolean flagLM;
 	
 
 	// constructor used for checking the validity of chemistry input file:
@@ -33,8 +33,8 @@ public class Param_Est extends Paths{
 	//construct for parity mode:
 	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval){
 		this( wd,  cd, c_inp, reac_inp, no_lic);
-		no_exp = no_experiments;
-		exp_name = experiments_name;
+		noExp = no_experiments;
+		expName = experiments_name;
 		betamin = bmin;
 		betamax = bmax;
 		maxeval = m_eval;
@@ -43,9 +43,9 @@ public class Param_Est extends Paths{
 	//constructor used for parameter optimization option:
 	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns, boolean flag_Rosenbrock, boolean flag_LM){
 		this( wd,  cd, c_inp, reac_inp, no_lic, no_experiments, experiments_name, bmin, bmax, m_eval);
-		fix_reactions = f_rxns;
-		this.flag_Rosenbrock = flag_Rosenbrock;
-		this.flag_LM = flag_LM;
+		fixReactions = f_rxns;
+		this.flagRosenbrock = flag_Rosenbrock;
+		this.flagLM = flag_LM;
 	}
 /**
  * optimizeParameters is the method that will optimize the kinetic parameters. It does so by:<BR>
@@ -65,16 +65,16 @@ public class Param_Est extends Paths{
 		c.checkChemInput();
 		
 		// take initial guesses from chem.inp file:
-		beta = initial_guess();
+		beta = initialGuess();
 		System.out.println("Initial Guesses of parameters are:");
 		print(beta);
 		
 		//read experimental data:
 		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
-		exp = experiments_parser();
+		exp = experimentsParser();
 		//System.out.println(exp.toString());
 
-		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions, flag_Rosenbrock, flag_LM, exp);
+		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactorInputs, noLicenses, chem_inp, betamin, betamax, fixReactions, flagRosenbrock, flagLM, exp);
 		
 		//call optimization routine:
 		beta = optimization.optimize(exp);
@@ -106,7 +106,7 @@ public class Param_Est extends Paths{
  * return the chemistry input filename
  * WARNING: method supposes a pre-conditioned chem.inp file, processed by ChemClean and with TD inside chem.inp!!!
  */
-	public static String update_chemistry_input (String wd, double [] beta_new) throws IOException{
+	public static String updateChemistryInput (String wd, double [] beta_new) throws IOException{
 		String chemistry_input="chem.inp";
 		String path_old_chem = wd+chemistry_input;	
 		
@@ -175,11 +175,11 @@ public class Param_Est extends Paths{
 	 * @return List of the experiments, with molar flowrates of the response variables
 	 * @throws IOException
 	 */
-	public List<Map<String, Double>> experiments_parser ()throws IOException{
+	public List<Map<String, Double>> experimentsParser ()throws IOException{
 		exp = new ArrayList<Map<String, Double>>();
 		try {
 			//read experimental data file:
-			BufferedReader in = new BufferedReader (new FileReader(exp_name));
+			BufferedReader in = new BufferedReader (new FileReader(expName));
 			//read in species names on first line:
 			String species_names = in.readLine();
 			//System.out.println(species_names);
@@ -197,7 +197,7 @@ public class Param_Est extends Paths{
 				dummy = in.readLine();
 				
 			}
-			if (exp.size()!= no_exp){
+			if (exp.size()!= noExp){
 				System.out.println("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
 				System.exit(-1);
 			}
@@ -206,13 +206,13 @@ public class Param_Est extends Paths{
 			System.out.println("Something went wrong during the preprocessing of the experimental data file!");
 			System.exit(-1);
 		}
-		if(!(exp.size()==no_exp)){
-			System.out.println("Experiments database contains different no. of experiments as defined in main class!");
-			System.exit(-1);
-			return null;
+		if((exp.size()==noExp)){
+			return exp;
 		}
 		else{
-			return exp;	
+			System.out.println("Experiments database contains different no. of experiments as defined in main class!");
+			System.exit(-1);
+			return null;	
 		}
 		
 	}
@@ -225,9 +225,9 @@ public class Param_Est extends Paths{
 	 * @return initial guesses for kinetic parameters, as double array 
 	 * @throws IOException
 	 */
-	public double[][] initial_guess () throws IOException{
+	public double[][] initialGuess () throws IOException{
 		
-		double[][] beta = new double[fix_reactions.length][fix_reactions[0].length];
+		double[][] beta = new double[fixReactions.length][fixReactions[0].length];
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(workingDir+chem_inp));
 			String dummy = in.readLine();
@@ -255,10 +255,10 @@ public class Param_Est extends Paths{
  * 			-separate kinetic parameters by a single space
  * 			-use a single space after the definition of the elementary reaction, e.g. A+B<=>C+D 1e13 0.0 200.0		
  */
-			for (int i = 0; i < fix_reactions.length; i++){
+			for (int i = 0; i < fixReactions.length; i++){
 				dummy = in.readLine();
 				String[] st_dummy = dummy.split("\\s");
-				for (int j = 0; j < fix_reactions[i].length; j++){
+				for (int j = 0; j < fixReactions[i].length; j++){
 					//start with element at position 1 (not 0), because arrhenius parameters start at position 1!
 					beta[i][j] = Double.parseDouble(st_dummy[j+1]);
 				}
@@ -276,7 +276,7 @@ public class Param_Est extends Paths{
 	public List<Map<String,Double>> getModelPredictions (){
 		List<Map<String,Double>> model;
 		boolean flag_CKSolnList = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList);
 		model = ckp.getModelValues();
 		return model;
 	}
@@ -285,10 +285,10 @@ public class Param_Est extends Paths{
 	 * this becomes handy for parity plots, because experimental data will often be available in mass fractions, not molar flow rates
 	 * @return
 	 */
-	public List<Map<String,Double>> getModelPredictions_massfrac(){
+	public List<Map<String,Double>> getModelPredictionsMassfrac(){
 		boolean flag_CKSolnList = true;
 		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList, flag_massfrac);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList, flag_massfrac);
 		model = ckp.getModelValues();
 		return model;
 	}
@@ -307,7 +307,7 @@ public class Param_Est extends Paths{
 		boolean flag_CKSolnList = true;
 		boolean flag_toExcel = true;
 		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList, flag_toExcel, flag_massfrac);
+		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList, flag_toExcel, flag_massfrac);
 		ckp.getModelValues();
 		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
@@ -323,8 +323,8 @@ public class Param_Est extends Paths{
 		c.checkChemInput();
 		c.join();
 		
-		List<Map<String,Double>> model = getModelPredictions_massfrac();
-		List<Map<String,Double>> exp = experiments_parser();
+		List<Map<String,Double>> model = getModelPredictionsMassfrac();
+		List<Map<String,Double>> exp = experimentsParser();
 		List<String> speciesNames = c.getSpeciesNames();
 
 		//WRITE PARITY FILE:
@@ -372,16 +372,16 @@ public class Param_Est extends Paths{
 		c.checkChemInput();
 		
 		// take initial guesses from chem.inp file:
-		beta = initial_guess();
+		beta = initialGuess();
 		System.out.println("Initial Guesses of parameters are:");
 		print(beta);
 		
 		//read experimental data:
 		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
-		exp = experiments_parser();
+		exp = experimentsParser();
 		//System.out.println(exp.toString());
 
-		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactor_inputs, no_licenses, chem_inp, betamin, betamax, fix_reactions, flag_Rosenbrock, flag_LM, exp);
+		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactorInputs, noLicenses, chem_inp, betamin, betamax, fixReactions, flagRosenbrock, flagLM, exp);
 		
 		optimization.calcStatistics();
 		//moveOutputFiles();

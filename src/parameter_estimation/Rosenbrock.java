@@ -27,7 +27,7 @@ public class Rosenbrock{
 	public double FAIL; //rosenbrock parameter
 	public double[][] basis;
 
-	public int total_no_parameters;
+	public int totalNoParameters;
 
 	public double[] dummy_beta_old;
 	public double[] dummy_beta_new;
@@ -55,9 +55,9 @@ public class Rosenbrock{
 		this.SUCC = succ;
 		this.FAIL = fail;
 		this.maxeval = maxeval;
-		this.dummy_beta_old = o.get_dummy_beta_old();
+		this.dummy_beta_old = o.getDummyBetaOld();
 		this.dummy_beta_new = new double[dummy_beta_old.length];
-		this.dummy_beta_min = o.get_dummy_beta_min();
+		this.dummy_beta_min = o.getDummyBetaMin();
 		this.dummy_beta_max = o.get_dummy_beta_max();
 		this.dummy_fix_reactions = o.get_dummy_fix_reactions();
 		this.dummy_e = new double[o.get_total_no_parameters()];
@@ -66,7 +66,7 @@ public class Rosenbrock{
 		}
 	}
 
-	public double [] return_optimized_parameters() throws Exception{
+	public double [] returnOptimizedParameters() throws Exception{
 		//basis needs to be declared with the correct dimensions:
 		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
 
@@ -76,7 +76,7 @@ public class Rosenbrock{
 		out.println("Current evaluation no.: "+neval);
 
 		// initialization of basis: OK
-		basis = basis_init(basis);
+		basis = basisInit(basis);
 		
 		//evaluate model predictions with initial guesses:
 		//flag_CKSolnList = true
@@ -95,8 +95,8 @@ public class Rosenbrock{
 		// Set all flags to 2, i.e. no success has been achieved in direction i
 		int [] flag = new int [dummy_beta_old.length];
 		double [] d = new double [dummy_beta_old.length];
-		flag = reset_flag(flag);
-		d = reset_d(d);
+		flag = resetFlag(flag);
+		d = resetD(d);
 		
 		// Main rosenbrock loop
 		while (neval < optimization.maxeval) {
@@ -110,7 +110,7 @@ public class Rosenbrock{
 
 						//new parameter trials:
 						dummy_beta_new[j] = dummy_beta_old[j] + dummy_e[i]*basis[j][i];
-						dummy_beta_new[j] = check_lower_upper_bounds(dummy_beta_new[j], dummy_beta_min[j], dummy_beta_max[j], out);
+						dummy_beta_new[j] = checkLowerUpperBounds(dummy_beta_new[j], dummy_beta_min[j], dummy_beta_max[j], out);
 						
 					}
 					
@@ -146,10 +146,11 @@ public class Rosenbrock{
 						out_SSQ.println(neval+","+trial);
 						
 						//put new successful parameter guesses in the old ones, which will eventually be returned
-						for (int j = 0; j < dummy_beta_old.length; j++) {
+/*						for (int j = 0; j < dummy_beta_old.length; j++) {
 							dummy_beta_old[j] = dummy_beta_new[j];
 						}
-						
+*/					
+						System.arraycopy(dummy_beta_new, 0, dummy_beta_old, 0, dummy_beta_old.length);
 						current = trial;
 						for (int j = 0; j < d.length; j++) {
 							d[j] = d[j] + dummy_e[j];
@@ -174,10 +175,10 @@ public class Rosenbrock{
 							flag2 = flag2 + flag[j];
 						}
 						if (flag2 == 0){
-							basis = set_new_basis(d,basis);
+							basis = setNewBasis(d,basis);
 							basis = gramschmidt(basis);
-							flag = reset_flag(flag);
-							d = reset_d(d);
+							flag = resetFlag(flag);
+							d = resetD(d);
 						}
 					}
 				}
@@ -199,7 +200,7 @@ public class Rosenbrock{
 
 	 * @param bbasis
 	 */
-	public double[][] basis_init (double[][] bbasis) {
+	public double[][] basisInit (double[][] bbasis) {
 	for (int i = 0; i < bbasis[0].length; i++){
 		for (int j = 0; j < bbasis[0].length; j++) {
 			bbasis[i][j] = 0.0;
@@ -216,7 +217,7 @@ public class Rosenbrock{
 	 * @param dd
 	 * @param bbasis
 	*/
-	public double[][] set_new_basis (double[] dd, double[][] bbasis){
+	public double[][] setNewBasis (double[] dd, double[][] bbasis){
 		
 	for (int i = 0; i < dd.length; i++) {
 		for (int j = 0; j < dd.length; j++) {
@@ -269,21 +270,21 @@ public class Rosenbrock{
 	* @param fflag
 	 * @return all flags are set to 2, meaning i.e. no success has been achieved in direction i
 	*/
-	public int [] reset_flag (int[] fflag){
+	public int [] resetFlag (int[] fflag){
 		for (int i = 0; i < fflag.length; i++) {
 			fflag[i] = 2;
 		}
 		return fflag;
 	}
 
-	public double [] reset_d (double[] dd){
+	public double [] resetD (double[] dd){
 		for (int i = 0; i < dd.length; i++) {
 			dd[i] = 0;
 		}
 		return dd;
 	}
 
-	public double check_lower_upper_bounds(double d, double lower, double upper, PrintWriter out){
+	public double checkLowerUpperBounds(double d, double lower, double upper, PrintWriter out){
 		double dummy = d; 
 		if (d < lower) {
 			out.println("New parameter guess has exceeded user-defined lower limits!");

@@ -42,14 +42,14 @@ public class Optimization extends Paths{
 	private double[] dummy_beta_max;
 	private int[] dummy_fix_reactions;
 	
-	private int total_no_parameters;
+	private int totalNoParameters;
 	
 	public int getTotal_no_parameters() {
-		return total_no_parameters;
+		return totalNoParameters;
 	}
-	boolean flag_rosenbrock;
-	boolean flag_LM;
-	boolean weighted_regression;
+	boolean flagRosenbrock;
+	boolean flagLM;
+	boolean weightedRegression;
 
 	
 	private List<Map<String,Double>> exp;
@@ -76,8 +76,8 @@ public class Optimization extends Paths{
 		beta_max = b_max;
 		fix_reactions = f_rxns;
 		
-		flag_rosenbrock = f_r;
-		flag_LM = f_L;
+		flagRosenbrock = f_r;
+		flagLM = f_L;
 //		weighted_regression = w_r;
 		
 		this.exp = exp;
@@ -86,27 +86,16 @@ public class Optimization extends Paths{
 	/**
 	 * convert2D_to_1D() will initialize the 1D vectors derived from the 2D matrices containing parameter data to be used in optimization routine
 	 */
-	public void convert_2D_to_1D(){
+	public void convert2Dto1D(){
 		//for programming ease of the optimization algorithm, the double [][] matrix b_old (containing parameters per reaction)
-		//will be converted to a 1D vector:
-		
-		//initialize new 1D vectors:
-/*		int dummy = 0;
-		for (int i = 0; i < fix_reactions.length; i++){
-			for (int j = 0; j < fix_reactions[0].length; j++){
-				dummy += fix_reactions[i][j];
-			}
-		}
-		//total_no_fitted_parameters = dummy;
-*/		
+		//will be converted to a 1D vector:	
+		totalNoParameters = fix_reactions.length * fix_reactions[0].length;
 	
-		total_no_parameters = fix_reactions.length * fix_reactions[0].length;
-	
-		dummy_beta = new double[total_no_parameters];
+		dummy_beta = new double[totalNoParameters];
 
-		dummy_beta_min = new double[total_no_parameters];
-		dummy_beta_max = new double[total_no_parameters];
-		dummy_fix_reactions = new int[total_no_parameters];
+		dummy_beta_min = new double[totalNoParameters];
+		dummy_beta_max = new double[totalNoParameters];
+		dummy_fix_reactions = new int[totalNoParameters];
 			
 		//copy values of [][] matrices to [] vectors:
 		int counter = 0;
@@ -127,47 +116,21 @@ public class Optimization extends Paths{
 			out_species.println((String)it.next());
 		}
 		out_species.close();
-		convert_2D_to_1D();
-		if(flag_rosenbrock){
+		convert2Dto1D();
+		if(flagRosenbrock){
 			//Rosenbrock parameters:
-			double efrac = 0.3;
+			double efrac = 0.5;//0.3
 			double succ = 3.0;
 			double fail = -0.5;
 			System.out.println("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail, maxeval);
-			beta_new = convert_1D_to_2D(rosenbrock.return_optimized_parameters());
+			beta_new = convert1Dto2D(rosenbrock.returnOptimizedParameters());
 		}
 		
-		if(flag_LM){
+		if(flagLM){
 			System.out.println("Start of Levenberg-Marquardt!");
-			//nbmtmultiDhost = new NBMTmultiDHost(this);
 			nbmthost = new NBMTHost(this);
-			//beta_new = convert_1D_to_2D(buildFullParamVector(nbmtmultiDhost.return_optimized_parameters()));
-			beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
-/*			Statistics s = new Statistics(this);
-			PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
-			//out.println("Variances of response variables:");
-			//out.println(this.nbmtmultiDhost.getFunction().getCovariance());
-			out.println("Averages of response variables:");
-			//out.println(this.nbmtmultiDhost.getFunction().calcAverage());
-			out.println(this.nbmthost.getFunction().calcAverage());
-			out.println();
-			out.println("Variance-covariance of parameter estimations:");
-			s.printMatrix(s.get_Var_Covar(), out);
-			out.println();
-			out.println("t-values of individual significance of parameter estimations:");
-			s.printArray(s.getT_values(), out);
-			out.println();
-			out.println("tabulated t-value for alpha = 5%");
-			out.println(s.getTabulated_t_value());
-			out.println();
-			out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
-			s.printMatrix(s.getConfidence_intervals(), out);
-			out.println();
-			out.close();
-			if(new File("statistics.txt").exists())
-				moveFile(outputDir, "statistics.txt");
-*/			
+			beta_new = convert1Dto2D(buildFullParamVector(nbmthost.getParms()));		
 		}
 
 
@@ -192,7 +155,7 @@ public class Optimization extends Paths{
 	 * convert 1D vector into 2D matrix: 
 	 * @return
 	 */
-	public double [][] convert_1D_to_2D(double [] vector){
+	public double [][] convert1Dto2D(double [] vector){
 		//convert 1D vector back to matrix [][] notation:
 		double [][] matrix = new double [beta_old.length][beta_old[0].length];
 		int counter = 0;
@@ -206,11 +169,11 @@ public class Optimization extends Paths{
 	}
 
 	//getters for 1D vectors:
-	public double [] get_dummy_beta_old(){
+	public double [] getDummyBetaOld(){
 		return dummy_beta;
 	}
 
-	public double [] get_dummy_beta_min(){
+	public double [] getDummyBetaMin(){
 		return dummy_beta_min;
 	}
 	public double [] get_dummy_beta_max(){
@@ -221,7 +184,7 @@ public class Optimization extends Paths{
 	}
 	
 	public int get_total_no_parameters(){
-		return total_no_parameters;
+		return totalNoParameters;
 	}
 	
 	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
@@ -229,7 +192,7 @@ public class Optimization extends Paths{
 		update_chemistry_input(parameter_guesses);
 		
 		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
-		CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, flag_CKSolnList);
+		CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList);
 		model = ckp_new.getModelValues();
 		return model;
 	}
@@ -274,7 +237,6 @@ public class Optimization extends Paths{
 		//just copy part of chem.inp about Elements, Species, Thermo
 		boolean b = true;
 		while(b){
-		//while(!dummy.equals("REACTIONS	KJOULES/MOLE	MOLES")){
 			out.println(dummy);
 			dummy = in.readLine();
 			if (dummy.length() <= 8){
@@ -324,30 +286,6 @@ public class Optimization extends Paths{
 		f_old.delete();
 		File f = new File(workingDir+"temp.inp");
 		f.renameTo(new File(workingDir+chem_inp));
-
-//the while loop will become obsolete:
-/*			
-		while(!dummy.equals("END")){
-			String[] st_dummy = dummy.split("\\s");
-			st_dummy[1] = Double.toString(beta_new[i]);
-			i++;
-			//System.out.println(i);
-			st_dummy[3] = Double.toString(beta_new[i]);
-			i++;
-			//System.out.println(i);
-			//toString(st_dummy);
-			dummy = st_dummy[0];
-			for (int j = 1; j < st_dummy.length; j++) {
-				dummy = dummy +" "+st_dummy[j];
-			}
-			System.out.println(dummy);
-			out.println(dummy);
-			dummy = in.readLine();
-		}		
-		// write "END" line:
-		out.println(dummy);
-*/
-		//delete old chem.inp file and create new chem.inp based on temp.inp:
 	}
 	
 	/**
@@ -388,28 +326,26 @@ public class Optimization extends Paths{
 		}
 		return dummy_beta;
 	}
-/*	public NBMTmultiDHost getNBMTmultiDHost(){
-		return nbmtmultiDhost;
-	}
-*/
+
 	public NBMTHost getNBMTHost(){
 		return nbmthost;
 	}
 	public void calcStatistics() throws Exception{
-		convert_2D_to_1D();
+		convert2Dto1D();
 		nbmthost = new NBMTHost(this, true);
 		nbmthost.bBuildJacobian();
 		//beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
 		Statistics s = new Statistics(this);
 		PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
-		//out.println("Variances of response variables:");
-		//out.println(this.nbmtmultiDhost.getFunction().getCovariance());
 		out.println("Averages of response variables:");
 		//out.println(this.nbmtmultiDhost.getFunction().calcAverage());
 		out.println(this.nbmthost.getFunction().calcAverage());
 		out.println();
 		out.println("Variance-covariance of parameter estimations:");
 		s.printMatrix(s.get_Var_Covar(), out);
+		out.println();
+		out.println("Correlation matrix of parameter estimations:");
+		s.printMatrix(s.get_Corr(), out);
 		out.println();
 		out.println("t-values of individual significance of parameter estimations:");
 		s.printArray(s.getT_values(), out);
@@ -420,6 +356,12 @@ public class Optimization extends Paths{
 		out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
 		s.printMatrix(s.getConfidence_intervals(), out);
 		out.println();
+		out.println("Number of experiments:");
+		out.println(s.getNo_experiments());
+		out.println("Number of parameters:");
+		out.println(s.getNo_parameters());
+		out.println("Number of responses:");
+		out.println(s.getNo_responses());
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());
@@ -437,7 +379,7 @@ public class Optimization extends Paths{
 	}
 
 	public boolean isWeighted_regression() {
-		return weighted_regression;
+		return weightedRegression;
 	}
 
 }

@@ -26,7 +26,7 @@ public class CKEmulation extends Thread{
 	private String chem_asu = "chem.asu";
 
 	// input file to CKPreProcess routine:
-	private String PreProc_inp = "CKPreProc_template.input";
+	private String preProc_inp = "CKPreProc_template.input";
 	
 	public String reactor_setup;
 	public String reactor_out;
@@ -105,9 +105,9 @@ public class CKEmulation extends Thread{
 			copyFile(workingDir+chem_inp,reactorDir+chem_inp);
 			copyFile(workingDir+reactor_setup,reactorDir+reactor_setup);
 			copyFile(workingDir+"chemkindata.dtd",reactorDir+"chemkindata.dtd");
-			call_Chem();	
+			callChem();	
 			//call_PreProcess();
-			call_Reactor();
+			callReactor();
 			
 			//copy reactor diagnostics file to workingdir:
 			copyFile(reactorDir+reactor_out,workingDir+reactor_out);
@@ -123,25 +123,16 @@ public class CKEmulation extends Thread{
 				//copy the CKSolnList to the reactorDir
 				copyFile(workingDir+CKSolnList,reactorDir+CKSolnList);
 			}
-			call_GetSol(flag_massfrac);
+			callGetSol(flag_massfrac);
 			
 			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
 			if (!flag_excel){
 				//String name_data_ckcsv = "data_ckcsv"+j;
-				HashMap<String,Double> temp = read_ckcsv();
+				HashMap<String,Double> temp = readCkcsv();
 				
 				//convert to a HashMap with the real species names (cut of Mass_fraction_ or Mole_fraction_:
-				species_fractions = convert_massfractions(temp);
-				
-				//security measure: if mass fractions are present in the .ckcsv file, the conversion to molar flowrates cannot proceed!
-/*				if (!flag_massfrac) {
-					species_molar_rates= convert_molrates(species_fractions);
-				}
-				else {
-					System.out.println("Incorrect conversion from mass fractions to mol rates!");
-					System.exit(-1);
-				}
-*/				
+				species_fractions = convertMassfractions(temp);
+							
 			}
 			
 			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
@@ -154,7 +145,7 @@ public class CKEmulation extends Thread{
 			deleteDir(new File(reactorDir));
 			
 			//wait for semaphore release until directory is completely deleted, don't know if this works...
-			while((new File(reactorDir)).exists()){
+			while(new File(reactorDir).exists()){
 			}
 			
 			//when all Chemkin routines are finished, release the semaphore:
@@ -172,31 +163,31 @@ public class CKEmulation extends Thread{
 	 * calls the .bat file that sets environment variables for proper use of future Chemkin calls<BR>
 	 * @throws Exception
 	 */
-	public void call_Bat () throws Exception {
+	public void callBat () throws Exception {
 		String [] setup_environment = {binDir+"run_chemkin_env_setup.bat"};
-		execute_CKRoutine(setup_environment);
+		executeCKRoutine(setup_environment);
 	}
 	
 	/**
 	 * call the Chemkin preprocessor chem and produces the linking file (.asc)
 	 * @throws Exception
 	 */
-	public void call_Chem () throws Exception {
+	public void callChem () throws Exception {
 		String [] preprocess = {binDir+"chem","-i",reactorDir+chem_inp,"-o",reactorDir+chem_out,"-c",reactorDir+chem_asc};
-		execute_CKRoutine(preprocess);
+		executeCKRoutine(preprocess);
 	}
 	public void call_PreProcess() throws Exception {
 		setCKPreProcess_Input();
-		String [] preprocess = {binDir+"CKPreProcess","-i",workingDir+PreProc_inp};
-		execute_CKRoutine(preprocess);
+		String [] preprocess = {binDir+"CKPreProcess","-i",workingDir+preProc_inp};
+		executeCKRoutine(preprocess);
 	}
 	/**
 	 * call a Chemkin reactor model (ic: CKReactorPlugFlow) executable	
 	 * @throws Exception
 	 */
-	public void call_Reactor () throws Exception {
+	public void callReactor () throws Exception {
 		String [] name_input_PFR = {binDir+"CKReactorPlugFlow","-i",reactorDir+reactor_setup,"-o",reactorDir+reactor_out};
-		execute_CKRoutine(name_input_PFR, new File(reactorDir));
+		executeCKRoutine(name_input_PFR, new File(reactorDir));
 	}
 	
 	/**
@@ -204,15 +195,15 @@ public class CKEmulation extends Thread{
 	 * @param flag_massfrac if true: GetSolution prints mass fractions instead of mole fractions (used for Excel Postprocessing and Parity mode)
 	 * @throws Exception
 	 */
-	public  void call_GetSol (boolean flag_massfrac) throws Exception {
+	public  void callGetSol (boolean flag_massfrac) throws Exception {
 		//String abbrev_path = cd+"data/abbreviations.csv";
 		if (flag_massfrac){
 			String [] progGetSol = {binDir+"GetSolution","-nosen","-norop","-mass",reactorDir+xml};
-			execute_CKRoutine(progGetSol, new File (reactorDir));
+			executeCKRoutine(progGetSol, new File (reactorDir));
 		}
 		else {
 			String [] progGetSol = {binDir+"GetSolution","-nosen","-norop",reactorDir+xml};
-			execute_CKRoutine(progGetSol, new File (reactorDir));
+			executeCKRoutine(progGetSol, new File (reactorDir));
 		}
 		deleteFiles(reactorDir, ".zip");
 	}
@@ -220,9 +211,9 @@ public class CKEmulation extends Thread{
 	 * calls the Chemkin CKSolnTranspose executable
 	 * @throws Exception
 	 */
-	public void call_Transpose () throws Exception {
+	public void callTranspose () throws Exception {
 		String [] progTranspose = {binDir+"CKSolnTranspose",reactorDir+ckcsv_name};
-		execute_CKRoutine(progTranspose);
+		executeCKRoutine(progTranspose);
 
 	}
 	/**
@@ -235,7 +226,7 @@ public class CKEmulation extends Thread{
 	 * the data will be stored in a LinkedList, chosen for its flexibility<BR>
 	 * @throws IOException
 	 */
-	private HashMap<String, Double> read_ckcsv () throws IOException {
+	private HashMap<String, Double> readCkcsv () throws IOException {
 		HashMap <String, Double> dummy= new HashMap<String, Double>();
 		BufferedReader in = new BufferedReader(new FileReader(reactorDir+ckcsv_name));
 		
@@ -261,7 +252,7 @@ public class CKEmulation extends Thread{
 			for (int i=0;i<st_temp.length;i++){
 				list_temp.add(st_temp[i]);
 			}
-		} while (!((list_temp.get(0)).equals("Exit_mass_flow_rate")));
+		} while (!(list_temp.get(0)).equals("Exit_mass_flow_rate"));
 		mass_flow = Double.parseDouble(list_temp.get(list_temp.size()-1));
 		
 		//read all species' mole fractions, number of species is unknown
@@ -272,11 +263,11 @@ public class CKEmulation extends Thread{
 			for (int i=0;i<st_temp.length;i++){
 				list_temp.add(st_temp[i]);
 			}
-			if(!((list_temp.get(0)).equals("Molecular_weight"))){				
+			if(!(list_temp.get(0)).equals("Molecular_weight")){				
 				dummy.put((String)list_temp.get(0), Double.parseDouble(list_temp.get(list_temp.size()-1)));
 				//System.out.println(data.toString());
 			}
-		} while (!((list_temp.get(0)).equals("Molecular_weight")));
+		} while (!(list_temp.get(0)).equals("Molecular_weight"));
 
 		// read mean molecular weight, supposedly the last in.readLine() read in the last loop.
 		mw_mean = Double.parseDouble(list_temp.get(list_temp.size()-1));
@@ -289,7 +280,7 @@ public class CKEmulation extends Thread{
 	 * @param m
 	 * @return
 	 */
-	private HashMap<String,Double> convert_massfractions(HashMap<String,Double> m){
+	private HashMap<String,Double> convertMassfractions(HashMap<String,Double> m){
 		HashMap<String, Double> dummy = new HashMap<String, Double> ();
 		//loop through keys
 		for ( String s : m.keySet()){
@@ -306,7 +297,7 @@ public class CKEmulation extends Thread{
 	 * @param m the HashMap generated from the read_ckcsv method containing species molfractions
 	 * @return
 	 */
-	private HashMap<String,Double> convert_molrates(HashMap<String,Double> m){
+	private HashMap<String,Double> convertMolrates(HashMap<String,Double> m){
 		HashMap<String, Double> dummy = new HashMap<String, Double> ();
 		//loop through keys
 		for ( String s : m.keySet()){
@@ -348,8 +339,8 @@ public class CKEmulation extends Thread{
 		 try {
 			//create CKPreprocess.input file with directions to chem_inp, etc
 			setCKPreProcess_Input();
-			String [] preprocess = {binDir+"CKPreProcess","-i",workingDir+PreProc_inp};
-			execute_CKRoutine(preprocess);
+			String [] preprocess = {binDir+"CKPreProcess","-i",workingDir+preProc_inp};
+			executeCKRoutine(preprocess);
 				
 				//read the produced chem.out (path_output) file, and check if it contains error messages:
 				BufferedReader in = new BufferedReader(new FileReader(workingDir+chem_out));
@@ -383,7 +374,7 @@ public class CKEmulation extends Thread{
 	  */
 	 public void createSolnList()throws Exception{
 		String [] progGetList = {binDir+"GetSolution","-listonly",reactorDir+xml};
-		execute_CKRoutine(progGetList, new File(reactorDir));	
+		executeCKRoutine(progGetList, new File(reactorDir));	
 	 }
 	 /**
 	  * Set the SolnList.txt to the desired format:<BR>
@@ -480,7 +471,7 @@ public class CKEmulation extends Thread{
 		f_temp.renameTo(new File(reactorDir+CKSolnList));
 	}
 	 
-	 public void execute_CKRoutine (String [] CKCommand) throws IOException, InterruptedException{
+	 public void executeCKRoutine (String [] CKCommand) throws IOException, InterruptedException{
 		 String s = null;		
 		 Process p = r.exec(CKCommand);
 			
@@ -511,7 +502,7 @@ public class CKEmulation extends Thread{
 	  * @throws IOException
 	  * @throws InterruptedException
 	  */
-	 public void execute_CKRoutine (String [] CKCommand, File working_directory) throws IOException, InterruptedException{
+	 public void executeCKRoutine (String [] CKCommand, File working_directory) throws IOException, InterruptedException{
 		 String s = null;
 		 String [] environment = null;
 		 Process p = r.exec(CKCommand, environment, working_directory);
@@ -541,23 +532,7 @@ public class CKEmulation extends Thread{
 	  * @return
 	  * @throws IOException
 	  */
-/*	 public List<String> getSpeciesNames()throws IOException{
-			BufferedReader in = new BufferedReader (new FileReader(workingDir+chem_inp));
-			String dummy = in.readLine().trim();
-			//just copy part of chem.inp about Elements, Species, Thermo
-			while(!dummy.equals("SPECIES")){
-				dummy = in.readLine();
-			}
-			dummy=in.readLine();
-			List<String> namesList = new ArrayList<String>();
-			while(!dummy.equals("END")){	
-				namesList.add(dummy);
-				dummy = in.readLine();
-			}
-			in.close();
-			return namesList;
-		}
-*/	 
+	 
 	 public Map<String,Double> getModelValue(){
 		 /**
 		  * TODO: this needs to be settled in a better (less patchy) way!
@@ -687,7 +662,7 @@ public class CKEmulation extends Thread{
 		 //in windows: user.dir needs to be followed by "\", in *nix by "/"... 
 		 String osname = System.getProperty("os.name");
 		 if (osname.equals("Linux")){
-			 PrintWriter out = new PrintWriter(new FileWriter(workingDir+PreProc_inp));
+			 PrintWriter out = new PrintWriter(new FileWriter(workingDir+preProc_inp));
 			 out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"/"+chem_inp);
 			 out.println("OUT_CHEM_OUTPUT="+System.getProperty("user.dir")+"/"+chem_out);
 			 out.println("OUT_CHEM_ASC="+System.getProperty("user.dir")+"/"+chem_asc);
@@ -695,7 +670,7 @@ public class CKEmulation extends Thread{
 			 out.close();
 		 }
 		 else {
-			 PrintWriter out = new PrintWriter(new FileWriter(workingDir+PreProc_inp));
+			 PrintWriter out = new PrintWriter(new FileWriter(workingDir+preProc_inp));
 		 out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"\\"+chem_inp);
 		 out.println("OUT_CHEM_OUTPUT="+System.getProperty("user.dir")+"\\"+chem_out);
 		 out.println("OUT_CHEM_ASC="+System.getProperty("user.dir")+"\\"+chem_asc);
