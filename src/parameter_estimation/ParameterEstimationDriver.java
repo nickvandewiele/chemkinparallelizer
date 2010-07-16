@@ -32,17 +32,17 @@ public class ParameterEstimationDriver {
 		String chemkinDir = in.readLine();
 		
 		in.readLine();
-		int no_licenses = Integer.parseInt(in.readLine());
+		int noLicenses = Integer.parseInt(in.readLine());
 		
 		in.readLine();
-		String chem_inp = in.readLine();
+		String chemInp = in.readLine();
 		
 		in.readLine();
-		String experiments_db = in.readLine();
+		String experimentsDb = in.readLine();
 		
 		in.readLine();
-		boolean flag_reactor_db = Boolean.parseBoolean(in.readLine());
-		if (flag_reactor_db){
+		boolean flagReactorDb = Boolean.parseBoolean(in.readLine());
+		if (flagReactorDb){
 			if(!(new File("reactor_input_template.inp").exists())){
 				System.out.println("reactor_input_template.inp was not found in the working directory!");
 				System.exit(-1);
@@ -50,24 +50,20 @@ public class ParameterEstimationDriver {
 		}
 		
 		in.readLine();
-		String reactor_setups_db = in.readLine();
+		String reactorSetupsDb = in.readLine();
 		
 		in.readLine();
-		int no_experiments = Integer.parseInt(in.readLine());
+		int noExperiments = Integer.parseInt(in.readLine());
 		
 		//number of parameters to be fitted:
 		in.readLine();
-		int no_params = Integer.parseInt(in.readLine());
-/*
-		//weighted regression:
-		in.readLine();
-		boolean weighted_regression = Boolean.parseBoolean(in.readLine());
-*/		
+		int noParams = Integer.parseInt(in.readLine());
+		
 		//optimization flags:
 		in.readLine();
-		boolean flag_Rosenbrock = Boolean.parseBoolean(in.readLine());
+		boolean flagRosenbrock = Boolean.parseBoolean(in.readLine());
 		in.readLine();
-		boolean flag_LM = Boolean.parseBoolean(in.readLine());
+		boolean flagLM = Boolean.parseBoolean(in.readLine());
 		
 		in.readLine();
 		int maxeval = Integer.parseInt(in.readLine());
@@ -78,12 +74,12 @@ public class ParameterEstimationDriver {
 		//REACTOR INPUT FILE NAMES:
 		in.readLine();
 		
-		String [] reactor_inputs = new String[no_experiments];
-		if (flag_reactor_db){
+		String [] reactor_inputs = new String[noExperiments];
+		if (flagReactorDb){
 			in.readLine();
 		}
 		else {
-			for (int i = 0; i < no_experiments; i++){
+			for (int i = 0; i < noExperiments; i++){
 				reactor_inputs[i] = in.readLine(); 
 			}
 		
@@ -95,23 +91,23 @@ public class ParameterEstimationDriver {
 		
 		//number of reactions that will be optimized:
 		in.readLine();
-		int no_fitted_reactions = Integer.parseInt(in.readLine());
+		int noFittedReactions = Integer.parseInt(in.readLine());
 		
 		//number of parameters per reaction (modified Arrhenius [A,n,Ea]): 3
-		int no_parameters_per_reaction = 3;
+		int noParametersPerReaction = 3;
 		
-		int [][] fix_reactions = new int [no_fitted_reactions][no_parameters_per_reaction];
-		for (int i = 0; i < no_fitted_reactions; i++){
+		int [][] fixRxns = new int [noFittedReactions][noParametersPerReaction];
+		for (int i = 0; i < noFittedReactions; i++){
 			//comment line with "reaction i: "
 			in.readLine();
 			// string of 1,0,1:
 			String [] s = in.readLine().split(",");
-			for (int j = 0; j < no_parameters_per_reaction; j++){
-				fix_reactions[i][j] = Integer.parseInt(s[j]);
+			for (int j = 0; j < noParametersPerReaction; j++){
+				fixRxns[i][j] = Integer.parseInt(s[j]);
 			}
 		}
-		boolean flag_no_parameters = check_no_parameters(fix_reactions, no_params);
-		if (!flag_no_parameters) {
+		boolean flagNoParameters = checkNoParameters(fixRxns, noParams);
+		if (!flagNoParameters) {
 			System.out.println("Number of parameters to be fitted provided in INPUT.txt does not equal the number of ones you specified in the optimization section in INPUT.txt!");
 			System.exit(-1);
 		}
@@ -123,51 +119,48 @@ public class ParameterEstimationDriver {
 		
 		String template = "reactor_input_template.inp";
 		
-		double [][] beta_min = new double [no_fitted_reactions][no_parameters_per_reaction];
-		double [][] beta_max = new double [no_fitted_reactions][no_parameters_per_reaction];
-		for (int i = 0; i < no_fitted_reactions; i++) {
-			for (int j = 0; j < no_parameters_per_reaction; j++){
-				beta_min[i][j]=0;
-				beta_max[i][j]=1e20;
+		double [][] betaMin = new double [noFittedReactions][noParametersPerReaction];
+		double [][] betaMax = new double [noFittedReactions][noParametersPerReaction];
+		for (int i = 0; i < noFittedReactions; i++) {
+			for (int j = 0; j < noParametersPerReaction; j++){
+				betaMin[i][j]=0;
+				betaMax[i][j]=1e20;
 			}
 		}
 		
-		if (flag_reactor_db){
-			reactor_inputs = reactor_inputs_parser(workingDir, reactor_setups_db, template, no_experiments);
+		if (flagReactorDb){
+			reactor_inputs = reactorInputsParser(workingDir, reactorSetupsDb, template, noExperiments);
 		}
 
-		
+		Paths paths = new Paths(workingDir,chemkinDir,chemInp,reactor_inputs,noLicenses);
+		Parameters2D params = new Parameters2D(null, betaMin, betaMax, fixRxns);
 		switch(mode){
-			case 0:	System.out.println("PARITY PLOT MODE");
-					Param_Est p0 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval);
-					p0.createOutputDir();
-					p0.getParity();
+			case 0:	System.out.println("PARITY PLOT MODE");	
+					Param_Est p0 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval);
+					p0.parity();
 					Function f = new Function(p0.getModel(),p0.getExp());
 					System.out.println("SSQ is: "+f.getSRES());
 					break;
-			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");
-					Param_Est p1 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions, flag_Rosenbrock, flag_LM);
-					p1.createOutputDir();
+			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");		
+					Param_Est p1 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval, flagRosenbrock, flagLM);
 					p1.optimizeParameters();
-					p1.getStatistics();
-					p1.getParity();
+					p1.statistics();
+					p1.parity();
 					break;
 			case 2: System.out.println("EXCEL POSTPROCESSING MODE");
-					Param_Est p2 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses);
-					p2.createOutputDir();
-					p2.getExcelFiles();
+					Param_Est p2 = new Param_Est(paths);
+					p2.excelFiles();
 					break;
 			case 3: System.out.println("STATISTICS MODE");
-					Param_Est p3 = new Param_Est(workingDir, chemkinDir, chem_inp, reactor_inputs, no_licenses, no_experiments, experiments_db, beta_min, beta_max, maxeval, fix_reactions, flag_Rosenbrock, flag_LM);
-					p3.createOutputDir();
-					p3.getStatistics();
-					p3.getParity();
+					Param_Est p3 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval, flagRosenbrock, flagLM);
+					p3.statistics();
+					p3.parity();
 		}
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for this program to finish: (sec) "+timeTook);
 	}
-	public static String[] reactor_inputs_parser(String workingDir, String experiments, String template, int no_experiments) throws IOException{
-		ArrayList<String> reactor_inputs = new ArrayList<String>();
+	public static String[] reactorInputsParser(String workingDir, String experiments, String template, int no_experiments) throws IOException{
+		ArrayList<String> reactorInputs = new ArrayList<String>();
 		
 	//read first line of excel input:
 		/*
@@ -239,7 +232,7 @@ public class ParameterEstimationDriver {
 				//experiment_counter contains the experiment number that will be used in the reactor input file name:
 				experiment_counter = Integer.parseInt(dummy_array[0]);
 				String filename = "reactor_input_"+experiment_counter+".inp";
-				reactor_inputs.add(filename);
+				reactorInputs.add(filename);
 				PrintWriter out = new PrintWriter(new FileWriter(workingDir+filename));
 				
 				//copy the first 7 lines:
@@ -299,15 +292,15 @@ public class ParameterEstimationDriver {
 		}catch (Exception e){}//do nothing: e catches the end of the file exception
 
 		// verify the correct number of lines in reactor input file:
-		if( reactor_inputs.size()!= no_experiments){
+		if( reactorInputs.size()!= no_experiments){
 			System.out.println("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");
 			System.exit(-1);
 		}
 		
 		//convert ArrayList to String []:
-		String [] a = new String [reactor_inputs.size()];
-		for (int i = 0; i < reactor_inputs.size(); i++){
-			a[i] = reactor_inputs.get(i);
+		String [] a = new String [reactorInputs.size()];
+		for (int i = 0; i < reactorInputs.size(); i++){
+			a[i] = reactorInputs.get(i);
 		} 
 		return a;
 	}
@@ -317,15 +310,15 @@ public class ParameterEstimationDriver {
 	 * @param no_params
 	 * @return
 	 */
-	public static boolean check_no_parameters(int [][] fix_reactions, int no_params){
+	public static boolean checkNoParameters(int [][] fix_reactions, int no_params){
 		int counter = 0;
 		for (int i = 0; i < fix_reactions.length; i++){
 			for (int j = 0; j < fix_reactions[0].length; j++){
 				counter+=fix_reactions[i][j];
 			}
 		}
-		if (counter == no_params) return true;
-		else return false;
+		return (counter == no_params); 
+		
 	}
 
 

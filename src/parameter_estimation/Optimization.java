@@ -27,26 +27,17 @@ import levenberg.mono.NBMTHost;
  * @author nmvdewie
  *
  */
-public class Optimization extends Paths{
-	public int maxeval;
-	public double[][] beta_old;
-	public double[][] beta_new;
-	public double[][] beta_min;
-	public double[][] beta_max;
-	public int[][] fix_reactions;
-	
-
-	private double[] dummy_beta;
-
-	private double[] dummy_beta_min;
-	private double[] dummy_beta_max;
-	private int[] dummy_fix_reactions;
-	
-	private int totalNoParameters;
-	
-	public int getTotal_no_parameters() {
-		return totalNoParameters;
+public class Optimization{
+	Paths paths;
+	Parameters2D params2D;
+	Parameters1D params1D;
+	public Parameters1D getParams1D() {
+		return params1D;
 	}
+	public int maxeval;
+	public double[][] beta_new;
+
+
 	boolean flagRosenbrock;
 	boolean flagLM;
 	boolean weightedRegression;
@@ -67,14 +58,12 @@ public class Optimization extends Paths{
 	private NBMTHost nbmthost;
 
 	//constructor:
-	public Optimization (String wd, String cd, int m, double [][] b_old, String[] r_inp, int no_lic, String c_inp, double [][] b_min, double [][] b_max, int [][] f_rxns, boolean f_r, boolean f_L, List<Map<String,Double>>exp){
-		super(wd, cd, c_inp, r_inp, no_lic);
+	public Optimization (Paths paths, Parameters2D params, int m, boolean f_r, boolean f_L, List<Map<String,Double>>exp){
+		this.paths = paths;
+		this.params2D = params;
 		maxeval = m;
-		beta_old = b_old;
-		beta_new = new double [b_old.length][b_old[0].length];
-		beta_min = b_min;
-		beta_max = b_max;
-		fix_reactions = f_rxns;
+		beta_new = new double [params.getBeta().length][params.getBeta()[0].length];
+
 		
 		flagRosenbrock = f_r;
 		flagLM = f_L;
@@ -83,32 +72,7 @@ public class Optimization extends Paths{
 		this.exp = exp;
 	}
 	
-	/**
-	 * convert2D_to_1D() will initialize the 1D vectors derived from the 2D matrices containing parameter data to be used in optimization routine
-	 */
-	public void convert2Dto1D(){
-		//for programming ease of the optimization algorithm, the double [][] matrix b_old (containing parameters per reaction)
-		//will be converted to a 1D vector:	
-		totalNoParameters = fix_reactions.length * fix_reactions[0].length;
 	
-		dummy_beta = new double[totalNoParameters];
-
-		dummy_beta_min = new double[totalNoParameters];
-		dummy_beta_max = new double[totalNoParameters];
-		dummy_fix_reactions = new int[totalNoParameters];
-			
-		//copy values of [][] matrices to [] vectors:
-		int counter = 0;
-		for (int i = 0; i < fix_reactions.length; i++) {
-			for (int j = 0; j < fix_reactions[0].length; j++){
-				dummy_beta[counter] = beta_old[i][j];
-				dummy_beta_min[counter] = beta_min[i][j];
-				dummy_beta_max[counter] = beta_max[i][j];
-				dummy_fix_reactions[counter] = fix_reactions[i][j];				
-				counter++;
-			}
-		}
-	}	
 	public double [][] optimize(List<Map<String,Double>> exp) throws IOException, InterruptedException{
 		Set<String> response_vars = exp.get(0).keySet();
 		PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
@@ -116,7 +80,8 @@ public class Optimization extends Paths{
 			out_species.println((String)it.next());
 		}
 		out_species.close();
-		convert2Dto1D();
+		params1D = new Parameters1D();
+		params1D.convert2Dto1D(params2D);
 		if(flagRosenbrock){
 			//Rosenbrock parameters:
 			double efrac = 0.5;//0.3
@@ -124,75 +89,40 @@ public class Optimization extends Paths{
 			double fail = -0.5;
 			System.out.println("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail, maxeval);
-			beta_new = convert1Dto2D(rosenbrock.returnOptimizedParameters());
+			beta_new = Tools.convert1Dto2D(rosenbrock.returnOptimizedParameters(), params2D.getBeta());
 		}
 		
 		if(flagLM){
 			System.out.println("Start of Levenberg-Marquardt!");
 			nbmthost = new NBMTHost(this);
-			beta_new = convert1Dto2D(buildFullParamVector(nbmthost.getParms()));		
+			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), params2D.getBeta());		
 		}
 
 
 		// Rosenbrock monitors:
 		if(new File("SSQ_Rosenbrock.csv").exists())
-			moveFile(outputDir, "SSQ_Rosenbrock.csv");
+			Tools.moveFile(paths.getOutputDir(), "SSQ_Rosenbrock.csv");
 		if(new File("output_Rosenbrock.txt").exists())
-			moveFile(outputDir, "output_Rosenbrock.txt");
+			Tools.moveFile(paths.getOutputDir(), "output_Rosenbrock.txt");
 
 		//LM monitors:
 		if(new File("LM.txt").exists())
-			moveFile(outputDir, "LM.txt");
+			Tools.moveFile(paths.getOutputDir(), "LM.txt");
 		if(new File("SSQ_LM.txt").exists())
-			moveFile(outputDir, "SSQ_LM.txt");
+			Tools.moveFile(paths.getOutputDir(), "SSQ_LM.txt");
 		if(new File("response_vars.txt").exists())
-			moveFile(outputDir, "response_vars.txt");
+			Tools.moveFile(paths.getOutputDir(), "response_vars.txt");
 
 		return beta_new;
 	}
 	
-	/**
-	 * convert 1D vector into 2D matrix: 
-	 * @return
-	 */
-	public double [][] convert1Dto2D(double [] vector){
-		//convert 1D vector back to matrix [][] notation:
-		double [][] matrix = new double [beta_old.length][beta_old[0].length];
-		int counter = 0;
-		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix[0].length; j++){
-				matrix[i][j] = vector[counter];
-				counter++;
-			}
-		}
-		return matrix;
-	}
-
-	//getters for 1D vectors:
-	public double [] getDummyBetaOld(){
-		return dummy_beta;
-	}
-
-	public double [] getDummyBetaMin(){
-		return dummy_beta_min;
-	}
-	public double [] get_dummy_beta_max(){
-		return dummy_beta_max;
-	}
-	public int [] get_dummy_fix_reactions(){
-		return dummy_fix_reactions;
-	}
-	
-	public int get_total_no_parameters(){
-		return totalNoParameters;
-	}
 	
 	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws IOException, InterruptedException{
 		//update_chemistry_input will insert new parameter_guesses array into chem_inp
 		update_chemistry_input(parameter_guesses);
 		
 		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
-		CKPackager ckp_new = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList);
+		CKPackager ckp_new = new CKPackager(paths, flag_CKSolnList);
 		model = ckp_new.getModelValues();
 		return model;
 	}
@@ -230,8 +160,8 @@ public class Optimization extends Paths{
 	 * WARNING: method supposes TD inside chemistry input file!!!<BR>
 	 */
 	public void update_chemistry_input (double [] dummy_beta_new) throws IOException{
-		BufferedReader in = new BufferedReader(new FileReader(workingDir+chem_inp));
-		PrintWriter out = new PrintWriter(new FileWriter(workingDir+"temp.inp"));
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+paths.getChemInp()));
+		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"temp.inp"));
 		String dummy = in.readLine();
 		
 		//just copy part of chem.inp about Elements, Species, Thermo
@@ -252,10 +182,10 @@ public class Optimization extends Paths{
 		out.println(dummy);
 		
 		int counter = 0;
-		for (int i = 0; i < fix_reactions.length; i++){
+		for (int i = 0; i < params2D.getFixRxns().length; i++){
 			dummy = in.readLine();
 			String[] st_dummy = dummy.split("\\s");
-			for (int j = 0; j < fix_reactions[0].length; j++){
+			for (int j = 0; j < params2D.getFixRxns()[0].length; j++){
 				//put new values of kinetic parameters (at position 1, 2, 3 of st_dummy[]):
 				st_dummy[j+1] = Double.toString(dummy_beta_new[counter]);
 				counter++;
@@ -282,10 +212,10 @@ public class Optimization extends Paths{
 		in.close();
 		out.close();
 		
-		File f_old = new File(workingDir+chem_inp);
+		File f_old = new File(paths.getWorkingDir()+paths.getChemInp());
 		f_old.delete();
-		File f = new File(workingDir+"temp.inp");
-		f.renameTo(new File(workingDir+chem_inp));
+		File f = new File(paths.getWorkingDir()+"temp.inp");
+		f.renameTo(new File(paths.getWorkingDir()+paths.getChemInp()));
 	}
 	
 	/**
@@ -295,17 +225,17 @@ public class Optimization extends Paths{
 	public double[] retrieve_fitted_parameters(){
 		//count the number of fitted parameters:
 		int no_fitted_parameters = 0;
-		for (int i = 0; i < fix_reactions.length; i++){
-			for (int j = 0; j < fix_reactions[0].length; j++){
-				no_fitted_parameters += fix_reactions[i][j];
+		for (int i = 0; i < params2D.getFixRxns().length; i++){
+			for (int j = 0; j < params2D.getFixRxns()[0].length; j++){
+				no_fitted_parameters += params2D.getFixRxns()[i][j];
 			}
 		}
 		
 		double [] fitted_parameters = new double[no_fitted_parameters];
 		int counter = 0;
-		for (int i = 0; i < dummy_beta.length; i++){
-			if (dummy_fix_reactions[i]==1){
-				fitted_parameters[counter] = dummy_beta[i];
+		for (int i = 0; i < params1D.getBeta().length; i++){
+			if (params1D.getFixRxns()[i]==1){
+				fitted_parameters[counter] = params1D.getBeta()[i];
 				counter++;
 			}
 		}
@@ -318,20 +248,21 @@ public class Optimization extends Paths{
 	 */
 	public double[] buildFullParamVector(double[] d){
 		int counter = 0;
-		for (int i = 0; i < dummy_beta.length; i++){
-			if (dummy_fix_reactions[i]==1){
-				dummy_beta[i] = d[counter];
+		for (int i = 0; i < params1D.getBeta().length; i++){
+			if (params1D.getFixRxns()[i]==1){
+				params1D.getBeta()[i] = d[counter];
 				counter++;
 			}
 		}
-		return dummy_beta;
+		return params1D.getBeta();
 	}
 
 	public NBMTHost getNBMTHost(){
 		return nbmthost;
 	}
 	public void calcStatistics() throws IOException, InterruptedException{
-		convert2Dto1D();
+		params1D = new Parameters1D();
+		params1D.convert2Dto1D(params2D);
 		nbmthost = new NBMTHost(this, true);
 		nbmthost.bBuildJacobian();
 		//beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
@@ -375,7 +306,7 @@ public class Optimization extends Paths{
 */		
 		out.close();
 		if(new File("statistics.txt").exists())
-			moveFile(outputDir, "statistics.txt");
+			Tools.moveFile(paths.getOutputDir(), "statistics.txt");
 	}
 
 	public boolean isWeighted_regression() {

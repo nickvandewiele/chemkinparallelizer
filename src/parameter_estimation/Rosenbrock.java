@@ -29,15 +29,11 @@ public class Rosenbrock{
 	public double[][] basis;
 
 	public int totalNoParameters;
-
-	public double[] dummy_beta_old;
 	public double[] dummy_beta_new;
-	public double[] dummy_beta_min;
-	public double[] dummy_beta_max;
+
 	/**
 	 * TODO the fix_reactions vector should not be part of Rosenbrock anymore. do it like LM!
 	 */
-	public int[] dummy_fix_reactions;
 	
 	public double[] dummy_e;
 	
@@ -56,23 +52,20 @@ public class Rosenbrock{
 		this.SUCC = succ;
 		this.FAIL = fail;
 		this.maxeval = maxeval;
-		this.dummy_beta_old = o.getDummyBetaOld();
-		this.dummy_beta_new = new double[dummy_beta_old.length];
-		this.dummy_beta_min = o.getDummyBetaMin();
-		this.dummy_beta_max = o.get_dummy_beta_max();
-		this.dummy_fix_reactions = o.get_dummy_fix_reactions();
-		this.dummy_e = new double[o.get_total_no_parameters()];
-		for (int i = 0; i < dummy_beta_old.length; i++) {
-				dummy_e[i] = dummy_beta_old[i] * EFRAC;	
+		this.dummy_beta_new = new double[o.getParams1D().getBeta().length];
+
+		this.dummy_e = new double[o.getParams1D().getBeta().length];
+		for (int i = 0; i < o.getParams1D().getBeta().length; i++) {
+				dummy_e[i] = o.getParams1D().getBeta()[i] * EFRAC;	
 		}
 	}
 
 	public double [] returnOptimizedParameters() throws IOException, InterruptedException{
 		//basis needs to be declared with the correct dimensions:
-		basis = new double [dummy_beta_old.length][dummy_beta_old.length];
+		basis = new double [optimization.getParams1D().getBeta().length][optimization.getParams1D().getBeta().length];
 
 		PrintWriter out = new PrintWriter(new FileWriter("output_Rosenbrock.txt"));
-		PrintWriter out_SSQ = new PrintWriter (new FileWriter("SSQ_Rosenbrock.csv"));
+		PrintWriter outSSQ = new PrintWriter (new FileWriter("SSQ_Rosenbrock.csv"));
 		int neval = 1;
 		out.println("Current evaluation no.: "+neval);
 
@@ -81,7 +74,7 @@ public class Rosenbrock{
 		
 		//evaluate model predictions with initial guesses:
 		//flag_CKSolnList = true
-		List<Map<String,Double>> model = optimization.getModelValues(dummy_beta_old,true);
+		List<Map<String,Double>> model = optimization.getModelValues(optimization.getParams1D().getBeta(),true);
 		
 		// function evaluation in initial point
 		Function f = new Function(model,optimization.getExp());
@@ -91,27 +84,28 @@ public class Rosenbrock{
 		System.out.println("Initial SSQ: "+initial);
 		double current = initial;
 		System.out.println("Current value: "+current);
-		out_SSQ.println(neval+","+initial);
+		outSSQ.println(neval+","+initial);
 		
 		// Set all flags to 2, i.e. no success has been achieved in direction i
-		int [] flag = new int [dummy_beta_old.length];
-		double [] d = new double [dummy_beta_old.length];
+		int [] flag = new int [optimization.getParams1D().getBeta().length];
+		double [] d = new double [optimization.getParams1D().getBeta().length];
 		flag = resetFlag(flag);
 		d = resetD(d);
 		
+		Function fNew;
 		// Main rosenbrock loop
 		while (neval < optimization.maxeval) {
-			for (int i = 0; i < dummy_beta_old.length; i++) {
-				if (dummy_fix_reactions[i]==1){
+			for (int i = 0; i < optimization.getParams1D().getBeta().length; i++) {
+				if (optimization.getParams1D().getFixRxns()[i]==1){
 					System.out.println("Beta: ");
-					print(dummy_beta_old);
+					print(optimization.getParams1D().getBeta());
 					
 					//Parameters are slightly changed in the direction of basisvector 'i' to beta_new(j), j=1..np
 					for (int j = 0; j < dummy_beta_new.length; j++) {
 
 						//new parameter trials:
-						dummy_beta_new[j] = dummy_beta_old[j] + dummy_e[i]*basis[j][i];
-						dummy_beta_new[j] = checkLowerUpperBounds(dummy_beta_new[j], dummy_beta_min[j], dummy_beta_max[j], out);
+						dummy_beta_new[j] = optimization.getParams1D().getBeta()[j] + dummy_e[i]*basis[j][i];
+						dummy_beta_new[j] = checkLowerUpperBounds(dummy_beta_new[j], optimization.getParams1D().getBetamin()[j], optimization.getParams1D().getBetamax()[j], out);
 						
 					}
 					
@@ -136,22 +130,22 @@ public class Rosenbrock{
 					model = optimization.getModelValues(dummy_beta_new,false);
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
-					Function f_new = new Function(model,optimization.getExp());
-					double trial = f_new.getSRES();
+					fNew = new Function(model,optimization.getExp());
+					double trial = fNew.getSRES();
 					
 					out.println("Trial SSQ: "+trial);
 					if(trial < current){
 						out.println("Woohoo! trial < current!");
 						out.println("Old SSQ: "+current);
 						out.println("New SSQ: "+trial);
-						out_SSQ.println(neval+","+trial);
+						outSSQ.println(neval+","+trial);
 						
 						//put new successful parameter guesses in the old ones, which will eventually be returned
 /*						for (int j = 0; j < dummy_beta_old.length; j++) {
 							dummy_beta_old[j] = dummy_beta_new[j];
 						}
 */					
-						System.arraycopy(dummy_beta_new, 0, dummy_beta_old, 0, dummy_beta_old.length);
+						System.arraycopy(dummy_beta_new, 0, optimization.getParams1D().getBeta(), 0, optimization.getParams1D().getBeta().length);
 						current = trial;
 						for (int j = 0; j < d.length; j++) {
 							d[j] = d[j] + dummy_e[j];
@@ -164,7 +158,7 @@ public class Rosenbrock{
 					}
 					else {
 						out.println("Damn. trial SSQ > current SSQ...");
-						out_SSQ.println(neval+","+trial);
+						outSSQ.println(neval+","+trial);
 						dummy_e[i] = FAIL * dummy_e[i];
 						//If flag(i) == 0, at least one success has been followed by a least one failure in direction i.
 						if (flag[i] == 1){
@@ -186,15 +180,15 @@ public class Rosenbrock{
 				
 				//If number of evaluations exceeds maxeval, jump out of 'for' loop and evaluate once more:
 				if (neval >= maxeval){
-					i = dummy_beta_old.length;
+					i = optimization.getParams1D().getBeta().length;
 				}
 			}
 		}
 		
 		out.close();
-		out_SSQ.close();
+		outSSQ.close();
 				
-		return dummy_beta_old;
+		return optimization.getParams1D().getBeta();
 	}
 	/**
 	 * Initialization of the basis, taking unit vectors in every direction of the parameters

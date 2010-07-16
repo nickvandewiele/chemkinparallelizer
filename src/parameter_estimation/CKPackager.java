@@ -8,44 +8,36 @@ import java.util.Map;
  * @author nmvdewie
  *
  */
-public class CKPackager extends Paths{
+public class CKPackager{
 	
+	Paths paths;
 	public String [] reactorOutputs;
-
+	
 	
 	public List<Map<String,Double>> listCKEmulations;
 	public int noExperiments;
-	
 	boolean flagCKSolnList;
 	boolean flagToExcel = false;
-	
-	//use mass fractions in reactor solution data file by default:
-	boolean flagMassfrac = true;
 
-	//constructor for parameter optimization option, flag_massfrac remains false:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic, boolean flag){
-		super(wd, cd, c_inp, r_i, no_lic);
-		noExperiments = r_i.length;
+	//constructor for parameter optimization option:
+	public CKPackager(Paths paths, boolean flag){
+		this.paths = paths;
+		noExperiments = paths.reactorInputs.length;
 		flagCKSolnList = flag;
 	}
 	
-	//constructor for model predictions in mass fractions, used for parity plot mode:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic,  boolean flag, boolean massfrac){
-		this( wd, cd, c_inp, r_i, no_lic, flag);
-		this.flagMassfrac = massfrac;
-	}
 	//constructor for toExcel option:
-	public CKPackager(String wd, String cd, String c_inp, String [] r_i, int no_lic,  boolean flag, boolean toExcel, boolean massfrac){
-		this( wd, cd, c_inp, r_i, no_lic, flag);
+	public CKPackager(Paths paths, boolean flag, boolean toExcel){
+		this(paths, flag);
 		this.flagToExcel = toExcel;
-		this.flagMassfrac = massfrac;
+
 	}
 	
 	public List<Map<String,Double>> getModelValues(){
 		List<Map<String,Double>> list = new ArrayList<Map<String,Double>>();
 		CKEmulation [] dummy = new CKEmulation[noExperiments];
 		Runtime rt = Runtime.getRuntime();
-		Semaphore semaphore = new Semaphore(noLicenses);
+		Semaphore semaphore = new Semaphore(paths.getNoLicenses());
 		for (int i = 0; i < noExperiments; i++) {
 			
 			//only the first CK_emulation needs to create the CKSolnList file:
@@ -53,7 +45,7 @@ public class CKPackager extends Paths{
 				flagCKSolnList = false;
 			}
 					
-			dummy[i] = new CKEmulation(workingDir, chemkinDir, outputDir, rt, chem_inp, reactorInputs[i], flagCKSolnList, semaphore, flagToExcel, flagMassfrac);
+			dummy[i] = new CKEmulation(paths, rt, paths.getReactorInputs()[i], flagCKSolnList, semaphore, flagToExcel);
 			
 			//start a new thread that redirects to the run() method, which contains the sequential chemkin procedure (chem -> CKReactorPlugFlow -> GetSolution ->...)
 			dummy[i].start();

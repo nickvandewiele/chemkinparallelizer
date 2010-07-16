@@ -3,12 +3,15 @@ import java.util.*;
 import java.io.*;
 
 
-public class Param_Est extends Paths{
+public class Param_Est{
 
 	/**
 	 * @throws InterruptedException 
 	 */
-	
+	private Paths paths;
+	public Paths getPaths() {
+		return paths;
+	}
 	public int maxeval;
 	
 	public int noExp;
@@ -16,10 +19,13 @@ public class Param_Est extends Paths{
 	private List<Map<String, Double>> exp;
 	private List<Map<String,Double>> model;
 	
-	public double [][] beta;
-	public double [][] betamin;
-	public double [][] betamax;
-	public int [][] fixReactions;
+	private Parameters2D params;
+	public Parameters2D getParams() {
+		return params;
+	}
+	public void setParams(Parameters2D params) {
+		this.params = params;
+	}
 	
 	//optimization flags:
 	public boolean flagRosenbrock;
@@ -27,23 +33,21 @@ public class Param_Est extends Paths{
 	
 
 	// constructor used for checking the validity of chemistry input file:
-	public Param_Est(String wd, String cd, String c_inp, String [] r_inp, int no_lic){
-		super(wd,cd, c_inp, r_inp, no_lic);
+	public Param_Est(Paths paths){
+		this.paths = paths;
 	}
 	//construct for parity mode:
-	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval){
-		this( wd,  cd, c_inp, reac_inp, no_lic);
+	public Param_Est(Paths paths, Parameters2D params, int no_experiments, String experiments_name, int m_eval){
+		this.paths = paths;
+		this.params = params;
 		noExp = no_experiments;
 		expName = experiments_name;
-		betamin = bmin;
-		betamax = bmax;
 		maxeval = m_eval;
 	}
 	
 	//constructor used for parameter optimization option:
-	public Param_Est(String wd, String cd, String c_inp, String [] reac_inp, int no_lic, int no_experiments, String experiments_name, double [][] bmin, double [][] bmax, int m_eval, int [][] f_rxns, boolean flag_Rosenbrock, boolean flag_LM){
-		this( wd,  cd, c_inp, reac_inp, no_lic, no_experiments, experiments_name, bmin, bmax, m_eval);
-		fixReactions = f_rxns;
+	public Param_Est(Paths paths, Parameters2D params, int no_experiments, String experiments_name, int m_eval, boolean flag_Rosenbrock, boolean flag_LM){
+		this(paths, params, no_experiments, experiments_name, m_eval);
 		this.flagRosenbrock = flag_Rosenbrock;
 		this.flagLM = flag_LM;
 	}
@@ -61,40 +65,40 @@ public class Param_Est extends Paths{
 		
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(paths, r);
 		c.checkChemInput();
 		
 		// take initial guesses from chem.inp file:
-		beta = initialGuess();
+		params.setBeta(Tools.initialGuess(paths.getWorkingDir(), paths.getChemInp(), params.getFixRxns()));
 		System.out.println("Initial Guesses of parameters are:");
-		print(beta);
+		print(params.getBeta());
 		
 		//read experimental data:
 		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
-		exp = experimentsParser();
+		exp = Tools.experimentsParser(expName, noExp);
 		//System.out.println(exp.toString());
 
-		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactorInputs, noLicenses, chem_inp, betamin, betamax, fixReactions, flagRosenbrock, flagLM, exp);
+		Optimization optimization = new Optimization(paths, params, maxeval, flagRosenbrock, flagLM, exp);
 		
 		//call optimization routine:
-		beta = optimization.optimize(exp);
+		params.setBeta(optimization.optimize(exp));
 		
 		//print optimized parameters:
 		System.out.println("New values of parameters are: ");
-		print(beta);
+		print(params.getBeta());
 		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
 
-		for (int i = 0; i < beta.length; i++) {
+		for (int i = 0; i < params.getBeta().length; i++) {
 			out.println("Reaction "+i+": ");
-			for (int j = 0; j < beta[0].length; j++){
-				out.print(beta[i][j]+", ");
+			for (int j = 0; j < params.getBeta()[0].length; j++){
+				out.print(params.getBeta()[i][j]+", ");
 			}
 			out.println();			
 		}
 		
 		out.println();
 		out.close();
-		moveFile(outputDir, "params.txt");
+		Tools.moveFile(paths.getOutputDir(), "params.txt");
 		
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);
@@ -163,125 +167,7 @@ public class Param_Est extends Paths{
 		f.renameTo(new File(path_old_chem));
 		return chemistry_input;
 	}
-	/**
-	 * experiments_parser preprocesses the experimental data file into a easy-to-use format List<Map><String,Double>
-	 * It reads the experimental data file. The format of this file (.csv) ought to be as follows:
-	 * 	-first line states all the variable names, separated by commas
-	 * 	-each of the following lines contain the experimental response variables, in the same order as the variable
-	 *   names were declared
-	 *  Each experiment is stored in a List with HashMaps as elements (see further)
-	 *  The routines cuts each line in pieces, using the comma as separator
-	 *  For each experiment, the variable name and the molar flow rate of each variable are put in a HashMap	 *   
-	 * @return List of the experiments, with molar flowrates of the response variables
-	 * @throws IOException
-	 */
-	public List<Map<String, Double>> experimentsParser ()throws IOException{
-		exp = new ArrayList<Map<String, Double>>();
-		try {
-			//read experimental data file:
-			BufferedReader in = new BufferedReader (new FileReader(expName));
-			//read in species names on first line:
-			String species_names = in.readLine();
-			//System.out.println(species_names);
-			String[] st_species = species_names.split(",");
-			String dummy = in.readLine();
-			//System.out.println(dummy);
-			
-			Map <String, Double> exp_molrates = new HashMap <String, Double>();
-			while(dummy!=null){
-				exp_molrates.clear();
-				String[] st_dummy = dummy.split(",");
-				for (int j = 0; j < st_species.length; j++) {
-					exp_molrates.put(st_species[j],Double.parseDouble(st_dummy[j]));	
-				}
-				exp.add(exp_molrates);
-				//System.out.println(l.toString());
-				dummy = in.readLine();
-				
-			}
-			if (exp.size()!= noExp){
-				System.out.println("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
-				System.exit(-1);
-			}
-			in.close();
-		} catch(IOException e){
-			System.out.println("Something went wrong during the preprocessing of the experimental data file!");
-			System.exit(-1);
-		}
-		if((exp.size()==noExp)){
-			return exp;
-		}
-		else{
-			System.out.println("Experiments database contains different no. of experiments as defined in main class!");
-			System.exit(-1);
-			return null;	
-		}
-		
-	}
-	/**
-	 * initial_guess returns the initial parameter guesses, found in the chem.inp file.
-	 * It does so by reading the file, searching the key-String "REACTIONS	KJOULES/MOLE	MOLES"
-	 * from that point on, every line is read and the 2nd and 4th subString is taken and stored in a List l
-	 * The 2nd and 4th element correspond to A and Ea of the modified Arrhenius equation
-	 * The List l is then converted to a double array and returned
-	 * @return initial guesses for kinetic parameters, as double array 
-	 * @throws IOException
-	 */
-	public double[][] initialGuess () throws IOException{
-		
-		double[][] beta = new double[fixReactions.length][fixReactions[0].length];
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(workingDir+chem_inp));
-			String dummy = in.readLine();
-			
-			//skip part of chem.inp about Elements, Species, Thermo
-			boolean b = true;
-			while(b){
-				dummy = in.readLine();
-				if (dummy.length() <= 8){
-					b = true;
-				}
-				else if (dummy.substring(0,9).equals("REACTIONS")){
-					b = false;
-				}
-				else {
-					b = true;
-				}
-			}
-	
-/*
- * 			A new approach is taken, providing guidelines to the user to adapt his/her reaction mechanism file according to 
- * 			what is specified in the guidelines:
- * 			GUIDELINES:
- * 			-use <=> to denote a reversible reaction (not =)
- * 			-separate kinetic parameters by a single space
- * 			-use a single space after the definition of the elementary reaction, e.g. A+B<=>C+D 1e13 0.0 200.0		
- */
-			for (int i = 0; i < fixReactions.length; i++){
-				dummy = in.readLine();
-				String[] st_dummy = dummy.split("\\s");
-				for (int j = 0; j < fixReactions[i].length; j++){
-					//start with element at position 1 (not 0), because arrhenius parameters start at position 1!
-					beta[i][j] = Double.parseDouble(st_dummy[j+1]);
-				}
-			}
-			in.close();
-			
-		} catch (IOException e) {
-			System.out.println("Problem with obtaining initial parameter guesses!");
-			System.exit(-1);
-		}
-		return beta;
-	}
-	
-	//has become obsolete with the current functionalities 
-	public List<Map<String,Double>> getModelPredictions (){
-		List<Map<String,Double>> model;
-		boolean flag_CKSolnList = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList);
-		model = ckp.getModelValues();
-		return model;
-	}
+
 	/**
 	 * getModelPredictions_massfrac return a list with mass fractions as 'model values' instead of molar flowrates
 	 * this becomes handy for parity plots, because experimental data will often be available in mass fractions, not molar flow rates
@@ -289,8 +175,7 @@ public class Param_Est extends Paths{
 	 */
 	public List<Map<String,Double>> getModelPredictionsMassfrac(){
 		boolean flag_CKSolnList = true;
-		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList, flag_massfrac);
+		CKPackager ckp = new CKPackager(paths, flag_CKSolnList);
 		model = ckp.getModelValues();
 		return model;
 	}
@@ -298,39 +183,39 @@ public class Param_Est extends Paths{
 	 * this routine produces model predictions without comparing them to experimental data
 	 * @throws Exception 
 	 */
-	public void getExcelFiles() throws IOException, InterruptedException{
+	public void excelFiles() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(paths, r);
 		c.checkChemInput();
 		c.join();
 			
 		boolean flag_CKSolnList = true;
 		boolean flag_toExcel = true;
-		boolean flag_massfrac = true;
-		CKPackager ckp = new CKPackager(workingDir, chemkinDir, chem_inp, reactorInputs, noLicenses, flag_CKSolnList, flag_toExcel, flag_massfrac);
+		CKPackager ckp = new CKPackager(paths, flag_CKSolnList, flag_toExcel);
 		ckp.getModelValues();
+		
 		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 
-	public void getParity() throws IOException, InterruptedException{
+	public void parity() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(paths, r);
 		c.checkChemInput();
 		c.join();
 		
 		List<Map<String,Double>> model = getModelPredictionsMassfrac();
-		List<Map<String,Double>> exp = experimentsParser();
-		List<String> speciesNames = c.getSpeciesNames();
+		List<Map<String,Double>> exp = Tools.experimentsParser(expName, noExp);
+		List<String> speciesNames = Tools.getSpeciesNames(c.getPaths().getWorkingDir(), c.getAsu());
 
 		//WRITE PARITY FILE:
-		PrintWriter out = new PrintWriter(new FileWriter(workingDir+"parity.csv"));
+		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"parity.csv"));
 		
 		// loop through all species:
 		for(int i=0;i<speciesNames.size();i++){
@@ -346,7 +231,7 @@ public class Param_Est extends Paths{
 		}
 		out.close();
 		moveOutputFiles();
-		moveFile(outputDir, "parity.csv");
+		Tools.moveFile(paths.getOutputDir(), "parity.csv");
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for Parity Mode to finish: (sec) "+timeTook);
 	}
@@ -359,36 +244,44 @@ public class Param_Est extends Paths{
 		}
 		System.out.println();
 	}
-	public List<Map<String, Double>> getExp() {
+	public List<Map<String, Double>> getExp() throws IOException {
+		exp = Tools.experimentsParser(expName, noExp);
 		return exp;
 	}
 	public List<Map<String, Double>> getModel() {
 		return model;
 	}
-	public void getStatistics() throws IOException, InterruptedException{
+	public void statistics() throws IOException, InterruptedException{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(workingDir, chemkinDir, outputDir, r, chem_inp);
+		CKEmulation c = new CKEmulation(paths, r);
 		c.checkChemInput();
 		
 		// take initial guesses from chem.inp file:
-		beta = initialGuess();
+		params.setBeta(Tools.initialGuess(paths.getWorkingDir(), paths.getChemInp(), params.getFixRxns()));
 		System.out.println("Initial Guesses of parameters are:");
-		print(beta);
+		print(params.getBeta());
 		
 		//read experimental data:
 		List<Map<String,Double>> exp = new ArrayList<Map<String,Double>>();
-		exp = experimentsParser();
+		exp = Tools.experimentsParser(expName, noExp);
 		//System.out.println(exp.toString());
 
-		Optimization optimization = new Optimization(workingDir, chemkinDir, maxeval, beta, reactorInputs, noLicenses, chem_inp, betamin, betamax, fixReactions, flagRosenbrock, flagLM, exp);
+		Optimization optimization = new Optimization(paths, params, maxeval, flagRosenbrock, flagLM, exp);
 		
 		optimization.calcStatistics();
 		//moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);	    	    
 	}
-	
+	protected void moveOutputFiles (){
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".out");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asu");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".input");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asc");
+		Tools.moveFile(paths.getOutputDir(),"CKSolnList.txt");
+		
+	}
 }

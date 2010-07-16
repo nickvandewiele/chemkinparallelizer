@@ -11,9 +11,9 @@ import java.io.File;
 public class Paths {
 	protected String workingDir;
 	protected String chemkinDir;
-	protected String chem_inp;
+	protected String binDir;
+	protected String chemInp;
 	protected String [] reactorInputs;
-	protected int noExperiments;
 	protected String outputDir;
 
 	//no_licenses sets the limiting number for the counting semaphore
@@ -22,9 +22,11 @@ public class Paths {
 	public Paths (String wd, String cd, String c_inp, String [] r_inp, int no_lic){
 		workingDir = wd;
 		chemkinDir = cd;
-		chem_inp = c_inp;
+		chemInp = c_inp;
 		reactorInputs = r_inp;
 		outputDir = workingDir+"output/";
+		binDir = chemkinDir+"/bin/";
+		createOutputDir();
 		noLicenses = no_lic;
 		
 	}
@@ -35,41 +37,29 @@ public class Paths {
 			System.exit(-1);
 		}
 	}
-	/**
-	 * moveFiles moves all files with extension e to the specified destination dir
-	 * @param orig_dir
-	 * @param dest_dir
-	 * @param e
-	 */
-	protected void moveFiles( String orig_dir, String dest_dir, String e ) {
-	     ExtensionFilter filter = new ExtensionFilter(e);
-	     File original_dir = new File(orig_dir);
-	     String[] list = original_dir.list(filter);
-	     if (list.length == 0) return;
 
-	     for (int i = 0; i < list.length; i++) {
-	       // Move file to new directory
-	    	 File file = new File(list[i]);
-	    	 boolean success = file.renameTo(new File(dest_dir, list[i]));
-	    	 System.out.println( "File was successfully moved? " + success + "!");
-	     }    
+	public String getOutputDir() {
+		return outputDir;
 	}
-	protected void moveOutputFiles (){
-		moveFiles(workingDir, outputDir, ".out");
-		moveFiles(workingDir, outputDir, ".asu");
-		moveFiles(workingDir, outputDir, ".input");
-		moveFiles(workingDir, outputDir, ".asc");
-		moveFile(outputDir,"CKSolnList.txt");
-		
+	public void setOutputDir(String outputDir) {
+		this.outputDir = outputDir;
 	}
-	protected void moveFile(String dest_dir, String filename){
-		// File (or directory) to be moved
-	    File file = new File(filename);
-	    
-	    // Move file to new directory
-	    boolean success = file.renameTo(new File(dest_dir, file.getName()));
-	    if (!success) {
-	        // File was not successfully moved
-	    }
+	public String getWorkingDir() {
+		return workingDir;
+	}
+	public String getChemkinDir() {
+		return chemkinDir;
+	}
+	public String getChemInp() {
+		return chemInp;
+	}
+	public String[] getReactorInputs() {
+		return reactorInputs;
+	}
+	public int getNoLicenses() {
+		return noLicenses;
+	}
+	public String getBinDir() {
+		return binDir;
 	}
 }
