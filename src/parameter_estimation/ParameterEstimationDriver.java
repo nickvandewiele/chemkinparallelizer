@@ -329,7 +329,7 @@ public class ParameterEstimationDriver {
 	public static void initializeLog(){
 		SimpleLayout layout = new SimpleLayout();
 		
-		//make Appender, it's a FileAppender, writing to loggerNick.txt:
+		//make Appender, it's a FileAppender, writing to NBMT.log:
 		FileAppender appender = null;
 		try {
 			appender = new FileAppender(layout, "NBMT.log", false);
