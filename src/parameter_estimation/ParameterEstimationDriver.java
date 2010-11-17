@@ -58,6 +58,9 @@ public class ParameterEstimationDriver {
 		String reactorSetupsDb = in.readLine();
 		
 		in.readLine();
+		Integer reactorSetupType = Integer.parseInt(in.readLine());
+		
+		in.readLine();
 		int noExperiments = Integer.parseInt(in.readLine());
 		
 		//number of parameters to be fitted:
@@ -122,7 +125,8 @@ public class ParameterEstimationDriver {
 		
 		in.close();
 		
-		String template = "reactor_input_template.inp";
+		//String template = "reactor_input_template.inp";
+		String template = "PFR_template.inp";
 		
 		double [][] betaMin = new double [noFittedReactions][noParametersPerReaction];
 		double [][] betaMax = new double [noFittedReactions][noParametersPerReaction];
@@ -134,7 +138,12 @@ public class ParameterEstimationDriver {
 		}
 		
 		if (flagReactorDb){
+			if(reactorSetupType==1){
 			reactor_inputs = reactorInputsParser(workingDir, reactorSetupsDb, template, noExperiments);
+			}
+			if(reactorSetupType==2){
+				reactor_inputs = reactorInputsParser2(workingDir, reactorSetupsDb, template, noExperiments);
+			}
 		}
 
 		Paths paths = new Paths(workingDir,chemkinDir,chemInp,reactor_inputs,noLicenses);
@@ -250,9 +259,9 @@ public class ParameterEstimationDriver {
 				String filename = "reactor_input_"+experiment_counter+".inp";
 				reactorInputs.add(filename);
 				PrintWriter out = new PrintWriter(new FileWriter(workingDir+filename));
-				
-				//copy the first 7 lines:
-				for(int i = 0 ; i < 7 ; i++){
+
+				//copy the first 2 lines:
+				for(int i = 0 ; i < 2 ; i++){
 					String d = in_template.readLine();
 					out.println(d);
 				}
@@ -332,6 +341,7 @@ public class ParameterEstimationDriver {
 			for (int j = 0; j < fix_reactions[0].length; j++){
 				counter+=fix_reactions[i][j];
 			}
+			
 		}
 		return (counter == no_params); 
 		
