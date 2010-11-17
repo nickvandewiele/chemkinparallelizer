@@ -164,6 +164,17 @@ public class ParameterEstimationDriver {
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
 	}
+	
+	/**
+	 * standard reactor input parser where T, P profiles can be specified, but with
+	 * only 1 reactor length specified
+	 * @param workingDir
+	 * @param experiments
+	 * @param template
+	 * @param no_experiments
+	 * @return
+	 * @throws IOException
+	 */
 	public static String[] reactorInputsParser(String workingDir, String experiments, String template, int no_experiments) throws IOException{
 		ArrayList<String> reactorInputs = new ArrayList<String>();
 		
@@ -339,5 +350,142 @@ public class ParameterEstimationDriver {
 
 //		BasicConfigurator.configure();
 	}
+	
+	/**
+	 * this parsers is designed for the reactor input with
+	 * isothermal, isobaric reactor profiles, but variable reactor lengths
+	 * 
+	 * This becomes handy when different sets of experimental data are to be compared, and the 
+	 * 'equivalent' reactor length is calculated.
+	 * @param workingDir
+	 * @param experiments
+	 * @param template
+	 * @param no_experiments
+	 * @return
+	 * @throws IOException
+	 */
+	public static String[] reactorInputsParser2 (String workingDir, String experiments, String template, int no_experiments) throws IOException{
+		ArrayList<String> reactorInputs = new ArrayList<String>();
+		String filename;
+		//read first line of excel input:
+		/*
+		 * Reading the first line will reveal:<BR>
+		 * <LI>the number and names of species at the reactor inlet</LI>
+		 * <LI>the T profile</LI>
+		 * <LI>the P profile</LI>		
+		 */
+		BufferedReader in_excel = new BufferedReader(new FileReader(workingDir+experiments));
 
+		String [] dummy = in_excel.readLine().split(",");
+
+		//		NOS : number of species
+		int NOS = dummy.length-1;
+		ArrayList<String> species_name = new ArrayList<String>();
+		for (int i = 0; i < NOS; i++){
+			species_name.add(dummy[1+i]);
+		}
+
+		dummy = in_excel.readLine().split(",");
+		ArrayList<Double> species_mw = new ArrayList<Double>();
+		for (int i = 0; i < NOS; i++){
+			species_mw.add(Double.parseDouble(dummy[1+i]));
+		}
+
+
+		/*
+		 * Start writing the actual reactor input file, by doing the following:<BR>
+		 * <LI>read in the lines of the template reactor input file that remain unchanged. write them to your output file</LI>
+		 * <LI>change total mass flow rate</LI>
+		 * <LI>add Pressure profile</LI>
+		 * <LI>add Temperature profile</LI>
+		 * <LI>add diameter</LI>
+		 */
+
+		int experiment_counter = 0;
+		String line = null;
+		in_excel.readLine();
+		try {
+			line = in_excel.readLine();
+
+			double convert_m_cm = 100;
+			double convert_C_K = 273.15;
+			double diameter, length, temperature, pressure;
+
+			while(!dummy.equals(null)){				
+				BufferedReader in_template = new BufferedReader(new FileReader(workingDir+template));
+				String [] dummy_array = line.split(",");
+				//experiment_counter contains the experiment number that will be used in the reactor input file name:
+				experiment_counter = Integer.parseInt(dummy_array[0]);
+				filename = "reactor_input_"+experiment_counter+".inp";
+
+				reactorInputs.add(filename);
+				PrintWriter out = new PrintWriter(new FileWriter(workingDir+filename));
+
+				//copy the first 7 lines:
+				for(int i = 0 ; i < 7 ; i++){
+					String d = in_template.readLine();
+					out.println(d);
+				}
+
+				//total mass flow rate:
+				double massflrt = 0.0;
+				double molflrt = 0.0;
+				for(int i = 0 ; i < NOS; i++){
+					massflrt=massflrt + Double.parseDouble(dummy_array[1+i])/3600;
+					molflrt=molflrt + Double.parseDouble(dummy_array[1+i])/species_mw.get(i);
+				}
+
+				out.println("FLRT"+" "+massflrt);
+
+				convert_m_cm = 100;
+				//Diameter:
+				diameter = Double.parseDouble(dummy_array[NOS+1]) * convert_m_cm;
+				out.println("DIAM "+diameter);
+
+				//reactor length: 
+				length = Double.parseDouble(dummy_array[NOS+2]) * convert_m_cm;
+				out.println("XEND "+length);
+
+				//temperature:
+				temperature = Double.parseDouble(dummy_array[NOS+3])+convert_C_K;
+				out.println("TPRO 0.0"+" "+temperature);
+				out.println("TPRO "+length+" "+temperature);
+
+				//pressure:
+				pressure = Double.parseDouble(dummy_array[NOS+4]);
+				out.println("PPRO 0.0"+" "+pressure);
+				out.println("PPRO "+length+" "+pressure);
+
+				//Inlet Species:
+				double molfr = 0.0;
+				for(int i = 0 ; i < NOS; i++){
+					molfr = (Double.parseDouble(dummy_array[1+i])/species_mw.get(i))/molflrt;
+					out.println("REAC "+species_name.get(i)+" "+molfr);
+				}
+
+				//force solver to use nonnegative species fractions:
+				out.println("NNEG");
+
+				//END:
+				out.println("END");
+
+				in_template.close();
+				out.close();
+				line = in_excel.readLine();
+			}
+			in_excel.close();
+		}catch (Exception e){}//do nothing: e catches the end of the file exception
+
+		// verify the correct number of lines in reactor input file:
+		if( reactorInputs.size()!= no_experiments){
+			System.out.println("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");
+			System.exit(-1);
+		}
+
+		//convert ArrayList to String []:
+		String [] a = new String[reactorInputs.size()];
+		reactorInputs.toArray(a);
+
+		return a;
+	}
 }
