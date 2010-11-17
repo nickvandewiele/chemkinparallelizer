@@ -289,21 +289,21 @@ public class Optimization{
 		out.println(s.getTabulated_t_value());
 		out.println();
 		out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
-		s.printMatrix(s.getConfidence_intervals(), out);
+		s.printMatrix(s.getConfIntervals(), out);
 		out.println();
 		out.println("Number of experiments:");
-		out.println(s.getNo_experiments());
+		out.println(s.getNoExperiments());
 		out.println("Number of parameters:");
-		out.println(s.getNo_parameters());
+		out.println(s.getNoParams());
 		out.println("Number of responses:");
-		out.println(s.getNo_responses());
+		out.println(s.getNoResp());
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());
 		out.println("SREG: ");
 		out.println(s.getSREG());
 		out.println("calculated F-value: ");
-		out.println(s.getF_value());
+		out.println(s.getFvalue());
 /*		
 		out.println("tabulated F-value: ");
 		out.println(s.getTabulated_F_value());

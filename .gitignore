@@ -1,4 +1,5 @@
-bin//output
+/bin
+/output
 /chem.inp
 /chemkindata.dtd
 /exp.csv

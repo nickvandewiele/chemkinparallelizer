@@ -1,5 +1,4 @@
 package stat;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,9 +9,9 @@ import cern.jet.stat.Probability;
 
 public class Statistics {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	private int no_experiments;
-	private int no_parameters;
-	private int no_responses;
+	private int noExperiments;
+	private int noParams;
+	private int noResp;
 	private double [][] var_covar; //variance-covariance matrix of parameter estimations
 	private double [][] corr; //correlation matrix of parameter estimations
 	private double [][] JTJ;//curvature matrix, transpose(Jacobian).Jacobian
@@ -23,38 +22,36 @@ public class Statistics {
 	private Optimization optimization;
 	private double SREG;
 	private double SRES;
-	private double F_value;
+	private double Fvalue;
 	private double tabulated_t_value;//t_(1-alpha/2)
 	private double tabulated_F_value;
 	private double[][] confidence_intervals; 
 	
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
-	no_experiments = optimization.getNBMTHost().getNPTS();
-	no_parameters = optimization.getNBMTHost().getNPARMS();
-	no_responses = optimization.getNBMTHost().getNRESP();
+	noExperiments = optimization.getNBMTHost().getNPTS();
+	noParams = optimization.getNBMTHost().getNPARMS();
+	noResp = optimization.getNBMTHost().getNRESP();
 }
 
 /**
  * variance-covariance matrix of parameter estimations
  * @throws IOException 
  */
-public void calc_var_covar() throws IOException, InterruptedException{
-	//double sos = optimization.getNBMTmultiDHost().getFunction().getSSQ();
-	double sos = optimization.getNBMTHost().getFunction().getSRES();
+public void calcVarCovar() throws IOException, InterruptedException{
 	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
 	double [][] J = optimization.getNBMTHost().dGetFullJac();
 	
 	
-	var_covar = new double[no_parameters][no_parameters];
+	var_covar = new double[noParams][noParams];
 	
-	JTJ = new double[no_parameters][no_parameters];
+	JTJ = new double[noParams][noParams];
 	
-	for (int k=0; k < no_parameters; k++)      // calculate curvature matrix JTJ
-        for (int j=0; j < no_parameters; j++)
+	for (int k=0; k < noParams; k++)      // calculate curvature matrix JTJ
+        for (int j=0; j < noParams; j++)
         {
             JTJ[j][k] = 0.0;
-            for (int i=0; i < no_experiments * no_responses; i++)
+            for (int i=0; i < noExperiments * noResp; i++)
           		  JTJ[j][k] += J[i][j] * J[i][k];	           	             
         }
 	
@@ -73,24 +70,24 @@ public void calc_var_covar() throws IOException, InterruptedException{
 	var_covar = JTJminus1;
 	
 }
-public void calc_corr(){
+public void calcCorr(){
 	corr = new double[var_covar.length][var_covar[0].length];
-	for (int k=0; k < no_parameters; k++)      // calculate curvature matrix JTJ
-        for (int j=0; j < no_parameters; j++)
+	for (int k=0; k < noParams; k++)      // calculate curvature matrix JTJ
+        for (int j=0; j < noParams; j++)
         {
         	corr[k][j] = var_covar[k][j] / Math.sqrt(var_covar[k][k]*var_covar[j][j]);
         }
 }
-public void calc_ANOVA() throws IOException, InterruptedException{
+public void calcANOVA() throws IOException, InterruptedException{
 	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
 	SREG = function.getSREG();
 	SRES = function.getSRES();
-	F_value = (SREG/no_parameters) / (SRES/(no_experiments * no_responses - no_parameters));
+	Fvalue = (SREG/noParams) / (SRES/(noExperiments * noResp - noParams));
 }
 /**
  * t-value for significance of individual parameter estimation with respect to zero
  */
-public void calc_t_values(){
+public void calcTValues(){
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
 	
@@ -105,13 +102,13 @@ public void calc_t_values(){
  * 95% confidence intervals
  * @throws IOException 
  */
-public void calc_confidence_intervals() throws IOException, InterruptedException{
+public void calcConfIntervals() throws IOException, InterruptedException{
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
-	confidence_intervals = new double[no_parameters][3];
+	confidence_intervals = new double[noParams][3];
 	
 	calc_tabulated_t();
-	calc_var_covar();
+	calcVarCovar();
 	
 	for (int i = 0; i < confidence_intervals.length; i++) {
 		confidence_intervals[i][0] = params[i];//parameter estimation is added in first column
@@ -123,7 +120,7 @@ public void calc_confidence_intervals() throws IOException, InterruptedException
  * tabulated two-sided t-value for n*v-p experiments for an accumulated probability of 1-alpha/2
  */
 public void calc_tabulated_t(){
-	tabulated_t_value = Probability.studentTInverse(alpha, no_experiments*no_responses - no_parameters);
+	tabulated_t_value = Probability.studentTInverse(alpha, noExperiments*noResp - noParams);
 }
 /*
 public void calc_tabulated_F(){
@@ -204,11 +201,11 @@ public double[][] gaussj( double[][] a, int N )
     return a;
 }
 public double [][] get_Var_Covar() throws IOException, InterruptedException{
-	calc_var_covar();
+	calcVarCovar();
 	return var_covar;
 }
 public double [][] get_Corr() throws IOException, InterruptedException{
-	calc_corr();
+	calcCorr();
 	return corr;
 }
 public void printArray(double [] d, PrintWriter out){
@@ -248,7 +245,7 @@ public void print3DMatrix(double [][][] d,PrintWriter out){
 	//System.out.println();
 }
 public double[] getT_values() {
-	calc_t_values();
+	calcTValues();
 	return t_values;
 }
 public double[][] getJTJ() {
@@ -258,24 +255,24 @@ public double getTabulated_t_value() {
 	calc_tabulated_t();
 	return tabulated_t_value;
 }
-public double[][] getConfidence_intervals() throws IOException, InterruptedException {
-	calc_confidence_intervals();
+public double[][] getConfIntervals() throws IOException, InterruptedException {
+	calcConfIntervals();
 	return confidence_intervals;
 }
 
 public double getSREG() throws IOException, InterruptedException {
-	calc_ANOVA();
+	calcANOVA();
 	return SREG;
 }
 
 public double getSRES() throws IOException, InterruptedException {
-	calc_ANOVA();
+	calcANOVA();
 	return SRES;
 }
 
-public double getF_value() throws IOException, InterruptedException {
-	calc_ANOVA();
-	return F_value;
+public double getFvalue() throws IOException, InterruptedException {
+	calcANOVA();
+	return Fvalue;
 }
 /*
 public double getTabulated_F_value() {
@@ -284,16 +281,16 @@ public double getTabulated_F_value() {
 }
 */
 
-public int getNo_experiments() {
-	return no_experiments;
+public int getNoExperiments() {
+	return noExperiments;
 }
 
 
-public int getNo_parameters() {
-	return no_parameters;
+public int getNoParams() {
+	return noParams;
 }
 
-public int getNo_responses() {
-	return no_responses;
+public int getNoResp() {
+	return noResp;
 }
 }
