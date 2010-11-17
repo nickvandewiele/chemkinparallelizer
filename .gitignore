@@ -1,1 +1,7 @@
-bin/
+bin//output
+/chem.inp
+/chemkindata.dtd
+/exp.csv
+/INPUT.txt
+/reactor_input_template.inp
+/reactor_input.csv

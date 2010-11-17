@@ -14,7 +14,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import parameter_estimation.levenberg.mono.NBMTHost;
+import parameter_estimation.levenberg.NBMTHost;
 
 import stat.Statistics;
 
