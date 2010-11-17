@@ -1,0 +1,49 @@
+//Working Directory:
+C:/Documents and Settings/nmvdewie/My Documents/Nick's Black Magic Toolbox/Eclipse Workspace/be.ugent.lct.nbmt.git.github/
+//Chemkin Directory:
+C:/Program Files/Reaction/chemkin41_pc
+//Number of chemkin licenses to be used:
+2
+//Chemistry input filename:
+chem.inp
+//Experimental database:(leave blank line if file is not required for run mode)
+exp.csv
+//user specified reactor setup data in form of separate files(false) or one single reactor setup database (true)?
+true
+// database with reactor setup data (leave blank line if file is not required for run mode)
+reactor_input.csv
+//Reactor setup method: 1: standard, 2: new method with isothermal, isobaric reactor profiles, but variable reactor lengths
+1
+//Number of experiments:
+8
+//Number of parameters to be fitted:(fill 0 if not required for run mode)
+0
+//Rosenbrock flag (fill true if Rosenbrock will be used for optimization, otherwise false)
+false
+//Levenberg-Marquardt flag (fill true if Levenberg-Marquardt will be used for optimization, otherwise false)
+false
+//Maximum number of Rosenbrock evaluations:(fill 0 if not required for run mode)
+0
+//model prediction 'parity plots' mode(0) or parameter estimation mode(1) or Excel postprocessing sheets (2) or Statistics (3)
+0
+//filenames of reactor input files, in the same order as you specified your experimental database file! (leave blank line if not required)
+
+//OPTIMIZATION SECTION: modified Arrhenius parameters [A, n, Ea]: 1 = loose, parameter will be varied; 0 = fixed, parameter will be fixed
+//number of reaction to be varied (maximum of 8)
+0
+//reaction 1:
+0,0,0
+//reaction 2:
+0,0,0
+//reaction 3:
+0,0,0
+//reaction 4:
+0,0,0
+//reaction 5:
+0,0,0
+//reaction 6:
+0,0,0
+//reaction 7:
+0,0,0
+//reaction 8:
+0,0,0

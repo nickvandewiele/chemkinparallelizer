@@ -1,0 +1,2119 @@
+INFO - STATISTICS MODE
+INFO - Here is the standard output of the command:
+
+INFO - Open C CKPreProcess input C:/Documents and Settings/nmvdewie/My Documents/Nick's Black Magic Toolbox/Eclipse Workspace/be.ugent.lct.nbmt.git.github/CKPreProc_template.input
+INFO - 
+INFO - BEGIN processing of Gas-phase Kinetics mechanism
+INFO - Open Fortran Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.inp
+INFO - Open Fortran Gas-phase Kinetics output C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.out
+INFO - Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asc
+INFO - Call C chemsize for mechanism parameters
+INFO - Open C Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.inp
+INFO - Call Fortran CKDIM for memory requirements
+INFO - Call Fortran CKCLEN for character-string length
+INFO - Call Fortran CKINTP to process mechanism
+INFO - Running Command Mode
+INFO - END Gas-phase Kinetics processing
+INFO - 
+INFO - BEGIN post-processing Gas-phase Kinetics linkfile
+INFO - Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asc
+INFO - Call Fortran CKLEN for memory requirements
+INFO - Call Fortran CKCLEN for character-string size
+INFO - Call Fortran CKINIT to fill work arrays
+INFO - 
+INFO - Initializing CHEMKIN Gas-phase Library, a component of CHEMKIN Release 4.1.1.  Build date: Aug 6, 2007
+INFO - This and All Other CHEMKIN(R) Libraries are Copyright (c) 1997-2007 Reaction Design.  All rights reserved.
+INFO - 
+INFO - 
+INFO - LICENSE INFORMATION: 
+INFO -  
+INFO - 
+INFO - LicNum: 2190
+INFO -  Licensed to Universiteit Gent
+INFO -  Contact: Guy Marin
+INFO -  Expiring: 31-mar-2011
+INFO -                                                                                                                                                                                                                                                                                                                                                                                                                                          
+INFO - Call Fortran CKINDX for mechanism parameters
+INFO - Call Fortran CKWT for Species Weights
+INFO - Call Fortran CKSYMS for Species Names
+INFO - Call Fortran CKSYMR for ReactionStrings
+INFO - Running Command Mode
+INFO - Call C PrintGasSpecies to print species data
+INFO - Open C Gas-phase Kinetics species file C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asu
+INFO - END post-processing Gas-phase Kinetics linkfile
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Initial chemistry input file contains no errors. Proceed to parameter estimation!
+INFO - Initial Guesses of parameters are:
+INFO - 1.0E15 
+INFO - 0.0 
+INFO - 55.0 
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 55.0055
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - File copied.
+INFO - Thread 4 was started
+INFO - Thread 5 was started
+INFO - File copied.
+INFO - Thread 6 was started
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_3.inp
+INFO - license acquired!reactor_input_4.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_2.inp
+INFO - license acquired!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_4.inp
+INFO - license acquired!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_6.inp
+INFO - license released!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_7.inp
+INFO - license acquired!reactor_input_8.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_6.inp
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 54.994498899999996
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - File copied.
+INFO - Thread 4 was started
+INFO - File copied.
+INFO - Thread 5 was started
+INFO - Thread 6 was started
+INFO - File copied.
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_2.inp
+INFO - license acquired!reactor_input_4.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_5.inp
+INFO - license released!reactor_input_3.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_7.inp
+INFO - license released!reactor_input_4.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_5.inp
+INFO - license acquired!reactor_input_6.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_7.inp
+INFO - license acquired!reactor_input_8.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_6.inp
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 54.99999834989
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - Thread 4 was started
+INFO - File copied.
+INFO - Thread 5 was started
+INFO - File copied.
+INFO - Thread 6 was started
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_3.inp
+INFO - license acquired!reactor_input_4.inp
+INFO - license acquired!reactor_input_5.inp
+INFO - license released!reactor_input_2.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_5.inp
+INFO - license acquired!reactor_input_6.inp
+INFO - File copied.
+INFO - license released!reactor_input_4.inp
+INFO - license acquired!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_8.inp
+INFO - license released!reactor_input_7.inp
+INFO - license released!reactor_input_6.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - 77.35791382719053 
+INFO - 
+INFO - 1.0 
+INFO - 
+INFO - 6.253314938971299 
+INFO - 54.99999834989 
+INFO - 72.93820189179948 
+INFO - 37.061794807980526 
+INFO - 
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 54.99999834989
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - Thread 4 was started
+INFO - File copied.
+INFO - Thread 5 was started
+INFO - Thread 6 was started
+INFO - File copied.
+INFO - File copied.
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_3.inp
+INFO - license acquired!reactor_input_4.inp
+INFO - File copied.
+INFO - license released!reactor_input_2.inp
+INFO - license acquired!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_5.inp
+INFO - license acquired!reactor_input_6.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - license acquired!reactor_input_7.inp
+INFO - license released!reactor_input_4.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_8.inp
+INFO - license released!reactor_input_6.inp
+INFO - license released!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 54.99999834989
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - Thread 4 was started
+INFO - File copied.
+INFO - Thread 5 was started
+INFO - Thread 6 was started
+INFO - File copied.
+INFO - File copied.
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_5.inp
+INFO - license released!reactor_input_2.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_4.inp
+INFO - license released!reactor_input_3.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_6.inp
+INFO - license released!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - license released!reactor_input_4.inp
+INFO - license acquired!reactor_input_7.inp
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_8.inp
+INFO - license released!reactor_input_6.inp
+INFO - license released!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - 2H2+O2=>2H2O 1.0E15 0.0 54.99999834989
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - Thread 4 was started
+INFO - File copied.
+INFO - Thread 5 was started
+INFO - File copied.
+INFO - Thread 6 was started
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO -   deleted true
+INFO - license released!reactor_input_3.inp
+INFO - license released!reactor_input_2.inp
+INFO - license acquired!reactor_input_4.inp
+INFO - license acquired!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO -   deleted true
+INFO - license released!reactor_input_5.inp
+INFO - license acquired!reactor_input_6.inp
+INFO - license released!reactor_input_4.inp
+INFO - license acquired!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_7.inp
+INFO - license acquired!reactor_input_8.inp
+INFO - license released!reactor_input_6.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - Time needed for this optimization to finish: (sec) 39
+INFO - Here is the standard output of the command:
+
+INFO - Open C CKPreProcess input C:/Documents and Settings/nmvdewie/My Documents/Nick's Black Magic Toolbox/Eclipse Workspace/be.ugent.lct.nbmt.git.github/CKPreProc_template.input
+INFO - 
+INFO - BEGIN processing of Gas-phase Kinetics mechanism
+INFO - Open Fortran Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.inp
+INFO - Open Fortran Gas-phase Kinetics output C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.out
+INFO - Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asc
+INFO - Call C chemsize for mechanism parameters
+INFO - Open C Gas-phase Kinetics input C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.inp
+INFO - Call Fortran CKDIM for memory requirements
+INFO - Call Fortran CKCLEN for character-string length
+INFO - Call Fortran CKINTP to process mechanism
+INFO - Running Command Mode
+INFO - END Gas-phase Kinetics processing
+INFO - 
+INFO - BEGIN post-processing Gas-phase Kinetics linkfile
+INFO - Open Fortran Gas-phase Kinetics linkfile C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asc
+INFO - Call Fortran CKLEN for memory requirements
+INFO - Call Fortran CKCLEN for character-string size
+INFO - Call Fortran CKINIT to fill work arrays
+INFO - 
+INFO - Initializing CHEMKIN Gas-phase Library, a component of CHEMKIN Release 4.1.1.  Build date: Aug 6, 2007
+INFO - This and All Other CHEMKIN(R) Libraries are Copyright (c) 1997-2007 Reaction Design.  All rights reserved.
+INFO - 
+INFO - 
+INFO - LICENSE INFORMATION: 
+INFO -  
+INFO - 
+INFO - LicNum: 2190
+INFO -  Licensed to Universiteit Gent
+INFO -  Contact: Guy Marin
+INFO -  Expiring: 31-mar-2011
+INFO -                                                                                                                                                                                                                                                                                                                                                                                                                                          
+INFO - Call Fortran CKINDX for mechanism parameters
+INFO - Call Fortran CKWT for Species Weights
+INFO - Call Fortran CKSYMS for Species Names
+INFO - Call Fortran CKSYMR for ReactionStrings
+INFO - Running Command Mode
+INFO - Call C PrintGasSpecies to print species data
+INFO - Open C Gas-phase Kinetics species file C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\chem.asu
+INFO - END post-processing Gas-phase Kinetics linkfile
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Initial chemistry input file contains no errors. Proceed to parameter estimation!
+INFO - Thread 0 was started
+INFO - license acquired!reactor_input_1.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_1\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_1.inp
+INFO - Thread 1 was started
+INFO - license acquired!reactor_input_2.inp
+INFO - Thread 2 was started
+INFO - license acquired!reactor_input_3.inp
+INFO - Thread 3 was started
+INFO - Thread 4 was started
+INFO - Thread 5 was started
+INFO - File copied.
+INFO - File copied.
+INFO - Thread 6 was started
+INFO - File copied.
+INFO - Thread 7 was started
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - Here is the standard output of the command:
+
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_3\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_2\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_4.inp
+INFO - license released!reactor_input_3.inp
+INFO - File copied.
+INFO - File copied.
+INFO - license released!reactor_input_2.inp
+INFO - license acquired!reactor_input_5.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_5\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_4\XMLdata.zip
+INFO -   deleted true
+INFO - license acquired!reactor_input_6.inp
+INFO - license released!reactor_input_5.inp
+INFO - license released!reactor_input_4.inp
+INFO - license acquired!reactor_input_7.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_7\XMLdata.zip
+INFO -   deleted true
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_6\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_7.inp
+INFO - license acquired!reactor_input_8.inp
+INFO - File copied.
+INFO - File copied.
+INFO - File copied.
+INFO - license released!reactor_input_6.inp
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - License AURORA Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - File copied.
+INFO - File copied.
+INFO - Here is the standard output of the command:
+
+INFO - Running Command Mode
+INFO - 
+INFO - License CHEMKIN Checked In
+INFO - Licenses Released
+DEBUG - Here is the standard error of the command (if any):
+
+INFO - C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\temp_ reactor_input_8\XMLdata.zip
+INFO -   deleted true
+INFO - license released!reactor_input_8.inp
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - File was successfully moved!
+INFO - Time needed for Parity Mode to finish: (sec) 7
+INFO - Time needed for this program to finish: (sec) 46
