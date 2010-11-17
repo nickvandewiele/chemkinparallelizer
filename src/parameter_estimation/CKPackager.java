@@ -3,13 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * CKPackager is a type that bundles all executed CKEmulations into one data structure. It corresponds to the set of experiments that are executed 
  * @author nmvdewie
  *
  */
 public class CKPackager{
-	
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	Paths paths;
 	public String [] reactorOutputs;
 	
@@ -49,7 +51,7 @@ public class CKPackager{
 			
 			//start a new thread that redirects to the run() method, which contains the sequential chemkin procedure (chem -> CKReactorPlugFlow -> GetSolution ->...)
 			dummy[i].start();
-			System.out.println("Thread "+i+" was started");
+			logger.info("Thread "+i+" was started");
 
 			//wait to start other threads before the first thread, creating the CKSolnList.txt is completely finished:
 			if (flagCKSolnList){

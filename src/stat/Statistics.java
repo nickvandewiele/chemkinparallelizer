@@ -3,11 +3,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import levenberg.multi.*;
+import org.apache.log4j.Logger;
+
 import parameter_estimation.*;
 import cern.jet.stat.Probability;
 
 public class Statistics {
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	private int no_experiments;
 	private int no_parameters;
 	private int no_responses;
@@ -212,38 +214,38 @@ public double [][] get_Corr() throws IOException, InterruptedException{
 public void printArray(double [] d, PrintWriter out){
 	for (int i = 0; i < d.length; i++) {
 		out.print(d[i]+" ");
-		System.out.print(d[i]+" ");
+		logger.info(d[i]+" ");
 	}
 	out.println();
-	System.out.println();
+	//System.out.println();
 }
 public void printMatrix(double [][] d,PrintWriter out){
 	for (int i = 0; i < d.length; i++) {
 		for (int j = 0; j < d[0].length; j++) {
 			out.print(d[i][j]+" ");
-			System.out.print(d[i][j]+" ");			
+			logger.info(d[i][j]+" ");			
 		}
 		out.println();
-    	System.out.println();
+    	logger.info("");
 	}
 	out.println();
-	System.out.println();
+	//System.out.println();
 }
 public void print3DMatrix(double [][][] d,PrintWriter out){
 	for (int i = 0; i < d.length; i++) {
 		for (int j = 0; j < d[0].length; j++) {
 			for (int k = 0; k < d[0][0].length; k++) {
 				out.print(d[i][j][k]+" ");
-				System.out.print(d[i][j][k]+" ");			
+				logger.info(d[i][j][k]+" ");			
 			}
 			out.println();
-	    	System.out.println();
+	    	logger.info("");
 		}
 		out.println();
-    	System.out.println();
+    	logger.info("");
 	}
 	out.println();
-	System.out.println();
+	//System.out.println();
 }
 public double[] getT_values() {
 	calc_t_values();

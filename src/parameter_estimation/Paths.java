@@ -2,6 +2,8 @@ package parameter_estimation;
 
 import java.io.File;
 
+import org.apache.log4j.Logger;
+
 /**
  * Paths contains paths to directories, files that are important in the Parameter Estimation program<BR>
  * Paths serves as a supertype to Param_Est, CKPackager, Rosenbrock types
@@ -9,6 +11,7 @@ import java.io.File;
  *
  */
 public class Paths {
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	protected String workingDir;
 	protected String chemkinDir;
 	protected String binDir;
@@ -33,7 +36,7 @@ public class Paths {
 	protected void createOutputDir (){
 		boolean temp = new File(outputDir).mkdir();
 		if(!temp){
-			System.out.println("Creation of output directory failed!");
+			logger.debug("Creation of output directory failed!");
 			System.exit(-1);
 		}
 	}

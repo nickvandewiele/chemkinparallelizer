@@ -15,12 +15,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+
+import org.apache.log4j.Logger;
 /**
  * Tools provides static methods to move/delete one File or multiple files with the same extension
  * @author nmvdewie
  *
  */
 public class Tools {
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	/**
 	 * moveFiles moves all files with extension e to the specified destination dir
 	 * @param orig_dir
@@ -37,7 +40,9 @@ public class Tools {
 	       // Move file to new directory
 	    	 File file = new File(list[i]);
 	    	 boolean success = file.renameTo(new File(dest_dir, list[i]));
-	    	 System.out.println( "File was successfully moved? " + success + "!");
+	    	 if (success) logger.info("File was successfully moved!"); 
+	    	 else logger.debug("File was not successfully moved...");
+	    	 //logger.info("File was successfully moved? " + success + "!");
 	     }    
 	}
 	
@@ -98,8 +103,8 @@ public class Tools {
 		     for (int i = 0; i < list.length; i++) {
 		       file = new File(d + list[i]);
 		       boolean isdeleted =   file.delete();
-		       System.out.print(file);
-		       System.out.println( "  deleted " + isdeleted);
+		       logger.info(file);
+		       logger.info( "  deleted " + isdeleted);
 		     }
 		   }
 		 /**
@@ -153,14 +158,14 @@ public class Tools {
 				      }
 				      in.close();
 				      out.close();
-				      System.out.println("File copied.");
+				      logger.info("File copied.");
 				    }
 				    catch(FileNotFoundException ex){
-				      System.out.println(ex.getMessage() + " in the specified directory.");
+				      logger.error("Error while copying file",ex);
 				      System.exit(0);
 				    }
 				    catch(IOException e){
-				      System.out.println(e.getMessage());      
+				    	logger.error("Error while copying file",e);;      
 				    }
 				}
 			 /**
@@ -268,7 +273,7 @@ public class Tools {
 							
 						in.close();
 						if(no_species != namesList.size()){
-							System.out.println("Something went wrong with the species names parsing from the .asu file!!!");
+							logger.debug("Something went wrong with the species names parsing from the .asu file!!!");
 							System.exit(-1);
 						}
 						//System.out.println(namesList.toString());
@@ -312,19 +317,19 @@ public class Tools {
 								
 							}
 							if (exp.size()!= noExp){
-								System.out.println("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
+								logger.debug("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
 								System.exit(-1);
 							}
 							in.close();
 						} catch(IOException e){
-							System.out.println("Something went wrong during the preprocessing of the experimental data file!");
+							logger.error("Something went wrong during the preprocessing of the experimental data file!",e);
 							System.exit(-1);
 						}
 						if((exp.size()==noExp)){
 							return exp;
 						}
 						else{
-							System.out.println("Experiments database contains different no. of experiments as defined in main class!");
+							logger.debug("Experiments database contains different no. of experiments as defined in main class!");
 							System.exit(-1);
 							return null;	
 						}
@@ -381,7 +386,7 @@ public class Tools {
 							in.close();
 							
 						} catch (IOException e) {
-							System.out.println("Problem with obtaining initial parameter guesses!");
+							logger.error("Problem with obtaining initial parameter guesses!");
 							System.exit(-1);
 						}
 						return beta;

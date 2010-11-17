@@ -2,6 +2,8 @@ package parameter_estimation;
 
 import java.io.*;
 import java.util.*;
+
+import org.apache.log4j.Logger;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
  * CKEmulation can call several Chemkin routines: Chem, CKReactorPlugFlow, GetSolution, GetSolnTranspose depending on the task to be executed<BR>
@@ -11,7 +13,7 @@ import java.util.*;
  *
  */
 public class CKEmulation extends Thread{
-
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	Paths paths;
 	public Paths getPaths() {
 		return paths;
@@ -84,7 +86,7 @@ public class CKEmulation extends Thread{
 		this.reactorDir = paths.getWorkingDir()+"temp_ "+rs.substring(0,(length-4))+"/";
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
-			System.out.println("Creation of reactor directory failed!");
+			logger.debug("Creation of reactor directory failed!");
 			System.exit(-1);
 		}
 		
@@ -96,7 +98,7 @@ public class CKEmulation extends Thread{
 		try {
 			semaphore.acquire();
 			
-			System.out.println("license acquired!"+reactorSetup);
+			logger.info("license acquired!"+reactorSetup);
 			
 			//copy chem.inp to the reactorDir:
 			Tools.copyFile(paths.getWorkingDir()+paths.getChemInp(),reactorDir+paths.getChemInp());
@@ -142,11 +144,11 @@ public class CKEmulation extends Thread{
 			//when all Chemkin routines are finished, release the semaphore:
  			semaphore.release();
  			
-			System.out.println("license released!"+reactorSetup);
+			logger.info("license released!"+reactorSetup);
 			
 		} catch(Exception exc){
-			System.out.println("Exception happened in CKEmulation run() method! - here's what I know: ");
-			exc.printStackTrace();
+			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
+			//exc.printStackTrace();
 			System.exit(-1);
 			}
 	}
@@ -230,16 +232,16 @@ public class CKEmulation extends Thread{
 					}
 					in.close();
 					if(!flag){
-						System.out.println("Initial chemistry input file contains no errors. Proceed to parameter estimation!");
+						logger.info("Initial chemistry input file contains no errors. Proceed to parameter estimation!");
 					}
 					
 				} catch(Exception e){
-					System.out.println("Initial chemistry input file contains errors. Revision required!");
+					logger.debug("Initial chemistry input file contains errors. Revision required!");
 					System.exit(-1);
 				}
 		 }catch(Exception exc){
-					System.out.println("exception happened - here's what I know: ");
-					exc.printStackTrace();
+					logger.error("exception happened - here's what I know: ", exc);
+					//exc.printStackTrace();
 					System.exit(-1);
 		 }
 	 }
@@ -354,15 +356,15 @@ public class CKEmulation extends Thread{
 		 BufferedReader stdError_p = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	    
 		// read the output from the command
-	        System.out.println("Here is the standard output of the command:\n");
+	        logger.info("Here is the standard output of the command:\n");
 	        while ((s = stdInput_p.readLine()) != null) {
-	            System.out.println(s);
+	        	logger.info(s);
 	        }
 	        stdInput_p.close();
 	   // read any errors from the attempted command
-	        System.out.println("Here is the standard error of the command (if any):\n");
+	        logger.debug("Here is the standard error of the command (if any):\n");
 	        while ((s = stdError_p.readLine()) != null) {
-	            System.out.println(s);
+	        	logger.debug(s);
 	        }
 	        stdError_p.close();
 	        
@@ -386,15 +388,15 @@ public class CKEmulation extends Thread{
 		 BufferedReader stdError_p = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	    
 		// read the output from the command
-	        System.out.println("Here is the standard output of the command:\n");
+		 logger.info("Here is the standard output of the command:\n");
 	        while ((s = stdInput_p.readLine()) != null) {
-	            System.out.println(s);
+	        	logger.info(s);
 	        }
 	        stdInput_p.close();
 	   // read any errors from the attempted command
-	        System.out.println("Here is the standard error of the command (if any):\n");
+	        logger.debug("Here is the standard error of the command (if any):\n");
 	        while ((s = stdError_p.readLine()) != null) {
-	            System.out.println(s);
+	        	logger.debug(s);
 	        }
 	        stdError_p.close();
 	        

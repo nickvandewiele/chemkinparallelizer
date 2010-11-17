@@ -1,13 +1,16 @@
-package levenberg.mono;
+package parameter_estimation.levenberg.mono;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.apache.log4j.Logger;
+
 import parameter_estimation.Function;
 import parameter_estimation.Optimization;
+import parameter_estimation.ParameterEstimationDriver;
 
 public class NBMTHost implements NBMThostI {
-
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	//--------constants---------------
     protected final double DELTAP = 1e-4;//1e-6
     protected final double BIGVAL = 9.876543E+210; 
@@ -40,12 +43,12 @@ public class NBMTHost implements NBMThostI {
     	jac = new double[NPTS*NRESP][NPARMS];
     	
     	for (int i=0; i<NPARMS; i++)
-          System.out.println("Start parm["+i+"] = "+parms[i]); 
+          logger.info("Start parm["+i+"] = "+parms[i]); 
 
         myLM = new LM_NBMT(this, NPARMS, NPTS, NRESP); // run the minimizer
         
         for (int i=0; i<NPARMS; i++)
-          System.out.println("End parm["+i+"]   = "+parms[i]); 
+        	logger.info("End parm["+i+"]   = "+parms[i]); 
     }
     
     /**
@@ -102,7 +105,7 @@ public class NBMTHost implements NBMThostI {
 	            d = dNudge(delta); // resid at pplus
 	            if (d==BIGVAL)
 	            {
-	                System.out.println("Bad dBuildJacobian() exit 2"); 
+	                logger.debug("Bad dBuildJacobian() exit 2"); 
 	                return false;  
 	            }
 	            
@@ -123,7 +126,7 @@ public class NBMTHost implements NBMThostI {
 	            d = dNudge(delta); // resid at pminus
 	            if (d==BIGVAL)
 	            {
-	                System.out.println("Bad dBuildJacobian() exit 3"); 
+	                logger.debug("Bad dBuildJacobian() exit 3"); 
 	                return false;  
 	            }
 	            
@@ -145,7 +148,7 @@ public class NBMTHost implements NBMThostI {
 	            d = dNudge(delta);  
 	            if (d==BIGVAL)
 	            {
-	                System.out.println("Bad dBuildJacobian() exit 4"); 
+	                logger.debug("Bad dBuildJacobian() exit 4"); 
 	                return false;  
 	            }
 	        }
@@ -194,7 +197,7 @@ public class NBMTHost implements NBMThostI {
 	            d = dNudge(delta); // resid at pplus
 	            if (d==BIGVAL)
 	            {
-	                System.out.println("Bad dBuildJacobian() exit 2"); 
+	                logger.debug("Bad dBuildJacobian() exit 2"); 
 	                return false;  
 	            }
 	            
@@ -217,7 +220,7 @@ public class NBMTHost implements NBMThostI {
 		        d = dNudge(delta);  
 		        if (d==BIGVAL)
 		        	{
-		            System.out.println("Bad dBuildJacobian() exit 4"); 
+		            logger.debug("Bad dBuildJacobian() exit 4"); 
 		            return false;  
 		        	}
 	        }
@@ -289,9 +292,9 @@ public class NBMTHost implements NBMThostI {
    public void printArray(double [] d, PrintWriter out){
 	    for (int i = 0; i < d.length; i++) {
 			out.print(d[i]+" ");
-			System.out.print(d[i]+" ");
+			logger.info(d[i]+" ");
 		}
 	    out.println();
-	    System.out.println();
+	    //System.out.println();
    }
 }

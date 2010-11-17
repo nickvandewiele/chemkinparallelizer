@@ -2,9 +2,12 @@ package parameter_estimation;
 import java.util.*;
 import java.io.*;
 
+import org.apache.log4j.Logger;
+
 
 public class Param_Est{
-
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+	
 	/**
 	 * @throws InterruptedException 
 	 */
@@ -70,7 +73,7 @@ public class Param_Est{
 		
 		// take initial guesses from chem.inp file:
 		params.setBeta(Tools.initialGuess(paths.getWorkingDir(), paths.getChemInp(), params.getFixRxns()));
-		System.out.println("Initial Guesses of parameters are:");
+		logger.info("Initial Guesses of parameters are:");
 		print(params.getBeta());
 		
 		//read experimental data:
@@ -84,7 +87,7 @@ public class Param_Est{
 		params.setBeta(optimization.optimize(exp));
 		
 		//print optimized parameters:
-		System.out.println("New values of parameters are: ");
+		logger.info("New values of parameters are: ");
 		print(params.getBeta());
 		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
 
@@ -101,7 +104,7 @@ public class Param_Est{
 		Tools.moveFile(paths.getOutputDir(), "params.txt");
 		
 		long timeTook = (System.currentTimeMillis() - time)/1000;
-	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);
+		logger.info("Time needed for this optimization to finish: (sec) "+timeTook);
 
 	}
 	/**	
@@ -150,7 +153,7 @@ public class Param_Est{
 			for (int j = 1; j < st_dummy.length; j++) {
 				dummy = dummy +" "+st_dummy[j];
 			}
-			System.out.println(dummy);
+			logger.info(dummy);
 			out.println(dummy);
 			dummy = in.readLine();
 		}
@@ -198,7 +201,7 @@ public class Param_Est{
 		
 		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
-	    System.out.println("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
+		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 
 	public void parity() throws IOException, InterruptedException{
@@ -233,16 +236,16 @@ public class Param_Est{
 		moveOutputFiles();
 		Tools.moveFile(paths.getOutputDir(), "parity.csv");
 		long timeTook = (System.currentTimeMillis() - time)/1000;
-	    System.out.println("Time needed for Parity Mode to finish: (sec) "+timeTook);
+		logger.info("Time needed for Parity Mode to finish: (sec) "+timeTook);
 	}
 	
 	public void print(double [][] d){
 		for (int i = 0; i < d.length; i++) {
 			for (int j = 0; j < d[0].length; j++){
-				System.out.print(d[i][j]+" ");		
+				logger.info(d[i][j]+" ");		
 			}
 		}
-		System.out.println();
+		//System.out.println();
 	}
 	public List<Map<String, Double>> getExp() throws IOException {
 		exp = Tools.experimentsParser(expName, noExp);
@@ -261,7 +264,7 @@ public class Param_Est{
 		
 		// take initial guesses from chem.inp file:
 		params.setBeta(Tools.initialGuess(paths.getWorkingDir(), paths.getChemInp(), params.getFixRxns()));
-		System.out.println("Initial Guesses of parameters are:");
+		logger.info("Initial Guesses of parameters are:");
 		print(params.getBeta());
 		
 		//read experimental data:
@@ -274,7 +277,7 @@ public class Param_Est{
 		optimization.calcStatistics();
 		//moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
-	    System.out.println("Time needed for this optimization to finish: (sec) "+timeTook);	    	    
+		logger.info("Time needed for this optimization to finish: (sec) "+timeTook);	    	    
 	}
 	protected void moveOutputFiles (){
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".out");

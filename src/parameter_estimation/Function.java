@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 
 public class Function {
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	public List<Map<String,Double>> model;
 	private List<Map<String,Double>> exp;
 
@@ -91,15 +94,15 @@ public class Function {
 				for ( String s : exp.get(i).keySet()){
 					Double e = exp.get(i).get(s);
 					Double m = model.get(i).get(s);
-					System.out.println(s);
-					System.out.println(cov.get(s));
+					logger.info(s);
+					logger.info(cov.get(s));
 					sum = sum + (1 / cov.get(s) * (e-m) * (e-m));
 				}
 			}
 			SSQ = sum.doubleValue();
 		}
 		else {
-			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
+			logger.info("Experiment ArrayList has different number of experiments as the model ArrayList!");
 		}
 		return SSQ;
 	}
@@ -201,7 +204,7 @@ public class Function {
 		
 
 		if (exp.size() != model.size()) //check if size of experiment list is equal to size of model list:
-			System.out.println("Experiment ArrayList has different number of experiments as the model ArrayList!");
+			logger.info("Experiment ArrayList has different number of experiments as the model ArrayList!");
 		
 		else {
 /*			for(int i=0;i<exp.size();i++)//Loop over all experiments in experimental ArrayList:
@@ -231,7 +234,7 @@ public class Function {
 /*				for ( String s : exp.get(i).keySet()){//Loop over all keys in experiment i:
 					Double e = exp.get(i).get(s);
 					Double m = model.get(i).get(s);
-					System.out.println(s);
+					logger.info(s);
 				
 					sum = sum + (1 / cov.get(s)) * (m-e) ;
 				}

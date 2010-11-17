@@ -7,15 +7,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.SimpleLayout;
+
 public class ParameterEstimationDriver {
-//this comment is added to verify version control system
+	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
+	//this comment is added to verify version control system
 	/**
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws IOException, InterruptedException {
 		long time = System.currentTimeMillis();
-		
+		initializeLog();
 		//input file will be searched in working directory under the name INPUT.txt:
 		BufferedReader in = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/INPUT.txt"));
 		
@@ -24,7 +30,7 @@ public class ParameterEstimationDriver {
 		String workingDir = in.readLine();
 		int wdlength = workingDir.length();
 		if (workingDir.charAt(wdlength-1)!='/'){
-			System.out.println("Pathname to working directory needs to end with forward slash '/' !");
+			logger.debug("Pathname to working directory needs to end with forward slash '/' !");
 			System.exit(-1);
 		}
 		
@@ -44,7 +50,7 @@ public class ParameterEstimationDriver {
 		boolean flagReactorDb = Boolean.parseBoolean(in.readLine());
 		if (flagReactorDb){
 			if(!(new File("reactor_input_template.inp").exists())){
-				System.out.println("reactor_input_template.inp was not found in the working directory!");
+				logger.debug("reactor_input_template.inp was not found in the working directory!");
 				System.exit(-1);
 			}
 		}
@@ -108,7 +114,7 @@ public class ParameterEstimationDriver {
 		}
 		boolean flagNoParameters = checkNoParameters(fixRxns, noParams);
 		if (!flagNoParameters) {
-			System.out.println("Number of parameters to be fitted provided in INPUT.txt does not equal the number of ones you specified in the optimization section in INPUT.txt!");
+			logger.debug("Number of parameters to be fitted provided in INPUT.txt does not equal the number of ones you specified in the optimization section in INPUT.txt!");
 			System.exit(-1);
 		}
 		else {
@@ -135,29 +141,29 @@ public class ParameterEstimationDriver {
 		Paths paths = new Paths(workingDir,chemkinDir,chemInp,reactor_inputs,noLicenses);
 		Parameters2D params = new Parameters2D(null, betaMin, betaMax, fixRxns);
 		switch(mode){
-			case 0:	System.out.println("PARITY PLOT MODE");	
+			case 0:	logger.info("PARITY PLOT MODE");	
 					Param_Est p0 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval);
 					p0.parity();
 					Function f = new Function(p0.getModel(),p0.getExp());
-					System.out.println("SSQ is: "+f.getSRES());
+					logger.info("SSQ is: "+f.getSRES());
 					break;
-			case 1:	System.out.println("PARAMETER OPTIMIZATION MODE");		
+			case 1:	logger.info("PARAMETER OPTIMIZATION MODE");		
 					Param_Est p1 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval, flagRosenbrock, flagLM);
 					p1.optimizeParameters();
 					p1.statistics();
 					p1.parity();
 					break;
-			case 2: System.out.println("EXCEL POSTPROCESSING MODE");
+			case 2: logger.info("EXCEL POSTPROCESSING MODE");
 					Param_Est p2 = new Param_Est(paths);
 					p2.excelFiles();
 					break;
-			case 3: System.out.println("STATISTICS MODE");
+			case 3: logger.info("STATISTICS MODE");
 					Param_Est p3 = new Param_Est(paths, params, noExperiments, experimentsDb, maxeval, flagRosenbrock, flagLM);
 					p3.statistics();
 					p3.parity();
 		}
 		long timeTook = (System.currentTimeMillis() - time)/1000;
-	    System.out.println("Time needed for this program to finish: (sec) "+timeTook);
+		logger.info("Time needed for this program to finish: (sec) "+timeTook);
 	}
 	public static String[] reactorInputsParser(String workingDir, String experiments, String template, int no_experiments) throws IOException{
 		ArrayList<String> reactorInputs = new ArrayList<String>();
@@ -293,7 +299,7 @@ public class ParameterEstimationDriver {
 
 		// verify the correct number of lines in reactor input file:
 		if( reactorInputs.size()!= no_experiments){
-			System.out.println("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");
+			logger.debug("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");
 			System.exit(-1);
 		}
 		
@@ -320,6 +326,19 @@ public class ParameterEstimationDriver {
 		return (counter == no_params); 
 		
 	}
+	public static void initializeLog(){
+		SimpleLayout layout = new SimpleLayout();
+		
+		//make Appender, it's a FileAppender, writing to loggerNick.txt:
+		FileAppender appender = null;
+		try {
+			appender = new FileAppender(layout, "NBMT.log", false);
+		} catch(Exception e) {}
+		
+		//add Appender:
+		logger.addAppender(appender);
 
+//		BasicConfigurator.configure();
+	}
 
 }

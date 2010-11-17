@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 /**
  * Rosenbrock algorithm developed by Nick Vandewiele, February 2010 <BR>
  * inspired by B. Debrabandere's fortran implementation <BR>
@@ -19,6 +21,7 @@ import java.util.Map;
  */
 
 public class Rosenbrock{
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	/**
 	 * @param args
 	 */
@@ -81,9 +84,9 @@ public class Rosenbrock{
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
 		double initial = f.getSRES();
-		System.out.println("Initial SSQ: "+initial);
+		logger.info("Initial SSQ: "+initial);
 		double current = initial;
-		System.out.println("Current value: "+current);
+		logger.info("Current value: "+current);
 		outSSQ.println(neval+","+initial);
 		
 		// Set all flags to 2, i.e. no success has been achieved in direction i
@@ -97,7 +100,7 @@ public class Rosenbrock{
 		while (neval < optimization.maxeval) {
 			for (int i = 0; i < optimization.getParams1D().getBeta().length; i++) {
 				if (optimization.getParams1D().getFixRxns()[i]==1){
-					System.out.println("Beta: ");
+					logger.info("Beta: ");
 					print(optimization.getParams1D().getBeta());
 					
 					//Parameters are slightly changed in the direction of basisvector 'i' to beta_new(j), j=1..np
@@ -109,7 +112,7 @@ public class Rosenbrock{
 						
 					}
 					
-					System.out.println("Beta new (to be tested): ");
+					logger.info("Beta new (to be tested): ");
 					print(dummy_beta_new);
 					
 					//print new parameter guesses to file: 
@@ -122,7 +125,7 @@ public class Rosenbrock{
 					neval++;
 					
 					out.println("Current evaluation no.: "+neval);
-					System.out.println("Evaluation no. "+neval);
+					logger.info("Evaluation no. "+neval);
 					
 					//model predictions with new parameter guesses is called:
 					//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
@@ -299,8 +302,8 @@ public class Rosenbrock{
 	
 	public static void print(double [] d){
 		for (int i = 0; i < d.length; i++) {
-			System.out.print(d[i]+" ");
+			logger.info(d[i]+" ");
 		}
-		System.out.println();
+		
 	}
 }

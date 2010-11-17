@@ -12,9 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import parameter_estimation.levenberg.mono.NBMTHost;
+
 import stat.Statistics;
 
-import levenberg.mono.NBMTHost;
 
 /**Optimization type is to be seen as the 'driver' class of the broad set of optimization algorithms available, e.g. Rosenbrock.
  * Optimization type will condition the variables of NBMT in such a way that the actual optimization routine has to be modified to
@@ -28,6 +31,7 @@ import levenberg.mono.NBMTHost;
  *
  */
 public class Optimization{
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	Paths paths;
 	Parameters2D params2D;
 	Parameters1D params1D;
@@ -87,13 +91,13 @@ public class Optimization{
 			double efrac = 0.5;//0.3
 			double succ = 3.0;
 			double fail = -0.5;
-			System.out.println("Start of Rosenbrock!");
+			logger.info("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail, maxeval);
 			beta_new = Tools.convert1Dto2D(rosenbrock.returnOptimizedParameters(), params2D.getBeta());
 		}
 		
 		if(flagLM){
-			System.out.println("Start of Levenberg-Marquardt!");
+			logger.info("Start of Levenberg-Marquardt!");
 			nbmthost = new NBMTHost(this);
 			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), params2D.getBeta());		
 		}
@@ -195,7 +199,7 @@ public class Optimization{
 			for (int j = 1; j < st_dummy.length; j++) {
 				dummy = dummy +" "+st_dummy[j];
 			}
-			System.out.println(dummy);
+			logger.info(dummy);
 			out.println(dummy);
 			
 		}

@@ -1,4 +1,4 @@
-package levenberg.mono;
+package parameter_estimation.levenberg.mono;
 //---LMhost interface class declares five abstract methods---------
 
 public interface NBMThostI

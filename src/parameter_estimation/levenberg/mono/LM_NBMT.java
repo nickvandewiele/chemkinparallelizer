@@ -1,8 +1,12 @@
-package levenberg.mono;
+package parameter_estimation.levenberg.mono;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import org.apache.log4j.Logger;
+
+import parameter_estimation.ParameterEstimationDriver;
 
 /**
   *  class LM   Levenberg Marquardt w/ Lampton improvements
@@ -23,6 +27,7 @@ import java.io.PrintWriter;
   */
 class LM_NBMT    
 {
+	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
     private final int    LMITER     =  100;     // max number of L-M iterations
     private final double LMBOOST    =  2.0;     // damping increase per failed step
     private final double LMSHRINK   = 0.10;     // damping decrease per successful step
@@ -66,7 +71,7 @@ class LM_NBMT
             
             out.println("New parameters: ");
             myH.printArray(myH.getParms(),out);
-            System.out.println("niter: "+niter);
+            logger.info("niter: "+niter);
             out.println("niter: "+niter);
             
         } 
@@ -87,12 +92,12 @@ class LM_NBMT
     	
         if (sos==BIGVAL)
         {
-           System.out.println("bLMiter finds faulty initial dComputeResid()");
+           logger.debug("bLMiter finds faulty initial dComputeResid()");
            return false; 
         }
         sosprev = sos;
         
-        System.out.println("sosprev: "+sosprev);
+        logger.info("sosprev: "+sosprev);
         out.println("sosprev: "+sosprev);
         //out.println("bLMiter..sos= "+sos);
         
@@ -100,11 +105,11 @@ class LM_NBMT
         if (!myH.bBuildJacobian())
         {
         	
-        	System.out.println("bLMiter finds bBuildJacobian()=false"); 
+        	logger.debug("bLMiter finds bBuildJacobian()=false"); 
             return false;
         }
         
-        System.out.println("jacobian[i][j]: ");
+        logger.info("jacobian[i][j]: ");
     	out.println("jacobian[i][j]: ");
     	printMatrix(myH.dGetFullJac(),out);
     	
@@ -116,7 +121,7 @@ class LM_NBMT
             
         }
         
-        System.out.println("beta[i]: ");
+        logger.info("beta[i]: ");
         out.println("beta[i]: ");
         printArray(beta, out);
         
@@ -128,7 +133,7 @@ class LM_NBMT
             		  alpha[j][k] += myH.dGetJac(i,j)*myH.dGetJac(i,k);	  	  
           }
         
-        System.out.println("alpha[i][j]: ");
+        logger.info("alpha[i][j]: ");
         out.println("alpha[i][j]: ");
         printMatrix(alpha,out);
         
@@ -140,13 +145,13 @@ class LM_NBMT
               for (int j=0; j<nadj; j++)
                 amatrix[j][k] = alpha[j][k] + ((j==k) ? lambda : 0.0);
             
-            System.out.println("amatrix[i][j]: ");
+            logger.info("amatrix[i][j]: ");
             out.println("amatrix[i][j]: ");
             printMatrix(amatrix,out);
             
             gaussj(amatrix, nadj);           // invert
             
-            System.out.println("amatrix[i][j] inverted: ");
+            logger.info("amatrix[i][j] inverted: ");
             out.println("amatrix[i][j] inverted: ");
             printMatrix(amatrix,out);
             
@@ -157,7 +162,7 @@ class LM_NBMT
                   delta[k] += amatrix[j][k]*beta[j];
             }
             
-            System.out.println("delta[k]: ");
+            logger.info("delta[k]: ");
             out.println("delta[k]: ");
             printArray(delta,out);
             
@@ -166,18 +171,18 @@ class LM_NBMT
             
             if (sos==BIGVAL)
             {
-                System.out.println("LMinner failed SOS step"); 
+                logger.info("LMinner failed SOS step"); 
                 return false;            
             }
             
             rrise = (sos-sosprev)/(1+sos);
-            System.out.println("rrise: "+rrise);
+            logger.info("rrise: "+rrise);
             out.println("rrise: "+rrise);
             
             if (rrise <= 0.0)                // good step!
             {
                out.println("lambda: "+lambda);
-               System.out.println("lambda: "+lambda);
+               logger.info("lambda: "+lambda);
                lambda *= LMSHRINK;           // shrink lambda
                break;                        // leave lmInner.
             }
@@ -189,7 +194,7 @@ class LM_NBMT
             lambda *= LMBOOST;               // else try more damping.
             
             out.println("lambda: "+lambda);
-            System.out.println("lambda: "+lambda);
+            logger.info("lambda: "+lambda);
             
         } while (lambda<LAMBDAMAX);
         boolean done = (rrise>-LMTOL) || (lambda>LAMBDAMAX); 
@@ -274,22 +279,22 @@ class LM_NBMT
     public void printArray(double [] d, PrintWriter out){
     	for (int i = 0; i < d.length; i++) {
 			out.print(d[i]+" ");
-			System.out.print(d[i]+" ");
+			logger.info(d[i]+" ");
 		}
     	out.println();
-    	System.out.println();
+    	//System.out.println();
     }
     public void printMatrix(double [][] d,PrintWriter out){
     	for (int i = 0; i < d.length; i++) {
 			for (int j = 0; j < d[0].length; j++) {
 				out.print(d[i][j]+" ");
-				System.out.print(d[i][j]+" ");			
+				logger.info(d[i][j]+" ");			
 			}
 			out.println();
-	    	System.out.println();
+	    	logger.info(" ");
 		}
     	out.println();
-    	System.out.println();
+    	//System.out.println();
     }
     
     
