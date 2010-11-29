@@ -93,7 +93,7 @@ public class Rosenbrock{
 		int [] flag = new int [optimization.getParams1D().getBeta().length];
 		double [] d = new double [optimization.getParams1D().getBeta().length];
 		flag = Rosenbrock.resetFlag(flag);
-		d = Algebra.resetD(d);
+		d = Rosenbrock.resetD(d);
 		
 		Function fNew;
 		// Main rosenbrock loop
@@ -174,9 +174,9 @@ public class Rosenbrock{
 						}
 						if (flag2 == 0){
 							basis = Algebra.setNewBasis(d,basis);
-							basis = Algebra.gramschmidt(basis, basis);
+							basis = Algebra.gramschmidt(basis);
 							flag = resetFlag(flag);
-							d = Algebra.resetD(d);
+							d = Rosenbrock.resetD(d);
 						}
 					}
 				}
@@ -193,6 +193,13 @@ public class Rosenbrock{
 				
 		return optimization.getParams1D().getBeta();
 	}
+	public static double [] resetD (double[] dd){
+		for (int i = 0; i < dd.length; i++) {
+			dd[i] = 0;
+		}
+		return dd;
+	}
+
 	/**
 	* 
 	* @param fflag

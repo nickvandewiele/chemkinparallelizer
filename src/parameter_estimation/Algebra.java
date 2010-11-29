@@ -32,20 +32,19 @@ public class Algebra {
 
 	/**
 	* 
-	* @param bbasis
 	* @return An orthonormal basis is derived and returned from the matrix basis using the Gram-Schmidt algorithm
 	*/
-	public static double[][] gramschmidt (double[][] basis, double[][] bbasis) {
+	public static double[][] gramschmidt (double[][] basis) {
 	//  gram schmidt orthonormalization
 	
-	for(int  i = 0; i < bbasis[0].length; i++){
+	for(int  i = 0; i < basis[0].length; i++){
 		for(int k = 0; k < i-1; k++){
 			double scal_prod = 0.0;
-			for (int j = 0; j < bbasis[0].length; j++){
-				scal_prod = scal_prod + bbasis[j][i] * bbasis[j][k];
+			for (int j = 0; j < basis[0].length; j++){
+				scal_prod = scal_prod + basis[j][i] * basis[j][k];
 			}
-			for (int j = 0; j < bbasis[0].length; j++) {
-				bbasis[j][i] = bbasis[j][i] - scal_prod * bbasis[j][k];
+			for (int j = 0; j < basis[0].length; j++) {
+				basis[j][i] = basis[j][i] - scal_prod * basis[j][k];
 			}
 		}
 	// calculation of norms of every basis vector: 
@@ -60,14 +59,7 @@ public class Algebra {
 	}
 	//  nit = nit+1;
 	     
-	return bbasis;
-	}
-
-	public static double [] resetD (double[] dd){
-		for (int i = 0; i < dd.length; i++) {
-			dd[i] = 0;
-		}
-		return dd;
+	return basis;
 	}
 
 	/**
@@ -101,6 +93,78 @@ public class Algebra {
 			//do nothing
 		}
 		return dummy;
+	}
+
+	public static double gaussj( double[][] a, int N )
+	// Inverts the double array a[N][N] by Gauss-Jordan method
+	// M.Lampton UCB SSL (c)2003, 2005
+	{
+	    double det = 1.0, big, save;
+	    int i,j,k,L;
+	    int[] ik = new int[100];
+	    int[] jk = new int[100];
+	    for (k=0; k<N; k++)
+	    {
+	        big = 0.0;
+	        for (i=k; i<N; i++)
+	          for (j=k; j<N; j++)          // find biggest element
+	            if (Math.abs(big) <= Math.abs(a[i][j]))
+	            {
+	                big = a[i][j];
+	                ik[k] = i;
+	                jk[k] = j;
+	            }
+	        if (big == 0.0) return 0.0;
+	        i = ik[k];
+	        if (i>k)
+	          for (j=0; j<N; j++)          // exchange rows
+	          {
+	              save = a[k][j];
+	              a[k][j] = a[i][j];
+	              a[i][j] = -save;
+	          }
+	        j = jk[k];
+	        if (j>k)
+	          for (i=0; i<N; i++)
+	          {
+	              save = a[i][k];
+	              a[i][k] = a[i][j];
+	              a[i][j] = -save;
+	          }
+	        for (i=0; i<N; i++)            // build the inverse
+	          if (i != k)
+	            a[i][k] = -a[i][k]/big;
+	        for (i=0; i<N; i++)
+	          for (j=0; j<N; j++)
+	            if ((i != k) && (j != k))
+	              a[i][j] += a[i][k]*a[k][j];
+	        for (j=0; j<N; j++)
+	          if (j != k)
+	            a[k][j] /= big;
+	        a[k][k] = 1.0/big;
+	        det *= big;                    // bomb point
+	    }                                  // end k loop
+	    for (L=0; L<N; L++)
+	    {
+	        k = N-L-1;
+	        j = ik[k];
+	        if (j>k)
+	          for (i=0; i<N; i++)
+	          {
+	              save = a[i][k];
+	              a[i][k] = -a[i][j];
+	              a[i][j] = save;
+	          }
+	        i = jk[k];
+	        if (i>k)
+	          for (j=0; j<N; j++)
+	          {
+	              save = a[k][j];
+	              a[k][j] = -a[i][j];
+	              a[i][j] = save;
+	          }
+	    }
+	    return det;
 	}
 
 }

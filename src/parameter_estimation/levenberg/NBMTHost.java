@@ -289,12 +289,4 @@ public class NBMTHost implements NBMThostI {
 	public int getNRESP() {
 		return NRESP;
 	}
-   public void printArray(double [] d, PrintWriter out){
-	    for (int i = 0; i < d.length; i++) {
-			out.print(d[i]+" ");
-			logger.info(d[i]+" ");
-		}
-	    out.println();
-	    //System.out.println();
-   }
 }
