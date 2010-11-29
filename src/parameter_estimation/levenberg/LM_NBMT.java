@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import parameter_estimation.Algebra;
 import parameter_estimation.ParameterEstimationDriver;
+import parameter_estimation.Printer;
 
 /**
   *  class LM   Levenberg Marquardt w/ Lampton improvements
@@ -25,9 +27,9 @@ import parameter_estimation.ParameterEstimationDriver;
   *
   *  @author: M.Lampton UCB SSL (c) 2005
   */
-class LM_NBMT    
+public class LM_NBMT    
 {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
     private final int    LMITER     =  100;     // max number of L-M iterations
     private final double LMBOOST    =  2.0;     // damping increase per failed step
     private final double LMSHRINK   = 0.10;     // damping decrease per successful step
@@ -70,7 +72,7 @@ class LM_NBMT
             niter++;
             
             out.println("New parameters: ");
-            myH.printArray(myH.getParms(),out);
+            Printer.printArray(myH.getParms(),out);
             logger.info("niter: "+niter);
             out.println("niter: "+niter);
             
@@ -111,7 +113,7 @@ class LM_NBMT
         
         logger.info("jacobian[i][j]: ");
     	out.println("jacobian[i][j]: ");
-    	printMatrix(myH.dGetFullJac(),out);
+    	Printer.printMatrix(myH.dGetFullJac(),out);
     	
         for (int k=0; k<nadj; k++)      // get downhill gradient beta
         {
@@ -123,7 +125,7 @@ class LM_NBMT
         
         logger.info("beta[i]: ");
         out.println("beta[i]: ");
-        printArray(beta, out);
+        Printer.printArray(beta, out);
         
         for (int k=0; k<nadj; k++)      // get curvature matrix alpha
           for (int j=0; j<nadj; j++)
@@ -135,7 +137,7 @@ class LM_NBMT
         
         logger.info("alpha[i][j]: ");
         out.println("alpha[i][j]: ");
-        printMatrix(alpha,out);
+        Printer.printMatrix(alpha,out);
         
         double rrise = 0; 
         do  /// damping loop searches for one downhill step
@@ -147,13 +149,13 @@ class LM_NBMT
             
             logger.info("amatrix[i][j]: ");
             out.println("amatrix[i][j]: ");
-            printMatrix(amatrix,out);
+            Printer.printMatrix(amatrix,out);
             
-            gaussj(amatrix, nadj);           // invert
+            Algebra.gaussj(amatrix, nadj);           // invert
             
             logger.info("amatrix[i][j] inverted: ");
             out.println("amatrix[i][j] inverted: ");
-            printMatrix(amatrix,out);
+            Printer.printMatrix(amatrix,out);
             
             for (int k=0; k<nadj; k++)       // compute delta[]
             {
@@ -164,7 +166,7 @@ class LM_NBMT
             
             logger.info("delta[k]: ");
             out.println("delta[k]: ");
-            printArray(delta,out);
+            Printer.printArray(delta,out);
             
             sos = myH.dNudge(delta);         // try it out.
             out_SSQ.println("SSQ: "+sos);
@@ -202,99 +204,6 @@ class LM_NBMT
         //out.close();
         out_SSQ.close();
         return done; 
-    }
-
-    public double gaussj( double[][] a, int N )
-    // Inverts the double array a[N][N] by Gauss-Jordan method
-    // M.Lampton UCB SSL (c)2003, 2005
-    {
-        double det = 1.0, big, save;
-        int i,j,k,L;
-        int[] ik = new int[100];
-        int[] jk = new int[100];
-        for (k=0; k<N; k++)
-        {
-            big = 0.0;
-            for (i=k; i<N; i++)
-              for (j=k; j<N; j++)          // find biggest element
-                if (Math.abs(big) <= Math.abs(a[i][j]))
-                {
-                    big = a[i][j];
-                    ik[k] = i;
-                    jk[k] = j;
-                }
-            if (big == 0.0) return 0.0;
-            i = ik[k];
-            if (i>k)
-              for (j=0; j<N; j++)          // exchange rows
-              {
-                  save = a[k][j];
-                  a[k][j] = a[i][j];
-                  a[i][j] = -save;
-              }
-            j = jk[k];
-            if (j>k)
-              for (i=0; i<N; i++)
-              {
-                  save = a[i][k];
-                  a[i][k] = a[i][j];
-                  a[i][j] = -save;
-              }
-            for (i=0; i<N; i++)            // build the inverse
-              if (i != k)
-                a[i][k] = -a[i][k]/big;
-            for (i=0; i<N; i++)
-              for (j=0; j<N; j++)
-                if ((i != k) && (j != k))
-                  a[i][j] += a[i][k]*a[k][j];
-            for (j=0; j<N; j++)
-              if (j != k)
-                a[k][j] /= big;
-            a[k][k] = 1.0/big;
-            det *= big;                    // bomb point
-        }                                  // end k loop
-        for (L=0; L<N; L++)
-        {
-            k = N-L-1;
-            j = ik[k];
-            if (j>k)
-              for (i=0; i<N; i++)
-              {
-                  save = a[i][k];
-                  a[i][k] = -a[i][j];
-                  a[i][j] = save;
-              }
-            i = jk[k];
-            if (i>k)
-              for (j=0; j<N; j++)
-              {
-                  save = a[k][j];
-                  a[k][j] = -a[i][j];
-                  a[i][j] = save;
-              }
-        }
-        return det;
-    }
-    
-    public void printArray(double [] d, PrintWriter out){
-    	for (int i = 0; i < d.length; i++) {
-			out.print(d[i]+" ");
-			logger.info(d[i]+" ");
-		}
-    	out.println();
-    	//System.out.println();
-    }
-    public void printMatrix(double [][] d,PrintWriter out){
-    	for (int i = 0; i < d.length; i++) {
-			for (int j = 0; j < d[0].length; j++) {
-				out.print(d[i][j]+" ");
-				logger.info(d[i][j]+" ");			
-			}
-			out.println();
-	    	logger.info(" ");
-		}
-    	out.println();
-    	//System.out.println();
     }
     
     
