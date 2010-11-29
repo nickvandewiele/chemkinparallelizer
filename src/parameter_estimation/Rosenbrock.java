@@ -63,7 +63,7 @@ public class Rosenbrock{
 		}
 	}
 
-	public double [] returnOptimizedParameters() throws IOException, InterruptedException{
+	public double [] returnOptimizedParameters() throws Exception{
 		//basis needs to be declared with the correct dimensions:
 		basis = new double [optimization.getParams1D().getBeta().length][optimization.getParams1D().getBeta().length];
 

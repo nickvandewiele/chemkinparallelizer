@@ -77,7 +77,7 @@ public class Optimization{
 	}
 	
 	
-	public double [][] optimize(List<Map<String,Double>> exp) throws IOException, InterruptedException{
+	public double [][] optimize(List<Map<String,Double>> exp) throws Exception{
 		Set<String> response_vars = exp.get(0).keySet();
 		PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
 		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
@@ -121,7 +121,7 @@ public class Optimization{
 	}
 	
 	
-	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws IOException, InterruptedException{
+	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
 		//update_chemistry_input will insert new parameter_guesses array into chem_inp
 		update_chemistry_input(parameter_guesses);
 		
@@ -264,7 +264,7 @@ public class Optimization{
 	public NBMTHost getNBMTHost(){
 		return nbmthost;
 	}
-	public void calcStatistics() throws IOException, InterruptedException{
+	public void calcStatistics() throws Exception{
 		params1D = new Parameters1D();
 		params1D.convert2Dto1D(params2D);
 		nbmthost = new NBMTHost(this, true);
@@ -313,7 +313,7 @@ public class Optimization{
 			Tools.moveFile(paths.getOutputDir(), "statistics.txt");
 	}
 
-	public boolean isWeighted_regression() {
+	public boolean isWeightedRegression() {
 		return weightedRegression;
 	}
 

@@ -50,7 +50,7 @@ public class LM_NBMT
     private double[][] alpha;     // local, JT.J matrix
     private double[][] amatrix;   // local, alpha' matrix = JT.J + lambda*I
 
-    public LM_NBMT(NBMTHost gH, int gnadj, int gnpts, int nresp) throws IOException, InterruptedException
+    public LM_NBMT(NBMTHost gH, int gnadj, int gnpts, int nresp) throws Exception
     // Constructor sets up fields and drives iterations. 
     {
         myH = gH;
@@ -82,7 +82,7 @@ public class LM_NBMT
 
     }
 
-    private boolean bLMiter(PrintWriter out ) throws IOException, InterruptedException
+    private boolean bLMiter(PrintWriter out ) throws Exception
     // Each call performs one LM iteration. 
     // Returns true if done with iterations; false=wants more. 
     // Global nadj, npts; needs nadj, myH to be preset. 

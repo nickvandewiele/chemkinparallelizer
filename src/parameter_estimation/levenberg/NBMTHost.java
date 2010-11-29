@@ -29,7 +29,7 @@ public class NBMTHost implements NBMThostI {
     
     private boolean additive_finite_difference = false; //additive implies that step in parameter direction will be regardless of parameter value
     
-    public NBMTHost(Optimization o) throws IOException, InterruptedException
+    public NBMTHost(Optimization o) throws Exception
     {
     	this.optimization = o;
     	this.parms = optimization.retrieve_fitted_parameters();
@@ -74,7 +74,7 @@ public class NBMTHost implements NBMThostI {
 
        
     }
-	public boolean bBuildJacobian() throws IOException, InterruptedException {
+	public boolean bBuildJacobian() throws Exception {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and two-sided finite difference.
 	    // If current parms[] is bad, returns false.  
@@ -157,8 +157,9 @@ public class NBMTHost implements NBMThostI {
 	/**
 	 * Jacobian with forward finite difference, to limit the number of extra "getModelValues()" calls,
 	 * 1 instead of 2 for the two-sided finite difference method
+	 * @throws Exception 
 	 */
-	public boolean bBuildJacobian_forward() throws IOException, InterruptedException {
+	public boolean bBuildJacobian_forward() throws Exception {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and one-sided forward finite difference.
 		// df/dx = ( f(x+h) - f(x) ) / h
@@ -226,7 +227,7 @@ public class NBMTHost implements NBMThostI {
 	        }
 	        return true; 
 	}
-	public double dComputeResid() throws IOException, InterruptedException {
+	public double dComputeResid() throws Exception {
 		// Evaluates residual matrix for parms[].
 		// Returns sum-of-squares.
 		/**
@@ -252,7 +253,7 @@ public class NBMTHost implements NBMThostI {
 	        return resid[i];
 	    }
 
-	public double dNudge(double[] dp) throws IOException, InterruptedException {
+	public double dNudge(double[] dp) throws Exception {
 		// Allows LM to modify parms[] and reevaluate.
 	    // Returns sum-of-squares for nudged params.
 	    // This is the only place that parms[] are modified.

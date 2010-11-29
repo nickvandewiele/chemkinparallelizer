@@ -78,7 +78,7 @@ public void calcCorr(){
         	corr[k][j] = var_covar[k][j] / Math.sqrt(var_covar[k][k]*var_covar[j][j]);
         }
 }
-public void calcANOVA() throws IOException, InterruptedException{
+public void calcANOVA() throws Exception{
 	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
 	SREG = function.getSREG();
 	SRES = function.getSRES();
@@ -260,17 +260,17 @@ public double[][] getConfIntervals() throws IOException, InterruptedException {
 	return confidence_intervals;
 }
 
-public double getSREG() throws IOException, InterruptedException {
+public double getSREG() throws Exception {
 	calcANOVA();
 	return SREG;
 }
 
-public double getSRES() throws IOException, InterruptedException {
+public double getSRES() throws Exception {
 	calcANOVA();
 	return SRES;
 }
 
-public double getFvalue() throws IOException, InterruptedException {
+public double getFvalue() throws Exception {
 	calcANOVA();
 	return Fvalue;
 }

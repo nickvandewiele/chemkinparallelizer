@@ -35,7 +35,7 @@ public class CKPackager{
 
 	}
 	
-	public List<Map<String,Double>> getModelValues(){
+	public List<Map<String,Double>> getModelValues() throws Exception{
 		List<Map<String,Double>> list = new ArrayList<Map<String,Double>>();
 		CKEmulation [] dummy = new CKEmulation[noExperiments];
 		Runtime rt = Runtime.getRuntime();

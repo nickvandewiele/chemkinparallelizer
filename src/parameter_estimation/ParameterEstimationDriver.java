@@ -17,8 +17,9 @@ public class ParameterEstimationDriver {
 	/**
 	 * @param args
 	 * @throws Exception 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) throws IOException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
 		initializeLog();
 		//input file will be searched in working directory under the name INPUT.txt:
@@ -48,7 +49,7 @@ public class ParameterEstimationDriver {
 		in.readLine();
 		boolean flagReactorDb = Boolean.parseBoolean(in.readLine());
 		if (flagReactorDb){
-			if(!(new File("reactor_input_template.inp").exists())){
+			if(!(new File("PFR_template.inp").exists())){
 				logger.debug("reactor_input_template.inp was not found in the working directory!");
 				System.exit(-1);
 			}

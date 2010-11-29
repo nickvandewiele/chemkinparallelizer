@@ -62,8 +62,9 @@ public class Param_Est{
  * <LI>calling the actual optimization routine, i.e. the Rosenbrock algorithm</LI>
  * <LI>writing the optimized kinetic parameters to a params.txt file</LI>	
  * @throws Exception 
+ * @throws Exception 
  */
-	public void optimizeParameters() throws IOException, InterruptedException{
+	public void optimizeParameters() throws Exception{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
@@ -175,8 +176,9 @@ public class Param_Est{
 	 * getModelPredictions_massfrac return a list with mass fractions as 'model values' instead of molar flowrates
 	 * this becomes handy for parity plots, because experimental data will often be available in mass fractions, not molar flow rates
 	 * @return
+	 * @throws Exception 
 	 */
-	public List<Map<String,Double>> getModelPredictionsMassfrac(){
+	public List<Map<String,Double>> getModelPredictionsMassfrac() throws Exception{
 		boolean flag_CKSolnList = true;
 		CKPackager ckp = new CKPackager(paths, flag_CKSolnList);
 		model = ckp.getModelValues();
@@ -185,8 +187,9 @@ public class Param_Est{
 	/**
 	 * this routine produces model predictions without comparing them to experimental data
 	 * @throws Exception 
+	 * @throws Exception 
 	 */
-	public void excelFiles() throws IOException, InterruptedException{
+	public void excelFiles() throws Exception{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
@@ -204,7 +207,7 @@ public class Param_Est{
 		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 
-	public void parity() throws IOException, InterruptedException{
+	public void parity() throws Exception{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
@@ -254,7 +257,7 @@ public class Param_Est{
 	public List<Map<String, Double>> getModel() {
 		return model;
 	}
-	public void statistics() throws IOException, InterruptedException{
+	public void statistics() throws Exception{
 		long time = System.currentTimeMillis();
 		
 		//check if initial input file is error-free:
