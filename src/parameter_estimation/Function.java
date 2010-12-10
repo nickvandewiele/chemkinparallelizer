@@ -1,6 +1,8 @@
 package parameter_estimation;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,244 +12,220 @@ import org.apache.log4j.Logger;
 
 public class Function {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	public List<Map<String,Double>> model;
-	private List<Map<String,Double>> exp;
-
-	// resid is a double[no_experiments] that contains the residual value (y - f(x,beta)) for each experiment separately.
-	//private double [][] resid;
+	private Experiments experiments;
+	private ModelValues modelValues;
+	//TODO resid could also be modeled as having two children: Effluent, Ignition Delay
+	private Double [] residEffluent;
+	private Double [] residIgnition;
 	private double [] resid;
-	private Map<String,Double> covariance = new HashMap<String,Double>();
-	private Map<String,Double> average = new HashMap<String,Double>();
-	public double functionValue;
-	private String [] speciesNames;
 	
+	public double[] getResid() {
+		computeResid();
+		return resid;
+	}
+	/**
+	 * creates double [] resid which is a concatenation of the Effluent Resid and the Ignition Resid
+	 */
+	private void computeResid() {
+		int dummy = 0;
+		if((experiments.getNoRegularExperiments()!=0)||experiments.getResponseVariables().size()!=0){
+			computeEffluentResid();
+			dummy += residEffluent.length;
+		}
+		if(experiments.getNoIgnitionDelayExperiments()!=0){
+			computeIgnitionResid();
+			dummy += residIgnition.length;
+		}
+	
+		resid = new double[dummy];
+		int counter = 0;
+		
+		/**
+		 * TODO checking residEffluent/residIgnition should be less patchy!
+		 */
+		if(!(residEffluent == null)){
+			for(int i = 0; i < residEffluent.length; i++){
+				resid[counter] = residEffluent[i];
+				counter++;
+			}	
+		}
+		if(!(residIgnition == null)){
+			for(int i = 0; i < residIgnition.length; i++){
+				resid[counter] = residIgnition[i];
+				counter++;
+			}   
+		}
+		                
+		return;
+	}
+
+
+	private Map<String,Double> covarianceEffluent = new HashMap<String,Double>();
+	public double functionValue;
 	//boolean weighted_regression determines whether a weighted or an unweighted regression will be applied.
 	private boolean weightedRegression = true;
-	
-	public Function (List<Map<String,Double>> m, List<Map<String,Double>> e){
-		model = m;
-		exp = e;
-		resid = new double[exp.size()*e.get(0).size()];
+
+	//TODO most of the methods here should be in Statistics...
+	public Function (Experiments experiments, ModelValues modelValues){
+		this.experiments = experiments;
+		this.modelValues = modelValues;
+		if(experiments.getNoRegularExperiments()!=0){
+			residEffluent = new Double[experiments.getNoRegularExperiments()*experiments.getResponseVariables().size()];	
+		}
+		if(experiments.getNoIgnitionDelayExperiments()!=0){
+			residIgnition = new Double[experiments.getNoIgnitionDelayExperiments()];	
+		}
+		
 		//species_names = new String[e.get(0).size()];
 	}
-	
+
 	/**
 	 * returns the sum of the regression (model) values
 	 * 
 	 * @return
 	 */
 	public double getSREG(){
-		if (weightedRegression) calcAverage();
+		double SREG = 0.0;
 		
-		speciesNames = new String [exp.get(0).size()];
-		int counter = 0;
-		for (String s : exp.get(0).keySet()){
-			speciesNames[counter] = s;
-			counter++;
-		}
-		double dummy = 0.0;
-		for(int i=0;i<model.size();i++)//Loop over all experiments in experimental ArrayList:
-			for (int j = 0; j < speciesNames.length; j++){
-				Double m = model.get(i).get(speciesNames[j]);
-				
+		//Effluent part:
+		Map<String,Double> average = null;
+		if (weightedRegression) average = experiments.getExperimentalValues().calcExperimentalEffluentAverage();
+		LinkedList<Map<String,Double>> modelEffluent = modelValues.getModelEffluentValues();
+		LinkedList<String> speciesNames = experiments.getResponseVariables();
+		for(int i=0;i<modelEffluent.size();i++)//Loop over all experiments in experimental ArrayList:
+			for (int j = 0; j < speciesNames.size(); j++){
+				Double m = modelValues.getModelEffluentValues().get(i).get(speciesNames.get(j));
 				if(weightedRegression)
-					dummy += Math.pow(m/(average.get(speciesNames[j])),2);
+					SREG += Math.pow(m/(average.get(speciesNames.get(j))),2);
 				else 
-					dummy += Math.pow(m,2);
+					SREG += Math.pow(m,2);	
+
 			}
 		
-		return dummy;
+		//Ignition part:
+		Double averageIgnition = null;
+		if (weightedRegression) averageIgnition = experiments.getExperimentalValues().calcExperimentalIgnitionAverage();
+		LinkedList<Double> modelIgnition = modelValues.getModelIgnitionValues();		
+		for(int i=0;i<modelIgnition.size();i++){//Loop over all experiments in experimental ArrayList:
+				Double m = modelValues.getModelIgnitionValues().get(i);
+				if(weightedRegression)
+					SREG += Math.pow(m/(averageIgnition),2);
+				else 
+					SREG += Math.pow(m,2);	
+		}
+		return SREG;
 	}
 	/**
 	 * getSSQ returns the sum of residuals.
 	 * @return
 	 */
 	public double getSRES(){
-		computeResid();
 		Double sum = 0.0;
-/*		for (int i = 0; i < resid.length; i++){
-			for (int j = 0; j < resid[0].length; j++){
-				sum += resid[i][j]*resid[i][j];
-			}
+		if(experiments.getNoRegularExperiments()!=0){
+			computeEffluentResid();	
+			for (int i = 0; i < residEffluent.length; i++)		
+				sum += residEffluent[i]*residEffluent[i];
 		}
-*/		
-		for (int i = 0; i < resid.length; i++)		
-				sum += resid[i]*resid[i];
-		
+		if(experiments.getNoIgnitionDelayExperiments()!=0){
+			computeIgnitionResid();
+			for (int i = 0; i < residIgnition.length; i++)		
+				sum += residIgnition[i]*residIgnition[i];
+		}					
 		return sum;
 	}
-	/**
-	 * initialSSQ is identical to SSQ except for the variances, which are calculated using only experimental data
-	 * @return
-	 */
-	public double getInitialSSQ(){
-		Double sum = 0.0;
-		double SSQ=0.0;
-		Map<String,Double> cov = initial_covariance();
-		//check if size of experiment list is equal to size of model list:
-		if (exp.size() == model.size()) {
-			
-			//Loop over all experiments in experimental ArrayList:
-			for(int i=0;i<exp.size();i++)
-			{
-				//Loop over all keys in experiment i:
-				for ( String s : exp.get(i).keySet()){
-					Double e = exp.get(i).get(s);
-					Double m = model.get(i).get(s);
-					logger.info(s);
-					logger.info(cov.get(s));
-					sum = sum + (1 / cov.get(s) * (e-m) * (e-m));
-				}
-			}
-			SSQ = sum.doubleValue();
-		}
-		else {
-			logger.info("Experiment ArrayList has different number of experiments as the model ArrayList!");
-		}
-		return SSQ;
-	}
-	/**
-	 * variance-covariance 'matrix' (in reality vector) based on only response variable data (experimental) assuming that response variables are uncorrelated
-	 * @return
-	 */
-	public Map<String,Double> initial_covariance(){
-		Map<String,Double> init_covariance = new HashMap<String,Double>();
-		Set<String> response_vars = exp.get(0).keySet();
-		Double average = 0.0;
-		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
-			String s = (String) it.next();
-			Double dummy = 0.0;
-			for(int i = 0; i < exp.size(); i++){
-				dummy = dummy + exp.get(i).get(s);
-			}
-			dummy = dummy / exp.size();
-			average = dummy;
-			
-			Double dummy2 = 0.0;
-			for (int i = 0; i < exp.size(); i++){
-				dummy2 = dummy2 + (exp.get(i).get(s) - average) * (exp.get(i).get(s) - average);
-			}
-			dummy2 = dummy2 / exp.size();
-			
-			init_covariance.put(s,dummy2);
-		}
-		
-		return init_covariance;
-	}
-	
 	/**
 	 * variance-covariance 'matrix' (in reality vector) based on error (y_i (experimental) - y^_i (model)) assuming that response variables are uncorrelated
 	 * @return
 	 */
 	public Map<String,Double> getCovariance(){
-		covariance = new HashMap<String,Double>();
-		Set<String> response_vars = exp.get(0).keySet();
+		covarianceEffluent = new HashMap<String,Double>();
+		LinkedList<String> responseVars = experiments.getResponseVariables();
+		//average
 		Double average = 0.0;
-		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
+		for(Iterator<String> it = responseVars.iterator(); it.hasNext();){
 			String s = (String) it.next();
 			Double dummy = 0.0;
-			for(int i = 0; i < exp.size(); i++){
-				dummy = dummy + (exp.get(i).get(s) - model.get(i).get(s));
+			for(int i = 0; i < experiments.getExperimentalValues().getExperimentalEffluentValues().size(); i++){
+				dummy = dummy + (experiments.getExperimentalValues().getExperimentalEffluentValues().get(i).get(s) - modelValues.getModelEffluentValues().get(i).get(s));
 			}
-			dummy = dummy / exp.size();
+			dummy = dummy / experiments.getExperimentalValues().getExperimentalEffluentValues().size();
 			average = dummy;
 
 			Double dummy2 = 0.0;
-			for (int i = 0; i < exp.size(); i++){
-				dummy2 = dummy2 + Math.pow((exp.get(i).get(s) - model.get(i).get(s)) - average,2);
+			for (int i = 0; i < experiments.getExperimentalValues().getExperimentalEffluentValues().size(); i++){
+				dummy2 = dummy2 + Math.pow((experiments.getExperimentalValues().getExperimentalEffluentValues().get(i).get(s) - modelValues.getModelEffluentValues().get(i).get(s)) - average,2);
 			}
-			dummy2 = dummy2 / exp.size();
-			
-			covariance.put(s,dummy2);
+			dummy2 = dummy2 / experiments.getExperimentalValues().getExperimentalEffluentValues().size();
+
+			covarianceEffluent.put(s,dummy2);
 		}
-		
-		return covariance;
+
+		return covarianceEffluent;
 	}
-	/**
-	 * calculates arithmetic average of all response variables, could be used as weights in regression
-	 * @return
-	 */
-	public Map<String,Double> calcAverage(){
-		average = new HashMap<String,Double>();
-		Set<String> response_vars = exp.get(0).keySet();
-		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
-			String s = (String) it.next();
-			Double dummy = 0.0;
-			for(int i = 0; i < exp.size(); i++){
-				dummy = dummy + exp.get(i).get(s);
-			}
-			dummy = dummy / exp.size();
-			average.put(s, dummy);
-		}
-		
-		return average;
-	}
+
 	/**
 	 * computeResid computes every weigthed residual per experiment per response variable, i.e. (computed - observed) / sigma
 	 * the value of sigma is debatable. it is now taken equal of the average value of each response variable
 	 */
-	public void computeResid(){
-		//Map<String,Double> cov = getCovariance();
-		if (weightedRegression) calcAverage();
-		
+	public void computeEffluentResid(){
+		Map<String,Double> average = null;
+		if (weightedRegression) average = experiments.getExperimentalValues().calcExperimentalEffluentAverage();
+		LinkedList<Map<String,Double>> experimentalEffluent = experiments.getExperimentalValues().getExperimentalEffluentValues();
 		// we want to have a fixed order in which the keys are called, therefore we put the response var names in a String []
-		speciesNames = new String [exp.get(0).size()];
+		LinkedList<String> speciesNames = experiments.getResponseVariables();
+
 		int counter = 0;
-		for (String s : exp.get(0).keySet()){
-			speciesNames[counter] = s;
-			counter++;
-		}
-				
-		//initiation of resid:
-		//resid = new double[exp.size()][exp.get(0).size()];
-		resid = new double[exp.size()*exp.get(0).size()];
-		
-
-		if (exp.size() != model.size()) //check if size of experiment list is equal to size of model list:
-			logger.info("Experiment ArrayList has different number of experiments as the model ArrayList!");
-		
-		else {
-/*			for(int i=0;i<exp.size();i++)//Loop over all experiments in experimental ArrayList:
-			{
-				for (int j = 0; j < species_names.length; j++){
-					Double e = exp.get(i).get(species_names[j]);
-					Double m = model.get(i).get(species_names[j]);
-					//resid[i][j] = (1 / Math.sqrt(cov.get(species_names[j]))) * (m-e) ;
-					//resid[i][j] = (m-e)/(average.get(species_names[j]));//residuals weighted with average of response variable over all experiments
-					//resid[i][j] = (m-e);//unweighted regression
-				}
-*/
-			counter = 0;
-			for(int i=0;i<exp.size();i++)//Loop over all experiments in experimental ArrayList:
-				for (int j = 0; j < speciesNames.length; j++){
-					Double e = exp.get(i).get(speciesNames[j]);
-					Double m = model.get(i).get(speciesNames[j]);
-					
-					if(weightedRegression)
-						resid[counter] = (m-e)/(average.get(speciesNames[j]));
-					else 
-						resid[counter] = (m-e);
-					
-					counter++;
-				}
-				
-/*				for ( String s : exp.get(i).keySet()){//Loop over all keys in experiment i:
-					Double e = exp.get(i).get(s);
-					Double m = model.get(i).get(s);
-					logger.info(s);
-				
-					sum = sum + (1 / cov.get(s)) * (m-e) ;
-				}
-*/						
+		for(int i=0;i<experimentalEffluent.size();i++)//Loop over all experiments in experimental ArrayList:
+			for (int j = 0; j < speciesNames.size(); j++){
+				Double e = experimentalEffluent.get(i).get(speciesNames.get(j));
+				Double m = modelValues.getModelEffluentValues().get(i).get(speciesNames.get(j));
+				if(weightedRegression)
+					residEffluent[counter] = (m-e)/(average.get(speciesNames.get(j)));
+				else 
+					residEffluent[counter] = (m-e);
+				counter++;
+			}					
+	}
+	public void computeIgnitionResid(){
+		Double average = null;
+		if (weightedRegression) average = experiments.getExperimentalValues().calcExperimentalIgnitionAverage();
+		LinkedList<Double> experimentalIgnition = experiments.getExperimentalValues().getExperimentalIgnitionValues();
+		// we want to have a fixed order in which the keys are called, therefore we put the response var names in a String []		
+		for(int i=0;i<experimentalIgnition.size();i++){//Loop over all experiments in experimental ArrayList:
+				Double e = experimentalIgnition.get(i);
+				Double m = modelValues.getModelIgnitionValues().get(i);
+				if(weightedRegression)
+					residIgnition[i] = (m-e)/(average);
+				else 
+					residIgnition[i] = (m-e);
 		}
 	}
-	//public double [][] getResid(){
-	public double [] getResid(){
-		computeResid();
-		return resid;
+	/**
+	 * @category getter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public Double [] getResidEffluent(){
+		computeEffluentResid();
+		return residEffluent;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public Double [] getResidIgnition(){
+		computeEffluentResid();
+		return residIgnition;
 	}
 
-	public String[] getSpecies_names() {
-		return speciesNames;
+	public Experiments getExperiments() {
+		return experiments;
+	}
+
+	public void setExperiments(Experiments experiments) {
+		this.experiments = experiments;
 	}
 }

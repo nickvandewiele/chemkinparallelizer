@@ -95,7 +95,7 @@ public class Algebra {
 		return dummy;
 	}
 
-	public static double gaussj( double[][] a, int N )
+	public static double[][] gaussj( double[][] a, int N )
 	// Inverts the double array a[N][N] by Gauss-Jordan method
 	// M.Lampton UCB SSL (c)2003, 2005
 	{
@@ -114,7 +114,8 @@ public class Algebra {
 	                ik[k] = i;
 	                jk[k] = j;
 	            }
-	        if (big == 0.0) return 0.0;
+	        if (big == 0.0) return null;
+	        //if (big == 0.0) return 0.0;
 	        i = ik[k];
 	        if (i>k)
 	          for (j=0; j<N; j++)          // exchange rows
@@ -164,7 +165,8 @@ public class Algebra {
 	              a[i][j] = save;
 	          }
 	    }
-	    return det;
+	    //return det;
+	    return a;
 	}
 
 }

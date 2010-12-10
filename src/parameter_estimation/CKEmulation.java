@@ -14,7 +14,12 @@ import org.apache.log4j.Logger;
  */
 public class CKEmulation extends Thread{
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	Paths paths;
+	private Paths paths;
+	private Chemistry chemistry;
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public Paths getPaths() {
 		return paths;
 	}
@@ -22,7 +27,10 @@ public class CKEmulation extends Thread{
 
 
 	private String reactorDir;
-
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getReactorDir() {
 		return reactorDir;
 	}
@@ -30,33 +38,71 @@ public class CKEmulation extends Thread{
 
 
 	private Runtime runtime;
+	//TODO move these to Chemistry
+	private final String chem_out = "chem.out";
+	private final String chem_asc = "chem.asc";
+	private final String chemAsu = "chem.asu";
+	private final String tran_out = "tran.out";
+	private final String tran_asc = "tran.asc";
+	
+	private final String chemkindataDTD = "chemkindata.dtd";
 
-	private String chem_out = "chem.out";
-	private String chem_asc = "chem.asc";
-	private String asu = "chem.asu";
-	private String tran_out = "tran.out";
-	private String tran_asc = "tran.asc";
+	boolean flagIgnitionDelayExperiment = true;
 
+	private IgnitionDelay ignitionDelay;
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public IgnitionDelay getIgnitionDelay() {
+		return ignitionDelay;
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setIgnitionDelay(IgnitionDelay ignitionDelay) {
+		this.ignitionDelay = ignitionDelay;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public Effluent getEffluent() {
+		return effluent;
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setEffluent(Effluent effluent) {
+		this.effluent = effluent;
+	}
+
+
+
+	private Effluent effluent;
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getAsu() {
-		return asu;
+		return chemAsu;
 	}
 
 
 
 	// input file to CKPreProcess routine:
-	private String preProcessInput = "CKPreProc_template.input";
+	private final String preProcessInput = "CKPreProc_template.input";
 
-	public String reactorSetup;
-	public String reactorOut;
-	public String reactorType;
+	private String reactorSetup;
+	private String reactorOut;
+	private String reactorType;
 
-	public String CKSolnList = "CKSolnList.txt";
-	public String xml = "XMLdata.zip";
-	public String ckcsvName = "CKSoln.ckcsv";
+	private final String CKSolnList = "CKSolnList.txt";
+	private final String xml = "XMLdata.zip";
+	private final String ckcsvName = "CKSoln.ckcsv";
 
-
-	//species_fractions will be mol fractions or mass fractions depending on the flag massfrac. Anywho, the fractions are directly read through read_ckcsv
-	public Map<String,Double> species_fractions;
 
 	//'first' is flag that tells you if the CKSolnList needs to be constructed or not.
 	boolean first;
@@ -69,28 +115,34 @@ public class CKEmulation extends Thread{
 
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
-	public CKEmulation(Paths paths, Runtime runtime){
+	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime){
+		this.ignitionDelay = new IgnitionDelay();
+		this.effluent = new Effluent();
 		this.paths = paths;
+		this.chemistry = chemistry;
 		this.runtime = runtime;
 
 	}
 
 	//constructor for creating CKSolnList.txt
-	public CKEmulation(Paths paths, Runtime runtime, String rs, boolean f){
-		this(paths, runtime);
-		reactorSetup = rs;
-		first = f;
+	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime,
+			String reactorSetup, boolean first){
+		this(paths, chemistry, runtime);
+		this.reactorSetup = reactorSetup;
+		this.first = first;
 	}
 
 	//constructor for running 'classical' Chemkin routines
-	public CKEmulation(Paths paths, Runtime runtime, String rs, boolean f, Semaphore s, boolean excel) throws Exception{
-		this(paths, runtime, rs, f);
+	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime,
+			String rs, Semaphore s, boolean flagCKSolnList, boolean flagExcel, 
+			boolean flagIgnitionDelay) throws Exception{
+		this(paths, chemistry, runtime, rs, flagCKSolnList);
 		int length = rs.length();
-		reactorOut = rs.substring(0,(length-4))+".out";
+		this.reactorOut = rs.substring(0,(length-4))+".out";
 
-		this.flagExcel = excel;
-
-		semaphore = s;
+		this.flagExcel = flagExcel;
+		this.flagIgnitionDelayExperiment = flagIgnitionDelay;
+		this.semaphore = s;
 
 		this.reactorDir = paths.getWorkingDir()+"temp_ "+rs.substring(0,(length-4))+"/";
 
@@ -108,7 +160,7 @@ public class CKEmulation extends Thread{
 
 		if(new File(paths.getWorkingDir()+tran_asc).exists()){
 			//copy only if tran output file returns no errors:
-			if(checkTranFile()){
+			if(checkTranOutput()){
 				Tools.copyFile(paths.getWorkingDir()+tran_asc,reactorDir+tran_asc);	
 			}	
 		}
@@ -124,12 +176,13 @@ public class CKEmulation extends Thread{
 
 			logger.info("license acquired!"+reactorSetup);
 
-
-			//copy chem.inp to the reactorDir:
-			Tools.copyFile(paths.getWorkingDir()+paths.getChemInp(),reactorDir+paths.getChemInp());
+			//copy chemistry input to the reactorDir:
+			Tools.copyFile(paths.getWorkingDir()+chemistry.getChemistryInput(),
+					reactorDir+chemistry.getChemistryInput());
+			//reactor setup:
 			Tools.copyFile(paths.getWorkingDir()+reactorSetup,reactorDir+reactorSetup);
-			Tools.copyFile(paths.getWorkingDir()+"chemkindata.dtd",reactorDir+"chemkindata.dtd");
-
+			//chemkindataDTD:
+			Tools.copyFile(paths.getWorkingDir()+chemkindataDTD,reactorDir+chemkindataDTD);
 
 			callReactor();
 
@@ -147,14 +200,19 @@ public class CKEmulation extends Thread{
 				//copy the CKSolnList to the reactorDir
 				Tools.copyFile(paths.getWorkingDir()+CKSolnList,reactorDir+CKSolnList);
 			}
+			
 			callGetSol();
 
 			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
 			if (!flagExcel){
-				//String name_data_ckcsv = "data_ckcsv"+j;
-
-				species_fractions = Tools.readCkcsv(reactorDir,ckcsvName);
-
+				if(flagIgnitionDelayExperiment){
+					ignitionDelay.setValue(Tools.readCkcsvIgnitionDelay(reactorDir,
+							ckcsvName));
+				}
+				else{
+					effluent.setSpeciesFractions(Tools.readCkcsv(reactorDir,ckcsvName));	
+				}
+				
 			}
 
 			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
@@ -168,7 +226,6 @@ public class CKEmulation extends Thread{
 
 			//when all Chemkin routines are finished, release the semaphore:
 			semaphore.release();
-
 			logger.info("license released!"+reactorSetup);
 
 		} catch(Exception exc){
@@ -191,7 +248,9 @@ public class CKEmulation extends Thread{
 	 * @throws Exception
 	 */
 	public void callChem () throws IOException, InterruptedException {
-		String [] preprocess = {paths.getBinDir()+"chem","-i",reactorDir+paths.getChemInp(),"-o",reactorDir+chem_out,"-c",reactorDir+chem_asc};
+		String [] preprocess = {paths.getBinDir()+"chem",
+				"-i",reactorDir+chemistry.getChemistryInput(),"-o",
+				reactorDir+chem_out,"-c",reactorDir+chem_asc};
 		executeCKRoutine(preprocess);
 	}
 	/**
@@ -203,7 +262,8 @@ public class CKEmulation extends Thread{
 	public void callPreProcess() throws IOException, InterruptedException {
 		setCKPreProcessInput();
 		System.out.println(paths.getWorkingDir()+preProcessInput);
-		String [] preprocess = {paths.getBinDir()+"CKPreProcess","-i",paths.getWorkingDir()+preProcessInput};
+		String [] preprocess = {paths.getBinDir()+"CKPreProcess",
+				"-i",paths.getWorkingDir()+preProcessInput};
 		executeCKRoutine(preprocess, new File(paths.getWorkingDir()));
 	}
 	/**
@@ -215,31 +275,40 @@ public class CKEmulation extends Thread{
 		reactorType = readReactorType();
 		//PFR
 		if(reactorType.equals("PLUG")){
-			String [] name_input_PFR = {paths.getBinDir()+"CKReactorPlugFlow","-i",reactorDir+reactorSetup,"-o",reactorDir+reactorOut};
+			String [] name_input_PFR = {paths.getBinDir()+"CKReactorPlugFlow","-i",
+					reactorDir+reactorSetup,"-o",
+					reactorDir+reactorOut};
 			executeCKRoutine(name_input_PFR, new File(reactorDir));	
 		}
 
 		//burner stabilized laminar premixed flame
 		else if(reactorType.equals("BURN")){
-			String [] name_input_PFR = {paths.getBinDir()+"CKReactorBurnerStabilizedFlame","-i",reactorDir+reactorSetup,"-o",reactorDir+reactorOut};
+			String [] name_input_PFR = {paths.getBinDir()+"CKReactorBurnerStabilizedFlame",
+					"-i",reactorDir+reactorSetup,"-o",
+					reactorDir+reactorOut};
 			executeCKRoutine(name_input_PFR, new File(reactorDir));
 		}
 
 		//CSTR
 		else if (reactorType.equals("STST")){
-			String [] name_input_PFR = {paths.getBinDir()+"CKReactorGenericPSR","-i",reactorDir+reactorSetup,"-o",reactorDir+reactorOut};
+			String [] name_input_PFR = {paths.getBinDir()+"CKReactorGenericPSR","-i",
+					reactorDir+reactorSetup,"-o",
+					reactorDir+reactorOut};
 			executeCKRoutine(name_input_PFR, new File(reactorDir));
 		}
 
-		//ignition delay, batch reactor, transient solver
+		//ignition delay, batch reactor, transient solver, as in shock tube experiments
 		else if (reactorType.equals("TRAN")){
-			String [] name_input_PFR = {paths.getBinDir()+"CKReactorGenericClosed","-i",reactorDir+reactorSetup,"-o",reactorDir+reactorOut};
+			String [] name_input_PFR = {paths.getBinDir()+"CKReactorGenericClosed","-i",
+					reactorDir+reactorSetup,"-o",
+					reactorDir+reactorOut};
 			executeCKRoutine(name_input_PFR, new File(reactorDir));
 		}
 	}
 
 	/**
 	 * processes the xmldata.zip file using Chemkin GetSolution executable
+	 * it produces a .ckcsv file with only the lines left that were specified in the CKSolnList.txt
 	 * @param flag_massfrac if true: GetSolution prints mass fractions instead of mole fractions (used for Excel Postprocessing and Parity mode)
 	 * @throws Exception
 	 */
@@ -249,7 +318,8 @@ public class CKEmulation extends Thread{
 		 * nosen: no sensitivity data is included
 		 * norop: no rate of production info is included
 		 */
-		String [] progGetSol = {paths.getBinDir()+"GetSolution","-nosen","-norop","-mass",reactorDir+xml};
+		String [] progGetSol = {paths.getBinDir()+"GetSolution",
+				"-nosen","-norop","-mass",reactorDir+xml};
 		executeCKRoutine(progGetSol, new File (reactorDir));
 
 		Tools.deleteFiles(reactorDir, ".zip");
@@ -259,7 +329,8 @@ public class CKEmulation extends Thread{
 	 * @throws Exception
 	 */
 	public void callTranspose () throws Exception {
-		String [] progTranspose = {paths.getBinDir()+"CKSolnTranspose",reactorDir+ckcsvName};
+		String [] progTranspose = {paths.getBinDir()+"CKSolnTranspose",
+				reactorDir+ckcsvName};
 		executeCKRoutine(progTranspose);
 
 	}
@@ -270,7 +341,7 @@ public class CKEmulation extends Thread{
 	 * This output file is read, and the String  " NO ERRORS FOUND ON INPUT: " is sought.<BR>
 	 * If this String is not present, System.exit(-1) is called<BR>
 	 */
-	public void checkChemInput(){
+	public void checkChemOutput(){
 		try {
 
 			//callPreProcess();
@@ -308,6 +379,7 @@ public class CKEmulation extends Thread{
 	}
 	/**
 	 * createSolnList creates the CKSolnList.txt file by calling the "GetSolution -listonly" routine<BR>
+	 * CKSolnList contains
 	 * @throws Exception
 	 */
 	public void createSolnList()throws Exception{
@@ -322,41 +394,44 @@ public class CKEmulation extends Thread{
 	 * <LI>set UNIT of distance to (cm)</LI>
 	 * <LI>all species mole fractions are reported, also those with negative fractions: FILTER MIN</LI>
 	 * @throws Exception
+	 * TODO when dealing with shock tube experiments during which ignition delays are measured, the response variable
+	 * is ignition delay and not a species mass fraction.
 	 */
 	public void setSolnList()throws Exception{
 		BufferedReader in = new BufferedReader(new FileReader(reactorDir+CKSolnList));
 		String temp = "tempList.txt";
 		PrintWriter out = new PrintWriter(new FileWriter(reactorDir+temp));
 		try{
+
 			String dummy = null;
 			dummy = in.readLine();
-			List<String> speciesNames = Tools.getSpeciesNames(paths.getWorkingDir(),asu);
+			List<String> speciesNames = Tools.getSpeciesNames(paths.getWorkingDir(),chemAsu);
 			//if a comment line (starts with char '#') is read, just copy it to output file
 			while(!dummy.equals(null)){
-				//if a comment line (#) or a blank line is read, just copy and continue
+				//if a blank line is read, just copy and continue
 				if (dummy.trim().length()==0){
 					out.println(dummy);
 					dummy = in.readLine();
 					//System.out.println(dummy);
 				}
+				//if a comment line (#) is read, just copy and continue
 				else if (dummy.charAt(0)=='#'||(dummy.trim().length()==0)) {
 					out.println(dummy);
 					dummy = in.readLine();
 					//System.out.println(dummy);
 				}
-
 				else {
 					//separator are TWO spaces, not just one space!
 					String[] st_dummy = dummy.split("  ");
 					//only species variables and molecular weight variable are reported:
-					if (st_dummy[0].equals("VARIABLE")){
+					if (st_dummy[0].trim().equals("VARIABLE")){
 						//check if the 2nd keyword matches "molecular weight":
-						if (st_dummy[1].equals("molecular_weight")){
+						if (st_dummy[1].trim().equals("molecular_weight")){							
 							//no sensitivity info for molecular weight variable
 							st_dummy[4]="0";
 						}
 						//check if the 2nd keyword matches "exit_mass_flow_rate":
-						else if(st_dummy[1].equals("exit_mass_flow_rate")){
+						else if(st_dummy[1].trim().equals("exit_mass_flow_rate")){
 							st_dummy[4]="0";
 						}
 						//check if 2nd keyword is one of the species names:
@@ -364,8 +439,22 @@ public class CKEmulation extends Thread{
 							//no sensitivity info for species: set last number in the line to zero
 							st_dummy[4]="0";
 						}
+						//ignition data should also considered:
+						else if(st_dummy[1].trim().equals("ignition_data")){
+							//check whether this experiments is about ignition delays:
+							if(flagIgnitionDelayExperiment){
+								//no sensitivity
+								st_dummy[4]="0";
+							}
+							//do not report ignition delay data, even
+							else {
+								st_dummy[2]="0";
+								st_dummy[4]="0";
+							}
+						}
 						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
 						else {
+
 							//st_dummy[3] is standard equal to zero
 							st_dummy[2]="0";
 							st_dummy[4]="0";
@@ -373,15 +462,15 @@ public class CKEmulation extends Thread{
 						}
 					}
 					//set UNIT of Distance to m instead of cm:
-					else if(st_dummy[0].equals("UNIT")){
-						if (st_dummy[1].equals("Distance")){
+					else if(st_dummy[0].trim().equals("UNIT")){
+						if (st_dummy[1].trim().equals("Distance")){
 							st_dummy[2]="(cm)";
 						}
 					}
 
 					//make sure even negative mole fractions are printed:
-					else if(st_dummy[0].equals("FILTER")){
-						if (st_dummy[1].equals("MIN")){
+					else if(st_dummy[0].trim().equals("FILTER")){
+						if (st_dummy[1].trim().equals("MIN")){
 							st_dummy[2]="-1.0";
 						}
 					}
@@ -398,11 +487,14 @@ public class CKEmulation extends Thread{
 					//System.out.println(dummy);
 				}
 			} 
+
+
 		}catch (Exception e){//do nothing: e catches the end of the file exception
 
 		}
 		in.close();
 		out.close();
+		//remove old CKSolnList and replace it with newly create one
 		File old = new File(reactorDir+CKSolnList);
 		old.delete();
 		File f_temp = new File(reactorDir+temp);
@@ -436,14 +528,14 @@ public class CKEmulation extends Thread{
 	/**
 	 * this routine overloads the standard execute_CKRoutine with a specified working directory, different from the standard working directory
 	 * @param CKCommand
-	 * @param workingDirectory
+	 * @param directory
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	public void executeCKRoutine (String [] CKCommand, File workingDirectory) throws IOException, InterruptedException{
+	public void executeCKRoutine (String [] CKCommand, File directory) throws IOException, InterruptedException{
 		String s = null;
 		String [] environment = null;
-		Process p = runtime.exec(CKCommand, environment, workingDirectory);
+		Process p = runtime.exec(CKCommand, environment, directory);
 
 		BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		BufferedReader stdError_p = new BufferedReader(new InputStreamReader(p.getErrorStream()));
@@ -466,13 +558,13 @@ public class CKEmulation extends Thread{
 		//System.out.println("Setup finished");		
 	}
 
-
-	public Map<String,Double> getModelValue(){
-		/**
-		 * TODO: this needs to be settled in a better (less patchy) way!
-		 */
-		return species_fractions;
-
+	
+	public Map<String,Double> getEffluentValue(){
+			return effluent.getSpeciesFractions();	
+		}
+	
+	public Double getIgnitionValue(){
+		return ignitionDelay.value;
 	}
 
 
@@ -486,12 +578,12 @@ public class CKEmulation extends Thread{
 		String osname = System.getProperty("os.name");
 		if (osname.equals("Linux")){
 			PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+preProcessInput));
-			out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"/"+paths.getChemInp());
+			out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"/"+chemistry.getChemistryInput());
 
 			//chemistry output, link and species list:
 			out.println("OUT_CHEM_OUTPUT="+System.getProperty("user.dir")+"/"+chem_out);
 			out.println("OUT_CHEM_ASC="+System.getProperty("user.dir")+"/"+chem_asc);
-			out.println("OUT_CHEM_SPECIES="+System.getProperty("user.dir")+"/"+asu);
+			out.println("OUT_CHEM_SPECIES="+System.getProperty("user.dir")+"/"+chemAsu);
 
 			//transport link files and log file:
 			out.println("FIT_TRANSPORT_PROPERTIES=1");
@@ -503,11 +595,11 @@ public class CKEmulation extends Thread{
 		}
 		else {
 			PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+preProcessInput));
-			out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"\\"+paths.getChemInp());
+			out.println("IN_CHEM_INPUT="+System.getProperty("user.dir")+"\\"+chemistry.getChemistryInput());
 			//chemistry output, link and species list:
 			out.println("OUT_CHEM_OUTPUT="+System.getProperty("user.dir")+"\\"+chem_out);
 			out.println("OUT_CHEM_ASC="+System.getProperty("user.dir")+"\\"+chem_asc);
-			out.println("OUT_CHEM_SPECIES="+System.getProperty("user.dir")+"\\"+asu);
+			out.println("OUT_CHEM_SPECIES="+System.getProperty("user.dir")+"\\"+chemAsu);
 
 			//transport link files and log file:
 			out.println("FIT_TRANSPORT_PROPERTIES=1");
@@ -550,7 +642,7 @@ public class CKEmulation extends Thread{
 	 * -something went wrong with processing the transport data
 	 * @return false if errors is found in transport file, if not, returns true
 	 */
-	public boolean checkTranFile(){
+	public boolean checkTranOutput(){
 		boolean flag = true;
 		try {
 			BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+tran_out));

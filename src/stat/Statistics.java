@@ -9,9 +9,6 @@ import cern.jet.stat.Probability;
 
 public class Statistics {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	private int noExperiments;
-	private int noParams;
-	private int noResp;
 	private double [][] var_covar; //variance-covariance matrix of parameter estimations
 	private double [][] corr; //correlation matrix of parameter estimations
 	private double [][] JTJ;//curvature matrix, transpose(Jacobian).Jacobian
@@ -25,23 +22,24 @@ public class Statistics {
 	private double Fvalue;
 	private double tabulated_t_value;//t_(1-alpha/2)
 	private double tabulated_F_value;
-	private double[][] confidence_intervals; 
+	private double[][] confidence_intervals;
+	private int noParams;
+	private int noExperiments;
+	private int noResp; 
 	
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
-	noExperiments = optimization.getNBMTHost().getNPTS();
-	noParams = optimization.getNBMTHost().getNPARMS();
-	noResp = optimization.getNBMTHost().getNRESP();
+	noParams = optimization.getChemistry().getParams().getNoFittedParameters();
+	noExperiments = optimization.getExperiments().getTotalNoExperiments();
+	noResp = optimization.getExperiments().getResponseVariables().size();
 }
 
 /**
  * variance-covariance matrix of parameter estimations
  * @throws IOException 
  */
-public void calcVarCovar() throws IOException, InterruptedException{
-	//double [][][] J = optimization.getNBMTmultiDHost().dGetFullJac();
+private void calcVarCovar() throws IOException, InterruptedException{
 	double [][] J = optimization.getNBMTHost().dGetFullJac();
-	
 	
 	var_covar = new double[noParams][noParams];
 	
@@ -56,21 +54,11 @@ public void calcVarCovar() throws IOException, InterruptedException{
         }
 	
 	JTJminus1 = JTJ;//prevents gaussj from overwriting JTJ
-	JTJminus1 = gaussj(JTJminus1, JTJminus1.length); //inverse matrix of JTJ
-	
-	
-/*	double s_squared = sos/(no_experiments - no_parameters);
-	
-	for (int i = 0; i < JTJminus1.length; i++) {
-		for (int k = 0; k < JTJminus1[0].length; k++) {
-			var_covar[i][k] = JTJminus1[i][k] * s_squared;  
-		}
-	}
-*/	
+	JTJminus1 = Algebra.gaussj(JTJminus1, JTJminus1.length); //inverse matrix of JTJ	
 	var_covar = JTJminus1;
 	
 }
-public void calcCorr(){
+private void calcCorr(){
 	corr = new double[var_covar.length][var_covar[0].length];
 	for (int k=0; k < noParams; k++)      // calculate curvature matrix JTJ
         for (int j=0; j < noParams; j++)
@@ -78,8 +66,9 @@ public void calcCorr(){
         	corr[k][j] = var_covar[k][j] / Math.sqrt(var_covar[k][k]*var_covar[j][j]);
         }
 }
-public void calcANOVA() throws Exception{
-	Function function = new Function (optimization.getModelValues(optimization.buildFullParamVector(optimization.retrieve_fitted_parameters()),true), optimization.getExp());
+private void calcANOVA() throws Exception{
+	Function function = new Function (optimization.getExperiments(),
+			optimization.testNewParameters(optimization.buildFullParamVector(optimization.retrieveFittedParameters()),true));
 	SREG = function.getSREG();
 	SRES = function.getSRES();
 	Fvalue = (SREG/noParams) / (SRES/(noExperiments * noResp - noParams));
@@ -87,7 +76,7 @@ public void calcANOVA() throws Exception{
 /**
  * t-value for significance of individual parameter estimation with respect to zero
  */
-public void calcTValues(){
+private void calcTValues(){
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
 	
@@ -102,7 +91,7 @@ public void calcTValues(){
  * 95% confidence intervals
  * @throws IOException 
  */
-public void calcConfIntervals() throws IOException, InterruptedException{
+private void calcConfIntervals() throws IOException, InterruptedException{
 	//double [] params = optimization.getNBMTmultiDHost().getParms();
 	double [] params = optimization.getNBMTHost().getParms();
 	confidence_intervals = new double[noParams][3];
@@ -119,157 +108,94 @@ public void calcConfIntervals() throws IOException, InterruptedException{
 /**
  * tabulated two-sided t-value for n*v-p experiments for an accumulated probability of 1-alpha/2
  */
-public void calc_tabulated_t(){
+private void calc_tabulated_t(){
 	tabulated_t_value = Probability.studentTInverse(alpha, noExperiments*noResp - noParams);
 }
-/*
-public void calc_tabulated_F(){
-	tabulated_F_value = (Probability.chiSquare(no_parameters, 1-alpha)/no_parameters) / (Probability.chiSquare(no_experiments * no_responses - no_parameters, 1-alpha)/(no_experiments * no_responses - no_parameters));
-}
-*/
-public double[][] gaussj( double[][] a, int N )
-// Inverts the double array a[N][N] by Gauss-Jordan method
-// M.Lampton UCB SSL (c)2003, 2005
-{
-    double det = 1.0, big, save;
-    int i,j,k,L;
-    int[] ik = new int[100];
-    int[] jk = new int[100];
-    for (k=0; k<N; k++)
-    {
-        big = 0.0;
-        for (i=k; i<N; i++)
-          for (j=k; j<N; j++)          // find biggest element
-            if (Math.abs(big) <= Math.abs(a[i][j]))
-            {
-                big = a[i][j];
-                ik[k] = i;
-                jk[k] = j;
-            }
-        //if (big == 0.0) return 0.0;
-        if (big == 0.0) return null;
-        i = ik[k];
-        if (i>k)
-          for (j=0; j<N; j++)          // exchange rows
-          {
-              save = a[k][j];
-              a[k][j] = a[i][j];
-              a[i][j] = -save;
-          }
-        j = jk[k];
-        if (j>k)
-          for (i=0; i<N; i++)
-          {
-              save = a[i][k];
-              a[i][k] = a[i][j];
-              a[i][j] = -save;
-          }
-        for (i=0; i<N; i++)            // build the inverse
-          if (i != k)
-            a[i][k] = -a[i][k]/big;
-        for (i=0; i<N; i++)
-          for (j=0; j<N; j++)
-            if ((i != k) && (j != k))
-              a[i][j] += a[i][k]*a[k][j];
-        for (j=0; j<N; j++)
-          if (j != k)
-            a[k][j] /= big;
-        a[k][k] = 1.0/big;
-        det *= big;                    // bomb point
-    }                                  // end k loop
-    for (L=0; L<N; L++)
-    {
-        k = N-L-1;
-        j = ik[k];
-        if (j>k)
-          for (i=0; i<N; i++)
-          {
-              save = a[i][k];
-              a[i][k] = -a[i][j];
-              a[i][j] = save;
-          }
-        i = jk[k];
-        if (i>k)
-          for (j=0; j<N; j++)
-          {
-              save = a[k][j];
-              a[k][j] = -a[i][j];
-              a[i][j] = save;
-          }
-    }
-    //return det;
-    return a;
-}
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double [][] get_Var_Covar() throws IOException, InterruptedException{
 	calcVarCovar();
 	return var_covar;
 }
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double [][] get_Corr() throws IOException, InterruptedException{
 	calcCorr();
 	return corr;
 }
-public void printArray(double [] d, PrintWriter out){
-	for (int i = 0; i < d.length; i++) {
-		out.print(d[i]+" ");
-		logger.info(d[i]+" ");
-	}
-	out.println();
-	//System.out.println();
-}
-public void printMatrix(double [][] d,PrintWriter out){
-	for (int i = 0; i < d.length; i++) {
-		for (int j = 0; j < d[0].length; j++) {
-			out.print(d[i][j]+" ");
-			logger.info(d[i][j]+" ");			
-		}
-		out.println();
-    	logger.info("");
-	}
-	out.println();
-	//System.out.println();
-}
-public void print3DMatrix(double [][][] d,PrintWriter out){
-	for (int i = 0; i < d.length; i++) {
-		for (int j = 0; j < d[0].length; j++) {
-			for (int k = 0; k < d[0][0].length; k++) {
-				out.print(d[i][j][k]+" ");
-				logger.info(d[i][j][k]+" ");			
-			}
-			out.println();
-	    	logger.info("");
-		}
-		out.println();
-    	logger.info("");
-	}
-	out.println();
-	//System.out.println();
-}
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double[] getT_values() {
 	calcTValues();
 	return t_values;
 }
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double[][] getJTJ() {
 	return JTJ;
 }
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double getTabulated_t_value() {
 	calc_tabulated_t();
 	return tabulated_t_value;
 }
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double[][] getConfIntervals() throws IOException, InterruptedException {
 	calcConfIntervals();
 	return confidence_intervals;
 }
-
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double getSREG() throws Exception {
 	calcANOVA();
 	return SREG;
 }
-
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double getSRES() throws Exception {
 	calcANOVA();
 	return SRES;
 }
-
+/**
+ * @category getter
+ * @return
+ * @throws IOException
+ * @throws InterruptedException
+ */
 public double getFvalue() throws Exception {
 	calcANOVA();
 	return Fvalue;
@@ -281,16 +207,5 @@ public double getTabulated_F_value() {
 }
 */
 
-public int getNoExperiments() {
-	return noExperiments;
-}
 
-
-public int getNoParams() {
-	return noParams;
-}
-
-public int getNoResp() {
-	return noResp;
-}
 }

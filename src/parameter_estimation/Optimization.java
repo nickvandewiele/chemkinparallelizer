@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,21 +33,20 @@ import stat.Statistics;
  */
 public class Optimization{
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	Paths paths;
-	Parameters2D params2D;
+	private Paths paths;
+	private Chemistry chemistry;
+	private Experiments experiments;
+	private Fitting fitting;
+	private Licenses licenses;
+	//1D Array of kinetic parameters
 	Parameters1D params1D;
 	public Parameters1D getParams1D() {
 		return params1D;
 	}
-	public int maxeval;
 	public double[][] beta_new;
 
 
-	boolean flagRosenbrock;
-	boolean flagLM;
 	boolean weightedRegression;
-
-	
 	private List<Map<String,Double>> exp;
 
 	/**
@@ -60,75 +60,62 @@ public class Optimization{
  */
 	//private NBMTmultiDHost nbmtmultiDhost;
 	private NBMTHost nbmthost;
-
-	//constructor:
-	public Optimization (Paths paths, Parameters2D params, int m, boolean f_r, boolean f_L, List<Map<String,Double>>exp){
+//constructor:
+	public Optimization (Paths paths, Chemistry chemistry, Experiments experiments,
+			Fitting fitting, Licenses licenses){
 		this.paths = paths;
-		this.params2D = params;
-		maxeval = m;
-		beta_new = new double [params.getBeta().length][params.getBeta()[0].length];
-
-		
-		flagRosenbrock = f_r;
-		flagLM = f_L;
+		this.chemistry = chemistry;
+		this.fitting = fitting;
+		this.experiments = experiments;	
+		this.licenses = licenses;
+		beta_new = new double [chemistry.getParams().getBeta().length][chemistry.getParams().getBeta()[0].length];		
 //		weighted_regression = w_r;
-		
-		this.exp = exp;
 	}
 	
 	
-	public double [][] optimize(List<Map<String,Double>> exp) throws Exception{
-		Set<String> response_vars = exp.get(0).keySet();
-		PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
-		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
-			out_species.println((String)it.next());
-		}
-		out_species.close();
+	public double [][] optimize() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(params2D);
-		if(flagRosenbrock){
+		params1D.convert2Dto1D(chemistry.getParams());
+		if(fitting.getFlagRosenbrock()){
 			//Rosenbrock parameters:
 			double efrac = 0.5;//0.3
 			double succ = 3.0;
 			double fail = -0.5;
 			logger.info("Start of Rosenbrock!");
-			rosenbrock = new Rosenbrock(this, efrac, succ, fail, maxeval);
-			beta_new = Tools.convert1Dto2D(rosenbrock.returnOptimizedParameters(), params2D.getBeta());
+			rosenbrock = new Rosenbrock(this, efrac, succ, fail);
+			beta_new = Tools.convert1Dto2D(rosenbrock.returnOptimizedParameters(), chemistry.getParams().getBeta());
 		}
-		
-		if(flagLM){
+		if(fitting.getFlagLM()){
 			logger.info("Start of Levenberg-Marquardt!");
 			nbmthost = new NBMTHost(this);
-			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), params2D.getBeta());		
+			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), chemistry.getParams().getBeta());		
 		}
 
-
-		// Rosenbrock monitors:
+		// move Rosenbrock monitors:
 		if(new File("SSQ_Rosenbrock.csv").exists())
 			Tools.moveFile(paths.getOutputDir(), "SSQ_Rosenbrock.csv");
 		if(new File("output_Rosenbrock.txt").exists())
 			Tools.moveFile(paths.getOutputDir(), "output_Rosenbrock.txt");
 
-		//LM monitors:
+		//move LM monitors:
 		if(new File("LM.txt").exists())
 			Tools.moveFile(paths.getOutputDir(), "LM.txt");
 		if(new File("SSQ_LM.txt").exists())
 			Tools.moveFile(paths.getOutputDir(), "SSQ_LM.txt");
 		if(new File("response_vars.txt").exists())
 			Tools.moveFile(paths.getOutputDir(), "response_vars.txt");
-
 		return beta_new;
 	}
 	
 	
-	public List<Map<String,Double>> getModelValues(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
+	public ModelValues testNewParameters(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
 		//update_chemistry_input will insert new parameter_guesses array into chem_inp
 		update_chemistry_input(parameter_guesses);
 		
-		List<Map<String,Double>> model = new ArrayList<Map<String,Double>>();
-		CKPackager ckp_new = new CKPackager(paths, flag_CKSolnList);
-		model = ckp_new.getModelValues();
-		return model;
+		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
+				flag_CKSolnList);
+		ModelValues modelValues = ckp.getModelValues();
+		return modelValues;
 	}
 	
 	public List<Map<String,Double>> getExp (){
@@ -164,7 +151,7 @@ public class Optimization{
 	 * WARNING: method supposes TD inside chemistry input file!!!<BR>
 	 */
 	public void update_chemistry_input (double [] dummy_beta_new) throws IOException{
-		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+paths.getChemInp()));
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+chemistry.getChemistryInput()));
 		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"temp.inp"));
 		String dummy = in.readLine();
 		
@@ -186,10 +173,10 @@ public class Optimization{
 		out.println(dummy);
 		
 		int counter = 0;
-		for (int i = 0; i < params2D.getFixRxns().length; i++){
+		for (int i = 0; i < chemistry.getParams().getFixRxns().length; i++){
 			dummy = in.readLine();
 			String[] st_dummy = dummy.split("\\s");
-			for (int j = 0; j < params2D.getFixRxns()[0].length; j++){
+			for (int j = 0; j < chemistry.getParams().getFixRxns()[0].length; j++){
 				//put new values of kinetic parameters (at position 1, 2, 3 of st_dummy[]):
 				st_dummy[j+1] = Double.toString(dummy_beta_new[counter]);
 				counter++;
@@ -216,22 +203,33 @@ public class Optimization{
 		in.close();
 		out.close();
 		
-		File f_old = new File(paths.getWorkingDir()+paths.getChemInp());
+		File f_old = new File(paths.getWorkingDir()+chemistry.getChemistryInput());
 		f_old.delete();
 		File f = new File(paths.getWorkingDir()+"temp.inp");
-		f.renameTo(new File(paths.getWorkingDir()+paths.getChemInp()));
+		f.renameTo(new File(paths.getWorkingDir()+chemistry.getChemistryInput()));
+		
+		//chemistry input file needs to be reprocessed: new link file has to be created!!!
+		Runtime r = Runtime.getRuntime();
+		CKEmulation c = new CKEmulation(paths, chemistry, r);
+		c.checkChemOutput();
+		try {
+			c.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * retrieve_fitted_parameters returns the parameters that are loose (containing a 1 in the dummy_fix_reactions array)
 	 * @return
 	 */
-	public double[] retrieve_fitted_parameters(){
+	public double[] retrieveFittedParameters(){
 		//count the number of fitted parameters:
 		int no_fitted_parameters = 0;
-		for (int i = 0; i < params2D.getFixRxns().length; i++){
-			for (int j = 0; j < params2D.getFixRxns()[0].length; j++){
-				no_fitted_parameters += params2D.getFixRxns()[i][j];
+		for (int i = 0; i < chemistry.getParams().getFixRxns().length; i++){
+			for (int j = 0; j < chemistry.getParams().getFixRxns()[0].length; j++){
+				no_fitted_parameters += chemistry.getParams().getFixRxns()[i][j];
 			}
 		}
 		
@@ -266,37 +264,35 @@ public class Optimization{
 	}
 	public void calcStatistics() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(params2D);
+		params1D.convert2Dto1D(chemistry.getParams());
 		nbmthost = new NBMTHost(this, true);
 		nbmthost.bBuildJacobian();
-		//beta_new = convert_1D_to_2D(buildFullParamVector(nbmthost.getParms()));
 		Statistics s = new Statistics(this);
 		PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
 		out.println("Averages of response variables:");
-		//out.println(this.nbmtmultiDhost.getFunction().calcAverage());
-		out.println(this.nbmthost.getFunction().calcAverage());
+		out.println(experiments.getExperimentalValues().calcExperimentalEffluentAverage());
 		out.println();
 		out.println("Variance-covariance of parameter estimations:");
-		s.printMatrix(s.get_Var_Covar(), out);
+		Printer.printMatrix(s.get_Var_Covar(), out);
 		out.println();
 		out.println("Correlation matrix of parameter estimations:");
-		s.printMatrix(s.get_Corr(), out);
+		Printer.printMatrix(s.get_Corr(), out);
 		out.println();
 		out.println("t-values of individual significance of parameter estimations:");
-		s.printArray(s.getT_values(), out);
+		Printer.printArray(s.getT_values(), out);
 		out.println();
 		out.println("tabulated t-value for alpha = 5%");
 		out.println(s.getTabulated_t_value());
 		out.println();
 		out.println("Confidence Intervals: [parameter][upper limit][lower limit]: ");
-		s.printMatrix(s.getConfIntervals(), out);
+		Printer.printMatrix(s.getConfIntervals(), out);
 		out.println();
 		out.println("Number of experiments:");
-		out.println(s.getNoExperiments());
-		out.println("Number of parameters:");
-		out.println(s.getNoParams());
+		out.println(experiments.getTotalNoExperiments());
+		out.println("Number of fitted parameters:");
+		out.println(chemistry.getParams().getNoFittedParameters());
 		out.println("Number of responses:");
-		out.println(s.getNoResp());
+		out.println(experiments.getResponseVariables().size());
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());
@@ -315,6 +311,56 @@ public class Optimization{
 
 	public boolean isWeightedRegression() {
 		return weightedRegression;
+	}
+
+	/**
+	 * @category getter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public Fitting getFitting() {
+		return fitting;
+	}
+
+	/**
+	 * @category setter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void setFitting(Fitting fitting) {
+		this.fitting = fitting;
+	}
+
+	/**
+	 * @category getter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public Experiments getExperiments() {
+		return experiments;
+	}
+
+	/**
+	 * @category setter
+	 * @return
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void setExperiments(Experiments experiments) {
+		this.experiments = experiments;
+	}
+
+
+	public Chemistry getChemistry() {
+		return chemistry;
+	}
+
+
+	public void setChemistry(Chemistry chemistry) {
+		this.chemistry = chemistry;
 	}
 
 }

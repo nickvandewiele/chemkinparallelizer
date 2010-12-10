@@ -28,5 +28,20 @@ public class Printer {
 		out.println();
 		//System.out.println();
 	}
-
+	public void print3DMatrix(double [][][] d,PrintWriter out){
+		for (int i = 0; i < d.length; i++) {
+			for (int j = 0; j < d[0].length; j++) {
+				for (int k = 0; k < d[0][0].length; k++) {
+					out.print(d[i][j][k]+" ");
+					logger.info(d[i][j][k]+" ");			
+				}
+				out.println();
+		    	logger.info("");
+			}
+			out.println();
+	    	logger.info("");
+		}
+		out.println();
+		//System.out.println();
+	}
 }

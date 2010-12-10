@@ -14,54 +14,81 @@ public class Paths {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	protected String workingDir;
 	protected String chemkinDir;
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setWorkingDir(String workingDir) {
+		this.workingDir = workingDir;
+		setOutputDir();
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setChemkinDir(String chemkinDir) {
+		this.chemkinDir = chemkinDir;
+		setBinDir();
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	private void setBinDir() {
+		binDir = chemkinDir+"/bin/";
+	}
 	protected String binDir;
-	protected String chemInp;
-	protected String [] reactorInputs;
 	protected String outputDir;
 
-	//no_licenses sets the limiting number for the counting semaphore
-	protected int noLicenses;
-	
-	public Paths (String wd, String cd, String c_inp, String [] r_inp, int no_lic){
+	public Paths(String wd, String cd){
 		workingDir = wd;
 		chemkinDir = cd;
-		chemInp = c_inp;
-		reactorInputs = r_inp;
-		outputDir = workingDir+"output/";
 		binDir = chemkinDir+"/bin/";
-		createOutputDir();
-		noLicenses = no_lic;
+		checkOutputDir();		
+	}
+	public Paths(){
 		
 	}
-	protected void createOutputDir (){
+	protected void checkOutputDir (){
 		boolean temp = new File(outputDir).mkdir();
 		if(!temp){
 			logger.debug("Creation of output directory failed!");
 			System.exit(-1);
 		}
 	}
-
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getOutputDir() {
 		return outputDir;
 	}
-	public void setOutputDir(String outputDir) {
-		this.outputDir = outputDir;
+	/**
+	 * @category setter
+	 * @return
+	 */
+	private void setOutputDir() {
+		outputDir = workingDir+"output/";
+		checkOutputDir();
 	}
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getWorkingDir() {
 		return workingDir;
 	}
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getChemkinDir() {
 		return chemkinDir;
 	}
-	public String getChemInp() {
-		return chemInp;
-	}
-	public String[] getReactorInputs() {
-		return reactorInputs;
-	}
-	public int getNoLicenses() {
-		return noLicenses;
-	}
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public String getBinDir() {
 		return binDir;
 	}

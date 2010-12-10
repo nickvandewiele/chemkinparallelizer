@@ -3,6 +3,7 @@ package parameter_estimation;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,22 +23,16 @@ import org.apache.log4j.Logger;
 
 public class Rosenbrock{
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
-	/**
-	 * @param args
-	 */
-	public int maxeval;
-	public double EFRAC; //rosenbrock parameter
-	public double SUCC; //rosenbrock parameter
-	public double FAIL; //rosenbrock parameter
+	private double EFRAC; //rosenbrock parameter
+	private double SUCC; //rosenbrock parameter
+	private double FAIL; //rosenbrock parameter
 	public double[][] basis;
 
-	public int totalNoParameters;
 	public double[] dummy_beta_new;
 
 	/**
 	 * TODO the fix_reactions vector should not be part of Rosenbrock anymore. do it like LM!
 	 */
-	
 	public double[] dummy_e;
 	
 	/**
@@ -48,13 +43,13 @@ public class Rosenbrock{
 	 * TODO: how to create an optimization code that does not require the addition of Optimization type in its source code? 
 	 */
 	private Optimization optimization;
-
-	public Rosenbrock(Optimization o, double efrac, double succ, double fail, int maxeval) {
+	private ModelValues modelValues;
+	public Rosenbrock(Optimization o, double efrac, double succ, double fail) {
 		optimization = o;
 		this.EFRAC = efrac;
 		this.SUCC = succ;
 		this.FAIL = fail;
-		this.maxeval = maxeval;
+
 		this.dummy_beta_new = new double[o.getParams1D().getBeta().length];
 
 		this.dummy_e = new double[o.getParams1D().getBeta().length];
@@ -77,10 +72,10 @@ public class Rosenbrock{
 		
 		//evaluate model predictions with initial guesses:
 		//flag_CKSolnList = true
-		List<Map<String,Double>> model = optimization.getModelValues(optimization.getParams1D().getBeta(),true);
-		
+		modelValues = optimization.testNewParameters(optimization.getParams1D().getBeta(),true); 
+
 		// function evaluation in initial point
-		Function f = new Function(model,optimization.getExp());
+		Function f = new Function(optimization.getExperiments(),modelValues);
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
 		double initial = f.getSRES();
@@ -97,19 +92,21 @@ public class Rosenbrock{
 		
 		Function fNew;
 		// Main rosenbrock loop
-		while (neval < optimization.maxeval) {
+		while (neval < optimization.getFitting().getMaxNoEvaluations()) {
 			for (int i = 0; i < optimization.getParams1D().getBeta().length; i++) {
 				if (optimization.getParams1D().getFixRxns()[i]==1){
 					logger.info("Beta: ");
 					print(optimization.getParams1D().getBeta());
 					
 					//Parameters are slightly changed in the direction of basisvector 'i' to beta_new(j), j=1..np
-					for (int j = 0; j < dummy_beta_new.length; j++) {
+					for (int j = 0; j < optimization.getParams1D().getBeta().length; j++) {
 
 						//new parameter trials:
 						dummy_beta_new[j] = optimization.getParams1D().getBeta()[j] + dummy_e[i]*basis[j][i];
-						dummy_beta_new[j] = Algebra.checkLowerUpperBounds(dummy_beta_new[j], optimization.getParams1D().getBetamin()[j], optimization.getParams1D().getBetamax()[j], out);
-						
+						dummy_beta_new[j] = Algebra.checkLowerUpperBounds(dummy_beta_new[j],
+								optimization.getParams1D().getBetamin()[j],
+								optimization.getParams1D().getBetamax()[j],
+								out);	
 					}
 					
 					logger.info("Beta new (to be tested): ");
@@ -130,10 +127,12 @@ public class Rosenbrock{
 					//model predictions with new parameter guesses is called:
 					//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
 					//flag_CKSolnList = false
-					model = optimization.getModelValues(dummy_beta_new,false);
+					ModelValues modelValuesTest = optimization.testNewParameters(dummy_beta_new,false);
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
-					fNew = new Function(model,optimization.getExp());
+					
+					//fNew = new Function(optimization.getExperiments(),optimization.getModelValues());
+					fNew = new Function(optimization.getExperiments(),modelValuesTest);
 					double trial = fNew.getSRES();
 					
 					out.println("Trial SSQ: "+trial);
@@ -147,8 +146,10 @@ public class Rosenbrock{
 /*						for (int j = 0; j < dummy_beta_old.length; j++) {
 							dummy_beta_old[j] = dummy_beta_new[j];
 						}
-*/					
-						System.arraycopy(dummy_beta_new, 0, optimization.getParams1D().getBeta(), 0, optimization.getParams1D().getBeta().length);
+*/						double []succesFulParameters = new double[dummy_beta_new.length]; 
+						System.arraycopy(dummy_beta_new, 0, succesFulParameters, 0, succesFulParameters.length);
+						optimization.getParams1D().setBeta(succesFulParameters);
+						
 						current = trial;
 						for (int j = 0; j < d.length; j++) {
 							d[j] = d[j] + dummy_e[j];
@@ -182,7 +183,7 @@ public class Rosenbrock{
 				}
 				
 				//If number of evaluations exceeds maxeval, jump out of 'for' loop and evaluate once more:
-				if (neval >= maxeval){
+				if (neval >= optimization.getFitting().getMaxNoEvaluations()){
 					i = optimization.getParams1D().getBeta().length;
 				}
 			}

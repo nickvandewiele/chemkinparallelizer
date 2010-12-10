@@ -12,7 +12,7 @@ import parameter_estimation.ParameterEstimationDriver;
 public class NBMTHost implements NBMThostI {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	//--------constants---------------
-    protected final double DELTAP = 1e-4;//1e-6
+    protected final double DELTAP = 1e-2;//1e-6
     protected final double BIGVAL = 9.876543E+210; 
     protected int NPTS, NPARMS, NRESP, NEXPL; //modified by constructor
 
@@ -32,11 +32,11 @@ public class NBMTHost implements NBMThostI {
     public NBMTHost(Optimization o) throws Exception
     {
     	this.optimization = o;
-    	this.parms = optimization.retrieve_fitted_parameters();
+    	this.parms = optimization.retrieveFittedParameters();
     	
     	NPARMS = parms.length;
-    	NPTS = (optimization.getExp()).size();
-    	NRESP = (optimization.getExp().get(0)).size();
+    	NPTS = optimization.getExperiments().getTotalNoExperiments();
+    	NRESP = optimization.getExperiments().getResponseVariables().size();
     	
     	//resid = new double[NPTS][NRESP];
     	resid = new double[NPTS*NRESP];
@@ -62,11 +62,11 @@ public class NBMTHost implements NBMThostI {
     public NBMTHost(Optimization o, boolean stat) throws IOException, InterruptedException
     {
     	this.optimization = o;
-    	this.parms = optimization.retrieve_fitted_parameters();
+    	this.parms = optimization.retrieveFittedParameters();
     	
     	NPARMS = parms.length;
-    	NPTS = (optimization.getExp()).size();
-    	NRESP = (optimization.getExp().get(0)).size();
+    	NPTS = optimization.getExperiments().getTotalNoExperiments();
+    	NRESP = optimization.getExperiments().getResponseVariables().size();
     	
     	//resid = new double[NPTS][NRESP];
     	resid = new double[NPTS*NRESP];
@@ -233,7 +233,9 @@ public class NBMTHost implements NBMThostI {
 		/**
 		 * TODO deal with CKSolnList flag, employed in .getModelValues()
 		 */
-		function = new Function (optimization.getModelValues(optimization.buildFullParamVector(parms),true), optimization.getExp());
+		function = new Function (optimization.getExperiments(),
+				optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
+		function = new Function (optimization.getExperiments(),optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
 		resid = function.getResid();
 		return function.getSRES();
 	}

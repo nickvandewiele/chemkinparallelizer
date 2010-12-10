@@ -1,0 +1,136 @@
+package parameter_estimation;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedList;
+
+import org.omg.Dynamic.Parameter;
+
+/**
+ * type that groups information on chemistry of the system
+ * @author nmvdewie
+ *
+ */
+public class Chemistry {
+	/**
+	 * params contains the kinetic parameters of the mechanism, as
+	 * well as mininum and maximum constraints on the values,
+	 * and information on whether they will be fitted or not
+	 */
+	private Parameters2D params;
+	private LinkedList<String> species;
+	
+	public LinkedList<String> getSpecies() {
+		return species;
+	}
+	public void setSpecies(LinkedList<String> species) {
+		this.species = species;
+	}
+	//number of parameters per reaction (modified Arrhenius [A,n,Ea]): 3
+	private static final int noParametersPerReaction = 3;
+	
+	
+	public static int getNoparametersperreaction() {
+		return noParametersPerReaction;
+	}
+	/**
+	 * filename of the chemistry input that contains info on elements,
+	 * species, TD, TP, mechanism
+	 */
+	private String chemistryInput;
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public String getChemistryInput() {
+		return chemistryInput;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public void setChemistryInput(String chemistryInpput) {
+		this.chemistryInput = chemistryInpput;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public Parameters2D getParams() {
+		return params;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public void setParams(Parameters2D params) {
+		this.params = params;
+	}
+	/**
+	 * initial_guess returns the initial parameter guesses, found in the chem.inp file.
+	 * It does so by reading the file, searching the key-String "REACTIONS"
+	 * from that point on, every line is read and the 2nd and 4th subString is taken and stored in a List l
+	 * The 2nd and 4th element correspond to A and Ea of the modified Arrhenius equation
+	 * The List l is then converted to a double array and returned
+	 * @return initial guesses for kinetic parameters, as double array 
+	 * @throws IOException
+	 */
+	public static double[][] initialGuess (String workingDir, String chemInp, int [][] fixReactions) throws IOException{
+	
+		double[][] beta = new double[fixReactions.length][fixReactions[0].length];
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(workingDir+chemInp));
+			String dummy = in.readLine();
+	
+			//skip part of chem.inp about Elements, Species, Thermo
+			boolean b = true;
+			while(b){
+				dummy = in.readLine();
+				if (dummy.length() <= 8){
+					b = true;
+				}
+				else if (dummy.substring(0,9).equals("REACTIONS")){
+					b = false;
+				}
+				else {
+					b = true;
+				}
+			}
+	
+			/**
+			 * 
+			 * 			A new approach is taken, providing guidelines to the user to adapt his/her reaction mechanism file according to 
+			 * 			what is specified in the guidelines:
+			 * 			GUIDELINES:
+			 * 			-use <=> to denote a reversible reaction (not =)
+			 * 			-separate kinetic parameters by a single space
+			 * 			-use a single space after the definition of the elementary reaction, e.g. A+B<=>C+D 1e13 0.0 200.0		
+			 */
+			/**
+			 * TODO method of reading kinetics needs to become more robust! 
+			 */
+			for (int i = 0; i < fixReactions.length; i++){
+				dummy = in.readLine();
+				String[] st_dummy = dummy.split("\\s");
+				for (int j = 0; j < fixReactions[i].length; j++){
+					//start with element at position 1 (not 0), because arrhenius parameters start at position 1!
+					beta[i][j] = Double.parseDouble(st_dummy[j+1].trim());
+				}
+			}
+			in.close();
+	
+		} catch (IOException e) {
+			Tools.logger.error("Problem with obtaining initial parameter guesses!");
+			System.exit(-1);
+		}
+		return beta;
+	}
+	public Chemistry(String chemistryInput, Parameters2D params){
+		this.chemistryInput = chemistryInput;
+		this.params = params;
+	}
+	public Chemistry(){
+		
+	}
+}
