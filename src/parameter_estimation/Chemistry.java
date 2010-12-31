@@ -5,14 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.omg.Dynamic.Parameter;
-
 /**
  * type that groups information on chemistry of the system
  * @author nmvdewie
  *
  */
 public class Chemistry {
+	
 	/**
 	 * params contains the kinetic parameters of the mechanism, as
 	 * well as mininum and maximum constraints on the values,
@@ -20,53 +19,31 @@ public class Chemistry {
 	 */
 	private Parameters2D params;
 	private LinkedList<String> species;
+
 	
-	public LinkedList<String> getSpecies() {
-		return species;
-	}
-	public void setSpecies(LinkedList<String> species) {
-		this.species = species;
-	}
 	//number of parameters per reaction (modified Arrhenius [A,n,Ea]): 3
-	private static final int noParametersPerReaction = 3;
+	private static final int NOPARAMETERSPERREACTION = 3;
 	
 	
-	public static int getNoparametersperreaction() {
-		return noParametersPerReaction;
-	}
 	/**
 	 * filename of the chemistry input that contains info on elements,
 	 * species, TD, TP, mechanism
 	 */
 	private String chemistryInput;
+	
 	/**
-	 * @category getter
-	 * @return
+	 * ############
+	 * CONSTRUCTORS
+	 * ############
 	 */
-	public String getChemistryInput() {
-		return chemistryInput;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public void setChemistryInput(String chemistryInpput) {
-		this.chemistryInput = chemistryInpput;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public Parameters2D getParams() {
-		return params;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public void setParams(Parameters2D params) {
+	public Chemistry(String chemistryInput, Parameters2D params){
+		this.chemistryInput = chemistryInput;
 		this.params = params;
 	}
+	
+	public Chemistry(){
+	}
+	
 	/**
 	 * initial_guess returns the initial parameter guesses, found in the chem.inp file.
 	 * It does so by reading the file, searching the key-String "REACTIONS"
@@ -126,11 +103,61 @@ public class Chemistry {
 		}
 		return beta;
 	}
-	public Chemistry(String chemistryInput, Parameters2D params){
-		this.chemistryInput = chemistryInput;
-		this.params = params;
+
+	
+	/**
+	 * ####################
+	 * GETTERS AND SETTERS:
+	 * ####################
+	 */
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public LinkedList<String> getSpecies() {
+		return species;
 	}
-	public Chemistry(){
-		
+	
+	/**
+	 * @category setter
+	 * @param species
+	 */
+	public void setSpecies(LinkedList<String> species) {
+		this.species = species;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public static int getNoparametersperreaction() {
+		return NOPARAMETERSPERREACTION;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public String getChemistryInput() {
+		return chemistryInput;
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setChemistryInput(String chemistryInpput) {
+		this.chemistryInput = chemistryInpput;
+	}
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public Parameters2D getParams() {
+		return params;
+	}
+	/**
+	 * @category setter
+	 * @return
+	 */
+	public void setParams(Parameters2D params) {
+		this.params = params;
 	}
 }

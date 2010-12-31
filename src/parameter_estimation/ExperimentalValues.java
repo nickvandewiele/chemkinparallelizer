@@ -8,30 +8,15 @@ import java.util.Set;
 
 public class ExperimentalValues {
 	private LinkedList<Map<String,Double>> experimentalEffluentValues;
+	private LinkedList<Double> experimentalIgnitionValues;
+	private LinkedList<Double> experimentalFlameSpeedValues;
 
+	
 	public ExperimentalValues(){
 		experimentalEffluentValues = new LinkedList<Map<String,Double>>();
 		experimentalIgnitionValues = new LinkedList<Double>();
 	}
-	private LinkedList<Double> experimentalIgnitionValues;
 
-	public LinkedList<Map<String, Double>> getExperimentalEffluentValues() {
-		return experimentalEffluentValues;
-	}
-
-	public void setExperimentalEffluentValues(
-			LinkedList<Map<String, Double>> experimentalEffluentValues) {
-		this.experimentalEffluentValues = experimentalEffluentValues;
-	}
-
-	public LinkedList<Double> getExperimentalIgnitionValues() {
-		return experimentalIgnitionValues;
-	}
-
-	public void setExperimentalIgnitionValues(
-			LinkedList<Double> experimentalIgnitionValues) {
-		this.experimentalIgnitionValues = experimentalIgnitionValues;
-	} 
 	/**
 	 * calculates arithmetic average of all response variables, could be used as weights in regression
 	 * @return
@@ -57,4 +42,57 @@ public class ExperimentalValues {
 		}
 		return average;
 	}
+	public Double calcExperimentalFlameSpeedAverage(){
+		Double average = new Double(0.0);
+		for(Iterator<Double> it = experimentalFlameSpeedValues.iterator(); it.hasNext();){
+			average+=it.next();
+		}
+		return average;
+	}
+	
+	/**
+	 * ####################
+	 * GETTERS AND SETTERS:
+	 * ####################
+	 */
+	
+	/**
+	 * @category getter
+	 */
+	public LinkedList<Double> getExperimentalFlameSpeedValues() {
+		return experimentalFlameSpeedValues;
+	}
+	/**
+	 * @category setter
+	 */
+	public void setExperimentalFlameSpeedValues(
+			LinkedList<Double> experimentalFlameSpeedValues) {
+		this.experimentalFlameSpeedValues = experimentalFlameSpeedValues;
+	}
+	/**
+	 * @category getter
+	 */
+	public LinkedList<Map<String, Double>> getExperimentalEffluentValues() {
+		return experimentalEffluentValues;
+	}
+	/**
+	 * @category setter
+	 */
+	public void setExperimentalEffluentValues(
+			LinkedList<Map<String, Double>> experimentalEffluentValues) {
+		this.experimentalEffluentValues = experimentalEffluentValues;
+	}
+	/**
+	 * @category getter
+	 */
+	public LinkedList<Double> getExperimentalIgnitionValues() {
+		return experimentalIgnitionValues;
+	}
+	/**
+	 * @category setter
+	 */
+	public void setExperimentalIgnitionValues(
+			LinkedList<Double> experimentalIgnitionValues) {
+		this.experimentalIgnitionValues = experimentalIgnitionValues;
+	} 
 }

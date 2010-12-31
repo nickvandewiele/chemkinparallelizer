@@ -30,8 +30,8 @@ public class Statistics {
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
 	noParams = optimization.getChemistry().getParams().getNoFittedParameters();
-	noExperiments = optimization.getExperiments().getTotalNoExperiments();
-	noResp = optimization.getExperiments().getResponseVariables().size();
+	noExperiments = optimization.getExperiments().getReactorInputCollector().getTotalNoExperiments();
+	noResp = optimization.getExperiments().getResponseVariables().getNoResponses();
 }
 
 /**
@@ -109,6 +109,7 @@ private void calcConfIntervals() throws IOException, InterruptedException{
  * tabulated two-sided t-value for n*v-p experiments for an accumulated probability of 1-alpha/2
  */
 private void calc_tabulated_t(){
+	//TODO if 2nd argument == 0, exception is returned!
 	tabulated_t_value = Probability.studentTInverse(alpha, noExperiments*noResp - noParams);
 }
 /**

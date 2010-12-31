@@ -35,8 +35,8 @@ public class NBMTHost implements NBMThostI {
     	this.parms = optimization.retrieveFittedParameters();
     	
     	NPARMS = parms.length;
-    	NPTS = optimization.getExperiments().getTotalNoExperiments();
-    	NRESP = optimization.getExperiments().getResponseVariables().size();
+    	NPTS = optimization.getExperiments().getReactorInputCollector().getTotalNoExperiments();
+    	NRESP = optimization.getExperiments().getResponseVariables().getNoResponses();
     	
     	//resid = new double[NPTS][NRESP];
     	resid = new double[NPTS*NRESP];
@@ -51,30 +51,7 @@ public class NBMTHost implements NBMThostI {
         	logger.info("End parm["+i+"]   = "+parms[i]); 
     }
     
-    /**
-     * constructor for statistics mode in which only jacobian needs to be calculated
-     * 
-     * @param o
-     * @param stat is there to distinguish with other constructor
-     * @throws Exception
-     */
-    
-    public NBMTHost(Optimization o, boolean stat) throws IOException, InterruptedException
-    {
-    	this.optimization = o;
-    	this.parms = optimization.retrieveFittedParameters();
-    	
-    	NPARMS = parms.length;
-    	NPTS = optimization.getExperiments().getTotalNoExperiments();
-    	NRESP = optimization.getExperiments().getResponseVariables().size();
-    	
-    	//resid = new double[NPTS][NRESP];
-    	resid = new double[NPTS*NRESP];
-    	jac = new double[NPTS*NRESP][NPARMS];
-
-       
-    }
-	public boolean bBuildJacobian() throws Exception {
+    public boolean bBuildJacobian() throws Exception {
 		// Allows LM to compute a new Jacobian.
 	    // Uses current parms[] and two-sided finite difference.
 	    // If current parms[] is bad, returns false.  

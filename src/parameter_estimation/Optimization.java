@@ -40,9 +40,7 @@ public class Optimization{
 	private Licenses licenses;
 	//1D Array of kinetic parameters
 	Parameters1D params1D;
-	public Parameters1D getParams1D() {
-		return params1D;
-	}
+	
 	public double[][] beta_new;
 
 
@@ -83,7 +81,8 @@ public class Optimization{
 			double fail = -0.5;
 			logger.info("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail);
-			beta_new = Tools.convert1Dto2D(rosenbrock.returnOptimizedParameters(), chemistry.getParams().getBeta());
+			double [] optimizedParameters = rosenbrock.returnOptimizedParameters(); 
+			beta_new = Tools.convert1Dto2D(optimizedParameters, chemistry.getParams().getBeta());
 		}
 		if(fitting.getFlagLM()){
 			logger.info("Start of Levenberg-Marquardt!");
@@ -110,7 +109,7 @@ public class Optimization{
 	
 	public ModelValues testNewParameters(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
 		//update_chemistry_input will insert new parameter_guesses array into chem_inp
-		update_chemistry_input(parameter_guesses);
+		updateChemistryInput(parameter_guesses);
 		
 		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
 				flag_CKSolnList);
@@ -118,9 +117,7 @@ public class Optimization{
 		return modelValues;
 	}
 	
-	public List<Map<String,Double>> getExp (){
-		return exp;
-	}
+	
 	/**
 	 * converts the List<Map<String,Double>> format to a Double[][] format which is used in the LM optimization routine
 	 * @return
@@ -150,7 +147,7 @@ public class Optimization{
 	 * return the chemistry input filename<BR>
 	 * WARNING: method supposes TD inside chemistry input file!!!<BR>
 	 */
-	public void update_chemistry_input (double [] dummy_beta_new) throws IOException{
+	public void updateChemistryInput (double [] dummy_beta_new) throws IOException{
 		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+chemistry.getChemistryInput()));
 		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"temp.inp"));
 		String dummy = in.readLine();
@@ -211,7 +208,14 @@ public class Optimization{
 		//chemistry input file needs to be reprocessed: new link file has to be created!!!
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.checkChemOutput();
+		try {
+			c.callPreProcess();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		BufferedReader inChem = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(inChem);
 		try {
 			c.join();
 		} catch (InterruptedException e) {
@@ -259,19 +263,17 @@ public class Optimization{
 		return params1D.getBeta();
 	}
 
-	public NBMTHost getNBMTHost(){
-		return nbmthost;
-	}
+	
 	public void calcStatistics() throws Exception{
 		params1D = new Parameters1D();
 		params1D.convert2Dto1D(chemistry.getParams());
-		nbmthost = new NBMTHost(this, true);
+		nbmthost = new NBMTHost(this);
 		nbmthost.bBuildJacobian();
 		Statistics s = new Statistics(this);
 		PrintWriter out = new PrintWriter(new FileWriter("statistics.txt"));
-		out.println("Averages of response variables:");
-		out.println(experiments.getExperimentalValues().calcExperimentalEffluentAverage());
-		out.println();
+		//out.println("Averages of response variables:");
+		//out.println(experiments.getExperimentalValues().calcExperimentalEffluentAverage());
+		//out.println();
 		out.println("Variance-covariance of parameter estimations:");
 		Printer.printMatrix(s.get_Var_Covar(), out);
 		out.println();
@@ -288,11 +290,11 @@ public class Optimization{
 		Printer.printMatrix(s.getConfIntervals(), out);
 		out.println();
 		out.println("Number of experiments:");
-		out.println(experiments.getTotalNoExperiments());
+		out.println(experiments.getReactorInputCollector().getTotalNoExperiments());
 		out.println("Number of fitted parameters:");
 		out.println(chemistry.getParams().getNoFittedParameters());
 		out.println("Number of responses:");
-		out.println(experiments.getResponseVariables().size());
+		out.println(experiments.getResponseVariables().getNoResponses());
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());
@@ -333,6 +335,14 @@ public class Optimization{
 		this.fitting = fitting;
 	}
 
+
+	
+	/**
+	 * ####################
+	 * GETTERS AND SETTERS:
+	 * ####################
+	 */
+	
 	/**
 	 * @category getter
 	 * @return
@@ -353,14 +363,43 @@ public class Optimization{
 		this.experiments = experiments;
 	}
 
-
+	/**
+	 * @category getter
+	 * @return
+	 */
 	public Chemistry getChemistry() {
 		return chemistry;
 	}
 
-
+	/**
+	 * @category setter
+	 * @param chemistry
+	 */
 	public void setChemistry(Chemistry chemistry) {
 		this.chemistry = chemistry;
 	}
-
+	
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public List<Map<String,Double>> getExp (){
+		return exp;
+	}
+	
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public Parameters1D getParams1D() {
+		return params1D;
+	}
+	
+	/**
+	 * @category getter
+	 * @return
+	 */
+	public NBMTHost getNBMTHost(){
+		return nbmthost;
+	}
 }

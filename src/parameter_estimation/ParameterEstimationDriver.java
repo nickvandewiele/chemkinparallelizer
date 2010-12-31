@@ -24,14 +24,21 @@ public class ParameterEstimationDriver {
 		long time = System.currentTimeMillis();
 		initializeLog();
 		Chemistry chemistry = new Chemistry();
+		ReactorInputCollector reactorInputCollector = new ReactorInputCollector();
 		Experiments experiments = new Experiments();
 		Paths paths = new Paths();
 		Fitting fitting = new Fitting();
 
-		//input file will be searched in working directory under the name INPUT.txt:
-		BufferedReader in = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/INPUT.txt"));
-
-
+		BufferedReader in  = null;
+		if(args.length == 0){
+			//input file will be searched in working directory under the name INPUT.txt:
+			in = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/INPUT.txt"));	
+		}
+		else {
+			//specify user-defined input file:
+			in = new BufferedReader(new FileReader(args[0]));
+		}
+		
 		in.readLine();
 		String workingDir = in.readLine();
 		if (workingDir.charAt(workingDir.length()-1)!='/'){
@@ -42,39 +49,58 @@ public class ParameterEstimationDriver {
 			paths.setWorkingDir(workingDir);
 		}
 
+		//Chemkin Directory:
 		in.readLine();
 		paths.setChemkinDir(in.readLine());
 
+		//Number of chemkin licenses to be used:
 		in.readLine();
 		int noLicenses = Integer.parseInt(in.readLine());
 		Licenses licenses = new Licenses(new Integer(noLicenses));
 
+		//Chemistry input filename:
 		in.readLine();
 		chemistry.setChemistryInput(in.readLine());
 
+		//Experimental database:(leave blank line if file is not required for run mode)
 		in.readLine();		
 		experiments.setPathExperimentalDB(in.readLine());
 
+		//Ignition Delay database:(leave blank line if file is not required for run mode)
 		in.readLine();
 		experiments.setPathIgnitionDB(in.readLine());
 
+		//flame speed database:(leave blank line if file is not required for run mode)
+		in.readLine();
+		experiments.setPathFlameSpeedDB(in.readLine());
+
+		//user specified reactor setup data in form of separate files(false) or one single reactor setup database (true)?
 		in.readLine();
 		experiments.setFlagReactorDB(Boolean.parseBoolean(in.readLine()));
 
+		// database with reactor setup data (leave blank line if file is not required for run mode)
 		in.readLine();
 		experiments.setReactorSetupDB(in.readLine());
 
+		//Reactor setup method: 1: standard, 2: new method with isothermal, isobaric reactor profiles, but variable reactor lengths (type 0 if not applicable)
 		in.readLine();
 		experiments.setFlagReactorSetupType(new Integer(in.readLine()));
 
 		//total number of experiments:
 		in.readLine();
-		experiments.setTotalNoExperiments(new Integer(in.readLine()));
+		reactorInputCollector.setTotalNoExperiments(new Integer(in.readLine()));
 
 		//number of experiments in which ignition delay is the response variable
 		in.readLine();
-		experiments.setNoIgnitionDelayExperiments(new Integer(in.readLine()));
-		experiments.setNoRegularExperiments(experiments.getTotalNoExperiments()-experiments.getNoIgnitionDelayExperiments());
+		reactorInputCollector.setNoIgnitionDelayExperiments(new Integer(in.readLine()));
+		
+		
+		//number of experiments in which flame speed is the response variable
+		in.readLine();
+		reactorInputCollector.setNoFlameSpeedExperiments(new Integer(in.readLine()));
+		
+		//set no. of regular experiments:
+		reactorInputCollector.setNoRegularExperiments(reactorInputCollector.getTotalNoExperiments()-reactorInputCollector.getNoIgnitionDelayExperiments() - reactorInputCollector.getNoFlameSpeedExperiments());
 
 		//number of parameters to be fitted:
 		in.readLine();
@@ -101,34 +127,51 @@ public class ParameterEstimationDriver {
 			in.readLine();
 		}
 		else {
-			if(experiments.getNoRegularExperiments()==0){
+			if(reactorInputCollector.getNoRegularExperiments()==0){
 				in.readLine();
 			}
 			else{
-				for (int i = 0; i < experiments.getNoRegularExperiments(); i++){
+				for (int i = 0; i < reactorInputCollector.getNoRegularExperiments(); i++){
 					String regularReactorInput = in.readLine();	
-					LinkedList<String> inputs =experiments.getRegularReactorInputs();
+					LinkedList<String> inputs =reactorInputCollector.getRegularInputs();
 					inputs.add(regularReactorInput);
-					experiments.setRegularReactorInputs(inputs);
+					reactorInputCollector.setRegularInputs(inputs);
 				}	
 			}					
 		}
 
 		//filenames of reactor input files of experiments in which ignition delay is the response variable
 		in.readLine();
-		if(experiments.getNoIgnitionDelayExperiments()==0){
+		if(reactorInputCollector.getNoIgnitionDelayExperiments()==0){
 			in.readLine();	
 		}
 		else{
-			for (int i = 0; i < experiments.getNoIgnitionDelayExperiments(); i++){
+			for (int i = 0; i < reactorInputCollector.getNoIgnitionDelayExperiments(); i++){
 				String IgnitionDelayReactorInput = in.readLine();	
-				LinkedList<String> inputs =experiments.getIgnitionDelayInputs();
+				LinkedList<String> inputs =reactorInputCollector.getIgnitionDelayInputs();
 				inputs.add(IgnitionDelayReactorInput);
-				experiments.setIgnitionDelayInputs(inputs);
+				reactorInputCollector.setIgnitionDelayInputs(inputs);
 			}
 
-		}				
+		}	
+		
+		//filenames of reactor input files of experiments in which flame speed is the response variable (leave blank line if not required)
+		in.readLine();
+		if(reactorInputCollector.getNoFlameSpeedExperiments()==0){
+			in.readLine();	
+		}
+		else{
+			for (int i = 0; i < reactorInputCollector.getNoFlameSpeedExperiments(); i++){
+				String FlameSpeedReactorInput = in.readLine();	
+				LinkedList<String> inputs =reactorInputCollector.getFlameSpeedInputs();
+				inputs.add(FlameSpeedReactorInput);
+				reactorInputCollector.setFlameSpeedInputs(inputs);
+			}
 
+		}	
+		
+		//insert ReactorInputCollector in Experiments:
+		experiments.setReactorInputCollector(reactorInputCollector);
 
 		//OPTIMIZATION SECTION: modified Arrhenius parameters [A, n, Ea]: 1 = loose, parameter will be varied; 0 = fixed, parameter will be fixed
 		in.readLine();

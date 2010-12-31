@@ -6,17 +6,7 @@ package parameter_estimation;
  * @author nmvdewie
  *
  */
-public class IgnitionDelay {
-	public Double value;
-
+public class IgnitionDelay extends Experiment {
 	public IgnitionDelay(){
-	}
-	
-	public Double getValue() {
-		return value;
-	}
-
-	public void setValue(Double value) {
-		this.value = value;
 	}
 }

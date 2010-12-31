@@ -174,13 +174,12 @@ public class Tools {
 	 * 	<LI>the mole fraction of all species</LI>
 	 * the values should be taken at the end point of the reactor, i.e. the last data value of each row in the .ckcsv file<BR>
 	 * the data will be stored in a LinkedList, chosen for its flexibility<BR>
-	 * @param reactorDir directory where the file to be read is located
-	 * @param ckcsv_name filename of file
+	 * @param in TODO
 	 * @throws IOException
 	 */
-	public static Map<String, Double> readCkcsv (String reactorDir, String ckcsv_name) throws IOException {
+	public static Map<String, Double> readCkcsv (BufferedReader in) throws IOException {
 		Map <String, Double> dummy = new HashMap<String, Double>();
-		BufferedReader in = new BufferedReader(new FileReader(reactorDir+ckcsv_name));
+		
 
 		String temp;
 		String [] st_temp;
@@ -226,13 +225,15 @@ public class Tools {
 		return dummy;
 	}
 	/**
-	 * getSpeciesNames retrieves the names of the species from the chemistry input file
+	 * getSpeciesNames retrieves the names of the species from the chemistry input file:
+	 * *.asu file
+	 * @param in TODO
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<String> getSpeciesNames(String workingDir, String chem_asu)throws IOException{
-		BufferedReader in = new BufferedReader (new FileReader(workingDir+chem_asu));
-		List<String> namesList = new ArrayList<String>();
+	public static LinkedList<String> readSpeciesNames(BufferedReader in)throws IOException{
+		
+		LinkedList<String> namesList = new LinkedList<String>();
 
 		//first line contains number of species:
 		int no_species = Integer.parseInt(in.readLine());
@@ -281,111 +282,14 @@ public class Tools {
 		return namesList;
 	}
 	/**
-	 * experiments_parser preprocesses the experimental data file into a easy-to-use format List<Map><String,Double>
-	 * It reads the experimental data file. The format of this file (.csv) ought to be as follows:
-	 * 	-first line states all the variable names, separated by commas
-	 * 	-each of the following lines contain the experimental response variables, in the same order as the variable
-	 *   names were declared
-	 *  Each experiment is stored in a List with HashMaps as elements (see further)
-	 *  The routines cuts each line in pieces, using the comma as separator
-	 *  For each experiment, the variable name and the molar flow rate of each variable are put in a HashMap	 *   
-	 * @return List of the experiments, with molar flowrates of the response variables
-	 * @throws IOException
-	 */
-	public static LinkedList<Map<String, Double>> experimentsEffluentParser (String expName, int noExp)throws IOException{
-		LinkedList<Map<String, Double>> exp = new LinkedList<Map<String, Double>>();
-		try {
-			//read experimental data file:
-			BufferedReader in = new BufferedReader (new FileReader(expName));
-			//read in species names on first line:
-			String species_names = in.readLine();
-			//System.out.println(species_names);
-			String[] st_species = species_names.split(",");
-			String dummy = in.readLine();
-			//System.out.println(dummy);
-
-			Map <String, Double> expMassFractions;
-			while(dummy!=null){
-				String[] st_dummy = dummy.split(",");
-				expMassFractions = new HashMap <String, Double>();
-				for (int j = 0; j < st_species.length; j++) {
-					expMassFractions.put(st_species[j],Double.parseDouble(st_dummy[j]));	
-				}
-				exp.add(expMassFractions);
-				//expMassFractions.clear();
-				dummy = in.readLine();
-
-			}
-			if (exp.size()!= noExp){
-				logger.debug("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
-				System.exit(-1);
-			}
-			in.close();
-		} catch(IOException e){
-			logger.error("Something went wrong during the preprocessing of the experimental data file!",e);
-			System.exit(-1);
-		}
-		if((exp.size()==noExp)){
-			return exp;
-		}
-		else{
-			logger.debug("Experiments database contains different no. of experiments as defined in main class!");
-			System.exit(-1);
-			return null;	
-		}
-	}	
-	/**
-	 * list of ignition delays is a single column
-	 * @param expName
-	 * @param noExp
-	 * @return
-	 * @throws IOException
-	 */
-	public static LinkedList<Double> experimentsIgnitionParser (String expName, int noExp)throws IOException{
-		LinkedList<Double> ignitionDelays = new LinkedList<Double>();
-		try {
-			//read experimental data file:
-			BufferedReader in = new BufferedReader (new FileReader(expName));
-			//read in species names on first line:
-			String dummy = in.readLine();
-			while(dummy!=null){
-				ignitionDelays.add(new Double(dummy));
-				//expMassFractions.clear();
-				dummy = in.readLine();
-			}
-			if (ignitionDelays.size()!= noExp){
-				logger.debug("Experimental Database a different number of experiments than specified in INPUT file! Maybe check if .csv is created with redundand commas at the end...");
-				System.exit(-1);
-			}
-			in.close();
-		} catch(IOException e){
-			logger.error("Something went wrong during the preprocessing of the experimental data file!",e);
-			System.exit(-1);
-		}
-		if((ignitionDelays.size()==noExp)){
-			return ignitionDelays;
-		}
-		else{
-			logger.debug("Experiments database contains different no. of experiments as defined in INPUT.txt!");
-			System.exit(-1);
-			return null;	
-		}
-
-	}	
-		
-	/**
 	 * will search for String "Ignition_time_1_by_max_dT/dt" and return value of it
-	 * @param reactorDir
-	 * @param ckcsvName
+	 * @param in TODO
 	 * @return
 	 */
-	public static Double readCkcsvIgnitionDelay(String reactorDir,
-			String ckcsvName) {
+	public static Double readCkcsvIgnitionDelay(BufferedReader in) {
 
-		BufferedReader in;
 		Double ignitionDelay = null;
 		try {
-			in = new BufferedReader(new FileReader(reactorDir+ckcsvName));
 			String temp;
 			String [] st_temp;
 			LinkedList<String> list_temp;
@@ -407,7 +311,7 @@ public class Tools {
 				} catch (IOException e) {
 					logger.debug(e);
 				}
-
+				//TODO other definitions of ignition delays should be allowed
 			} while (!(list_temp.get(0)).equals("Ignition_time_1_by_max_dT/dt"));
 			in.close();
 			ignitionDelay = new Double(list_temp.get(2));
@@ -420,4 +324,43 @@ public class Tools {
 		}			
 		return ignitionDelay;
 	}	 
+	public static Double readCkcsvFlameSpeed(BufferedReader in){
+		
+		Double flameSpeed = null;
+		try {
+			String temp;
+			String [] st_temp;
+			LinkedList<String> list_temp;
+
+			/*
+			 *  Looking for the String "Exit_mass_flow_rate" since the line right after this line,
+			 *  will contain the first species' mass fractions
+			 */
+			list_temp = new LinkedList<String>();
+			do {
+				list_temp.clear();
+				try {
+					temp = in.readLine();
+					st_temp = temp.split(", ");
+					for (int i=0;i<st_temp.length;i++){
+						list_temp.add(st_temp[i]);
+					}
+					
+				} catch (IOException e) {
+					logger.debug(e);
+				}
+			} while (!(list_temp.get(0)).equals("Flame_speed"));
+			in.close();
+			//take last value in row of flame speed row:
+			flameSpeed = new Double(list_temp.get(list_temp.size()-1));
+			
+		} catch (FileNotFoundException e) {
+			logger.debug(e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
+		return flameSpeed;
+		
+	}
 }

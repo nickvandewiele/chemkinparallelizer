@@ -31,5 +31,12 @@ public class ModelValues {
 		this.modelIgnitionValues = modelIgnitionValues;
 	}
 	private LinkedList<Double> modelIgnitionValues = new LinkedList<Double>();
+	private LinkedList<Double> modelFlameSpeedValues = new LinkedList<Double>();
+	public LinkedList<Double> getModelFlameSpeedValues() {
+		return modelFlameSpeedValues;
+	}
+	public void setModelFlameSpeedValues(LinkedList<Double> modelFlameSpeedValues) {
+		this.modelFlameSpeedValues = modelFlameSpeedValues;
+	}
 
 }

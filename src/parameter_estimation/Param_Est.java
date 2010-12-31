@@ -9,10 +9,10 @@ public class Param_Est{
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	private Paths paths;
 	private Chemistry chemistry;
-	private Experiments experiments;
+	Experiments experiments;
 	private Fitting fitting;
 	private Licenses licenses;
-	private List<String> speciesNames;
+	private LinkedList<String> speciesNames;
 
 	/**
 	 * @category getter
@@ -22,6 +22,10 @@ public class Param_Est{
 		return paths;
 	}
 	private ModelValues modelValues;
+	/**
+	 * @category setter
+	 * @param modelValues
+	 */
 	public void setModelValues(ModelValues modelValues) {
 		this.modelValues = modelValues;
 	}
@@ -36,15 +40,18 @@ public class Param_Est{
 		 * create reactor input files, if necessary:
 		 */
 		if(experiments.isFlagReactorDB()){
-			experiments.setRegularReactorInputs(createRegularReactorInputs());
+			experiments.getReactorInputCollector().setRegularInputs(createRegularReactorInputs());
 		}
-		
+
 		//TODO should check whether merge is successful
-		//fill ReactorInputs with RegularReactorInputs, IgnitionDelayInputs:
-		experiments.mergeReactorInputs();
-		
+		//fill ReactorInputs with RegularReactorInputs, IgnitionDelayInputs, FlameSpeed:
+		experiments.getReactorInputCollector().mergeReactorInputs();
+
 		//set flags for ignition delays:
-		experiments.setFlagIgnitionDelays();
+		experiments.getReactorInputCollector().setFlagIgnitionDelays();
+
+		//set flags for flame speeds:
+		experiments.getReactorInputCollector().setFlagFlameSpeeds();
 	}
 	//construct for parity mode:
 
@@ -62,15 +69,18 @@ public class Param_Est{
 		 * create reactor input files, if necessary:
 		 */
 		if(experiments.isFlagReactorDB()){
-			experiments.setRegularReactorInputs(createRegularReactorInputs());
+			experiments.getReactorInputCollector().setRegularInputs(createRegularReactorInputs());
 		}
-		
+
 		//TODO should check whether merge is successful
 		//fill ReactorInputs with RegularReactorInputs, IgnitionDelayInputs:
-		experiments.mergeReactorInputs();
-		
+		experiments.getReactorInputCollector().mergeReactorInputs();
+
 		//set flags for ignition delays:
-		experiments.setFlagIgnitionDelays();
+		experiments.getReactorInputCollector().setFlagIgnitionDelays();
+
+		//set flags for flame speeds:
+		experiments.getReactorInputCollector().setFlagFlameSpeeds();
 	}
 	/**
 	 * optimizeParameters is the method that will optimize the kinetic parameters. It does so by:<BR>
@@ -88,7 +98,9 @@ public class Param_Est{
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.checkChemOutput();
+		c.callPreProcess();
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(in);
 
 		// take initial guesses from chem.inp file:
 		chemistry.getParams().setBeta(Chemistry.initialGuess(paths.getWorkingDir(), 
@@ -97,8 +109,10 @@ public class Param_Est{
 		logger.info("Initial Guesses of parameters are:");
 		//Printer.printMatrix(chemistry.getParams().getBeta(),System.out);
 
-		//read experimental data:
-		readExperimentalData();
+		String workingDir = paths.getWorkingDir();
+		ExperimentalValues experimentalValues = experiments.readExperimentalData(workingDir); 
+		experiments.setExperimentalValues(experimentalValues);
+		
 
 		Optimization optimization = new Optimization(paths, chemistry, experiments, fitting, licenses);
 
@@ -106,77 +120,14 @@ public class Param_Est{
 		chemistry.getParams().setBeta(optimization.optimize());
 
 		//write optimized parameters:
-		writeParameters();
+		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
+		writeParameters(out);
 		Tools.moveFile(paths.getOutputDir(), "params.txt");
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this optimization to finish: (sec) "+timeTook);
 
 	}
-	/**	
-	 * plug new parameter guesses into the chemkin chemistry input file (usually chem.inp)
-	 * write new update chem.inp file
-	 * return the chemistry input filename
-	 * WARNING: method supposes a pre-conditioned chem.inp file, processed by ChemClean and with TD inside chem.inp!!!
-	 */
-	public static String updateChemistryInput (String wd, double [] beta_new) throws IOException{
-		String chemistry_input="chem.inp";
-		String path_old_chem = wd+chemistry_input;	
-
-		BufferedReader in = new BufferedReader(new FileReader(path_old_chem));
-		PrintWriter out = new PrintWriter(new FileWriter(wd+"temp.inp"));
-		String dummy = in.readLine();
-		//just copy part of chem.inp about Elements, Species, Thermo
-		boolean b = true;
-		while(b){
-			dummy = in.readLine();
-			if (dummy.length() <= 8){
-				b = true;
-			}
-			else if (dummy.substring(0,9).equals("REACTIONS")){
-				b = false;
-			}
-			else {
-				b = true;
-			}
-		}
-		int i = 0;
-		out.println(dummy);
-
-		//read in next line, otherwise "REACTIONS" is still present in dummy String
-		dummy = in.readLine();
-
-		while(!dummy.equals("END")){
-			String[] st_dummy = dummy.split("\\s");
-			st_dummy[1] = Double.toString(beta_new[i]);
-			i++;
-			//System.out.println(i);
-			st_dummy[3] = Double.toString(beta_new[i]);
-			i++;
-			//System.out.println(i);
-			//toString(st_dummy);
-			dummy = st_dummy[0];
-			for (int j = 1; j < st_dummy.length; j++) {
-				dummy = dummy +" "+st_dummy[j];
-			}
-			logger.info(dummy);
-			out.println(dummy);
-			dummy = in.readLine();
-		}
-		// write "END" line:
-		out.println(dummy);
-
-		in.close();
-		out.close();
-
-		//delete old chem.inp file and create new chem.inp based on temp.inp:
-		File f_old = new File(path_old_chem);
-		f_old.delete();
-		File f = new File(wd+"temp.inp");
-		f.renameTo(new File(path_old_chem));
-		return chemistry_input;
-	}
-
 	/**
 	 * this routine produces model predictions without comparing them to experimental data
 	 * @throws Exception 
@@ -187,7 +138,9 @@ public class Param_Est{
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.checkChemOutput();
+		c.callPreProcess();
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(in);
 		c.join();
 
 		boolean flag_CKSolnList = true;
@@ -206,37 +159,62 @@ public class Param_Est{
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.checkChemOutput();
+		c.callPreProcess();
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(in);
 		c.join();
 
 		boolean flag_CKSolnList = true;
 		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
 				flag_CKSolnList);
-		
-		
+
+
 		modelValues = ckp.getModelValues();
 		
-		readExperimentalData();
-		
-		speciesNames = Tools.getSpeciesNames(c.getPaths().getWorkingDir(), c.getAsu());
+		//read experimental data file:
+		String workingDir = paths.getWorkingDir();
+		ExperimentalValues experimentalValues = experiments.readExperimentalData(workingDir); 
+		experiments.setExperimentalValues(experimentalValues);
 
+		String speciesPath = c.getPaths().getWorkingDir()+ChemkinConstants.CHEMASU;
+		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
+		speciesNames = Tools.readSpeciesNames(inSpecies);
+		
 		//WRITE PARITY FILE:
-		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"SpeciesParity.csv"));
+		PrintWriter out;
+		if(experiments.getReactorInputCollector().getNoRegularExperiments()!=0){
+		out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"SpeciesParity.csv"));
 		writeSpeciesParities(out,speciesNames);
 		out.close();
-		out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"IgnitionDelayParity.csv"));
-		writeIgnitionDelayParities(out);
-		out.close();
+		}
+		if(experiments.getReactorInputCollector().getNoIgnitionDelayExperiments()!=0){
+			out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"IgnitionDelayParity.csv"));
+			writeIgnitionDelayParities(out);
+			out.close();	
+		}
+		if(experiments.getReactorInputCollector().getNoFlameSpeedExperiments()!=0){
+			out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"FlameSpeedParity.csv"));
+			writeFlameSpeedParities(out);
+			out.close();	
+		}
 
 		moveOutputFiles();
-		//TODO moveFiles should be done less patchy
-		Tools.moveFile(paths.getOutputDir(), "SpeciesParity.csv");
-		Tools.moveFile(paths.getOutputDir(), "IgnitionDelayParity.csv");
-		
+
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Parity Mode to finish: (sec) "+timeTook);
 	}
 
+	private void writeFlameSpeedParities(PrintWriter out) {
+		// loop through all experiments:
+		for(int j=0;j<experiments.getExperimentalValues().getExperimentalFlameSpeedValues().size();j++){
+			Double experiment_value = experiments.getExperimentalValues().getExperimentalFlameSpeedValues().get(j);
+			Double model_value = modelValues.getModelFlameSpeedValues().get(j);
+			//out.println(speciesNames.get(i));
+			out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
+
+		}
+		out.println();
+	}
 	/**
 	 * @category 
 	 * @return
@@ -258,15 +236,19 @@ public class Param_Est{
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.checkChemOutput();
+		c.callPreProcess();
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(in);
 
 		// take initial guesses from chem.inp file:
 		chemistry.getParams().setBeta(Chemistry.initialGuess(paths.getWorkingDir(),
 				chemistry.getChemistryInput(),
 				chemistry.getParams().getFixRxns()));
 
-		//read experimental data:
-		readExperimentalData();
+		//read experimental data file:
+		String workingDir = paths.getWorkingDir();
+		ExperimentalValues experimentalValues = experiments.readExperimentalData(workingDir); 
+		experiments.setExperimentalValues(experimentalValues);
 
 		Optimization optimization = new Optimization(paths, chemistry, experiments, fitting, licenses);
 
@@ -280,17 +262,21 @@ public class Param_Est{
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asu");
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".input");
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asc");
+		Tools.moveFile(paths.getOutputDir(),"SpeciesParity.csv");
+		Tools.moveFile(paths.getOutputDir(),"IgnitionDelayParity.csv");
+		Tools.moveFile(paths.getOutputDir(),"FlameSpeedParity.csv");
 		Tools.moveFile(paths.getOutputDir(),"CKSolnList.txt");
 
 	}
 	/**
 	 * standard reactor input parser where T, P profiles can be specified, but with
 	 * only 1 reactor length specified
+	 * @param in_excel TODO
 	 * @param workingDir
 	 * @return
 	 * @throws IOException
 	 */
-	public LinkedList<String> reactorInputsParser() throws IOException{
+	public LinkedList<String> reactorInputsParser(BufferedReader in_excel) throws IOException{
 		LinkedList<String> reactorInputs = new LinkedList<String>();
 
 		//read first line of excel input:
@@ -300,7 +286,7 @@ public class Param_Est{
 		 * <LI>the T profile</LI>
 		 * <LI>the P profile</LI>		
 		 */
-		BufferedReader in_excel = new BufferedReader(new FileReader(paths.getWorkingDir()+experiments.getReactorSetupDB()));
+		
 		String [] reactor_dim = in_excel.readLine().split(",");
 		double convert_m_cm = 100;
 		double length = Double.parseDouble(reactor_dim[1])*convert_m_cm;
@@ -344,6 +330,16 @@ public class Param_Est{
 		for (int i = counter; i < exp.length; i++){
 			array_Pprofile.add(Double.parseDouble(exp[i])*convert_m_cm);
 		}
+		return writeReactorInputs(in_excel, reactorInputs, length, diameter,
+				dummy, NOS, species_name, species_mw, position_T_profile,
+				array_Tprofile, position_P_profile, array_Pprofile);
+	}
+	public LinkedList<String> writeReactorInputs(BufferedReader in_excel,
+			LinkedList<String> reactorInputs, double length, double diameter,
+			String[] dummy, int NOS, ArrayList<String> species_name,
+			ArrayList<Double> species_mw, int position_T_profile,
+			ArrayList<Double> array_Tprofile, int position_P_profile,
+			ArrayList<Double> array_Pprofile) {
 		/*
 		 * Start writing the actual reactor input file, by doing the following:<BR>
 		 * <LI>read in the lines of the template reactor input file that remain unchanged. write them to your output file</LI>
@@ -357,7 +353,7 @@ public class Param_Est{
 		String line = null;
 		try {
 			line = in_excel.readLine();
-			while(!(dummy == null)){				
+			while(!(line == null)){				
 				BufferedReader in_template = new BufferedReader(new FileReader(experiments.getPathPFRTemplate()));
 				String [] dummy_array = line.split(",");
 				//experiment_counter contains the experiment number that will be used in the reactor input file name:
@@ -425,7 +421,7 @@ public class Param_Est{
 		}//do nothing: e catches the end of the file exception
 
 		// verify the correct number of lines in reactor input file:
-		if( reactorInputs.size()!= experiments.getNoRegularExperiments()){
+		if( reactorInputs.size()!= experiments.getReactorInputCollector().getNoRegularExperiments()){
 			ParameterEstimationDriver.logger.debug("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");			
 			System.exit(-1);
 		}
@@ -439,11 +435,12 @@ public class Param_Est{
 	 * 
 	 * This becomes handy when different sets of experimental data are to be compared, and the 
 	 * 'equivalent' reactor length is calculated.
+	 * @param in_excel TODO
 	 * @param workingDir
 	 * @return
 	 * @throws IOException
 	 */
-	public LinkedList<String> reactorInputsParser2 () throws IOException{
+	public LinkedList<String> reactorInputsParser2 (BufferedReader in_excel) throws IOException{
 		LinkedList<String> reactorInputs = new LinkedList<String>();
 		String filename;
 		//read first line of excel input:
@@ -453,7 +450,6 @@ public class Param_Est{
 		 * <LI>the T profile</LI>
 		 * <LI>the P profile</LI>		
 		 */
-		BufferedReader in_excel = new BufferedReader(new FileReader(paths.getWorkingDir()+experiments.getReactorSetupDB()));
 
 		String [] dummy = in_excel.readLine().split(",");
 
@@ -469,8 +465,14 @@ public class Param_Est{
 		for (int i = 0; i < NOS; i++){
 			species_mw.add(Double.parseDouble(dummy[1+i]));
 		}
-
-
+		return writeReactorInputs2(in_excel, reactorInputs, dummy, NOS,
+				species_name, species_mw);
+	}
+	public LinkedList<String> writeReactorInputs2(BufferedReader in_excel,
+			LinkedList<String> reactorInputs, String[] dummy, int NOS,
+			ArrayList<String> species_name, ArrayList<Double> species_mw)
+			throws IOException {
+		String filename;
 		/*
 		 * Start writing the actual reactor input file, by doing the following:<BR>
 		 * <LI>read in the lines of the template reactor input file that remain unchanged. write them to your output file</LI>
@@ -558,36 +560,41 @@ public class Param_Est{
 		}//do nothing: e catches the end of the file exception
 
 		// verify the correct number of lines in reactor input file:
-		if( reactorInputs.size()!= experiments.getNoRegularExperiments()){
+		if( reactorInputs.size()!= experiments.getReactorInputCollector().getNoRegularExperiments()){
 			System.out.println("Number of experiments in reactor inputs file does not correspond to the number of experiments provided in the INPUT file! Maybe check if .csv file contains redundant 'comma' lines.");
 			System.exit(-1);
 		}
-
-
 		return reactorInputs;
 	}
 
 	public LinkedList<String> createRegularReactorInputs(){
 		LinkedList<String> RegularReactorInputs = new LinkedList<String>();
 		if (experiments.isFlagReactorDB()){
-			if(experiments.getFlagReactorSetupType()==1){
-				try {
-					RegularReactorInputs = reactorInputsParser();
-				} catch (IOException e) {
-					logger.debug(e);
+			BufferedReader in_excel;
+			try {
+				in_excel = new BufferedReader(new FileReader(paths.getWorkingDir()+experiments.getReactorSetupDB()));
+				if(experiments.getFlagReactorSetupType()==1){
+					try {		
+						RegularReactorInputs = reactorInputsParser(in_excel);
+					} catch (IOException e) {
+						logger.debug(e);
+					}
 				}
-			}
-			if(experiments.getFlagReactorSetupType()==2){
-				try {
-					RegularReactorInputs = reactorInputsParser2();
-				} catch (IOException e) {
-					logger.debug(e);
+				else if(experiments.getFlagReactorSetupType()==2){
+					try {
+						RegularReactorInputs = reactorInputsParser2(in_excel);
+					} catch (IOException e) {
+						logger.debug(e);
+					}
 				}
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 		return RegularReactorInputs;
 	}
-	public void writeSpeciesParities(PrintWriter out, List<String> speciesNames){
+	private void writeSpeciesParities(PrintWriter out, List<String> speciesNames){
 		// loop through all species:
 		for(int i=0;i<speciesNames.size();i++){
 			out.println(speciesNames.get(i).toString());
@@ -597,76 +604,33 @@ public class Param_Est{
 				Double model_value = modelValues.getModelEffluentValues().get(j).get(speciesNames.get(i));
 				//out.println(speciesNames.get(i));
 				out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
-
 			}
 			out.println();
 		}
 	}
-	public void writeIgnitionDelayParities(PrintWriter out){	
-			// loop through all experiments:
-			for(int j=0;j<experiments.getExperimentalValues().getExperimentalIgnitionValues().size();j++){
-				Double experiment_value = experiments.getExperimentalValues().getExperimentalIgnitionValues().get(j);
-				Double model_value = modelValues.getModelIgnitionValues().get(j);
-				//out.println(speciesNames.get(i));
-				out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
+	private void writeIgnitionDelayParities(PrintWriter out){	
+		// loop through all experiments:
+		for(int j=0;j<experiments.getExperimentalValues().getExperimentalIgnitionValues().size();j++){
+			Double experiment_value = experiments.getExperimentalValues().getExperimentalIgnitionValues().get(j);
+			Double model_value = modelValues.getModelIgnitionValues().get(j);
+			//out.println(speciesNames.get(i));
+			out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
 
-			}
-			out.println();
-	}
-	public void readExperimentalData(){
-		
-		//get experimental effluent values, if they exist:
-		if(!(experiments.getPathExperimentalDB().equals(""))){
-			try {
-				//fill in response variables:
-				experiments.setResponseVariables(experiments.readResponseVariables(paths.getWorkingDir()));
-				
-				ExperimentalValues experimentalValues = new ExperimentalValues();
-				LinkedList<Map<String,Double>> list = Tools.experimentsEffluentParser(paths.getWorkingDir()+experiments.getPathExperimentalDB(),
-						experiments.getNoRegularExperiments());
-				experimentalValues.setExperimentalEffluentValues(list);
-				experiments.setExperimentalValues(experimentalValues);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
 		}
-		if(!(experiments.getPathIgnitionDB().equals(""))){
-			try {
-				ExperimentalValues experimentalValues;
-				if(experiments.getExperimentalValues() == null){
-					experimentalValues = new ExperimentalValues();
-				}
-				else{
-					experimentalValues = experiments.getExperimentalValues();	
-				}
-				LinkedList<Double> list = Tools.experimentsIgnitionParser(paths.getWorkingDir()+experiments.getPathIgnitionDB(),
-						experiments.getNoIgnitionDelayExperiments());
-				experimentalValues.setExperimentalIgnitionValues(list);
-				experiments.setExperimentalValues(experimentalValues);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}	
-		}
+		out.println();
 	}
-	public void writeParameters(){
+	public void writeParameters(PrintWriter out){
 		logger.info("New values of parameters are: ");
-		PrintWriter out;
-		try {
-			out = new PrintWriter(new FileWriter("params.txt"));
-			for (int i = 0; i < chemistry.getParams().getBeta().length; i++) {
-				out.println("Reaction "+i+": ");
-				for (int j = 0; j < chemistry.getParams().getBeta()[0].length; j++){
-					out.print(chemistry.getParams().getBeta()[i][j]+", ");
-				}
-				out.println();			
+		for (int i = 0; i < chemistry.getParams().getBeta().length; i++) {
+			out.println("Reaction "+i+": ");
+			for (int j = 0; j < chemistry.getParams().getBeta()[0].length; j++){
+				out.print(chemistry.getParams().getBeta()[i][j]+", ");
 			}
-			out.println();
-			out.close();
-		} catch (IOException e) {
-			logger.debug(e);
+			out.println();			
 		}
+		out.println();
+		out.close();
 
-		
+
 	}
 }
