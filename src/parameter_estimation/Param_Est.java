@@ -5,8 +5,7 @@ import java.io.*;
 import org.apache.log4j.Logger;
 
 
-public class Param_Est{
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Param_Est extends Loggable{
 	private Paths paths;
 	private Chemistry chemistry;
 	Experiments experiments;
@@ -97,10 +96,7 @@ public class Param_Est{
 
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.callPreProcess();
-		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
-		c.checkChemOutput(in);
+		checkChemistryFile(r);
 
 		// take initial guesses from chem.inp file:
 		chemistry.getParams().setBeta(Chemistry.initialGuess(paths.getWorkingDir(), 
@@ -137,11 +133,7 @@ public class Param_Est{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.callPreProcess();
-		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
-		c.checkChemOutput(in);
-		c.join();
+		checkChemistryFile(r);
 
 		boolean flag_CKSolnList = true;
 		boolean flag_toExcel = true;
@@ -152,17 +144,21 @@ public class Param_Est{
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
+	private void checkChemistryFile(Runtime r) throws IOException,
+			InterruptedException, FileNotFoundException {
+		CKEmulation c = new CKEmulation(paths, chemistry, r);
+		c.preProcess(r);
+		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		c.checkChemOutput(in);
+		c.join();
+	}
 	//TODO parity should be type, not method, i believe
 	public void parity() throws Exception{
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.callPreProcess();
-		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
-		c.checkChemOutput(in);
-		c.join();
+		checkChemistryFile(r);
 
 		boolean flag_CKSolnList = true;
 		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
@@ -176,9 +172,9 @@ public class Param_Est{
 		ExperimentalValues experimentalValues = experiments.readExperimentalData(workingDir); 
 		experiments.setExperimentalValues(experimentalValues);
 
-		String speciesPath = c.getPaths().getWorkingDir()+ChemkinConstants.CHEMASU;
+		String speciesPath = paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
-		speciesNames = Tools.readSpeciesNames(inSpecies);
+		speciesNames = Chemistry.readSpeciesNames(inSpecies);
 		
 		//WRITE PARITY FILE:
 		PrintWriter out;
@@ -205,6 +201,7 @@ public class Param_Est{
 	}
 
 	private void writeFlameSpeedParities(PrintWriter out) {
+		out.println("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value");
 		// loop through all experiments:
 		for(int j=0;j<experiments.getExperimentalValues().getExperimentalFlameSpeedValues().size();j++){
 			Double experiment_value = experiments.getExperimentalValues().getExperimentalFlameSpeedValues().get(j);
@@ -236,7 +233,7 @@ public class Param_Est{
 		//check if initial input file is error-free:
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.callPreProcess();
+		c.preProcess(r);
 		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
 		c.checkChemOutput(in);
 
@@ -595,6 +592,7 @@ public class Param_Est{
 		return RegularReactorInputs;
 	}
 	private void writeSpeciesParities(PrintWriter out, List<String> speciesNames){
+		out.println("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value");
 		// loop through all species:
 		for(int i=0;i<speciesNames.size();i++){
 			out.println(speciesNames.get(i).toString());
@@ -610,6 +608,7 @@ public class Param_Est{
 	}
 	private void writeIgnitionDelayParities(PrintWriter out){	
 		// loop through all experiments:
+		out.println("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value");
 		for(int j=0;j<experiments.getExperimentalValues().getExperimentalIgnitionValues().size();j++){
 			Double experiment_value = experiments.getExperimentalValues().getExperimentalIgnitionValues().get(j);
 			Double model_value = modelValues.getModelIgnitionValues().get(j);

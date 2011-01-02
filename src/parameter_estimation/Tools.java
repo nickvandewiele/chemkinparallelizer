@@ -1,6 +1,5 @@
 package parameter_estimation;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,7 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -22,8 +20,7 @@ import org.apache.log4j.Logger;
  * @author nmvdewie
  *
  */
-public class Tools {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Tools extends Loggable {
 	/**
 	 * moveFiles moves all files with extension e to the specified destination dir
 	 * @param orig_dir
@@ -167,200 +164,5 @@ public class Tools {
 		catch(IOException e){
 			logger.error("Error while copying file",e);;      
 		}
-	}
-	/**
-	 * read_ckcsv should read the CKSoln.ckcsv file and retrieve data from it.<BR>
-	 * Which data specifically is explained here below:<BR>
-	 * 	<LI>the mole fraction of all species</LI>
-	 * the values should be taken at the end point of the reactor, i.e. the last data value of each row in the .ckcsv file<BR>
-	 * the data will be stored in a LinkedList, chosen for its flexibility<BR>
-	 * @param in TODO
-	 * @throws IOException
-	 */
-	public static Map<String, Double> readCkcsv (BufferedReader in) throws IOException {
-		Map <String, Double> dummy = new HashMap<String, Double>();
-		
-
-		String temp;
-		String [] st_temp;
-		LinkedList<String> list_temp;
-
-		/*
-		 *  Looking for the String "Exit_mass_flow_rate" since the line right after this line,
-		 *  will contain the first species' mass fractions
-		 */
-		list_temp = new LinkedList<String>();
-		do {
-			list_temp.clear();
-			temp = in.readLine();
-			st_temp = temp.split(", ");
-			for (int i=0;i<st_temp.length;i++){
-				list_temp.add(st_temp[i]);
-			}
-		} while (!(list_temp.get(0)).equals("Exit_mass_flow_rate"));
-
-
-		/* read all species' mass fractions, number of species is unknown, until the String "Molecular_weight" is encountered,
-		 * which implies that the end of the list with species' mass fractions has been reached.
-		 */
-		list_temp.clear();
-		list_temp = new LinkedList<String>();
-		do {
-			list_temp.clear();
-			temp =in.readLine();
-			st_temp = temp.split(", ");
-			for (int i=0;i<st_temp.length;i++){
-				list_temp.add(st_temp[i]);
-			}
-			if(!(list_temp.get(0)).equals("Molecular_weight")){				
-				dummy.put((String)list_temp.get(0), Double.parseDouble(list_temp.get(list_temp.size()-1)));
-
-			}
-		} while (!(list_temp.get(0)).equals("Molecular_weight"));
-
-
-		in.close();
-		//convert to a HashMap with the real species names (cut of Mass_fraction_ or Mole_fraction_:
-		dummy = cutOffMassFrac_(dummy);
-		return dummy;
-	}
-	/**
-	 * getSpeciesNames retrieves the names of the species from the chemistry input file:
-	 * *.asu file
-	 * @param in TODO
-	 * @return
-	 * @throws IOException
-	 */
-	public static LinkedList<String> readSpeciesNames(BufferedReader in)throws IOException{
-		
-		LinkedList<String> namesList = new LinkedList<String>();
-
-		//first line contains number of species:
-		int no_species = Integer.parseInt(in.readLine());
-
-		String dummy = in.readLine();
-		//first part of dummy contains: species=
-		String dummy_speciesEq = dummy.substring(0, 8);
-		//System.out.println(dummy_speciesEq);
-
-		//rest of dummy contains species name and mw:
-		String otherEnd = dummy.substring(8,dummy.length());
-		//System.out.println(otherEnd);
-		int index_mw = otherEnd.indexOf("mw=");
-		//System.out.println(index_mw);
-		String species_name = otherEnd.substring(0, index_mw-1).trim();
-		//System.out.println(species_name);
-
-		while(dummy_speciesEq.equals("species=")){
-			namesList.add(species_name);
-			dummy = in.readLine();
-			if(dummy.length()>=8) {
-				dummy_speciesEq = dummy.substring(0, 8);
-				//System.out.println(dummy_speciesEq);
-
-				//rest of dummy contains species name and mw:
-				otherEnd = dummy.substring(8,dummy.length());
-				//System.out.println(otherEnd);
-				index_mw = otherEnd.indexOf("mw=");
-				//System.out.println(index_mw);
-				species_name = otherEnd.substring(0, index_mw-1).trim();
-				//System.out.println(species_name);
-			}
-			else {
-				break;
-			}
-		}
-
-
-		in.close();
-		if(no_species != namesList.size()){
-			logger.debug("Something went wrong with the species names parsing from the .asu file!!!");
-			System.exit(-1);
-		}
-		//System.out.println(namesList.toString());
-
-		return namesList;
-	}
-	/**
-	 * will search for String "Ignition_time_1_by_max_dT/dt" and return value of it
-	 * @param in TODO
-	 * @return
-	 */
-	public static Double readCkcsvIgnitionDelay(BufferedReader in) {
-
-		Double ignitionDelay = null;
-		try {
-			String temp;
-			String [] st_temp;
-			LinkedList<String> list_temp;
-
-			/*
-			 *  Looking for the String "Exit_mass_flow_rate" since the line right after this line,
-			 *  will contain the first species' mass fractions
-			 */
-			list_temp = new LinkedList<String>();
-			do {
-				list_temp.clear();
-				try {
-					temp = in.readLine();
-					st_temp = temp.split(", ");
-					for (int i=0;i<st_temp.length;i++){
-						list_temp.add(st_temp[i]);
-					}
-					
-				} catch (IOException e) {
-					logger.debug(e);
-				}
-				//TODO other definitions of ignition delays should be allowed
-			} while (!(list_temp.get(0)).equals("Ignition_time_1_by_max_dT/dt"));
-			in.close();
-			ignitionDelay = new Double(list_temp.get(2));
-			
-		} catch (FileNotFoundException e) {
-			logger.debug(e);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}			
-		return ignitionDelay;
-	}	 
-	public static Double readCkcsvFlameSpeed(BufferedReader in){
-		
-		Double flameSpeed = null;
-		try {
-			String temp;
-			String [] st_temp;
-			LinkedList<String> list_temp;
-
-			/*
-			 *  Looking for the String "Exit_mass_flow_rate" since the line right after this line,
-			 *  will contain the first species' mass fractions
-			 */
-			list_temp = new LinkedList<String>();
-			do {
-				list_temp.clear();
-				try {
-					temp = in.readLine();
-					st_temp = temp.split(", ");
-					for (int i=0;i<st_temp.length;i++){
-						list_temp.add(st_temp[i]);
-					}
-					
-				} catch (IOException e) {
-					logger.debug(e);
-				}
-			} while (!(list_temp.get(0)).equals("Flame_speed"));
-			in.close();
-			//take last value in row of flame speed row:
-			flameSpeed = new Double(list_temp.get(list_temp.size()-1));
-			
-		} catch (FileNotFoundException e) {
-			logger.debug(e);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}			
-		return flameSpeed;
-		
 	}
 }

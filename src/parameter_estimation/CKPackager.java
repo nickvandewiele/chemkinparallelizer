@@ -9,8 +9,7 @@ import org.apache.log4j.Logger;
  * @author nmvdewie
  *
  */
-public class CKPackager{
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class CKPackager extends Loggable{
 	Paths paths;
 	public String [] reactorOutputs;
 

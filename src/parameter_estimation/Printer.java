@@ -6,8 +6,7 @@ import org.apache.log4j.Logger;
 
 import parameter_estimation.levenberg.LM_NBMT;
 
-public class Printer {
-	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Printer extends Loggable{
 	public static void printArray(double [] d, PrintWriter out){
 		for (int i = 0; i < d.length; i++) {
 			out.print(d[i]+" ");

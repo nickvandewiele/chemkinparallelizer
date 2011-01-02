@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * @author nmvdewie
  *
  */
-public class Chemistry {
+public class Chemistry extends Loggable{
 	
 	/**
 	 * params contains the kinetic parameters of the mechanism, as
@@ -159,5 +159,63 @@ public class Chemistry {
 	 */
 	public void setParams(Parameters2D params) {
 		this.params = params;
+	}
+
+	/**
+	 * getSpeciesNames retrieves the names of the species from the chemistry input file:
+	 * *.asu file
+	 * @param in TODO
+	 * @return
+	 * @throws IOException
+	 */
+	public static LinkedList<String> readSpeciesNames(BufferedReader in)throws IOException{
+		
+		LinkedList<String> namesList = new LinkedList<String>();
+	
+		//first line contains number of species:
+		int no_species = Integer.parseInt(in.readLine());
+	
+		String dummy = in.readLine();
+		//first part of dummy contains: species=
+		String dummy_speciesEq = dummy.substring(0, 8);
+		//System.out.println(dummy_speciesEq);
+	
+		//rest of dummy contains species name and mw:
+		String otherEnd = dummy.substring(8,dummy.length());
+		//System.out.println(otherEnd);
+		int index_mw = otherEnd.indexOf("mw=");
+		//System.out.println(index_mw);
+		String species_name = otherEnd.substring(0, index_mw-1).trim();
+		//System.out.println(species_name);
+	
+		while(dummy_speciesEq.equals("species=")){
+			namesList.add(species_name);
+			dummy = in.readLine();
+			if(dummy.length()>=8) {
+				dummy_speciesEq = dummy.substring(0, 8);
+				//System.out.println(dummy_speciesEq);
+	
+				//rest of dummy contains species name and mw:
+				otherEnd = dummy.substring(8,dummy.length());
+				//System.out.println(otherEnd);
+				index_mw = otherEnd.indexOf("mw=");
+				//System.out.println(index_mw);
+				species_name = otherEnd.substring(0, index_mw-1).trim();
+				//System.out.println(species_name);
+			}
+			else {
+				break;
+			}
+		}
+	
+	
+		in.close();
+		if(no_species != namesList.size()){
+			logger.debug("Something went wrong with the species names parsing from the .asu file!!!");
+			System.exit(-1);
+		}
+		//System.out.println(namesList.toString());
+	
+		return namesList;
 	}
 }

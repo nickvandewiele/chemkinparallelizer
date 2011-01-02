@@ -14,8 +14,7 @@ import org.apache.log4j.Logger;
  * @author nmvdewie
  *
  */
-public class Experiments {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Experiments extends Loggable{
 
 	/**
 	 * database with all experimental info (for PFR experiments, for now)
@@ -191,7 +190,7 @@ public class Experiments {
 	 * @return List of the experiments, with molar flowrates of the response variables
 	 * @throws IOException
 	 */
-	private LinkedList<Map<String, Double>> readExperimentalEffluents (BufferedReader in, int noRegularExperiments)throws IOException{
+	public LinkedList<Map<String, Double>> readExperimentalEffluents (BufferedReader in, int noRegularExperiments)throws IOException{
 		LinkedList<Map<String, Double>> exp = new LinkedList<Map<String, Double>>();
 		try {
 

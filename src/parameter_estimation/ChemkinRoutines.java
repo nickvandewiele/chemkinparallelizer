@@ -2,11 +2,11 @@ package parameter_estimation;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
 
 /**
  * location for all pointers to chemkin routines, and the required arguments
@@ -14,8 +14,7 @@ import org.apache.log4j.Logger;
  * @author nmvdewie
  *
  */
-public class ChemkinRoutines {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class ChemkinRoutines extends Loggable{
 	String workingDir;
 	String binDir;
 	String reactorDir;
@@ -186,30 +185,55 @@ public class ChemkinRoutines {
 			out.close();
 	}
 	public void callGenericClosed(String reactorSetup, String reactorOut, Runtime runtime) throws IOException, InterruptedException {
-		String [] name_input_PFR = {binDir+"CKReactorGenericClosed","-i",
+		String [] input = {binDir+"CKReactorGenericClosed","-i",
 				reactorDir+reactorSetup,"-o",
 				reactorDir+reactorOut};
-		ChemkinRoutines.executeCKRoutine(name_input_PFR, new File(reactorDir),
+		ChemkinRoutines.executeCKRoutine(input, new File(reactorDir),
 				runtime);
 	}
-	public void callBurnerStabilizedFlame(CKEmulation ckEmulation, String reactorSetup, String reactorOut, Runtime runtime) throws IOException,
+	public void callBurnerStabilizedFlame(String reactorSetup, String reactorOut, Runtime runtime) throws IOException,
 			InterruptedException {
-		String [] name_input_PFR = {ckEmulation.paths.getBinDir()+"CKReactorBurnerStabilizedFlame",
-				"-i",ckEmulation.reactorDir+reactorSetup,"-o",
-				ckEmulation.reactorDir+reactorOut};
-		ChemkinRoutines.executeCKRoutine(name_input_PFR, new File(ckEmulation.reactorDir), runtime);
+		String [] input = {binDir+"CKReactorBurnerStabilizedFlame",
+				"-i",reactorDir+reactorSetup,"-o",
+				reactorDir+reactorOut};
+		ChemkinRoutines.executeCKRoutine(input, new File(reactorDir), runtime);
 	}
-	public void callPFR(CKEmulation ckEmulation, String reactorSetup, String reactorOut, Runtime runtime) throws IOException, InterruptedException {
-		String [] name_input_PFR = {ckEmulation.paths.getBinDir()+"CKReactorPlugFlow","-i",
-				ckEmulation.reactorDir+reactorSetup,"-o",
-				ckEmulation.reactorDir+reactorOut};
-		ChemkinRoutines.executeCKRoutine(name_input_PFR, new File(ckEmulation.reactorDir), runtime);
+	public void callPFR(String reactorSetup, String reactorOut, Runtime runtime) throws IOException, InterruptedException {
+		String [] input = {binDir+"CKReactorPlugFlow","-i",
+				reactorDir+reactorSetup,"-o",
+				reactorDir+reactorOut};
+		ChemkinRoutines.executeCKRoutine(input, new File(reactorDir), runtime);
 	}
-	public void callGenericPSR(CKEmulation ckEmulation, String reactorSetup, String reactorOut, Runtime runtime) throws IOException, InterruptedException {
-		String [] name_input_PFR = {ckEmulation.paths.getBinDir()+"CKReactorGenericPSR","-i",
-				ckEmulation.reactorDir+reactorSetup,"-o",
-				ckEmulation.reactorDir+reactorOut};
-		ChemkinRoutines.executeCKRoutine(name_input_PFR, new File(ckEmulation.reactorDir), runtime);
+	public void callGenericPSR(String reactorSetup, String reactorOut, Runtime runtime) throws IOException, InterruptedException {
+		String [] input = {binDir+"CKReactorGenericPSR","-i",
+				reactorDir+reactorSetup,"-o",
+				reactorDir+reactorOut};
+		ChemkinRoutines.executeCKRoutine(input, new File(reactorDir), runtime);
+	}
+	/**
+	 * The Chemkin routine CKPreProcess requires an input file that contains:
+	 *  Species info, TD data, Transport data (if present), Mechanism data
+	 * @param runtime TODO
+	 * @throws IOException
+	 * @throws InterruptedException
+	 */
+	public void callPreProcess(Runtime runtime) throws IOException, InterruptedException {
+		System.out.println(workingDir+ChemkinConstants.PREPROCESSINPUT);
+		PrintWriter out = new PrintWriter(new FileWriter(workingDir+ChemkinConstants.PREPROCESSINPUT));
+		writeCKPreProcessInput(out);
+		
+		
+		String [] preprocess = {binDir+"CKPreProcess",
+				"-i",workingDir+ChemkinConstants.PREPROCESSINPUT};
+		
+		ChemkinRoutines.executeCKRoutine(preprocess, new File(workingDir), runtime);
+	}
+	public void callFreelyPropagatingFlame(String reactorSetup,
+			String reactorOut, Runtime runtime) throws IOException, InterruptedException {
+		String [] input = {binDir+"CKReactorFreelyPropagatingFlame","-i",
+				reactorDir+reactorSetup,"-o",
+				reactorDir+reactorOut}; 
+		ChemkinRoutines.executeCKRoutine(input, new File(reactorDir), runtime);
 	}
 	
 }

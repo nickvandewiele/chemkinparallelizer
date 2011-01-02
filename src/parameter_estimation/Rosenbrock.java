@@ -21,8 +21,7 @@ import org.apache.log4j.Logger;
  * 	-Function
  */
 
-public class Rosenbrock{
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Rosenbrock extends Loggable{
 	private double EFRAC; //rosenbrock parameter
 	private double SUCC; //rosenbrock parameter
 	private double FAIL; //rosenbrock parameter

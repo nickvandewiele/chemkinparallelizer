@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
 
-public class Function {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Function extends Loggable{
 	
 	private Experiments experiments;
 	private ModelValues modelValues;

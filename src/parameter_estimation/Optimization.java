@@ -31,8 +31,7 @@ import stat.Statistics;
  * @author nmvdewie
  *
  */
-public class Optimization{
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Optimization extends Loggable{
 	private Paths paths;
 	private Chemistry chemistry;
 	private Experiments experiments;
@@ -208,12 +207,7 @@ public class Optimization{
 		//chemistry input file needs to be reprocessed: new link file has to be created!!!
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		try {
-			c.callPreProcess();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		c.preProcess(r);
 		BufferedReader inChem = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
 		c.checkChemOutput(inChem);
 		try {

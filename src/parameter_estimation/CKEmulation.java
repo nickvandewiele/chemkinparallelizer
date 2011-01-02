@@ -27,9 +27,8 @@ public class CKEmulation extends Thread{
 	private Effluent effluent;
 	private String reactorSetup;
 	private String reactorOut;
-	private String reactorType;
-	
-	private ChemkinRoutines chemkinRoutines;
+	private ReactorType reactorType = new ReactorType();
+	ChemkinRoutines chemkinRoutines;
 
 	//'first' is flag that tells you if the CKSolnList needs to be constructed or not.
 	boolean first;
@@ -144,15 +143,15 @@ public class CKEmulation extends Thread{
 			if (!flagExcel){
 				if(flagIgnitionDelayExperiment){
 					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
-					experiment.setValue(Tools.readCkcsvIgnitionDelay(in));
+					experiment.setValue(ModelValues.readCkcsvIgnitionDelay(in));
 				}
 				else if(flagFlameSpeedExperiment){
 					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
-					experiment.setValue(Tools.readCkcsvFlameSpeed(in));
+					experiment.setValue(ModelValues.readCkcsvFlameSpeed(in));
 				}
 				else{
 					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
-					effluent.setSpeciesFractions(Tools.readCkcsv(in));	
+					effluent.setSpeciesFractions(ModelValues.readCkcsvEffluent(in));	
 				}
 
 			}
@@ -177,59 +176,50 @@ public class CKEmulation extends Thread{
 		}
 	}
 	/**
-	 * The Chemkin routine CKPreProcess requires an input file that contains:
-	 *  Species info, TD data, Transport data (if present), Mechanism data
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public void callPreProcess() throws IOException, InterruptedException {
-		System.out.println(paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT);
-		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));
-		chemkinRoutines.writeCKPreProcessInput(out);
-		
-		
-		String [] preprocess = {paths.getBinDir()+"CKPreProcess",
-				"-i",paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT};
-		
-		ChemkinRoutines.executeCKRoutine(preprocess, new File(paths.getWorkingDir()), runtime);
-	}
-	/**
 	 * call a Chemkin reactor model (ic: CKReactorPlugFlow) executable	
 	 * @throws Exception
 	 */
 	public void callReactor () throws IOException, InterruptedException {
 		//read reactor type, to be found in reactor setup file:
 		BufferedReader in = new BufferedReader(new FileReader(reactorDir+reactorSetup));
-		reactorType = readReactorType(in);
+		reactorType.type = reactorType.readReactorType(in);
 		//PFR
-		if(reactorType.equals("PLUG")){
-			chemkinRoutines.callPFR(this, reactorSetup, reactorOut, runtime);	
+		if(reactorType.type.equals(ReactorType.PLUG)){
+			chemkinRoutines.callPFR(reactorSetup, reactorOut, runtime);	
 		}
 
 		//burner stabilized laminar premixed flame
-		else if(reactorType.equals("BURN")){
-			chemkinRoutines.callBurnerStabilizedFlame(this, reactorSetup, reactorOut, runtime);
+		else if(reactorType.type.equals(ReactorType.BURNER_STABILIZED_LAMINAR_PREMIXED_FLAME)){
+			chemkinRoutines.callBurnerStabilizedFlame(reactorSetup, reactorOut, runtime);
 		}
 
 		//CSTR
-		else if (reactorType.equals("STST")){
-			chemkinRoutines.callGenericPSR(this, reactorSetup, reactorOut, runtime);
+		else if (reactorType.type.equals(ReactorType.CSTR)){
+			chemkinRoutines.callGenericPSR(reactorSetup, reactorOut, runtime);
 		}
 
 		//ignition delay, batch reactor, transient solver, as in shock tube experiments
-		else if (reactorType.equals("TRAN")){
+		else if (reactorType.type.equals(ReactorType.BATCH_REACTOR_TRANSIENT_SOLVER)){
 			chemkinRoutines.callGenericClosed(reactorSetup, reactorOut, runtime);
 		}
-		//freely propagating laminar flame:
-		/*
-		else if(){
-		String [] name_input_PFR = {paths.getBinDir()+"CKReactorFreelyPropagatingFlame","-i",
-					reactorDir+reactorSetup,"-o",
-					reactorDir+reactorOut}; 
+		//freely propagating laminar flame (flame speed experiments):
+		else if(reactorType.type.equals(ReactorType.FREELY_PROPAGATING_LAMINAR_FLAME)	){
+			chemkinRoutines.callFreelyPropagatingFlame(reactorSetup,reactorOut,runtime);
+		
 		}
-		 */
+		 
 	}
-
+public void preProcess(Runtime runtime){
+	try {
+		chemkinRoutines.callPreProcess(runtime);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 	/**
 	 * checkChemInput does a preliminary check of the initial chemistry output file to verify if no errors are present.<BR>
 	 * It calls the Chemkin preprocessor which produces the output file<BR>
@@ -290,7 +280,7 @@ public class CKEmulation extends Thread{
 		try{
 			String speciesPath = paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
-			LinkedList<String> speciesNames = Tools.readSpeciesNames(inSpecies);
+			LinkedList<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;
 			dummy = in.readLine();
 			
@@ -340,6 +330,19 @@ public class CKEmulation extends Thread{
 								st_dummy[4]="0";
 							}
 						}
+						else if(st_dummy[1].trim().equals("flame_speed")){
+							//check whether this experiments is about flame speeds:
+							if(flagFlameSpeedExperiment){
+								//no sensitivity
+								st_dummy[4]="0";
+							}
+							//do not report flame speed data, even
+							else {
+								st_dummy[2]="0";
+								st_dummy[4]="0";
+							}
+						}
+						
 						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
 						else {
 
@@ -387,24 +390,6 @@ public class CKEmulation extends Thread{
 		f_temp.renameTo(new File(reactorDir+ChemkinConstants.CKSOLNLIST));
 	}
 
-	/**
-	 * To decide which reactortype should be called from the Chemkin library, the first line of each reactor input file
-	 * is read.
-	 * the first word of this line contains the reactor model.
-	 * @param in TODO
-	 * @return
-	 */
-	public String readReactorType(BufferedReader in){
-		String reactorType = null;
-		try {
-			String dummy = in.readLine();
-			reactorType = dummy.split(" ")[0];
-			in.close();
-		} catch (IOException e) {
-			logger.debug(e);
-		}
-		return reactorType;
-	}
 	/**
 	 * Checks if errors are present in the transport output file. If so, this means that either:
 	 * -no transport data was present in chemistry input file

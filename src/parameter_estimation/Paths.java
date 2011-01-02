@@ -10,8 +10,7 @@ import org.apache.log4j.Logger;
  * @author nmvdewie
  *
  */
-public class Paths {
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+public class Paths extends Loggable{
 	protected String workingDir;
 	protected String chemkinDir;
 	/**

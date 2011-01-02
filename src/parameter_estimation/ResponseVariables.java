@@ -13,7 +13,7 @@ import java.util.LinkedList;
  * @author nmvdewie
  *
  */
-public class ResponseVariables {
+public class ResponseVariables extends Loggable {
 	LinkedList<String> effluentResponses;
 	boolean ignitionDelay;
 	boolean flameSpeed;
