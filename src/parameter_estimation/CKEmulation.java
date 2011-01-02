@@ -16,9 +16,9 @@ public class CKEmulation extends Thread{
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
 	Paths paths;
 	Chemistry chemistry;
-	
+
 	String reactorDir;
-	
+
 	Runtime runtime;
 	boolean flagIgnitionDelayExperiment = true;
 
@@ -79,7 +79,7 @@ public class CKEmulation extends Thread{
 			System.exit(-1);
 		}
 
-		
+
 		this.chemkinRoutines = new ChemkinRoutines(paths.getWorkingDir(), paths.getBinDir(), reactorDir, chemistry.getChemistryInput());
 
 		copyLinkFiles(paths);
@@ -205,21 +205,21 @@ public class CKEmulation extends Thread{
 		//freely propagating laminar flame (flame speed experiments):
 		else if(reactorType.type.equals(ReactorType.FREELY_PROPAGATING_LAMINAR_FLAME)	){
 			chemkinRoutines.callFreelyPropagatingFlame(reactorSetup,reactorOut,runtime);
-		
+
 		}
-		 
+
 	}
-public void preProcess(Runtime runtime){
-	try {
-		chemkinRoutines.callPreProcess(runtime);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public void preProcess(Runtime runtime){
+		try {
+			chemkinRoutines.callPreProcess(runtime);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-}
 	/**
 	 * checkChemInput does a preliminary check of the initial chemistry output file to verify if no errors are present.<BR>
 	 * It calls the Chemkin preprocessor which produces the output file<BR>
@@ -229,14 +229,14 @@ public void preProcess(Runtime runtime){
 	 */
 	public void checkChemOutput(BufferedReader in){
 		try {
-			
-/*			PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));
+
+			/*			PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));
 			chemkinRoutines.writeCKPreProcessInput(out);
 			String [] preprocess = {paths.getBinDir()+"CKPreProcess",
 					"-i",paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT};
-			
+
 			ChemkinRoutines.executeCKRoutine(preprocess, new File(paths.getWorkingDir()), runtime);
-*/
+			 */
 			//read the produced chem.out (path_output) file, and check if it contains error messages:
 			String dummy = null;
 			boolean flag = true;
@@ -283,7 +283,7 @@ public void preProcess(Runtime runtime){
 			LinkedList<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;
 			dummy = in.readLine();
-			
+
 			//if a comment line (starts with char '#') is read, just copy it to output file
 			while(!dummy.equals(null)){
 				//if a blank line is read, just copy and continue
@@ -342,7 +342,7 @@ public void preProcess(Runtime runtime){
 								st_dummy[4]="0";
 							}
 						}
-						
+
 						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
 						else {
 
@@ -452,7 +452,7 @@ public void preProcess(Runtime runtime){
 	public String getReactorDir() {
 		return reactorDir;
 	}
-	
+
 	/**
 	 * @category getter
 	 * @return

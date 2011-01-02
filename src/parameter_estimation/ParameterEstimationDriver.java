@@ -40,7 +40,7 @@ public class ParameterEstimationDriver {
 
 		BufferedReader in  = null;
 		in = readINPUT(args);
-		
+
 		readPaths(in);
 
 		readLicenses(in);
@@ -52,7 +52,7 @@ public class ParameterEstimationDriver {
 		readReactorDBInfo(in);
 
 		readNoExperiments(in);
-		
+
 		//set no. of regular experiments:
 		reactorInputCollector.setNoRegularExperiments(reactorInputCollector.getTotalNoExperiments()-reactorInputCollector.getNoIgnitionDelayExperiments() - reactorInputCollector.getNoFlameSpeedExperiments());
 
@@ -61,7 +61,7 @@ public class ParameterEstimationDriver {
 		readMode(in);
 
 		readReactorInputNames(in);	
-		
+
 		//insert ReactorInputCollector in Experiments:
 		experiments.setReactorInputCollector(reactorInputCollector);
 
@@ -72,37 +72,53 @@ public class ParameterEstimationDriver {
 
 		in.close();
 
-
 		setParameterBoundaries(noFittedReactions);
 
 		switch(mode){
 		case 0:	logger.info("PARITY PLOT MODE");	
-		Param_Est p0 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p0.parity();
-		//Function f = new Function(p0.getModelValues(),p0.getExp());
-		//logger.info("SSQ is: "+f.getSRES());
+		parityPlotMode();
 		break;
 		case 1:	logger.info("PARAMETER OPTIMIZATION MODE");		
-		Param_Est p1 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p1.optimizeParameters();
-		p1.statistics();
-		p1.parity();
+		parameterOptimizationMode();
 		break;
 		case 2: logger.info("EXCEL POSTPROCESSING MODE");
-		Param_Est p2 = new Param_Est(paths, chemistry, experiments, licenses);
-		p2.excelFiles();
+		excelPostProcessingMode();
 		break;
 		case 3: logger.info("STATISTICS MODE");
-		Param_Est p3 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p3.statistics();
-		p3.parity();
+		statisticsMode();
+		break;
 		}
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
 	}
 
+	private static void statisticsMode() throws Exception {
+		Param_Est p3 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
+		p3.statistics();
+		p3.parity();
+	}
+
+	private static void excelPostProcessingMode() throws Exception {
+		Param_Est p2 = new Param_Est(paths, chemistry, experiments, licenses);
+		p2.excelFiles();
+	}
+
+	private static void parameterOptimizationMode() throws Exception {
+		Param_Est p1 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
+		p1.optimizeParameters();
+		p1.statistics();
+		p1.parity();
+	}
+
+	private static void parityPlotMode() throws Exception {
+		Param_Est p0 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
+		p0.parity();
+		//Function f = new Function(p0.getModelValues(),p0.getExp());
+		//logger.info("SSQ is: "+f.getSRES());
+	}
+
 	private static BufferedReader readINPUT(String[] args)
-			throws FileNotFoundException {
+	throws FileNotFoundException {
 		BufferedReader in;
 		if(args.length == 0){
 			//input file will be searched in working directory under the name INPUT.txt:
@@ -130,7 +146,7 @@ public class ParameterEstimationDriver {
 	}
 
 	private static void readChemistryInput(BufferedReader in)
-			throws IOException {
+	throws IOException {
 		//Chemistry input filename:
 		in.readLine();
 		chemistry.setChemistryInput(in.readLine());
@@ -154,7 +170,7 @@ public class ParameterEstimationDriver {
 	}
 
 	private static int readOptimizedReactions(BufferedReader in, int noParams)
-			throws IOException {
+	throws IOException {
 		//number of reactions that will be optimized:
 		in.readLine();
 		int noFittedReactions = Integer.parseInt(in.readLine());
@@ -183,7 +199,7 @@ public class ParameterEstimationDriver {
 	}
 
 	private static void readReactorInputNames(BufferedReader in)
-			throws IOException {
+	throws IOException {
 		//REACTOR INPUT FILE NAMES:
 		in.readLine();
 
@@ -218,7 +234,7 @@ public class ParameterEstimationDriver {
 			}
 
 		}	
-		
+
 		//filenames of reactor input files of experiments in which flame speed is the response variable (leave blank line if not required)
 		in.readLine();
 		if(reactorInputCollector.getNoFlameSpeedExperiments()==0){
@@ -241,7 +257,7 @@ public class ParameterEstimationDriver {
 	}
 
 	private static int readOptimizationFlags(BufferedReader in)
-			throws IOException {
+	throws IOException {
 		//number of parameters to be fitted:
 		in.readLine();
 		int noParams = Integer.parseInt(in.readLine());
@@ -267,15 +283,15 @@ public class ParameterEstimationDriver {
 		//number of experiments in which ignition delay is the response variable
 		in.readLine();
 		reactorInputCollector.setNoIgnitionDelayExperiments(new Integer(in.readLine()));
-		
-		
+
+
 		//number of experiments in which flame speed is the response variable
 		in.readLine();
 		reactorInputCollector.setNoFlameSpeedExperiments(new Integer(in.readLine()));
 	}
 
 	private static void readExperimentalDBPaths(BufferedReader in)
-			throws IOException {
+	throws IOException {
 		//Experimental database:(leave blank line if file is not required for run mode)
 		in.readLine();		
 		experiments.setPathExperimentalDB(in.readLine());
@@ -328,7 +344,7 @@ public class ParameterEstimationDriver {
 		return (counter == no_params); 		
 	}
 	public static void initializeLog(){
-/*	
+		/*	
 		Layout layout = new SimpleLayout();
 
 		//make Appender, it's a FileAppender, writing to NBMT.log:
@@ -339,7 +355,7 @@ public class ParameterEstimationDriver {
 
 		//add Appender:
 		logger.addAppender(appender);
-*/	
+		 */	
 		BasicConfigurator.configure();
 	}
 }

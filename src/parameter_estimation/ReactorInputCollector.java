@@ -83,14 +83,18 @@ public class ReactorInputCollector {
 			flagIgnitionDelays.put(ignitionDelayInputs.get(i),true);
 		}
 		//flag false for regular experiments:
-		for (int i = 0; i < noRegularExperiments; i++){			
-			//mark that these are ignition delay experiments:
-			flagIgnitionDelays.put(regularInputs.get(i),false);
+		if(noRegularExperiments!=0){
+			for (int i = 0; i < noRegularExperiments; i++){			
+				//mark that these are ignition delay experiments:
+				flagIgnitionDelays.put(regularInputs.get(i),false);
+			}	
 		}
-		//flag false for flame speed experiments:
-		for (int i = 0; i < noFlameSpeedExperiments; i++){			
-			//mark that these are ignition delay experiments:
-			flagIgnitionDelays.put(flameSpeedInputs.get(i),false);
+		if(noFlameSpeedExperiments!=0){
+			//flag false for flame speed experiments:
+			for (int i = 0; i < noFlameSpeedExperiments; i++){			
+				//mark that these are ignition delay experiments:
+				flagIgnitionDelays.put(flameSpeedInputs.get(i),false);
+			}			
 		}
 	}
 	
@@ -100,15 +104,19 @@ public class ReactorInputCollector {
 			//mark that these are ignition delay experiments:
 			flagFlameSpeedDelays.put(flameSpeedInputs.get(i),true);
 		}
-		//flag false for regular experiments:
-		for (int i = 0; i < noRegularExperiments; i++){			
-			//mark that these are ignition delay experiments:
-			flagFlameSpeedDelays.put(regularInputs.get(i),false);
+		if(noRegularExperiments!=0){
+			//flag false for regular experiments:
+			for (int i = 0; i < noRegularExperiments; i++){			
+				//mark that these are ignition delay experiments:
+				flagFlameSpeedDelays.put(regularInputs.get(i),false);
+			}			
 		}
-		//flag false for ignition delay experiments:
-		for (int i = 0; i < noFlameSpeedExperiments; i++){			
-			//mark that these are ignition delay experiments:
-			flagFlameSpeedDelays.put(ignitionDelayInputs.get(i),false);
+		if(noIgnitionDelayExperiments!=0){
+			//flag false for ignition delay experiments:
+			for (int i = 0; i < noIgnitionDelayExperiments; i++){			
+				//mark that these are ignition delay experiments:
+				flagFlameSpeedDelays.put(ignitionDelayInputs.get(i),false);
+			}			
 		}
 	}
 	
