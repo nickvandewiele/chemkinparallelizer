@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -23,7 +25,6 @@ public class ParameterEstimationDriver {
 	static Fitting fitting;
 	static Licenses licenses;
 	static Parameters2D params;
-	//this comment is added to verify version control system
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -73,7 +74,6 @@ public class ParameterEstimationDriver {
 		in.close();
 
 		setParameterBoundaries(noFittedReactions);
-
 		switch(mode){
 		case 0:	logger.info("PARITY PLOT MODE");	
 		parityPlotMode();
@@ -173,7 +173,8 @@ public class ParameterEstimationDriver {
 	throws IOException {
 		//number of reactions that will be optimized:
 		in.readLine();
-		int noFittedReactions = Integer.parseInt(in.readLine());
+		String dummy = in.readLine();
+		int noFittedReactions = Integer.parseInt(dummy);
 
 		int [][] fixRxns = new int [noFittedReactions][chemistry.getNoparametersperreaction()];
 		for (int i = 0; i < noFittedReactions; i++){
@@ -260,7 +261,8 @@ public class ParameterEstimationDriver {
 	throws IOException {
 		//number of parameters to be fitted:
 		in.readLine();
-		int noParams = Integer.parseInt(in.readLine());
+		String dummy = in.readLine();
+		int noParams = Integer.parseInt(dummy);
 
 		//optimization flags:
 		in.readLine();

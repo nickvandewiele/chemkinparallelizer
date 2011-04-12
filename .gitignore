@@ -11,3 +11,9 @@
 /reactor_input - variable reactor length.csv
 /INPUT-new.txt
 /requiredFiles
+
+/.metadata/*
+/data/*
+.classpath
+NBMT.log
+*.inp

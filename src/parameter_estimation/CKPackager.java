@@ -56,13 +56,14 @@ public class CKPackager extends Loggable{
 				//check whether it is an ignition delay experiment, to get the
 				//ignition delay value instead of the effluent composition
 				boolean flagIgnitionDelayExperiment = experiments.getReactorInputCollector().getFlagIgnitionDelays().get(experiments.getReactorInputCollector().getReactorInputs().get(i));
+				boolean flagFlameSpeedExperiment = experiments.getReactorInputCollector().getFlagFlameSpeedDelays().get(experiments.getReactorInputCollector().getReactorInputs().get(i));
 				//only the first CK_emulation needs to create the CKSolnList file:
 				if (i!=0){
 					flagCKSolnList = false;
 				}
 				dummy[i] = new CKEmulation(paths, chemistry, rt,
 						experiments.getReactorInputCollector().getReactorInputs().get(i), semaphore,
-						flagCKSolnList, flagToExcel, flagIgnitionDelayExperiment);
+						flagCKSolnList, flagToExcel, flagIgnitionDelayExperiment, flagFlameSpeedExperiment);
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

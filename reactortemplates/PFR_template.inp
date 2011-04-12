@@ -1,0 +1,3 @@
+PLUG   ! Plug Flow Reactor
+XSTR 0.0   ! Starting Axial Position (cm)
+END
