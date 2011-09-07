@@ -126,15 +126,21 @@ public class CKEmulation extends Thread{
 
 			//boolean first: if first time: create and adapt CKSolnList.txt file
 			if (first){
-				chemkinRoutines.createSolnList(runtime);
-				BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKSOLNLIST));
-				writeSolnList(in);
-				//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
-				Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
+				if(!flagExcel){
+					chemkinRoutines.createSolnList(runtime);
+					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKSOLNLIST));
+					writeSolnList(in);
+					//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
+					Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);					
+				}
+
 			}
 			else {
 				//copy the CKSolnList to the reactorDir
-				Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,reactorDir+ChemkinConstants.CKSOLNLIST);
+				if(!flagExcel){
+					Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,reactorDir+ChemkinConstants.CKSOLNLIST);	
+				}
+				
 			}
 
 			chemkinRoutines.callGetSol(runtime);
