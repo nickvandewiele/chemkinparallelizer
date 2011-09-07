@@ -119,6 +119,12 @@ public class CKEmulation extends Thread{
 			//chemkindataDTD:
 			Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
 
+			//Input Folder with user-defined ROP:
+			for(String filename: paths.UDROPDir.list()){//copy all files in this folder to reactor dir
+				String test = filename;
+				Tools.copyFile(paths.UDROPDir.getAbsolutePath()+"/"+filename,
+						reactorDir+filename);
+			}
 			callReactor();
 
 			//copy reactor diagnostics file to workingdir:

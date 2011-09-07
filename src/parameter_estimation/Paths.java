@@ -13,6 +13,10 @@ import org.apache.log4j.Logger;
 public class Paths extends Loggable{
 	protected String workingDir;
 	protected String chemkinDir;
+	
+	//user-defined ROP calc: folder, called UDROP, with necessary files.
+	protected File UDROPDir = new File(workingDir,"UDROP");
+	
 	/**
 	 * @category setter
 	 * @return
