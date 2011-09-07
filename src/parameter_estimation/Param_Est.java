@@ -324,9 +324,11 @@ public class Param_Est extends Loggable{
 
 		//start reading the axial positions of the Pressure Profile:
 		ArrayList<Double> array_Pprofile = new ArrayList<Double>();
-		for (int i = counter; i < exp.length; i++){
-			array_Pprofile.add(Double.parseDouble(exp[i])*convert_m_cm);
+		while(!exp[counter].equals("ATOL")){
+			array_Pprofile.add(Double.parseDouble(exp[counter])*convert_m_cm);
+			counter++;
 		}
+		
 		return writeReactorInputs(in_excel, reactorInputs, length, diameter,
 				dummy, NOS, species_name, species_mw, position_T_profile,
 				array_Tprofile, position_P_profile, array_Pprofile);
@@ -344,6 +346,7 @@ public class Param_Est extends Loggable{
 		 * <LI>add Pressure profile</LI>
 		 * <LI>add Temperature profile</LI>
 		 * <LI>add diameter</LI>
+		 * <LI>add ATOL RTOL</LI>
 		 */
 
 		int experiment_counter = 0;
@@ -393,6 +396,12 @@ public class Param_Est extends Loggable{
 				//Diameter:
 				out.println("DIAM "+diameter);
 
+				//ATOL RTOL:
+				double atol = Double.parseDouble(dummy_array[position_P_profile+array_Pprofile.size()+1]);
+				out.println("ATOL " + atol);
+				double rtol = Double.parseDouble(dummy_array[position_P_profile+array_Pprofile.size()+2]);
+				out.println("RTOL " + rtol);
+				
 				//reactor length: 
 				out.println("XEND "+length);
 				//Inlet Species:
