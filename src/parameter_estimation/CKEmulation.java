@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class CKEmulation extends Thread{
-	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());
+	static Logger logger = Logger.getLogger(CKEmulation.class);
 	Paths paths;
 	Chemistry chemistry;
 
