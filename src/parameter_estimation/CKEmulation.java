@@ -121,7 +121,6 @@ public class CKEmulation extends Thread{
 
 			//Input Folder with user-defined ROP:
 			for(String filename: paths.UDROPDir.list()){//copy all files in this folder to reactor dir
-				String test = filename;
 				Tools.copyFile(paths.UDROPDir.getAbsolutePath()+"/"+filename,
 						reactorDir+filename);
 			}
@@ -132,20 +131,20 @@ public class CKEmulation extends Thread{
 
 			//boolean first: if first time: create and adapt CKSolnList.txt file
 			if (first){
-				if(!flagExcel){
+				//if(!flagExcel){
 					chemkinRoutines.createSolnList(runtime);
 					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKSOLNLIST));
 					writeSolnList(in);
 					//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
 					Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);					
-				}
+				//}
 
 			}
 			else {
 				//copy the CKSolnList to the reactorDir
-				if(!flagExcel){
+				//if(!flagExcel){
 					Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,reactorDir+ChemkinConstants.CKSOLNLIST);	
-				}
+				//}
 				
 			}
 
@@ -297,7 +296,7 @@ public class CKEmulation extends Thread{
 			dummy = in.readLine();
 
 			//if a comment line (starts with char '#') is read, just copy it to output file
-			while(!dummy.equals(null)){
+			while(in.ready()){
 				//if a blank line is read, just copy and continue
 				if (dummy.trim().length()==0){
 					out.println(dummy);
