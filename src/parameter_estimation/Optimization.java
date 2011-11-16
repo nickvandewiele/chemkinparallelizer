@@ -147,8 +147,8 @@ public class Optimization extends Loggable{
 	 * WARNING: method supposes TD inside chemistry input file!!!<BR>
 	 */
 	public void updateChemistryInput (double [] dummy_beta_new) throws IOException{
-		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+chemistry.getChemistryInput()));
-		PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"temp.inp"));
+		BufferedReader in = new BufferedReader(new FileReader(new File(paths.getWorkingDir(),chemistry.getChemistryInput())));
+		PrintWriter out = new PrintWriter(new FileWriter(new File(paths.getWorkingDir(),"temp.inp")));
 		String dummy = in.readLine();
 		
 		//just copy part of chem.inp about Elements, Species, Thermo
@@ -199,16 +199,16 @@ public class Optimization extends Loggable{
 		in.close();
 		out.close();
 		
-		File f_old = new File(paths.getWorkingDir()+chemistry.getChemistryInput());
+		File f_old = new File(paths.getWorkingDir(),chemistry.getChemistryInput());
 		f_old.delete();
-		File f = new File(paths.getWorkingDir()+"temp.inp");
-		f.renameTo(new File(paths.getWorkingDir()+chemistry.getChemistryInput()));
+		File f = new File(paths.getWorkingDir(),"temp.inp");
+		f.renameTo(new File(paths.getWorkingDir(),chemistry.getChemistryInput()));
 		
 		//chemistry input file needs to be reprocessed: new link file has to be created!!!
 		Runtime r = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
 		c.preProcess(r);
-		BufferedReader inChem = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+		BufferedReader inChem = new BufferedReader(new FileReader(new File(paths.getWorkingDir(),ChemkinConstants.CHEMOUT)));
 		c.checkChemOutput(inChem);
 		try {
 			c.join();

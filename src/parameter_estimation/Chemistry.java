@@ -1,6 +1,7 @@
 package parameter_estimation;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -57,7 +58,7 @@ public class Chemistry extends Loggable{
 	
 		double[][] beta = new double[fixReactions.length][fixReactions[0].length];
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(workingDir+chemInp));
+			BufferedReader in = new BufferedReader(new FileReader(new File(workingDir,chemInp)));
 			String dummy = in.readLine();
 	
 			//skip part of chem.inp about Elements, Species, Thermo

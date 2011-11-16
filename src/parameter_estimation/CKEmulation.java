@@ -133,7 +133,7 @@ public class CKEmulation extends Thread{
 			if (first){
 				//if(!flagExcel){
 					chemkinRoutines.createSolnList(runtime);
-					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKSOLNLIST));
+					BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKSOLNLIST)));
 					writeSolnList(in);
 					//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
 					Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);					
@@ -152,16 +152,14 @@ public class CKEmulation extends Thread{
 
 			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
 			if (!flagExcel){
+				BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME)));
 				if(flagIgnitionDelayExperiment){
-					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
 					experiment.setValue(ModelValues.readCkcsvIgnitionDelay(in));
 				}
 				else if(flagFlameSpeedExperiment){
-					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
 					experiment.setValue(ModelValues.readCkcsvFlameSpeed(in));
 				}
 				else{
-					BufferedReader in = new BufferedReader(new FileReader(reactorDir+ChemkinConstants.CKCSVNAME));
 					effluent.setSpeciesFractions(ModelValues.readCkcsvEffluent(in));	
 				}
 
@@ -169,7 +167,7 @@ public class CKEmulation extends Thread{
 
 			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			if (flagExcel){
-				File excel_file = new File(reactorDir+ChemkinConstants.CKCSVNAME);
+				File excel_file = new File(reactorDir,ChemkinConstants.CKCSVNAME);
 				File dummy = new File (paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetup+".csv");
 				excel_file.renameTo(dummy);
 			}
@@ -192,7 +190,7 @@ public class CKEmulation extends Thread{
 	 */
 	public void callReactor () throws IOException, InterruptedException {
 		//read reactor type, to be found in reactor setup file:
-		BufferedReader in = new BufferedReader(new FileReader(reactorDir+reactorSetup));
+		BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetup)));
 		reactorType.type = reactorType.readReactorType(in);
 		//PFR
 		if(reactorType.type.equals(ReactorType.PLUG)){
@@ -287,10 +285,10 @@ public class CKEmulation extends Thread{
 	 */
 	public void writeSolnList(BufferedReader in)throws Exception{
 		String temp = "tempList.txt";
-		PrintWriter out = new PrintWriter(new FileWriter(reactorDir+temp));
+		PrintWriter out = new PrintWriter(new FileWriter(new File(reactorDir,temp)));
 		try{
-			String speciesPath = paths.getWorkingDir()+ChemkinConstants.CHEMASU;
-			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
+			File speciesFile = new File(paths.getWorkingDir(),ChemkinConstants.CHEMASU);
+			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesFile));
 			LinkedList<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;
 			dummy = in.readLine();
@@ -395,10 +393,10 @@ public class CKEmulation extends Thread{
 		in.close();
 		out.close();
 		//remove old CKSolnList and replace it with newly create one
-		File old = new File(reactorDir+ChemkinConstants.CKSOLNLIST);
+		File old = new File(reactorDir,ChemkinConstants.CKSOLNLIST);
 		old.delete();
-		File f_temp = new File(reactorDir+temp);
-		f_temp.renameTo(new File(reactorDir+ChemkinConstants.CKSOLNLIST));
+		File f_temp = new File(reactorDir,temp);
+		f_temp.renameTo(new File(reactorDir,ChemkinConstants.CKSOLNLIST));
 	}
 
 	/**
