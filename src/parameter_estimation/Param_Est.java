@@ -577,7 +577,8 @@ public class Param_Est extends Loggable{
 		return RegularReactorInputs;
 	}
 	private void writeSpeciesParities(PrintWriter out, List<String> speciesNames){
-		out.println("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value");
+		StringBuffer stringBuff = new StringBuffer();
+		stringBuff.append("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value\n");
 		// loop through all species:
 		for(int i=0;i<speciesNames.size();i++){
 			out.println(speciesNames.get(i).toString());
@@ -586,33 +587,36 @@ public class Param_Est extends Loggable{
 				Double experiment_value = experiments.getExperimentalValues().getExperimentalEffluentValues().get(j).get(speciesNames.get(i));
 				Double model_value = modelValues.getModelEffluentValues().get(j).get(speciesNames.get(i));
 				//out.println(speciesNames.get(i));
-				out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
+				stringBuff.append("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value+"\n");
 			}
-			out.println();
+			stringBuff.append("\n");
 		}
+		out.println(stringBuff.toString());
 	}
 	private void writeIgnitionDelayParities(PrintWriter out){	
 		// loop through all experiments:
-		out.println("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value");
+		StringBuffer stringBuff = new StringBuffer();
+		stringBuff.append("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value\n");
 		for(int j=0;j<experiments.getExperimentalValues().getExperimentalIgnitionValues().size();j++){
 			Double experiment_value = experiments.getExperimentalValues().getExperimentalIgnitionValues().get(j);
 			Double model_value = modelValues.getModelIgnitionValues().get(j);
 			//out.println(speciesNames.get(i));
-			out.println("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value);
+			stringBuff.append("experiment no. "+j+","+experiment_value+","+model_value+","+experiment_value+"\n");
 
 		}
-		out.println();
+		out.println(stringBuff.toString());
 	}
 	public void writeParameters(PrintWriter out){
 		logger.info("New values of parameters are: ");
+		StringBuffer stringBuff = new StringBuffer();
 		for (int i = 0; i < chemistry.getParams().getBeta().length; i++) {
-			out.println("Reaction "+i+": ");
+			stringBuff.append("Reaction "+i+": \n");
 			for (int j = 0; j < chemistry.getParams().getBeta()[0].length; j++){
-				out.print(chemistry.getParams().getBeta()[i][j]+", ");
+				stringBuff.append(chemistry.getParams().getBeta()[i][j]+", \n");
 			}
-			out.println();			
+			stringBuff.append("\n");
 		}
-		out.println();
+		out.print(stringBuff.toString());
 		out.close();
 
 
