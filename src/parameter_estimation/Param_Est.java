@@ -28,31 +28,7 @@ public class Param_Est extends Loggable{
 	public void setModelValues(ModelValues modelValues) {
 		this.modelValues = modelValues;
 	}
-	// constructor used for checking the validity of chemistry input file:
-	public Param_Est(Paths paths, Chemistry chemistry, Experiments experiments,
-			Licenses licenses){
-		this.paths = paths;
-		this.chemistry = chemistry;
-		this.experiments = experiments;
-		this.licenses = licenses;
-		/**
-		 * create reactor input files, if necessary:
-		 */
-		if(experiments.isFlagReactorDB()){
-			experiments.getReactorInputCollector().setRegularInputs(createRegularReactorInputs());
-		}
-
-		//TODO should check whether merge is successful
-		//fill ReactorInputs with RegularReactorInputs, IgnitionDelayInputs, FlameSpeed:
-		experiments.getReactorInputCollector().mergeReactorInputs();
-
-		//set flags for ignition delays:
-		experiments.getReactorInputCollector().setFlagIgnitionDelays();
-
-		//set flags for flame speeds:
-		experiments.getReactorInputCollector().setFlagFlameSpeeds();
-	}
-	//construct for parity mode:
+	
 
 	//constructor used for parameter optimization option:
 

@@ -74,47 +74,33 @@ public class ParameterEstimationDriver {
 		in.close();
 
 		setParameterBoundaries(noFittedReactions);
-		switch(mode){
-		case 0:	logger.info("PARITY PLOT MODE");	
-		parityPlotMode();
-		break;
-		case 1:	logger.info("PARAMETER OPTIMIZATION MODE");		
-		parameterOptimizationMode();
-		break;
-		case 2: logger.info("EXCEL POSTPROCESSING MODE");
-		excelPostProcessingMode();
-		break;
-		case 3: logger.info("STATISTICS MODE");
-		statisticsMode();
-		break;
-		}
+		
+		//creation of the invoker object:
+		ParamEstimationInvoker invoker = new ParamEstimationInvoker();
+		//creation of the Receiver object that will perform the actual work:
+		Param_Est param_est = new Param_Est(paths, chemistry, experiments, fitting, licenses);
+
+		//parity command creation and binding to invoker:
+		Command parityCommand = new ParityPlotCommand(param_est);
+		invoker.setCommand(0, parityCommand);
+		
+		//kinetic parameters optimization command creation and binding to invoker:
+		Command optimCommand = new OptimizationCommand(param_est);
+		invoker.setCommand(1, optimCommand);
+
+		//excel postprocessing command creation and binding to invoker:
+		Command excelCommand = new ExcelPostProcessingCommand(param_est);
+		invoker.setCommand(2, excelCommand);
+		
+		//statistics command creation and binding to invoker:
+		Command statisticsCommand = new OptimizationCommand(param_est);
+		invoker.setCommand(3, statisticsCommand);
+		
+		//perform the request:
+		invoker.performMode(mode);
+		
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
-	}
-
-	private static void statisticsMode() throws Exception {
-		Param_Est p3 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p3.statistics();
-		p3.parity();
-	}
-
-	private static void excelPostProcessingMode() throws Exception {
-		Param_Est p2 = new Param_Est(paths, chemistry, experiments, licenses);
-		p2.excelFiles();
-	}
-
-	private static void parameterOptimizationMode() throws Exception {
-		Param_Est p1 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p1.optimizeParameters();
-		p1.statistics();
-		p1.parity();
-	}
-
-	private static void parityPlotMode() throws Exception {
-		Param_Est p0 = new Param_Est(paths, chemistry, experiments, fitting, licenses);
-		p0.parity();
-		//Function f = new Function(p0.getModelValues(),p0.getExp());
-		//logger.info("SSQ is: "+f.getSRES());
 	}
 
 	private static BufferedReader readINPUT(String[] args)
