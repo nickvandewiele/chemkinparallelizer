@@ -18,6 +18,7 @@ import chemkin_wrappers.PreProcessDecorator;
 import chemkin_wrappers.PremixedFlameDecorator;
 
 import readers.ConfigurationInput;
+import readers.ReactorSetupInput;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
  * CKEmulation can call several Chemkin routines: Chem, CKReactorPlugFlow, GetSolution, GetSolnTranspose depending on the task to be executed<BR>
@@ -29,48 +30,40 @@ import readers.ConfigurationInput;
 public class CKEmulation extends AbstractCKEmulation{
 	static Logger logger = Logger.getLogger(CKEmulation.class);
 
-	
+
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
 	public CKEmulation(ConfigurationInput config, Runtime runtime){
 		this.config = config;
-		this.experiment = new Experiment();
-		this.effluent = new Effluent();
 		this.runtime = runtime;
-		
 	}
 
 	//constructor for creating CKSolnList.txt
 	public CKEmulation(ConfigurationInput input, Runtime runtime,
-			String reactorSetup, boolean first){
+			ReactorSetupInput reactorSetup){
 		this(input, runtime);
-		this.reactorSetup = reactorSetup;
-		this.first = first;
+		this.reactorSetupInput = reactorSetup;
 	}
 
-	//constructor for running 'classical' Chemkin routines
-	public CKEmulation(ConfigurationInput input, Runtime runtime,
-			String rs, Semaphore s, boolean flagCKSolnList, boolean flagExcel, 
-			boolean flagIgnitionDelay, boolean flagFlameSpeed) throws Exception{
-		this(input, runtime, rs, flagCKSolnList);
-		int length = rs.length();
-		this.reactorOut = rs.substring(0,(length-4))+".out";
-
-		this.flagExcel = flagExcel;
-		this.flagIgnitionDelayExperiment = flagIgnitionDelay;
-		this.flagFlameSpeedExperiment = flagFlameSpeed;
-		this.semaphore = s;
-
-		this.reactorDir = config.paths.getWorkingDir()+"temp_ "+rs.substring(0,(length-4))+"/";
+	public CKEmulation(ConfigurationInput config, Runtime rt,
+			ReactorSetupInput reactorSetupInput, Semaphore semaphore) {
+		
+		this(config, rt, reactorSetupInput);
+		this.semaphore = semaphore;
+		
+		int length = reactorSetupInput.getLocation().length();
+		this.reactorOut = reactorSetupInput.getLocation().substring(0,(-4))+".out";
+		this.reactorDir = config.paths.getWorkingDir()+"temp_ "+reactorSetupInput.getLocation().substring(0,(length-4))+"/";
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
 			logger.debug("Creation of reactor directory failed!");
 			System.exit(-1);
 		}
-
-
+		
+		ModelValueFactory factory = new ModelValueFactory(reactorSetupInput.model);
+		modelValue = factory.createModelValue();
+		
 		copyLinkFiles(config.paths);
-
 	}
 
 	private void copyLinkFiles(Paths paths) throws Exception {
@@ -97,13 +90,14 @@ public class CKEmulation extends AbstractCKEmulation{
 		try {
 			semaphore.acquire();
 
-			logger.info("license acquired!"+reactorSetup);
+			logger.info("license acquired!"+reactorSetupInput.getLocation());
 
 			//copy chemistry input to the reactorDir:
 			Tools.copyFile(config.paths.getWorkingDir()+config.chemistry.getChemistryInput(),
 					reactorDir+config.chemistry.getChemistryInput());
 			//reactor setup:
-			Tools.copyFile(config.paths.getWorkingDir()+reactorSetup,reactorDir+reactorSetup);
+			Tools.copyFile(config.paths.getWorkingDir()+reactorSetupInput.getLocation(),reactorDir+reactorSetupInput.getLocation());
+			
 			//chemkindataDTD:
 			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
 
@@ -112,77 +106,34 @@ public class CKEmulation extends AbstractCKEmulation{
 				Tools.copyFile(config.paths.UDROPDir.getAbsolutePath()+"/"+filename,
 						reactorDir+filename);
 			}
+			
 			//instantiation of parent chemkin routine:
 			AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
 			routine.reactorOut = reactorOut;
-			routine.reactorSetup = reactorSetup;
-			
+			routine.reactorSetup = reactorSetupInput.getLocation();
+
 			//read reactor type, to be found in reactor setup file:
-			BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetup)));
-			reactorType.type = reactorType.readReactorType(in);
-
-			//PFR
-			if(reactorType.type.equals(ReactorType.PLUG)){
-				routine = new PFRDecorator(routine);//decoration of parent chemkin routine:
-				routine.executeCKRoutine();//execution
-			}
-
-			//burner stabilized laminar premixed flame
-			else if(reactorType.type.equals(ReactorType.BURNER_STABILIZED_LAMINAR_PREMIXED_FLAME)){
-				routine = new PremixedFlameDecorator(routine);//decoration of parent chemkin routine:
-				routine.executeCKRoutine();//execution
-			}
-
-			//CSTR
-			else if (reactorType.type.equals(ReactorType.CSTR)){
-				routine = new CSTRDecorator(routine);//decoration of parent chemkin routine:
-				routine.executeCKRoutine();//execution
-				
-			}
-
-			//ignition delay, batch reactor, transient solver, as in shock tube experiments
-			else if (reactorType.type.equals(ReactorType.BATCH_REACTOR_TRANSIENT_SOLVER)){
-				routine = new BatchDecorator(routine);//decoration of parent chemkin routine:
-				routine.executeCKRoutine();//execution
-				
-			}
-			//freely propagating laminar flame (flame speed experiments):
-			else if(reactorType.type.equals(ReactorType.FREELY_PROPAGATING_LAMINAR_FLAME)	){
-				routine = new LaminarFlameDecorator(routine);//decoration of parent chemkin routine:
-				routine.executeCKRoutine();//execution
-			}
-
+			BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetupInput.getLocation())));
+			CKEmulationFactory factory = new CKEmulationFactory(routine);
+			routine = factory.createRoutine(reactorSetupInput.model);
+			routine.executeCKRoutine();//execution
+			
 			//copy reactor diagnostics file to workingdir:
 			Tools.copyFile(reactorDir+reactorOut,config.paths.getWorkingDir()+reactorOut);
 
-			//boolean first: if first time: create and adapt CKSolnList.txt file
-	
-			
 			Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
-			
+
 			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
 			routine.executeCKRoutine();//execution
-			
+
 			Tools.deleteFiles(reactorDir, ".zip");
-			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
-			if (!flagExcel){
-				BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME)));
-				if(flagIgnitionDelayExperiment){
-					experiment.setValue(ModelValues.readCkcsvIgnitionDelay(in));
-				}
-				else if(flagFlameSpeedExperiment){
-					experiment.setValue(ModelValues.readCkcsvFlameSpeed(in));
-				}
-				else{
-					effluent.setSpeciesFractions(ModelValues.readCkcsvEffluent(in));	
-				}
-
-			}
-
+			
+			modelValue.setValue(new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME))));	
+			
 			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			if (flagExcel){
 				File excel_file = new File(reactorDir,ChemkinConstants.CKCSVNAME);
-				File dummy = new File (paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetup+".csv");
+				File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetupInput.getLocation()+".csv");
 				excel_file.renameTo(dummy);
 			}
 			//delete complete reactorDir folder:
@@ -190,7 +141,7 @@ public class CKEmulation extends AbstractCKEmulation{
 
 			//when all Chemkin routines are finished, release the semaphore:
 			semaphore.release();
-			logger.info("license released!"+reactorSetup);
+			logger.info("license released!"+reactorSetupInput.getLocation());
 
 		} catch(Exception exc){
 			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
@@ -203,7 +154,7 @@ public class CKEmulation extends AbstractCKEmulation{
 		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
 		routine.reactorOut = reactorOut;
 		routine.reactorSetup = reactorSetup;
-		
+
 		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 	}
@@ -249,7 +200,7 @@ public class CKEmulation extends AbstractCKEmulation{
 			System.exit(-1);
 		}
 	}
-	
+
 
 	/**
 	 * Checks if errors are present in the transport output file. If so, this means that either:
@@ -281,50 +232,14 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * ####################
 	 */
 
-	/**
-	 * @category getter
-	 */
-	public Map<String,Double> getEffluentValue(){
-		return effluent.getSpeciesFractions();	
-	}
-	/**
-	 * @category getter
-	 */
-	public Double getIgnitionValue(){
-		return experiment.getValue();
-	}
-	/**
-	 * @category getter
-	 */
-	public Double getFlameSpeedValue(){
-		return experiment.getValue();
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
 	
+
 	/**
 	 * @category getter
 	 * @return
 	 */
 	public String getReactorDir() {
 		return reactorDir;
-	}
-
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public Effluent getEffluent() {
-		return effluent;
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public void setEffluent(Effluent effluent) {
-		this.effluent = effluent;
 	}
 
 }
