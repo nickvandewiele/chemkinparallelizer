@@ -26,34 +26,10 @@ import readers.ConfigurationInput;
  * @author nmvdewie
  *
  */
-public class CKEmulation extends Thread{
+public class CKEmulation extends AbstractCKEmulation{
 	static Logger logger = Logger.getLogger(CKEmulation.class);
 
-	ConfigurationInput config;
-
-	String reactorDir;
-
-	Runtime runtime;
-	boolean flagIgnitionDelayExperiment = true;
-
-	public Experiment experiment;
-
-	private Effluent effluent;
-	private String reactorSetup;
-	private String reactorOut;
-	private ReactorType reactorType = new ReactorType();
-	ChemkinRoutines chemkinRoutines;
-
-	//'first' is flag that tells you if the CKSolnList needs to be constructed or not.
-	boolean first;
-
-	//'excel' tells you if the excel file (transposed CKSoln.ckcsv) needs to be created:
-	boolean flagExcel;
-
-	//Semaphore that controls chemkin license check-in and check-outs:
-	Semaphore semaphore;
-	private boolean flagFlameSpeedExperiment;
-
+	
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
 	public CKEmulation(ConfigurationInput config, Runtime runtime){
@@ -180,24 +156,10 @@ public class CKEmulation extends Thread{
 			Tools.copyFile(reactorDir+reactorOut,config.paths.getWorkingDir()+reactorOut);
 
 			//boolean first: if first time: create and adapt CKSolnList.txt file
-			if (first){
-				//if(!flagExcel){
-					routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
-					routine.executeCKRoutine();//execution
-					BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKSOLNLIST)));
-					writeSolnList(in);
-					//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
-					Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);					
-				//}
-
-			}
-			else {
-				//copy the CKSolnList to the reactorDir
-				//if(!flagExcel){
-					Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,reactorDir+ChemkinConstants.CKSOLNLIST);	
-				//}
-				
-			}
+	
+			
+			Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
+			
 			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
 			routine.executeCKRoutine();//execution
 			
@@ -287,133 +249,7 @@ public class CKEmulation extends Thread{
 			System.exit(-1);
 		}
 	}
-	/**
-	 * Set the SolnList.txt to the desired format:<BR>
-	 * <LI>lines with # are left untouched</LI>
-	 * <LI>no information whatsoever for all variables, except species, MW, exit_mass_flow_rate</LI>
-	 * <LI>no sensitivity info for species, MW, exit_mass_flow_rate</LI>
-	 * <LI>set UNIT of distance to (cm)</LI>
-	 * <LI>all species mole fractions are reported, also those with negative fractions: FILTER MIN</LI>
-	 * @param in TODO
-	 * @throws Exception
-	 * TODO when dealing with shock tube experiments during which ignition delays are measured, the response variable
-	 * is ignition delay and not a species mass fraction.
-	 */
-	public void writeSolnList(BufferedReader in)throws Exception{
-		String temp = "tempList.txt";
-		PrintWriter out = new PrintWriter(new FileWriter(new File(reactorDir,temp)));
-		try{
-			File speciesFile = new File(paths.getWorkingDir(),ChemkinConstants.CHEMASU);
-			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesFile));
-			LinkedList<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
-			String dummy = null;
-			dummy = in.readLine();
-
-			//if a comment line (starts with char '#') is read, just copy it to output file
-			while(in.ready()){
-				//if a blank line is read, just copy and continue
-				if (dummy.trim().length()==0){
-					out.println(dummy);
-					dummy = in.readLine();
-					//System.out.println(dummy);
-				}
-				//if a comment line (#) is read, just copy and continue
-				else if (dummy.charAt(0)=='#'||(dummy.trim().length()==0)) {
-					out.println(dummy);
-					dummy = in.readLine();
-					//System.out.println(dummy);
-				}
-				else {
-					//separator are TWO spaces, not just one space!
-					String[] st_dummy = dummy.split("  ");
-					//only species variables and molecular weight variable are reported:
-					if (st_dummy[0].trim().equals("VARIABLE")){
-						//check if the 2nd keyword matches "molecular weight":
-						if (st_dummy[1].trim().equals("molecular_weight")){							
-							//no sensitivity info for molecular weight variable
-							st_dummy[4]="0";
-						}
-						//check if the 2nd keyword matches "exit_mass_flow_rate":
-						else if(st_dummy[1].trim().equals("exit_mass_flow_rate")){
-							st_dummy[4]="0";
-						}
-						//check if 2nd keyword is one of the species names:
-						else if(speciesNames.contains(st_dummy[1])){
-							//no sensitivity info for species: set last number in the line to zero
-							st_dummy[4]="0";
-						}
-						//ignition data should also considered:
-						else if(st_dummy[1].trim().equals("ignition_data")){
-							//check whether this experiments is about ignition delays:
-							if(flagIgnitionDelayExperiment){
-								//no sensitivity
-								st_dummy[4]="0";
-							}
-							//do not report ignition delay data, even
-							else {
-								st_dummy[2]="0";
-								st_dummy[4]="0";
-							}
-						}
-						else if(st_dummy[1].trim().equals("flame_speed")){
-							//check whether this experiments is about flame speeds:
-							if(flagFlameSpeedExperiment){
-								//no sensitivity
-								st_dummy[4]="0";
-							}
-							//do not report flame speed data, even
-							else {
-								st_dummy[2]="0";
-								st_dummy[4]="0";
-							}
-						}
-
-						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
-						else {
-
-							//st_dummy[3] is standard equal to zero
-							st_dummy[2]="0";
-							st_dummy[4]="0";
-
-						}
-					}
-					//set UNIT of Distance to m instead of cm:
-					else if(st_dummy[0].trim().equals("UNIT")){
-						if (st_dummy[1].trim().equals("Distance")){
-							st_dummy[2]="(cm)";
-						}
-					}
-
-					//make sure even negative mole fractions are printed:
-					else if(st_dummy[0].trim().equals("FILTER")){
-						if (st_dummy[1].trim().equals("MIN")){
-							st_dummy[2]="-1.0";
-						}
-					}
-
-					//concatenate String array back to its original form:
-					String dummy_out = st_dummy[0];
-					//add double spaces between Strings again:
-					for(int i=1;i<st_dummy.length;i++){
-						dummy_out += "  "+st_dummy[i];
-					}
-
-					out.println(dummy_out);
-					dummy = in.readLine();
-					//System.out.println(dummy);
-				}
-			} 
-		}catch (Exception e){//do nothing: e catches the end of the file exception
-
-		}
-		in.close();
-		out.close();
-		//remove old CKSolnList and replace it with newly create one
-		File old = new File(reactorDir,ChemkinConstants.CKSOLNLIST);
-		old.delete();
-		File f_temp = new File(reactorDir,temp);
-		f_temp.renameTo(new File(reactorDir,ChemkinConstants.CKSOLNLIST));
-	}
+	
 
 	/**
 	 * Checks if errors are present in the transport output file. If so, this means that either:
@@ -467,9 +303,7 @@ public class CKEmulation extends Thread{
 	 * @category getter
 	 * @return
 	 */
-	public Paths getPaths() {
-		return paths;
-	}
+	
 	/**
 	 * @category getter
 	 * @return

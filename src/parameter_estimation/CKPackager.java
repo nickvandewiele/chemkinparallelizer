@@ -58,17 +58,25 @@ public class CKPackager extends Loggable{
 	
 	public void runAllRegularSimulations(){
 		Runtime rt = Runtime.getRuntime();
-		Semaphore semaphore = new Semaphore(licenses.getValue());
-		CKEmulation [] dummy = new CKEmulation[experiments.getReactorInputCollector().getNoRegularExperiments()];
-
-		for (int i = 0; i < experiments.getReactorInputCollector().getNoRegularExperiments(); i++) {
+		Semaphore semaphore = new Semaphore(config.licenses.getValue());
+		AbstractCKEmulation [] simulations = new CKEmulation[config.experiments.getReactorInputCollector().inputs.length];
+		
+		/*
+		 * First simulation:
+		 * wait to start other threads before the first thread, 
+		 * creating the CKSolnList.txt is completely finished:
+		 */
+		simulations[0] =  new CKEmulation(config, rt);
+		simulations[0] =  new FirstSimulationDecorator(simulations[0]);
+		simulations[0].start();
+		simulations[0].join();
+		
+		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
 			try {
-				if (i!=0){
-					flagCKSolnList = false;
-				}
+
 				boolean flagIgnitionDelayExperiment = false;
 				boolean flagFlameSpeedExperiment = false;
-				dummy[i] = new CKEmulation(paths, chemistry, rt, 
+				simulations[i] = new CKEmulation(paths, chemistry, rt, 
 						experiments.getReactorInputCollector().getReactorInputs().get(i), semaphore,
 						flagCKSolnList, flagToExcel,
 						flagIgnitionDelayExperiment,flagFlameSpeedExperiment);
@@ -77,29 +85,20 @@ public class CKPackager extends Loggable{
 			}
 
 			//start a new thread that redirects to the run() method, which contains the sequential chemkin procedure (chem -> CKReactorPlugFlow -> GetSolution ->...)
-			dummy[i].start();
+			simulations[i].start();
 			logger.info("Thread "+i+" was started");
-
-			//wait to start other threads before the first thread, creating the CKSolnList.txt is completely finished:
-			if (flagCKSolnList){
-				try{
-					dummy[i].join();
-					//finished
-				}catch (InterruptedException e) {
-					// Thread was interrupted
-				}
-			}			
+		
 		}
 		try{	
 			for (int j = 0; j < experiments.getReactorInputCollector().getNoRegularExperiments(); j++){
 				//wait until all CKEmulation threads are finished, before you start filling up the list:
-				dummy[j].join();
+				simulations[j].join();
 				/**
 				 * if the Excel Processing mode is used, the model values should not be stored.
 				 */
 				if(!flagToExcel){
 					LinkedList<Map<String,Double>> dummy2 = modelValues.getModelEffluentValues();
-					dummy2.add(dummy[j].getEffluentValue());
+					dummy2.add(simulations[j].getEffluentValue());
 					modelValues.setModelEffluentValues(dummy2);
 
 				}
