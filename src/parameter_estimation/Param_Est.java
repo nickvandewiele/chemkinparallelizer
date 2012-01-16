@@ -4,23 +4,26 @@ import java.io.*;
 
 import org.apache.log4j.Logger;
 
+import readers.ConfigurationInput;
+import readers.ReactorInput;
+import readers.ReactorInputParsable;
+import readers.PFRReactorInputParser1;
+
 
 public class Param_Est extends Loggable{
-	private Paths paths;
-	private Chemistry chemistry;
-	Experiments experiments;
+
+	ConfigurationInput config;
+
 	private Fitting fitting;
-	private Licenses licenses;
+
 	private LinkedList<String> speciesNames;
 
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public Paths getPaths() {
-		return paths;
-	}
-	private ModelValues modelValues;
+
+	private ModelValue[] modelValues;
 	/**
 	 * @category setter
 	 * @param modelValues
@@ -28,17 +31,9 @@ public class Param_Est extends Loggable{
 	public void setModelValues(ModelValues modelValues) {
 		this.modelValues = modelValues;
 	}
-	
 
-	//constructor used for parameter optimization option:
-
-	public Param_Est(Paths paths, Chemistry chemistry,
-			Experiments experiments, Fitting fitting, Licenses licenses) {
-		this.paths = paths;
-		this.chemistry = chemistry;
-		this.experiments = experiments;
-		this.fitting = fitting;
-		this.licenses = licenses;
+	public Param_Est(ConfigurationInput config) {
+		this.config = config;
 
 		/**
 		 * create reactor input files, if necessary:
@@ -111,17 +106,15 @@ public class Param_Est extends Loggable{
 		Runtime r = Runtime.getRuntime();
 		checkChemistryFile(r);
 
-		boolean flag_CKSolnList = true;
-		boolean flag_toExcel = true;
-		CKPackager ckp = new CKPackager(paths, chemistry,
-				experiments, licenses, flag_CKSolnList, flag_toExcel);
-
+		AbstractCKPackager ckp = new CKPackager(config);
+		ckp.runAllSimulations();
+		
 		moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 	private void checkChemistryFile(Runtime r) throws IOException,
-			InterruptedException, FileNotFoundException {
+	InterruptedException, FileNotFoundException {
 		CKEmulation c = new CKEmulation(paths, chemistry, r);
 		c.preProcess(r);
 		BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
@@ -136,13 +129,11 @@ public class Param_Est extends Loggable{
 		Runtime r = Runtime.getRuntime();
 		checkChemistryFile(r);
 
-		boolean flag_CKSolnList = true;
-		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
-				flag_CKSolnList);
+		AbstractCKPackager ckp = new CKPackager(config);
+		ckp = new ExtractModelValuesPackagerDecorator(ckp);
+		ckp.runAllSimulations();
+		modelValues = ckp.modelValues;
 
-
-		modelValues = ckp.getModelValues();
-		
 		//read experimental data file:
 		String workingDir = paths.getWorkingDir();
 		ExperimentalValues experimentalValues = experiments.readExperimentalData(workingDir); 
@@ -151,13 +142,13 @@ public class Param_Est extends Loggable{
 		String speciesPath = paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
 		speciesNames = Chemistry.readSpeciesNames(inSpecies);
-		
+
 		//WRITE PARITY FILE:
 		PrintWriter out;
 		if(experiments.getReactorInputCollector().getNoRegularExperiments()!=0){
-		out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"SpeciesParity.csv"));
-		writeSpeciesParities(out,speciesNames);
-		out.close();
+			out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"SpeciesParity.csv"));
+			writeSpeciesParities(out,speciesNames);
+			out.close();
 		}
 		if(experiments.getReactorInputCollector().getNoIgnitionDelayExperiments()!=0){
 			out = new PrintWriter(new FileWriter(paths.getWorkingDir()+"IgnitionDelayParity.csv"));
