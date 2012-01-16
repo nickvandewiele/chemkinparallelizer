@@ -4,6 +4,20 @@ import java.io.*;
 import java.util.*;
 
 import org.apache.log4j.Logger;
+
+import chemkin_wrappers.AbstractChemkinRoutine;
+import chemkin_wrappers.BatchDecorator;
+import chemkin_wrappers.CSTRDecorator;
+import chemkin_wrappers.ChemkinRoutine;
+import chemkin_wrappers.ChemkinRoutines;
+import chemkin_wrappers.CreateSolnListDecorator;
+import chemkin_wrappers.GetSolutionDecorator;
+import chemkin_wrappers.LaminarFlameDecorator;
+import chemkin_wrappers.PFRDecorator;
+import chemkin_wrappers.PreProcessDecorator;
+import chemkin_wrappers.PremixedFlameDecorator;
+
+import readers.ConfigurationInput;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
  * CKEmulation can call several Chemkin routines: Chem, CKReactorPlugFlow, GetSolution, GetSolnTranspose depending on the task to be executed<BR>
@@ -14,8 +28,8 @@ import org.apache.log4j.Logger;
  */
 public class CKEmulation extends Thread{
 	static Logger logger = Logger.getLogger(CKEmulation.class);
-	Paths paths;
-	Chemistry chemistry;
+
+	ConfigurationInput config;
 
 	String reactorDir;
 
@@ -42,28 +56,27 @@ public class CKEmulation extends Thread{
 
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
-	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime){
+	public CKEmulation(ConfigurationInput config, Runtime runtime){
+		this.config = config;
 		this.experiment = new Experiment();
 		this.effluent = new Effluent();
-		this.paths = paths;
-		this.chemistry = chemistry;
 		this.runtime = runtime;
-		this.chemkinRoutines = new ChemkinRoutines(paths.getWorkingDir(), paths.getBinDir(), chemistry.getChemistryInput());
+		
 	}
 
 	//constructor for creating CKSolnList.txt
-	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime,
+	public CKEmulation(ConfigurationInput input, Runtime runtime,
 			String reactorSetup, boolean first){
-		this(paths, chemistry, runtime);
+		this(input, runtime);
 		this.reactorSetup = reactorSetup;
 		this.first = first;
 	}
 
 	//constructor for running 'classical' Chemkin routines
-	public CKEmulation(Paths paths, Chemistry chemistry, Runtime runtime,
+	public CKEmulation(ConfigurationInput input, Runtime runtime,
 			String rs, Semaphore s, boolean flagCKSolnList, boolean flagExcel, 
 			boolean flagIgnitionDelay, boolean flagFlameSpeed) throws Exception{
-		this(paths, chemistry, runtime, rs, flagCKSolnList);
+		this(input, runtime, rs, flagCKSolnList);
 		int length = rs.length();
 		this.reactorOut = rs.substring(0,(length-4))+".out";
 
@@ -72,7 +85,7 @@ public class CKEmulation extends Thread{
 		this.flagFlameSpeedExperiment = flagFlameSpeed;
 		this.semaphore = s;
 
-		this.reactorDir = paths.getWorkingDir()+"temp_ "+rs.substring(0,(length-4))+"/";
+		this.reactorDir = config.paths.getWorkingDir()+"temp_ "+rs.substring(0,(length-4))+"/";
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
 			logger.debug("Creation of reactor directory failed!");
@@ -80,9 +93,7 @@ public class CKEmulation extends Thread{
 		}
 
 
-		this.chemkinRoutines = new ChemkinRoutines(paths.getWorkingDir(), paths.getBinDir(), reactorDir, chemistry.getChemistryInput());
-
-		copyLinkFiles(paths);
+		copyLinkFiles(config.paths);
 
 	}
 
@@ -103,7 +114,8 @@ public class CKEmulation extends Thread{
 		else throw new Exception("Could not find tran link file!");
 	}
 	/**
-	 * run() is the method that will be executed when Thread.start() is executed. Its argument list is void (mandatory I think).
+	 * run() is the method that will be executed when Thread.start() is executed.
+	 * Its argument list is void (mandatory I think).
 	 */
 	public void run(){
 		try {
@@ -112,27 +124,66 @@ public class CKEmulation extends Thread{
 			logger.info("license acquired!"+reactorSetup);
 
 			//copy chemistry input to the reactorDir:
-			Tools.copyFile(paths.getWorkingDir()+chemistry.getChemistryInput(),
-					reactorDir+chemistry.getChemistryInput());
+			Tools.copyFile(config.paths.getWorkingDir()+config.chemistry.getChemistryInput(),
+					reactorDir+config.chemistry.getChemistryInput());
 			//reactor setup:
-			Tools.copyFile(paths.getWorkingDir()+reactorSetup,reactorDir+reactorSetup);
+			Tools.copyFile(config.paths.getWorkingDir()+reactorSetup,reactorDir+reactorSetup);
 			//chemkindataDTD:
-			Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
+			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
 
 			//Input Folder with user-defined ROP:
-			for(String filename: paths.UDROPDir.list()){//copy all files in this folder to reactor dir
-				Tools.copyFile(paths.UDROPDir.getAbsolutePath()+"/"+filename,
+			for(File filename: config.paths.UDROPDir.listFiles()){//copy all files in this folder to reactor dir
+				Tools.copyFile(config.paths.UDROPDir.getAbsolutePath()+"/"+filename,
 						reactorDir+filename);
 			}
-			callReactor();
+			//instantiation of parent chemkin routine:
+			AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
+			routine.reactorOut = reactorOut;
+			routine.reactorSetup = reactorSetup;
+			
+			//read reactor type, to be found in reactor setup file:
+			BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetup)));
+			reactorType.type = reactorType.readReactorType(in);
+
+			//PFR
+			if(reactorType.type.equals(ReactorType.PLUG)){
+				routine = new PFRDecorator(routine);//decoration of parent chemkin routine:
+				routine.executeCKRoutine();//execution
+			}
+
+			//burner stabilized laminar premixed flame
+			else if(reactorType.type.equals(ReactorType.BURNER_STABILIZED_LAMINAR_PREMIXED_FLAME)){
+				routine = new PremixedFlameDecorator(routine);//decoration of parent chemkin routine:
+				routine.executeCKRoutine();//execution
+			}
+
+			//CSTR
+			else if (reactorType.type.equals(ReactorType.CSTR)){
+				routine = new CSTRDecorator(routine);//decoration of parent chemkin routine:
+				routine.executeCKRoutine();//execution
+				
+			}
+
+			//ignition delay, batch reactor, transient solver, as in shock tube experiments
+			else if (reactorType.type.equals(ReactorType.BATCH_REACTOR_TRANSIENT_SOLVER)){
+				routine = new BatchDecorator(routine);//decoration of parent chemkin routine:
+				routine.executeCKRoutine();//execution
+				
+			}
+			//freely propagating laminar flame (flame speed experiments):
+			else if(reactorType.type.equals(ReactorType.FREELY_PROPAGATING_LAMINAR_FLAME)	){
+				routine = new LaminarFlameDecorator(routine);//decoration of parent chemkin routine:
+				routine.executeCKRoutine();//execution
+			}
 
 			//copy reactor diagnostics file to workingdir:
-			Tools.copyFile(reactorDir+reactorOut,paths.getWorkingDir()+reactorOut);
+			Tools.copyFile(reactorDir+reactorOut,config.paths.getWorkingDir()+reactorOut);
 
 			//boolean first: if first time: create and adapt CKSolnList.txt file
 			if (first){
 				//if(!flagExcel){
-					chemkinRoutines.createSolnList(runtime);
+					routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
+					routine.executeCKRoutine();//execution
 					BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKSOLNLIST)));
 					writeSolnList(in);
 					//copy the newly created CKSolnList to the workingDir so that it can be picked up by the other CK_emulations:
@@ -147,9 +198,10 @@ public class CKEmulation extends Thread{
 				//}
 				
 			}
-
-			chemkinRoutines.callGetSol(runtime);
-
+			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
+			routine.executeCKRoutine();//execution
+			
+			Tools.deleteFiles(reactorDir, ".zip");
 			// if flag_excel = false: retrieve species fractions from the CKSoln.ckcsv file and continue:
 			if (!flagExcel){
 				BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME)));
@@ -184,50 +236,14 @@ public class CKEmulation extends Thread{
 			System.exit(-1);
 		}
 	}
-	/**
-	 * call a Chemkin reactor model (ic: CKReactorPlugFlow) executable	
-	 * @throws Exception
-	 */
-	public void callReactor () throws IOException, InterruptedException {
-		//read reactor type, to be found in reactor setup file:
-		BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetup)));
-		reactorType.type = reactorType.readReactorType(in);
-		//PFR
-		if(reactorType.type.equals(ReactorType.PLUG)){
-			chemkinRoutines.callPFR(reactorSetup, reactorOut, runtime);	
-		}
-
-		//burner stabilized laminar premixed flame
-		else if(reactorType.type.equals(ReactorType.BURNER_STABILIZED_LAMINAR_PREMIXED_FLAME)){
-			chemkinRoutines.callBurnerStabilizedFlame(reactorSetup, reactorOut, runtime);
-		}
-
-		//CSTR
-		else if (reactorType.type.equals(ReactorType.CSTR)){
-			chemkinRoutines.callGenericPSR(reactorSetup, reactorOut, runtime);
-		}
-
-		//ignition delay, batch reactor, transient solver, as in shock tube experiments
-		else if (reactorType.type.equals(ReactorType.BATCH_REACTOR_TRANSIENT_SOLVER)){
-			chemkinRoutines.callGenericClosed(reactorSetup, reactorOut, runtime);
-		}
-		//freely propagating laminar flame (flame speed experiments):
-		else if(reactorType.type.equals(ReactorType.FREELY_PROPAGATING_LAMINAR_FLAME)	){
-			chemkinRoutines.callFreelyPropagatingFlame(reactorSetup,reactorOut,runtime);
-
-		}
-
-	}
-	public void preProcess(Runtime runtime){
-		try {
-			chemkinRoutines.callPreProcess(runtime);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void preProcess(Runtime runtime) throws IOException, InterruptedException{
+		//instantiation of parent chemkin routine:
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
+		routine.reactorOut = reactorOut;
+		routine.reactorSetup = reactorSetup;
+		
+		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
+		routine.executeCKRoutine();//execution
 	}
 	/**
 	 * checkChemInput does a preliminary check of the initial chemistry output file to verify if no errors are present.<BR>
