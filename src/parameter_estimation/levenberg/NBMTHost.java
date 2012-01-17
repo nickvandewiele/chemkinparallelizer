@@ -35,8 +35,8 @@ public class NBMTHost implements NBMThostI {
     	this.parms = optimization.retrieveFittedParameters();
     	
     	NPARMS = parms.length;
-    	NPTS = optimization.getExperiments().getReactorInputCollector().getTotalNoExperiments();
-    	NRESP = optimization.getExperiments().getResponseVariables().getNoResponses();
+    	NPTS = optimization.config.experiments.total_no_experiments;
+    	NRESP = optimization.config.experiments.experimentalValues.length;
     	
     	//resid = new double[NPTS][NRESP];
     	resid = new double[NPTS*NRESP];
@@ -210,9 +210,9 @@ public class NBMTHost implements NBMThostI {
 		/**
 		 * TODO deal with CKSolnList flag, employed in .getModelValues()
 		 */
-		function = new Function (optimization.getExperiments(),
+		function = new Function (optimization.config.experiments.experimentalValues,
 				optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
-		function = new Function (optimization.getExperiments(),optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
+		function = new Function (optimization.config.experiments.experimentalValues,optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
 		resid = function.getResid();
 		return function.getSRES();
 	}

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import datatypes.ModelValue;
 /**
  * Rosenbrock algorithm developed by Nick Vandewiele, February 2010 <BR>
  * inspired by B. Debrabandere's fortran implementation <BR>
@@ -42,7 +44,7 @@ public class Rosenbrock extends Loggable{
 	 * TODO: how to create an optimization code that does not require the addition of Optimization type in its source code? 
 	 */
 	private Optimization optimization;
-	private ModelValues modelValues;
+	
 	public Rosenbrock(Optimization o, double efrac, double succ, double fail) {
 		optimization = o;
 		this.EFRAC = efrac;
@@ -71,10 +73,10 @@ public class Rosenbrock extends Loggable{
 		
 		//evaluate model predictions with initial guesses:
 		//flag_CKSolnList = true
-		modelValues = optimization.testNewParameters(optimization.getParams1D().getBeta(),true); 
+		ModelValue[] modelValues = optimization.testNewParameters(optimization.getParams1D().getBeta(),true); 
 
 		// function evaluation in initial point
-		Function f = new Function(optimization.getExperiments(),modelValues);
+		Function f = new Function(optimization.config.experiments.experimentalValues,modelValues);
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
 		double initial = f.getSRES();
@@ -91,7 +93,7 @@ public class Rosenbrock extends Loggable{
 		
 		Function fNew;
 		// Main rosenbrock loop
-		while (neval < optimization.getFitting().getMaxNoEvaluations()) {
+		while (neval < optimization.config.fitting.getMaxNoRosenbrockEvaluations()) {
 			for (int i = 0; i < optimization.getParams1D().getBeta().length; i++) {
 				if (optimization.getParams1D().getFixRxns()[i]==1){
 					logger.info("Beta: ");
@@ -126,12 +128,11 @@ public class Rosenbrock extends Loggable{
 					//model predictions with new parameter guesses is called:
 					//set flag_CKSolnList to false to prevent calling the CKSolnList creator once again:
 					//flag_CKSolnList = false
-					ModelValues modelValuesTest = optimization.testNewParameters(dummy_beta_new,false);
+					ModelValue[] modelValuesTest = optimization.testNewParameters(dummy_beta_new,false);
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
 					
-					//fNew = new Function(optimization.getExperiments(),optimization.getModelValues());
-					fNew = new Function(optimization.getExperiments(),modelValuesTest);
+					fNew = new Function(optimization.config.experiments.experimentalValues,modelValuesTest);
 					double trial = fNew.getSRES();
 					
 					out.println("Trial SSQ: "+trial);
@@ -182,7 +183,7 @@ public class Rosenbrock extends Loggable{
 				}
 				
 				//If number of evaluations exceeds maxeval, jump out of 'for' loop and evaluate once more:
-				if (neval >= optimization.getFitting().getMaxNoEvaluations()){
+				if (neval >= optimization.config.fitting.getMaxNoRosenbrockEvaluations()){
 					i = optimization.getParams1D().getBeta().length;
 				}
 			}

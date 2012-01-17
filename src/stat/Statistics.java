@@ -29,9 +29,9 @@ public class Statistics {
 	
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
-	noParams = optimization.getChemistry().getParams().getNoFittedParameters();
-	noExperiments = optimization.getExperiments().getReactorInputCollector().getTotalNoExperiments();
-	noResp = optimization.getExperiments().getResponseVariables().getNoResponses();
+	noParams = optimization.config.chemistry.getParams().getNoFittedParameters();
+	noExperiments = optimization.config.experiments.total_no_experiments;
+	noResp = optimization.config.experiments.experimentalValues.length;
 }
 
 /**
@@ -67,7 +67,7 @@ private void calcCorr(){
         }
 }
 private void calcANOVA() throws Exception{
-	Function function = new Function (optimization.getExperiments(),
+	Function function = new Function (optimization.config.experiments.experimentalValues,
 			optimization.testNewParameters(optimization.buildFullParamVector(optimization.retrieveFittedParameters()),true));
 	SREG = function.getSREG();
 	SRES = function.getSRES();
