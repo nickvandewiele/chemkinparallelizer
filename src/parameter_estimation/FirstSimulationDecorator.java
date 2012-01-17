@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
+import java.util.List;
 
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
@@ -30,12 +31,12 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		//instantiation of parent chemkin routine:
 		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
 		routine.reactorOut = reactorOut;
-		routine.reactorSetup = reactorSetup;
+		routine.reactorSetup = simulation.reactorSetupInput.getLocation();
 		routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 
 		writeSolnList();
-		
+
 		simulation.run();
 	}
 
@@ -63,7 +64,7 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 
 			File speciesFile = new File(config.paths.getWorkingDir(),ChemkinConstants.CHEMASU);
 			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesFile));
-			LinkedList<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
+			List<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;
 			dummy = in.readLine();
 
@@ -103,27 +104,19 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 						//ignition data should also considered:
 						else if(st_dummy[1].trim().equals("ignition_data")){
 							//check whether this experiments is about ignition delays:
-							if(flagIgnitionDelayExperiment){
-								//no sensitivity
-								st_dummy[4]="0";
-							}
-							//do not report ignition delay data, even
-							else {
-								st_dummy[2]="0";
-								st_dummy[4]="0";
-							}
+
+							//no sensitivity
+							st_dummy[4]="0";
+
+
 						}
 						else if(st_dummy[1].trim().equals("flame_speed")){
 							//check whether this experiments is about flame speeds:
-							if(flagFlameSpeedExperiment){
-								//no sensitivity
-								st_dummy[4]="0";
-							}
-							//do not report flame speed data, even
-							else {
-								st_dummy[2]="0";
-								st_dummy[4]="0";
-							}
+
+							//no sensitivity
+							st_dummy[4]="0";
+
+
 						}
 
 						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
