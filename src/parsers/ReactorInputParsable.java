@@ -1,7 +1,9 @@
-package readers;
+package parsers;
 
 import java.io.File;
 import java.util.List;
+
+import readers.ReactorInput;
 
 /**
  * Interface for all classes that parse a file, eg an excel file, with operating conditions

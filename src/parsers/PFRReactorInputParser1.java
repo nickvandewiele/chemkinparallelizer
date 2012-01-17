@@ -1,4 +1,4 @@
-package readers;
+package parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import parameter_estimation.ParameterEstimationDriver;
+import readers.PFRReactorInput;
+import readers.ReactorInput;
 
 public class PFRReactorInputParser1 implements ReactorInputParsable {
 
