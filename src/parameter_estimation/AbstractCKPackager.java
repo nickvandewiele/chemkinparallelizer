@@ -1,6 +1,7 @@
 package parameter_estimation;
 
-import readers.ConfigurationInput;
+import parsers.ConfigurationInput;
+import datatypes.ModelValue;
 
 public abstract class AbstractCKPackager extends Loggable{
 	

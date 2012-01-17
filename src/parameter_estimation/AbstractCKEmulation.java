@@ -5,7 +5,11 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import readers.ConfigurationInput;
+import parsers.ConfigurationInput;
+
+import datatypes.ExperimentalValue;
+import datatypes.ModelValue;
+
 import readers.ReactorSetupInput;
 
 public abstract class AbstractCKEmulation extends Thread{
@@ -17,7 +21,7 @@ public abstract class AbstractCKEmulation extends Thread{
 
 	Runtime runtime;
 
-	public Experiment experiment;
+	public ExperimentalValue experiment;
 
 	protected ModelValue modelValue;
 	

@@ -7,8 +7,9 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
 
-import readers.ConfigurationInput;
+
 
 /**
  * Implementation of {@link AbstractChemkinRoutine}

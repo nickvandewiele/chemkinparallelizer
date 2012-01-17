@@ -3,7 +3,8 @@ package chemkin_wrappers;
 import java.io.File;
 import java.io.IOException;
 
-import readers.ConfigurationInput;
+import parsers.ConfigurationInput;
+
 
 /**
  * Abstract superclass that will commmon information for every chemkin routine that will be called.
