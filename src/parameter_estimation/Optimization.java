@@ -15,7 +15,10 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import datatypes.ModelValue;
+
 import parameter_estimation.levenberg.NBMTHost;
+import parsers.ConfigurationInput;
 
 import stat.Statistics;
 
@@ -32,11 +35,9 @@ import stat.Statistics;
  *
  */
 public class Optimization extends Loggable{
-	private Paths paths;
-	private Chemistry chemistry;
-	private Experiments experiments;
-	private Fitting fitting;
-	private Licenses licenses;
+	
+	public ConfigurationInput config;
+	
 	//1D Array of kinetic parameters
 	Parameters1D params1D;
 	
@@ -58,22 +59,17 @@ public class Optimization extends Loggable{
 	//private NBMTmultiDHost nbmtmultiDhost;
 	private NBMTHost nbmthost;
 //constructor:
-	public Optimization (Paths paths, Chemistry chemistry, Experiments experiments,
-			Fitting fitting, Licenses licenses){
-		this.paths = paths;
-		this.chemistry = chemistry;
-		this.fitting = fitting;
-		this.experiments = experiments;	
-		this.licenses = licenses;
-		beta_new = new double [chemistry.getParams().getBeta().length][chemistry.getParams().getBeta()[0].length];		
+	public Optimization (ConfigurationInput config){
+		
+		beta_new = new double [config.chemistry.getParams().getBeta().length][config.chemistry.getParams().getBeta()[0].length];		
 //		weighted_regression = w_r;
 	}
 	
 	
 	public double [][] optimize() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(chemistry.getParams());
-		if(fitting.getFlagRosenbrock()){
+		params1D.convert2Dto1D(config.chemistry.getParams());
+		if(config.fitting.method.equals(Fitting.ROSENBROCK)){
 			//Rosenbrock parameters:
 			double efrac = 0.5;//0.3
 			double succ = 3.0;
@@ -81,38 +77,41 @@ public class Optimization extends Loggable{
 			logger.info("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail);
 			double [] optimizedParameters = rosenbrock.returnOptimizedParameters(); 
-			beta_new = Tools.convert1Dto2D(optimizedParameters, chemistry.getParams().getBeta());
+			beta_new = Tools.convert1Dto2D(optimizedParameters, config.chemistry.getParams().getBeta());
 		}
-		if(fitting.getFlagLM()){
+		if(config.fitting.method.equals(Fitting.LEVENBERG)){
 			logger.info("Start of Levenberg-Marquardt!");
 			nbmthost = new NBMTHost(this);
-			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), chemistry.getParams().getBeta());		
+			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), config.chemistry.getParams().getBeta());		
 		}
 
 		// move Rosenbrock monitors:
 		if(new File("SSQ_Rosenbrock.csv").exists())
-			Tools.moveFile(paths.getOutputDir(), "SSQ_Rosenbrock.csv");
+			Tools.moveFile(config.paths.getOutputDir(), "SSQ_Rosenbrock.csv");
 		if(new File("output_Rosenbrock.txt").exists())
-			Tools.moveFile(paths.getOutputDir(), "output_Rosenbrock.txt");
+			Tools.moveFile(config.paths.getOutputDir(), "output_Rosenbrock.txt");
 
 		//move LM monitors:
 		if(new File("LM.txt").exists())
-			Tools.moveFile(paths.getOutputDir(), "LM.txt");
+			Tools.moveFile(config.paths.getOutputDir(), "LM.txt");
 		if(new File("SSQ_LM.txt").exists())
-			Tools.moveFile(paths.getOutputDir(), "SSQ_LM.txt");
+			Tools.moveFile(config.paths.getOutputDir(), "SSQ_LM.txt");
 		if(new File("response_vars.txt").exists())
-			Tools.moveFile(paths.getOutputDir(), "response_vars.txt");
+			Tools.moveFile(config.paths.getOutputDir(), "response_vars.txt");
 		return beta_new;
 	}
 	
 	
-	public ModelValues testNewParameters(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
-		//update_chemistry_input will insert new parameter_guesses array into chem_inp
-		updateChemistryInput(parameter_guesses);
+	public ModelValue[] testNewParameters(double [] parameter_guesses, boolean flag_CKSolnList) throws Exception{
+		//update_config.chemistry_input will insert new parameter_guesses array into chem_inp
+		Command updateChemistry = new UpdateChemistryCommand(config, parameter_guesses);
+		updateChemistry.execute();
 		
-		CKPackager ckp = new CKPackager(paths, chemistry, experiments, licenses,
-				flag_CKSolnList);
-		ModelValues modelValues = ckp.getModelValues();
+	
+		AbstractCKPackager ckp = new CKPackager(config);
+		ckp = new ExtractModelValuesPackagerDecorator(ckp);
+		ckp.runAllSimulations();
+		ModelValue[] modelValues = ckp.modelValues;
 		return modelValues;
 	}
 	
@@ -140,83 +139,6 @@ public class Optimization extends Loggable{
 		
 		return dummy;
 	}
-	/**	
-	 * plug new parameter guesses into the chemkin chemistry input file (usually chem.inp)<BR>
-	 * write new update chem.inp file <BR>
-	 * return the chemistry input filename<BR>
-	 * WARNING: method supposes TD inside chemistry input file!!!<BR>
-	 */
-	public void updateChemistryInput (double [] dummy_beta_new) throws IOException{
-		BufferedReader in = new BufferedReader(new FileReader(new File(paths.getWorkingDir(),chemistry.getChemistryInput())));
-		PrintWriter out = new PrintWriter(new FileWriter(new File(paths.getWorkingDir(),"temp.inp")));
-		String dummy = in.readLine();
-		
-		//just copy part of chem.inp about Elements, Species, Thermo
-		boolean b = true;
-		while(b){
-			out.println(dummy);
-			dummy = in.readLine();
-			if (dummy.length() <= 8){
-				b = true;
-			}
-			else if (dummy.substring(0,9).equals("REACTIONS")){
-				b = false;
-			}
-			else {
-				b = true;
-			}
-		}
-		out.println(dummy);
-		
-		int counter = 0;
-		for (int i = 0; i < chemistry.getParams().getFixRxns().length; i++){
-			dummy = in.readLine();
-			String[] st_dummy = dummy.split("\\s");
-			for (int j = 0; j < chemistry.getParams().getFixRxns()[0].length; j++){
-				//put new values of kinetic parameters (at position 1, 2, 3 of st_dummy[]):
-				st_dummy[j+1] = Double.toString(dummy_beta_new[counter]);
-				counter++;
-			}
-			
-			dummy = st_dummy[0];
-			for (int j = 1; j < st_dummy.length; j++) {
-				dummy = dummy +" "+st_dummy[j];
-			}
-			logger.info(dummy);
-			out.println(dummy);
-			
-		}
-		
-		//just copy other reactions that are not varied, until end of file:
-		dummy = in.readLine();
-		while(!dummy.equals("END")){
-			out.println(dummy);
-			dummy = in.readLine();
-		}
-		
-		out.println(dummy);
-		
-		in.close();
-		out.close();
-		
-		File f_old = new File(paths.getWorkingDir(),chemistry.getChemistryInput());
-		f_old.delete();
-		File f = new File(paths.getWorkingDir(),"temp.inp");
-		f.renameTo(new File(paths.getWorkingDir(),chemistry.getChemistryInput()));
-		
-		//chemistry input file needs to be reprocessed: new link file has to be created!!!
-		Runtime r = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(paths, chemistry, r);
-		c.preProcess(r);
-		BufferedReader inChem = new BufferedReader(new FileReader(new File(paths.getWorkingDir(),ChemkinConstants.CHEMOUT)));
-		c.checkChemOutput(inChem);
-		try {
-			c.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	/**
 	 * retrieve_fitted_parameters returns the parameters that are loose (containing a 1 in the dummy_fix_reactions array)
@@ -225,9 +147,9 @@ public class Optimization extends Loggable{
 	public double[] retrieveFittedParameters(){
 		//count the number of fitted parameters:
 		int no_fitted_parameters = 0;
-		for (int i = 0; i < chemistry.getParams().getFixRxns().length; i++){
-			for (int j = 0; j < chemistry.getParams().getFixRxns()[0].length; j++){
-				no_fitted_parameters += chemistry.getParams().getFixRxns()[i][j];
+		for (int i = 0; i < config.chemistry.getParams().getFixRxns().length; i++){
+			for (int j = 0; j < config.chemistry.getParams().getFixRxns()[0].length; j++){
+				no_fitted_parameters += config.chemistry.getParams().getFixRxns()[i][j];
 			}
 		}
 		
@@ -260,7 +182,7 @@ public class Optimization extends Loggable{
 	
 	public void calcStatistics() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(chemistry.getParams());
+		params1D.convert2Dto1D(config.chemistry.getParams());
 		nbmthost = new NBMTHost(this);
 		nbmthost.bBuildJacobian();
 		Statistics s = new Statistics(this);
@@ -284,11 +206,11 @@ public class Optimization extends Loggable{
 		Printer.printMatrix(s.getConfIntervals(), out);
 		out.println();
 		out.println("Number of experiments:");
-		out.println(experiments.getReactorInputCollector().getTotalNoExperiments());
+		out.println(config.experiments.experimentalValues.length);
 		out.println("Number of fitted parameters:");
-		out.println(chemistry.getParams().getNoFittedParameters());
+		out.println(config.chemistry.getParams().getNoFittedParameters());
 		out.println("Number of responses:");
-		out.println(experiments.getResponseVariables().getNoResponses());
+		out.println(config.experiments.experimentalValues.length);
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());
@@ -302,32 +224,13 @@ public class Optimization extends Loggable{
 */		
 		out.close();
 		if(new File("statistics.txt").exists())
-			Tools.moveFile(paths.getOutputDir(), "statistics.txt");
+			Tools.moveFile(config.paths.getOutputDir(), "statistics.txt");
 	}
 
 	public boolean isWeightedRegression() {
 		return weightedRegression;
 	}
 
-	/**
-	 * @category getter
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public Fitting getFitting() {
-		return fitting;
-	}
-
-	/**
-	 * @category setter
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public void setFitting(Fitting fitting) {
-		this.fitting = fitting;
-	}
 
 
 	
@@ -337,42 +240,8 @@ public class Optimization extends Loggable{
 	 * ####################
 	 */
 	
-	/**
-	 * @category getter
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public Experiments getExperiments() {
-		return experiments;
-	}
 
-	/**
-	 * @category setter
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public void setExperiments(Experiments experiments) {
-		this.experiments = experiments;
-	}
 
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public Chemistry getChemistry() {
-		return chemistry;
-	}
-
-	/**
-	 * @category setter
-	 * @param chemistry
-	 */
-	public void setChemistry(Chemistry chemistry) {
-		this.chemistry = chemistry;
-	}
-	
 	/**
 	 * @category getter
 	 * @return
