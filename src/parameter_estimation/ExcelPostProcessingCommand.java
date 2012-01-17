@@ -18,12 +18,30 @@ public class ExcelPostProcessingCommand implements Command {
 	public void execute() {
 		try {
 			logger.info("EXCEL POSTPROCESSING MODE");
-			par_est.excelFiles();
+			excelFiles();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	/**
+	 * this routine produces model predictions without comparing them to experimental data
+	 * @throws Exception 
+	 * @throws Exception 
+	 */
+	public void excelFiles() throws Exception{
+		long time = System.currentTimeMillis();
+		//check if initial input file is error-free:
+		Command checkChemistry = new CheckChemistryFileCommand(par_est.config);
+		checkChemistry.execute();
+
+		AbstractCKPackager ckp = new CKPackager(par_est.config);
+		ckp.runAllSimulations();
+		
+		Tools.moveOutputFiles(par_est.config.paths);
+		long timeTook = (System.currentTimeMillis() - time)/1000;
+		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
 
 }
