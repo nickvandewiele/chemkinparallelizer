@@ -15,7 +15,7 @@ public class Paths extends Loggable{
 	protected String chemkinDir;
 	
 	//user-defined ROP calc: folder, called UDROP, with necessary files.
-	protected File UDROPDir = new File(workingDir,"UDROP");
+	public File UDROPDir = new File(workingDir,"UDROP");
 	
 	/**
 	 * @category setter

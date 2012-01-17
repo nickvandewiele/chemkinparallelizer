@@ -1,5 +1,5 @@
 package parameter_estimation;
-import readers.ConfigurationInput;
+import parsers.ConfigurationInput;
 
 /**
  * CKPackager is a type that bundles all executed CKEmulations into one data structure. It corresponds to the set of experiments that are executed 

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * type that groups information on chemistry of the system
@@ -54,11 +55,11 @@ public class Chemistry extends Loggable{
 	 * @return initial guesses for kinetic parameters, as double array 
 	 * @throws IOException
 	 */
-	public static double[][] initialGuess (String workingDir, String chemInp, int [][] fixReactions) throws IOException{
+	public double[][] initialGuess (String workingDir) throws IOException{
 	
-		double[][] beta = new double[fixReactions.length][fixReactions[0].length];
+		double[][] beta = new double[params.getFixRxns().length][params.getFixRxns()[0].length];
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(workingDir,chemInp)));
+			BufferedReader in = new BufferedReader(new FileReader(new File(workingDir,chemistryInput)));
 			String dummy = in.readLine();
 	
 			//skip part of chem.inp about Elements, Species, Thermo
@@ -88,10 +89,10 @@ public class Chemistry extends Loggable{
 			/**
 			 * TODO method of reading kinetics needs to become more robust! 
 			 */
-			for (int i = 0; i < fixReactions.length; i++){
+			for (int i = 0; i < params.getFixRxns().length; i++){
 				dummy = in.readLine();
 				String[] st_dummy = dummy.split("\\s");
-				for (int j = 0; j < fixReactions[i].length; j++){
+				for (int j = 0; j < params.getFixRxns()[i].length; j++){
 					//start with element at position 1 (not 0), because arrhenius parameters start at position 1!
 					beta[i][j] = Double.parseDouble(st_dummy[j+1].trim());
 				}
@@ -169,9 +170,9 @@ public class Chemistry extends Loggable{
 	 * @return
 	 * @throws IOException
 	 */
-	public static LinkedList<String> readSpeciesNames(BufferedReader in)throws IOException{
+	public static List<String> readSpeciesNames(BufferedReader in)throws IOException{
 		
-		LinkedList<String> namesList = new LinkedList<String>();
+		List<String> namesList = new LinkedList<String>();
 	
 		//first line contains number of species:
 		int no_species = Integer.parseInt(in.readLine());

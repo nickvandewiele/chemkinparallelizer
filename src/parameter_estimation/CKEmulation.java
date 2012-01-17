@@ -5,19 +5,20 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.BatchDecorator;
 import chemkin_wrappers.CSTRDecorator;
 import chemkin_wrappers.ChemkinRoutine;
-import chemkin_wrappers.ChemkinRoutines;
 import chemkin_wrappers.CreateSolnListDecorator;
 import chemkin_wrappers.GetSolutionDecorator;
 import chemkin_wrappers.LaminarFlameDecorator;
 import chemkin_wrappers.PFRDecorator;
 import chemkin_wrappers.PreProcessDecorator;
 import chemkin_wrappers.PremixedFlameDecorator;
+import datatypes.ModelValueFactory;
 
-import readers.ConfigurationInput;
 import readers.ReactorSetupInput;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
@@ -47,10 +48,10 @@ public class CKEmulation extends AbstractCKEmulation{
 
 	public CKEmulation(ConfigurationInput config, Runtime rt,
 			ReactorSetupInput reactorSetupInput, Semaphore semaphore) {
-		
+
 		this(config, rt, reactorSetupInput);
 		this.semaphore = semaphore;
-		
+
 		int length = reactorSetupInput.getLocation().length();
 		this.reactorOut = reactorSetupInput.getLocation().substring(0,(-4))+".out";
 		this.reactorDir = config.paths.getWorkingDir()+"temp_ "+reactorSetupInput.getLocation().substring(0,(length-4))+"/";
@@ -59,11 +60,16 @@ public class CKEmulation extends AbstractCKEmulation{
 			logger.debug("Creation of reactor directory failed!");
 			System.exit(-1);
 		}
-		
+
 		ModelValueFactory factory = new ModelValueFactory(reactorSetupInput.model);
 		modelValue = factory.createModelValue();
-		
-		copyLinkFiles(config.paths);
+
+		try {
+			copyLinkFiles(config.paths);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void copyLinkFiles(Paths paths) throws Exception {
@@ -97,7 +103,7 @@ public class CKEmulation extends AbstractCKEmulation{
 					reactorDir+config.chemistry.getChemistryInput());
 			//reactor setup:
 			Tools.copyFile(config.paths.getWorkingDir()+reactorSetupInput.getLocation(),reactorDir+reactorSetupInput.getLocation());
-			
+
 			//chemkindataDTD:
 			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
 
@@ -106,7 +112,7 @@ public class CKEmulation extends AbstractCKEmulation{
 				Tools.copyFile(config.paths.UDROPDir.getAbsolutePath()+"/"+filename,
 						reactorDir+filename);
 			}
-			
+
 			//instantiation of parent chemkin routine:
 			AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
 			routine.reactorOut = reactorOut;
@@ -117,7 +123,7 @@ public class CKEmulation extends AbstractCKEmulation{
 			CKEmulationFactory factory = new CKEmulationFactory(routine);
 			routine = factory.createRoutine(reactorSetupInput.model);
 			routine.executeCKRoutine();//execution
-			
+
 			//copy reactor diagnostics file to workingdir:
 			Tools.copyFile(reactorDir+reactorOut,config.paths.getWorkingDir()+reactorOut);
 
@@ -127,15 +133,14 @@ public class CKEmulation extends AbstractCKEmulation{
 			routine.executeCKRoutine();//execution
 
 			Tools.deleteFiles(reactorDir, ".zip");
-			
+
 			modelValue.setValue(new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME))));	
-			
-			//if flag_excel = true: the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
-			if (flagExcel){
-				File excel_file = new File(reactorDir,ChemkinConstants.CKCSVNAME);
-				File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetupInput.getLocation()+".csv");
-				excel_file.renameTo(dummy);
-			}
+
+			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
+			File excel_file = new File(reactorDir,ChemkinConstants.CKCSVNAME);
+			File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetupInput.getLocation()+".csv");
+			excel_file.renameTo(dummy);
+
 			//delete complete reactorDir folder:
 			Tools.deleteDir(new File(reactorDir));
 
@@ -145,57 +150,6 @@ public class CKEmulation extends AbstractCKEmulation{
 
 		} catch(Exception exc){
 			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
-			//exc.printStackTrace();
-			System.exit(-1);
-		}
-	}
-	public void preProcess(Runtime runtime) throws IOException, InterruptedException{
-		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
-		routine.reactorOut = reactorOut;
-		routine.reactorSetup = reactorSetup;
-
-		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
-		routine.executeCKRoutine();//execution
-	}
-	/**
-	 * checkChemInput does a preliminary check of the initial chemistry output file to verify if no errors are present.<BR>
-	 * It calls the Chemkin preprocessor which produces the output file<BR>
-	 * This output file is read, and the String  " NO ERRORS FOUND ON INPUT: " is sought.<BR>
-	 * If this String is not present, System.exit(-1) is called<BR>
-	 * @param in TODO
-	 */
-	public void checkChemOutput(BufferedReader in){
-		try {
-
-			/*			PrintWriter out = new PrintWriter(new FileWriter(paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));
-			chemkinRoutines.writeCKPreProcessInput(out);
-			String [] preprocess = {paths.getBinDir()+"CKPreProcess",
-					"-i",paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT};
-
-			ChemkinRoutines.executeCKRoutine(preprocess, new File(paths.getWorkingDir()), runtime);
-			 */
-			//read the produced chem.out (path_output) file, and check if it contains error messages:
-			String dummy = null;
-			boolean flag = true;
-			try {
-				while(flag){
-					dummy = in.readLine();
-					if (dummy.trim().equals("NO ERRORS FOUND ON INPUT:")){
-						flag = false;
-					}
-				}
-				in.close();
-				if(!flag){
-					logger.info("Initial chemistry input file contains no errors. Proceed to parameter estimation!");
-				}
-
-			} catch(Exception e){
-				logger.debug("Initial chemistry input file contains errors. Revision required!");
-				System.exit(-1);
-			}
-		}catch(Exception exc){
-			logger.error("exception happened - here's what I know: ", exc);
 			//exc.printStackTrace();
 			System.exit(-1);
 		}
@@ -232,7 +186,7 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * ####################
 	 */
 
-	
+
 
 	/**
 	 * @category getter

@@ -165,4 +165,16 @@ public class Tools extends Loggable {
 			logger.error("Error while copying file",e);;      
 		}
 	}
+	
+	protected static void moveOutputFiles (Paths paths){
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".out");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asu");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".input");
+		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asc");
+		Tools.moveFile(paths.getOutputDir(),"SpeciesParity.csv");
+		Tools.moveFile(paths.getOutputDir(),"IgnitionDelayParity.csv");
+		Tools.moveFile(paths.getOutputDir(),"FlameSpeedParity.csv");
+		Tools.moveFile(paths.getOutputDir(),"CKSolnList.txt");
+
+	}
 }
