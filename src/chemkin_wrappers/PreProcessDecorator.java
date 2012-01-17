@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import parameter_estimation.ChemkinConstants;
 
 
-public class PreProcessDecorator extends AbstractChemkinRoutine {
+public class PreProcessDecorator extends ChemkinRoutineDecorator {
 
 	AbstractChemkinRoutine routine;
 
@@ -16,15 +16,17 @@ public class PreProcessDecorator extends AbstractChemkinRoutine {
 	}
 
 	public String[] getKeyword() {
-		String [] input = 
-			{config.paths.getBinDir()+"CKPreProcess",
-				"-i",config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT};
+		routine.keywords = new String [3];
+		routine.keywords[0] = routine.config.paths.getBinDir()+"CKPreProcess";
+		routine.keywords[1] = "-i";
+		routine.keywords[2] = routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
 		
-		return input;
+		return routine.keywords;
 	}
 
 	@Override
 	public void executeCKRoutine() {
+		this.getKeyword();
 		routine.executeCKRoutine();
 		
 	}

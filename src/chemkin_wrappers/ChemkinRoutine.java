@@ -38,10 +38,10 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 		Process p;
 		try {
 			if(reactorDir == null){
-				p = runtime.exec(getKeyword());
+				p = runtime.exec(this.keywords);
 			}
 			else{
-				p = runtime.exec(getKeyword(), environment, new File(reactorDir));
+				p = runtime.exec(this.keywords, environment, new File(reactorDir));
 			}
 			
 			BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -71,8 +71,5 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 		}
 	
 	}
-	@Override
-	public String[] getKeyword() {
-		return null;
-	}
+
 }

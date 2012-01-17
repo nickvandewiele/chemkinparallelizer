@@ -1,7 +1,7 @@
 package chemkin_wrappers;
 
 
-public class BatchDecorator extends AbstractChemkinRoutine {
+public class BatchDecorator extends ChemkinRoutineDecorator {
 
 	AbstractChemkinRoutine routine;
 
@@ -10,17 +10,19 @@ public class BatchDecorator extends AbstractChemkinRoutine {
 	}
 
 	public String[] getKeyword() {
-		String [] input = 
-			{
-				routine.config.paths.getBinDir()+"CKReactorGenericClosed",
-				"-i",routine.reactorDir+routine.reactorSetup,
-				"-o",reactorDir+reactorOut
-			};
-		return input;
+		routine.keywords = new String [5];
+		routine.keywords[0] = routine.config.paths.getBinDir()+"CKReactorGenericClosed";
+		routine.keywords[1] = "-i";
+		routine.keywords[2] = routine.reactorDir+routine.reactorSetup;
+		routine.keywords[3] = "-o";
+		routine.keywords[4] = reactorDir+reactorOut;
+	
+		return routine.keywords;
 	}
 
 	@Override
 	public void executeCKRoutine() {
+		this.getKeyword();
 		routine.executeCKRoutine();
 		
 	}

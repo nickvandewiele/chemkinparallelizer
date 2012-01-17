@@ -1,8 +1,5 @@
 package chemkin_wrappers;
 
-import java.io.File;
-import java.io.IOException;
-
 import parsers.ConfigurationInput;
 
 
@@ -25,5 +22,5 @@ public abstract class AbstractChemkinRoutine {
 	
 	public abstract void executeCKRoutine();
 	
-	public abstract String[] getKeyword();
+	public String [] keywords;
 }
