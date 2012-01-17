@@ -1,5 +1,7 @@
 package parameter_estimation;
 
+import datatypes.ModelValue;
+
 public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecorator {
 
 	AbstractCKPackager packager;
