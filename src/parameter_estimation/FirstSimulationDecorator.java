@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
 
 import chemkin_wrappers.AbstractChemkinRoutine;
@@ -47,6 +46,9 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		
 		//copy from reactor dir (where CKSolnList was first created, to working dir for reuse for other simulations:
 		Tools.copyFile(getReactorDir()+ChemkinConstants.CKSOLNLIST,getConfig().paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
+	
+		
+		
 
 	}
 

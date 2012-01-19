@@ -45,6 +45,25 @@ public class CKPackager extends AbstractCKPackager{
 			e1.printStackTrace();
 		}
 		
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config, rt);
+		routine.reactorDir = simulations[0].getReactorDir();
+		//copy CKSolnList from working dir to specific reactor dir:
+		Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[0].getReactorDir()+ChemkinConstants.CKSOLNLIST);
+		routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
+		routine.executeCKRoutine();//execution
+		
+		try {
+			simulations[0].getModelValue().setValue(new BufferedReader(new FileReader(new File(simulations[0].getReactorDir(),ChemkinConstants.CKCSVNAME))));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
+		File excel_file = new File(simulations[0].getReactorDir(),ChemkinConstants.CKCSVNAME);
+		File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[0].getReactorInput().filename+".csv");
+		excel_file.renameTo(dummy);
+
 		try {
 			Tools.deleteFiles(simulations[0].getReactorDir(), ".zip");
 			//delete complete reactorDir folder:
@@ -81,7 +100,7 @@ public class CKPackager extends AbstractCKPackager{
 		
 		// run the GetSolution utility:
 		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
-			AbstractChemkinRoutine routine = new ChemkinRoutine(config, rt);
+			routine = new ChemkinRoutine(config, rt);
 			routine.reactorDir = simulations[i].getReactorDir();
 			//copy CKSolnList from working dir to specific reactor dir:
 			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[i].getReactorDir()+ChemkinConstants.CKSOLNLIST);
@@ -97,8 +116,8 @@ public class CKPackager extends AbstractCKPackager{
 			}	
 			
 			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
-			File excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
-			File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
+			excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
+			dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
 			excel_file.renameTo(dummy);
 
 			try {
