@@ -50,41 +50,23 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		CKEmulationFactory factory = new CKEmulationFactory(routine);
 		routine = factory.createRoutine(getReactorInput().type);
 		routine.executeCKRoutine();//execution
+		
+		
 		//copy reactor diagnostics file to workingdir:
 		Tools.copyFile(getReactorDir()+getReactorOut(),getConfig().paths.getWorkingDir()+getReactorOut());
 
-		Tools.copyFile(getReactorDir()+ChemkinConstants.CKSOLNLIST,getConfig().paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
-	
-		routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
-		routine.executeCKRoutine();//execution
-		
 		//release the semaphore:
 		semaphore.release();
 		logger.info("license released!"+getReactorInput().filename);
-		
+		/*
 		try {
 			modelValue.setValue(new BufferedReader(new FileReader(new File(getReactorDir(),ChemkinConstants.CKCSVNAME))));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-
-		//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
-		File excel_file = new File(getReactorDir(),ChemkinConstants.CKCSVNAME);
-		File dummy = new File (getConfig().paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+getReactorInput().filename+".csv");
-		excel_file.renameTo(dummy);
-
+*/
 		
-		try {
-			Tools.deleteFiles(getReactorDir(), ".zip");
-			//delete complete reactorDir folder:
-			Tools.deleteDir(new File(getReactorDir()));
-
-		} catch(Exception exc){
-			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
-			//exc.printStackTrace();
-			System.exit(-1);
-		}
 		
 	}
 

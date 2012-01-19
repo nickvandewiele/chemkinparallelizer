@@ -1,4 +1,9 @@
 package parameter_estimation;
+import java.io.File;
+
+import chemkin_wrappers.AbstractChemkinRoutine;
+import chemkin_wrappers.ChemkinRoutine;
+import chemkin_wrappers.GetSolutionDecorator;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import readers.ReactorSetupInput;
@@ -36,6 +41,17 @@ public class CKPackager extends AbstractCKPackager{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		try {
+			Tools.deleteFiles(simulations[0].getReactorDir(), ".zip");
+			//delete complete reactorDir folder:
+			Tools.deleteDir(new File(simulations[0].getReactorDir()));
+
+		} catch(Exception exc){
+			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
+			//exc.printStackTrace();
+			System.exit(-1);
+		}
 		/*
 		 * Other simulations that will be parallelized.
 		 */
@@ -45,7 +61,7 @@ public class CKPackager extends AbstractCKPackager{
 			simulations[i] = new RegularSimulationDecorator(config.reactor_inputs.get(i), simulations[i], semaphore);
 
 
-			//start a new thread that redirects to the run() method, which contains the sequential chemkin procedure (chem -> CKReactorPlugFlow -> GetSolution ->...)
+			//start a new thread that redirects to the run() method, which contains the  chemkin procedure
 			simulations[i].start();
 			logger.info("Thread "+i+" was started");
 		}
@@ -59,6 +75,34 @@ public class CKPackager extends AbstractCKPackager{
 		catch(InterruptedException e){
 			//fall through
 		}
+		
+		// run the GetSolution utility:
+		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
+			AbstractChemkinRoutine routine = new ChemkinRoutine(config, rt);
+			routine.reactorDir = simulations[i].getReactorDir();
+			//copy CKSolnList from working dir to specific reactor dir:
+			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[i].getReactorDir()+ChemkinConstants.CKSOLNLIST);
+			
+			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
+			routine.executeCKRoutine();//execution
+			
+			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
+			File excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
+			File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
+			excel_file.renameTo(dummy);
+
+			try {
+				Tools.deleteFiles(simulations[i].getReactorDir(), ".zip");
+				//delete complete reactorDir folder:
+				Tools.deleteDir(new File(simulations[i].getReactorDir()));
+
+			} catch(Exception exc){
+				logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
+				//exc.printStackTrace();
+				System.exit(-1);
+			}
+		}
+		
 		return simulations;
 	}
 

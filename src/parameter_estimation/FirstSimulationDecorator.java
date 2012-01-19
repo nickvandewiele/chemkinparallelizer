@@ -21,13 +21,20 @@ import chemkin_wrappers.CreateSolnListDecorator;
  */
 public class FirstSimulationDecorator extends CKEmulationDecorator{
 
-	public AbstractCKEmulation simulation;
-
 	public FirstSimulationDecorator(AbstractCKEmulation sim){
-		this.simulation = sim;
+		super.simulation = sim;
 	}
 
 	public void run(){
+
+		//first run reactor model
+		simulation.start();
+		try {
+			simulation.join();//wait until 1st simulatio is finished.
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		//now create CKSolnList:
 		//instantiation of parent chemkin routine:
 		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig(), getRuntime());
 		routine.reactorDir = getReactorDir();
@@ -37,8 +44,10 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		routine.executeCKRoutine();//execution
 
 		writeSolnList();
+		
+		//copy from reactor dir (where CKSolnList was first created, to working dir for reuse for other simulations:
+		Tools.copyFile(getReactorDir()+ChemkinConstants.CKSOLNLIST,getConfig().paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
 
-		simulation.run();
 	}
 
 	/**
