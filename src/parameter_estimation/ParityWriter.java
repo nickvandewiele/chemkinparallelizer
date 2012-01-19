@@ -42,15 +42,15 @@ public class ParityWriter {
 
 				if(experimentalValue.type.equals(ExperimentalValue.PRODUCT_EFFLUENT)){
 					StringBuffer stringBuff = new StringBuffer();
-					stringBuff.append("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value\n");
+					stringBuff.append("Experiment: , ,"+"Experimental Value ,"+"Model Value ,"+"Experimental Value\n");
 					// loop through all species:
 					for(int j=0;j<speciesNames.size();j++){
-						out_effluent.println(speciesNames.get(j).toString());
+						stringBuff.append(speciesNames.get(j).toString()+",");//comma delimited
 						// loop through all experiments:
 						Double experiment_value = ((EffluentExperimentalValue)experimentalValue).speciesFractions.get(speciesNames.get(j));
 						Double model_value = ((EffluentModelValue)modelValue).getSpeciesFractions().get(speciesNames.get(j));
 						//out.println(speciesNames.get(i));
-						stringBuff.append("experiment no. "+i+","+experiment_value+","+model_value+","+experiment_value+"\n");
+						stringBuff.append("experiment no. "+(i+1)+","+experiment_value+","+model_value+","+experiment_value+"\n");
 					}
 					stringBuff.append("\n");
 					out_effluent.println(stringBuff.toString());
