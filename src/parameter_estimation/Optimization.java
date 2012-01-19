@@ -111,7 +111,7 @@ public class Optimization extends Loggable{
 		AbstractCKPackager ckp = new CKPackager(config);
 		ckp = new ExtractModelValuesPackagerDecorator(ckp);
 		ckp.runAllSimulations();
-		ModelValue[] modelValues = ckp.modelValues;
+		ModelValue[] modelValues = ckp.getModelValues();
 		return modelValues;
 	}
 	

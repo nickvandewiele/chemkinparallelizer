@@ -46,7 +46,7 @@ public class ParityPlotCommand implements Command {
 		AbstractCKPackager ckp = new CKPackager(parameter_estimation.config);
 		ckp = new ExtractModelValuesPackagerDecorator(ckp);
 		ckp.runAllSimulations();
-		ModelValue[] modelValues = ckp.modelValues;
+		ModelValue[] modelValues = ckp.getModelValues();
 
 		//read experimental data file:
 		ExperimentalValue[] experimentalValues = parameter_estimation.config.experiments.getExperimentalData(); 
