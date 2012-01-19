@@ -4,10 +4,8 @@ import parameter_estimation.ChemkinConstants;
 
 public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 
-	AbstractChemkinRoutine routine;
-
 	public GetSolutionDecorator(AbstractChemkinRoutine routine){
-		this.routine = routine;
+		super.routine = routine;
 	}
 
 	public String[] getKeyword() {
@@ -17,7 +15,7 @@ public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 		 * norop: no rate of production info is included
 		 */
 		routine.keywords = new String [5];
-		routine.keywords[0] = config.paths.getBinDir()+"GetSolution";
+		routine.keywords[0] = getConfig().paths.getBinDir()+"GetSolution";
 		routine.keywords[1] = "-nosen";
 		routine.keywords[2] = "-norop";
 		routine.keywords[3] = "-mass";

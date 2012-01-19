@@ -5,13 +5,13 @@ public class PFRDecorator extends ChemkinRoutineDecorator {
 
 
 	public PFRDecorator(AbstractChemkinRoutine routine){
-		this.routine = routine;
+		super.routine = routine;
 	}
 
 	public String[] getKeyword() {
 		
 		routine.keywords = new String [5];
-		routine.keywords[0] = routine.config.paths.getBinDir()+"CKReactorPlugFlow";
+		routine.keywords[0] = getConfig().paths.getBinDir()+"CKReactorPlugFlow";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = getReactorDir()+getReactorSetup();
 		routine.keywords[3] = "-o";

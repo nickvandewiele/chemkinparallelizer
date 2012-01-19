@@ -9,15 +9,14 @@ import parameter_estimation.ChemkinConstants;
 
 public class PreProcessDecorator extends ChemkinRoutineDecorator {
 
-	AbstractChemkinRoutine routine;
 
 	public PreProcessDecorator(AbstractChemkinRoutine routine){
-		this.routine = routine;
+		super.routine = routine;
 	}
 
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
-		routine.keywords[0] = routine.config.paths.getBinDir()+"CKPreProcess";
+		routine.keywords[0] = getConfig().paths.getBinDir()+"CKPreProcess";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
 

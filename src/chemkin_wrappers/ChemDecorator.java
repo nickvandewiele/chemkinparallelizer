@@ -5,16 +5,14 @@ import parameter_estimation.ChemkinConstants;
 
 public class ChemDecorator extends ChemkinRoutineDecorator {
 
-	AbstractChemkinRoutine routine;
-
 	public ChemDecorator(AbstractChemkinRoutine routine){
-		this.routine = routine;
+		super.routine = routine;
 	}
 
 	public String[] getKeyword() {
 		
 		routine.keywords = new String [7];
-		routine.keywords[0] = routine.config.paths.getBinDir()+"chem";
+		routine.keywords[0] = getConfig().paths.getBinDir()+"chem";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = config.chemistry.getChemistryInput();
 		routine.keywords[3] = "-o";

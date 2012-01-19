@@ -1,5 +1,7 @@
 package chemkin_wrappers;
 
+import parsers.ConfigurationInput;
+
 
 public abstract class ChemkinRoutineDecorator extends AbstractChemkinRoutine {
 
@@ -18,5 +20,9 @@ public abstract class ChemkinRoutineDecorator extends AbstractChemkinRoutine {
 
 	public String getReactorOut() {
 		return routine.getReactorOut();
+	}
+	
+	public ConfigurationInput getConfig() {
+		return routine.getConfig();
 	}
 }

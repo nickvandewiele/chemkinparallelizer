@@ -3,20 +3,21 @@ package chemkin_wrappers;
 
 public class ChemkinEnvDecorator extends ChemkinRoutineDecorator {
 
-	AbstractChemkinRoutine routine;
 
 	public ChemkinEnvDecorator(AbstractChemkinRoutine routine){
-		this.routine = routine;
+		super.routine = routine;
 	}
 
 	public String[] getKeyword() {
-		String [] input = 
-			{config.paths.getBinDir()+"run_chemkin_env_setup.bat"};
-		return input;
+		routine.keywords = new String [1];
+		routine.keywords[0] = getConfig().paths.getBinDir()+"run_chemkin_env_setup.bat";
+
+		return routine.keywords;
 	}
 
 	@Override
 	public void executeCKRoutine() {
+		this.getKeyword();
 		routine.executeCKRoutine();
 		
 	}

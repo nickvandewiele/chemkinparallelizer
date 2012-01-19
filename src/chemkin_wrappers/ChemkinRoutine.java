@@ -23,9 +23,9 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 	public ChemkinRoutine(ConfigurationInput config,
 			Runtime runtime) {
 		
-		this.config = config;
+		super.config = config;
 		
-		this.runtime = runtime;
+		super.runtime = runtime;
 	}
 	/**
 	 *  this routine overloads the standard execute_CKRoutine with a specified working directory, 
@@ -38,10 +38,10 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 		Process p;
 		try {
 			if(getReactorDir() == null){
-				p = runtime.exec(this.keywords);
+				p = getRuntime().exec(this.keywords);
 			}
 			else{
-				p = runtime.exec(this.keywords, environment, new File(getReactorDir()));
+				p = getRuntime().exec(this.keywords, environment, new File(getReactorDir()));
 			}
 			
 			BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -72,4 +72,7 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 	
 	}
 
+	public Runtime getRuntime() {
+		return super.getRuntime();
+	}
 }

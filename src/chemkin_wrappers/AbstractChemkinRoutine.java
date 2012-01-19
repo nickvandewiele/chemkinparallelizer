@@ -35,4 +35,12 @@ public abstract class AbstractChemkinRoutine {
 	public String getReactorOut() {
 		return reactorOut;
 	}
+
+	public ConfigurationInput getConfig() {
+		return config;
+	}
+
+	public Runtime getRuntime() {
+		return runtime;
+	}
 }
