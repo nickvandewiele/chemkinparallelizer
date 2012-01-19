@@ -20,7 +20,6 @@ public class ParameterEstimationDriver {
 		long time = System.currentTimeMillis();
 		initializeLog();
 
-
 		BufferedReader in  = null;
 		in = readINPUT(args);
 		

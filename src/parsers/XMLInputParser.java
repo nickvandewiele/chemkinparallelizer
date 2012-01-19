@@ -17,6 +17,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import parameter_estimation.Licenses;
 import parameter_estimation.OptimizedReaction;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
@@ -89,7 +90,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(NO_LICENSES)) {
 						event = eventReader.nextEvent();
-						configurationInput.licenses.setValue(Integer.parseInt(event.asCharacters().getData()));
+						configurationInput.licenses = new Licenses(Integer.parseInt(event.asCharacters().getData()));
 						continue;
 					}
 
@@ -225,7 +226,7 @@ public class XMLInputParser {
 					EndElement endElement = event.asEndElement();
 					
 					if (endElement.getName().getLocalPart() == (INPUT)) {
-						configurationInput.setParameters();
+						
 						configurationInputs.add(configurationInput);
 					}
 					
@@ -234,11 +235,12 @@ public class XMLInputParser {
 					}
 					
 					if (endElement.getName().getLocalPart() == (REACTOR_SETUPS)) {
-						configurationInput.experiments.getReactorInputCollector().inputs = list_reactor_setup.toArray(new ReactorSetupInput[list_expdb.size()]);
+						configurationInput.reactor_setup = list_reactor_setup.toArray(new ReactorSetupInput[list_reactor_setup.size()]);
 					}
 					
 					if (endElement.getName().getLocalPart() == (REACTIONS)) {
 						configurationInput.fitting.optimizedReactions = reactions;
+						configurationInput.setParameters();
 					}
 				}
 

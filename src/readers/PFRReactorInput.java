@@ -19,18 +19,16 @@ import java.util.Map;
  * @author nmvdewie
  *
  */
-public class PFRReactorInput extends ReactorInput{
+public class PFRReactorInput extends ReactorInput {
 	
-	REACTORTYPE type = REACTORTYPE.PFR;
-			
 	//Reactor Specs:
 	public Double length;
 	
 	public Double diameter;
 	
-	public Map<Double, Double> t_profile = new HashMap<Double, Double>();;
+	public Map<Double, Double> t_profile = new HashMap<Double, Double>();
 	
-	public Map<Double, Double> p_profile = new HashMap<Double, Double>();;
+	public Map<Double, Double> p_profile = new HashMap<Double, Double>();
 	
 	//Chemistry Specs:
 	public int NOS;//Number of Species
@@ -48,4 +46,9 @@ public class PFRReactorInput extends ReactorInput{
 	
 	public Double rtol = 1.e-6;//chemkin default;
 	
+	public PFRReactorInput(String type, String filename) {
+		super(type, filename);
+		
+	}
+
 }

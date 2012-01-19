@@ -40,15 +40,9 @@ public class Paths extends Loggable{
 	private void setBinDir() {
 		binDir = chemkinDir+"/bin/";
 	}
-	protected String binDir;
+	protected String binDir = chemkinDir+"/bin/";;
 	protected String outputDir;
 
-	public Paths(String wd, String cd){
-		workingDir = wd;
-		chemkinDir = cd;
-		binDir = chemkinDir+"/bin/";
-		checkOutputDir();		
-	}
 	public Paths(){
 		
 	}
