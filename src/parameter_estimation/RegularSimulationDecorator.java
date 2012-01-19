@@ -35,13 +35,12 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		
 		//chemkindataDTD:
 		Tools.copyFile(getConfig().paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,getReactorDir()+ChemkinConstants.CHEMKINDATADTD);
-/*
+
 		//Input Folder with user-defined ROP:
 		for(File filename: getConfig().paths.UDROPDir.listFiles()){//copy all files in this folder to reactor dir
-			Tools.copyFile(getConfig().paths.UDROPDir.getAbsolutePath()+"/"+filename,
-					reactorDir+filename);
+			new File(getReactorDir(), filename.getName());
 		}
-*/
+
 		//instantiation of parent chemkin routine:
 		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig(), getRuntime());
 		routine.reactorDir = getReactorDir();
