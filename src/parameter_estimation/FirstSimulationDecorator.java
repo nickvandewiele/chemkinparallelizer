@@ -29,10 +29,11 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 
 	public void run(){
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
-		routine.reactorOut = reactorOut;
-		routine.reactorSetup = simulation.reactorSetupInput.getLocation();
-		routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
+		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig(), getRuntime());
+		routine.reactorDir = getReactorDir();
+		routine.reactorOut = getReactorOut();
+		routine.reactorSetup = getReactorInput().filename;
+		routine = new CreateSolnListDecorator(simulation, routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 
 		writeSolnList();
@@ -57,12 +58,12 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		PrintWriter out;
 		String temp = null;
 		try {
-			in = new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKSOLNLIST)));
+			in = new BufferedReader(new FileReader(new File(getReactorDir(),ChemkinConstants.CKSOLNLIST)));
 			temp = "tempList.txt";
-			out = new PrintWriter(new FileWriter(new File(reactorDir,temp)));
+			out = new PrintWriter(new FileWriter(new File(getReactorDir(),temp)));
 
 
-			File speciesFile = new File(config.paths.getWorkingDir(),ChemkinConstants.CHEMASU);
+			File speciesFile = new File(getConfig().paths.getWorkingDir(),ChemkinConstants.CHEMASU);
 			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesFile));
 			List<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;
@@ -168,10 +169,10 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		}
 
 		//remove old CKSolnList and replace it with newly create one
-		File old = new File(reactorDir,ChemkinConstants.CKSOLNLIST);
+		File old = new File(getReactorDir(),ChemkinConstants.CKSOLNLIST);
 		old.delete();
-		File f_temp = new File(reactorDir,temp);
-		f_temp.renameTo(new File(reactorDir,ChemkinConstants.CKSOLNLIST));
+		File f_temp = new File(getReactorDir(),temp);
+		f_temp.renameTo(new File(getReactorDir(),ChemkinConstants.CKSOLNLIST));
 	}
 
 }

@@ -1,11 +1,14 @@
 package chemkin_wrappers;
 
+import parameter_estimation.AbstractCKEmulation;
 import parameter_estimation.ChemkinConstants;
 
 public class CreateSolnListDecorator extends ChemkinRoutineDecorator {
 	AbstractChemkinRoutine routine;
+	AbstractCKEmulation simulation;
 
-	public CreateSolnListDecorator(AbstractChemkinRoutine routine){
+	public CreateSolnListDecorator(AbstractCKEmulation simulation, AbstractChemkinRoutine routine){
+		this.simulation = simulation;
 		this.routine = routine;
 	}
 	/**
@@ -13,9 +16,9 @@ public class CreateSolnListDecorator extends ChemkinRoutineDecorator {
 	 */
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
-		routine.keywords[0] = config.paths.getBinDir()+"GetSolution";
+		routine.keywords[0] = routine.config.paths.getBinDir()+"GetSolution";
 		routine.keywords[1] = "-listonly";
-		routine.keywords[2] = reactorDir+ChemkinConstants.XML;
+		routine.keywords[2] = getReactorDir()+ChemkinConstants.XML;
 
 		return routine.keywords;
 	}

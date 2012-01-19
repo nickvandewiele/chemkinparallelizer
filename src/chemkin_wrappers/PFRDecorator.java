@@ -3,26 +3,29 @@ package chemkin_wrappers;
 
 public class PFRDecorator extends ChemkinRoutineDecorator {
 
-	AbstractChemkinRoutine routine;
 
 	public PFRDecorator(AbstractChemkinRoutine routine){
 		this.routine = routine;
 	}
 
 	public String[] getKeyword() {
-		String [] input = 
-			{
-				routine.config.paths.getBinDir()+"CKReactorPlugFlow",
-				"-i",routine.reactorDir+routine.reactorSetup,
-				"-o",reactorDir+reactorOut
-			};
-		return input;
+		
+		routine.keywords = new String [5];
+		routine.keywords[0] = routine.config.paths.getBinDir()+"CKReactorPlugFlow";
+		routine.keywords[1] = "-i";
+		routine.keywords[2] = getReactorDir()+getReactorSetup();
+		routine.keywords[3] = "-o";
+		routine.keywords[4] = getReactorDir()+getReactorOut();
+	
+		return routine.keywords;
 	}
 
 	@Override
 	public void executeCKRoutine() {
+		this.getKeyword();
 		routine.executeCKRoutine();
 		
 	}
+
 
 }

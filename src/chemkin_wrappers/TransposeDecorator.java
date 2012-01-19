@@ -12,14 +12,18 @@ public class TransposeDecorator extends ChemkinRoutineDecorator {
 	}
 
 	public String[] getKeyword() {
-		String [] input = 
-			{config.paths.getBinDir()+"CKSolnTranspose",
-				reactorDir+ChemkinConstants.CKCSVNAME};
-		return input;
+		routine.keywords = new String [3];
+		routine.keywords[0] = routine.config.paths.getBinDir()+"CKSolnTranspose";
+		routine.keywords[1] = "-i";
+		routine.keywords[2] = routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
+
+		return routine.keywords;
+
 	}
 
 	@Override
 	public void executeCKRoutine() {
+		this.getKeyword();
 		routine.executeCKRoutine();
 		
 	}

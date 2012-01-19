@@ -38,7 +38,8 @@ public class CheckChemistryFileCommand implements Command {
 		
 		BufferedReader in;
 		try {
-			in = new BufferedReader(new FileReader(config.paths.getWorkingDir()+ChemkinConstants.CHEMOUT));
+			String path = config.paths.getWorkingDir()+ChemkinConstants.CHEMOUT;
+			in = new BufferedReader(new FileReader(path));
 			checkChemOutput(in);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

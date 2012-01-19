@@ -37,11 +37,11 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 		String [] environment = null;
 		Process p;
 		try {
-			if(reactorDir == null){
+			if(getReactorDir() == null){
 				p = runtime.exec(this.keywords);
 			}
 			else{
-				p = runtime.exec(this.keywords, environment, new File(reactorDir));
+				p = runtime.exec(this.keywords, environment, new File(getReactorDir()));
 			}
 			
 			BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));

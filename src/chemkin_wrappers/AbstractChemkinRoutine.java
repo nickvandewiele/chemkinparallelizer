@@ -23,4 +23,16 @@ public abstract class AbstractChemkinRoutine {
 	public abstract void executeCKRoutine();
 	
 	public String [] keywords;
+
+	public String getReactorDir() {
+		return reactorDir;
+	}
+
+	public String getReactorSetup() {
+		return reactorSetup;
+	}
+
+	public String getReactorOut() {
+		return reactorOut;
+	}
 }
