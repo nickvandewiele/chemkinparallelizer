@@ -19,6 +19,7 @@ import chemkin_wrappers.PreProcessDecorator;
 import chemkin_wrappers.PremixedFlameDecorator;
 import datatypes.ModelValueFactory;
 
+import readers.ReactorInput;
 import readers.ReactorSetupInput;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
@@ -35,33 +36,29 @@ public class CKEmulation extends AbstractCKEmulation{
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
 	public CKEmulation(ConfigurationInput config, Runtime runtime){
-		this.config = config;
-		this.runtime = runtime;
-	}
-
-	//constructor for creating CKSolnList.txt
-	public CKEmulation(ConfigurationInput input, Runtime runtime,
-			ReactorSetupInput reactorSetup){
-		this(input, runtime);
-		this.reactorSetupInput = reactorSetup;
+		super.config = config;
+		super.runtime = runtime;
 	}
 
 	public CKEmulation(ConfigurationInput config, Runtime rt,
-			ReactorSetupInput reactorSetupInput, Semaphore semaphore) {
+			ReactorInput reactorInput) {
 
-		this(config, rt, reactorSetupInput);
-		this.semaphore = semaphore;
+		this(config, rt);
 
-		int length = reactorSetupInput.getLocation().length();
-		this.reactorOut = reactorSetupInput.getLocation().substring(0,(-4))+".out";
-		this.reactorDir = config.paths.getWorkingDir()+"temp_ "+reactorSetupInput.getLocation().substring(0,(length-4))+"/";
+		super.reactorInput = reactorInput;
+		int length = reactorInput.filename.length();
+		super.reactorOut = reactorInput.filename.substring(0,(length-4))+".out";
+		super.reactorDir = config.paths.getWorkingDir()+"temp_ "+reactorInput.filename.substring(0,(length-4))+"/";
+
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
 			logger.debug("Creation of reactor directory failed!");
 			System.exit(-1);
 		}
+		//reactor setup:
+		Tools.copyFile(config.paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
 
-		ModelValueFactory factory = new ModelValueFactory(reactorSetupInput.model);
+		ModelValueFactory factory = new ModelValueFactory(getReactorInput().type);
 		modelValue = factory.createModelValue();
 
 		try {
@@ -75,7 +72,7 @@ public class CKEmulation extends AbstractCKEmulation{
 	private void copyLinkFiles(Paths paths) throws Exception {
 		//copy chemistry and transport link files:
 		if(new File(paths.getWorkingDir()+ChemkinConstants.CHEMASC).exists()){
-			Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CHEMASC,reactorDir+ChemkinConstants.CHEMASC);	
+			Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CHEMASC,getReactorDir()+ChemkinConstants.CHEMASC);	
 		}
 		else throw new Exception("Could not find chem link file!");
 
@@ -83,7 +80,7 @@ public class CKEmulation extends AbstractCKEmulation{
 			//copy only if tran output file returns no errors:
 			BufferedReader in = new BufferedReader(new FileReader(paths.getWorkingDir()+ChemkinConstants.TRANOUT));
 			if(checkTranOutput(in)){
-				Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.TRANASC,reactorDir+ChemkinConstants.TRANASC);	
+				Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.TRANASC,getReactorDir()+ChemkinConstants.TRANASC);	
 			}	
 		}
 		else throw new Exception("Could not find tran link file!");
@@ -93,66 +90,7 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * Its argument list is void (mandatory I think).
 	 */
 	public void run(){
-		try {
-			semaphore.acquire();
 
-			logger.info("license acquired!"+reactorSetupInput.getLocation());
-
-			//copy chemistry input to the reactorDir:
-			Tools.copyFile(config.paths.getWorkingDir()+config.chemistry.getChemistryInput(),
-					reactorDir+config.chemistry.getChemistryInput());
-			//reactor setup:
-			Tools.copyFile(config.paths.getWorkingDir()+reactorSetupInput.getLocation(),reactorDir+reactorSetupInput.getLocation());
-
-			//chemkindataDTD:
-			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,reactorDir+ChemkinConstants.CHEMKINDATADTD);
-
-			//Input Folder with user-defined ROP:
-			for(File filename: config.paths.UDROPDir.listFiles()){//copy all files in this folder to reactor dir
-				Tools.copyFile(config.paths.UDROPDir.getAbsolutePath()+"/"+filename,
-						reactorDir+filename);
-			}
-
-			//instantiation of parent chemkin routine:
-			AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
-			routine.reactorOut = reactorOut;
-			routine.reactorSetup = reactorSetupInput.getLocation();
-
-			//read reactor type, to be found in reactor setup file:
-			BufferedReader in = new BufferedReader(new FileReader(new File(reactorDir,reactorSetupInput.getLocation())));
-			CKEmulationFactory factory = new CKEmulationFactory(routine);
-			routine = factory.createRoutine(reactorSetupInput.model);
-			routine.executeCKRoutine();//execution
-
-			//copy reactor diagnostics file to workingdir:
-			Tools.copyFile(reactorDir+reactorOut,config.paths.getWorkingDir()+reactorOut);
-
-			Tools.copyFile(reactorDir+ChemkinConstants.CKSOLNLIST,config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST);
-
-			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
-			routine.executeCKRoutine();//execution
-
-			Tools.deleteFiles(reactorDir, ".zip");
-
-			modelValue.setValue(new BufferedReader(new FileReader(new File(reactorDir,ChemkinConstants.CKCSVNAME))));	
-
-			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
-			File excel_file = new File(reactorDir,ChemkinConstants.CKCSVNAME);
-			File dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+reactorSetupInput.getLocation()+".csv");
-			excel_file.renameTo(dummy);
-
-			//delete complete reactorDir folder:
-			Tools.deleteDir(new File(reactorDir));
-
-			//when all Chemkin routines are finished, release the semaphore:
-			semaphore.release();
-			logger.info("license released!"+reactorSetupInput.getLocation());
-
-		} catch(Exception exc){
-			logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
-			//exc.printStackTrace();
-			System.exit(-1);
-		}
 	}
 
 
@@ -185,16 +123,6 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * GETTERS AND SETTERS:
 	 * ####################
 	 */
-
-
-
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public String getReactorDir() {
-		return reactorDir;
-	}
 
 }
 
