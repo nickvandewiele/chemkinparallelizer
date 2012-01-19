@@ -9,7 +9,6 @@ public class Param_Est extends Loggable{
 
 	ConfigurationInput config;
 
-
 	public Param_Est(ConfigurationInput config) {
 		this.config = config;
 
@@ -17,12 +16,7 @@ public class Param_Est extends Loggable{
 		 * create reactor input files, if necessary:
 		 */
 		for(ReactorSetupInput input : config.reactor_setup){
-			if(input.type.equals(ReactorSetupInput.TYPE.AUTO)){
-				ReactorInputParsable parser;
-				parser = new PFRReactorInputParser1(config.paths.getWorkingDir()+input.location);		
-				parser.parse();
-
-			}
+			config.addReactorInput(input);
 		}
 	}
 }

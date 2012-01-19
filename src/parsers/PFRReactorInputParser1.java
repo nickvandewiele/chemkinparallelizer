@@ -18,8 +18,9 @@ import readers.ReactorInput;
 
 public class PFRReactorInputParser1 implements ReactorInputParsable {
 
-	String read;
-
+	String workingDir;
+	String reactor_input_database_filename;
+	
 	List<ReactorInput> reactorInputs;
 
 	String[] dummy;
@@ -32,9 +33,9 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 	int position_P_profile;
 	List<Double> axialPositionPprofile;
 
-	public PFRReactorInputParser1(String string) {
-
-		this.read = string;
+	public PFRReactorInputParser1(String workingDir, String string) {
+		this.workingDir = workingDir;
+		this.reactor_input_database_filename = string;
 	}
 
 	public void read() {
@@ -44,7 +45,7 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 
 		BufferedReader in_excel = null;
 		try {
-			in_excel = new BufferedReader(new FileReader(read));
+			in_excel = new BufferedReader(new FileReader(reactor_input_database_filename));
 
 		} catch (FileNotFoundException e1) {}
 
@@ -111,7 +112,7 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 			line = in_excel.readLine();
 			while(!(line == null)){
 
-				PFRReactorInput input = new PFRReactorInput();
+				PFRReactorInput input = new PFRReactorInput(ReactorInput.PFR,workingDir);
 				input.length = length;
 				input.diameter = diameter;
 				input.NOS = NOS;
@@ -121,7 +122,7 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 				String [] dummy_array = line.split(",");
 				//experiment_counter contains the experiment number that will be used in the reactor input file name:
 				experiment_counter = Integer.parseInt(dummy_array[0]);
-				input.filename = new File("reactor_input_"+experiment_counter+".inp");
+				input.filename = "reactor_input_"+experiment_counter+".inp";
 
 				//total mass flow rate:
 				for(int i = 0 ; i < NOS; i++){
@@ -174,11 +175,11 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 	 * <LI>add ATOL RTOL</LI>
 	 */
 	public void write() {
-		Iterator iter = reactorInputs.iterator();
+		Iterator<ReactorInput> iter = reactorInputs.iterator();
 		while(iter.hasNext()){
 			PFRReactorInput input = (PFRReactorInput)iter.next();//cast to access PFR reactor input attributes 
 			try {
-				PrintWriter out = new PrintWriter(new FileWriter(input.filename.getAbsolutePath()));
+				PrintWriter out = new PrintWriter(new FileWriter(new File(this.workingDir,input.filename)));
 
 				out.println("PLUG   ! Plug Flow Reactor"+
 						"\nXSTR 0.0   ! Starting Axial Position (cm)");

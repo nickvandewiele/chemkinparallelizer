@@ -1,8 +1,7 @@
 package parsers;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import parameter_estimation.Chemistry;
 import parameter_estimation.Experiments;
@@ -10,7 +9,7 @@ import parameter_estimation.Fitting;
 import parameter_estimation.Licenses;
 import parameter_estimation.Parameters2D;
 import parameter_estimation.Paths;
-import parameter_estimation.ReactorInputCollector;
+import readers.ReactorInput;
 import readers.ReactorSetupInput;
 
 /**
@@ -39,6 +38,8 @@ public class ConfigurationInput {
 	
 	public ReactorSetupInput [] reactor_setup;
 	
+	public List<ReactorInput> reactor_inputs;
+	
 	public Fitting fitting;
 	
 	public Integer MODE;
@@ -50,9 +51,7 @@ public class ConfigurationInput {
 		fitting = new Fitting();
 
 	}
-	public void setReactor_setup(ReactorSetupInput [] reactor_setup) {
-		this.reactor_setup = reactor_setup;
-	}
+
 	
 	public Integer getMODE() {
 		return MODE;
@@ -77,9 +76,6 @@ public class ConfigurationInput {
 				+ "]";
 	}
 
-	public ReactorSetupInput[] getReactor_setup() {
-		return reactor_setup;
-	}
 	
 	/**
 	 * Method that converts the read-in info on optimized parameters to a Parameters2D type
@@ -113,6 +109,22 @@ public class ConfigurationInput {
 
 
 		chemistry.setParams(params);
+	}
+	public void addReactorInput(ReactorSetupInput input) {
+		if (reactor_inputs == null){
+			reactor_inputs = new ArrayList<ReactorInput>();
+		}
+		if(input.type.equals(ReactorSetupInput.AUTO)){
+			ReactorInputParsable parser;
+			parser = new PFRReactorInputParser1(paths.getWorkingDir(),input.location);
+			List<ReactorInput> list = parser.parse();
+			reactor_inputs.addAll(list);
+
+		}
+		else if(input.type.equals(ReactorSetupInput.MANUAL)){
+			reactor_inputs.add(new ReactorInput(input.model, input.location));
+		}
+		
 	}
 
 }

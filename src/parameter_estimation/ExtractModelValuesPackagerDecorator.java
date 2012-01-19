@@ -10,7 +10,7 @@ public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecor
 	public ExtractModelValuesPackagerDecorator(AbstractCKPackager packager){
 		this.packager = packager;
 		
-		this.modelValues = new ModelValue[config.reactor_setup.length];
+		this.modelValues = new ModelValue[config.reactor_inputs.size()];
 	}
 	
 	public AbstractCKEmulation []  runAllSimulations(){
