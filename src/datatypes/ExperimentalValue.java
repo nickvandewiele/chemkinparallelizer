@@ -7,8 +7,11 @@ package datatypes;
  *
  */
 public abstract class ExperimentalValue {
-	public enum TYPE {PRODUCT_EFFLUENT, IGNITION_DELAY, FLAME_SPEED}
+	
+	public static final String PRODUCT_EFFLUENT = "PRODUCT_EFFLUENT";
+	public static final String IGNITION_DELAY = "IGNITION_DELAY";
+	public static final String FLAME_SPEED = "FLAME_SPEED";
 
-	public TYPE type;
+	public String type;
 
 }

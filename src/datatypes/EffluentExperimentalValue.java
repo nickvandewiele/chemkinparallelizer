@@ -2,7 +2,6 @@ package datatypes;
 
 import java.util.Map;
 
-import datatypes.ExperimentalValue.TYPE;
 
 
 /**
@@ -12,12 +11,12 @@ import datatypes.ExperimentalValue.TYPE;
  *
  */
 public class EffluentExperimentalValue extends ExperimentalValue {
-	TYPE type = ExperimentalValue.TYPE.PRODUCT_EFFLUENT;
-
+	
 	public Map<String,Double> speciesFractions;
 	
 	public EffluentExperimentalValue(Map<String,Double> speciesFractions){
 		this.speciesFractions = speciesFractions;
+		super.type = ExperimentalValue.PRODUCT_EFFLUENT;
 	}
 
 }

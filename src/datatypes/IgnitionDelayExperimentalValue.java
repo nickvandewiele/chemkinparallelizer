@@ -9,10 +9,10 @@ package datatypes;
  */
 public class IgnitionDelayExperimentalValue extends ExperimentalValue {
 	public IgnitionDelayExperimentalValue(double value) {
+		super.type = ExperimentalValue.IGNITION_DELAY;
+
 		this.value = value;
 	}
-
-	TYPE type = ExperimentalValue.TYPE.IGNITION_DELAY;
 
 	public double value;
 }

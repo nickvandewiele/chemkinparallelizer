@@ -40,7 +40,7 @@ public class ParityWriter {
 				ExperimentalValue experimentalValue = experimentalValues[i];
 				ModelValue modelValue = modelValues[i];
 
-				if(experimentalValue.type.equals(ExperimentalValue.TYPE.PRODUCT_EFFLUENT)){
+				if(experimentalValue.type.equals(ExperimentalValue.PRODUCT_EFFLUENT)){
 					StringBuffer stringBuff = new StringBuffer();
 					stringBuff.append("Experiment: "+"\t"+"Experimental Value"+"\t"+"Model Value"+"\t"+"Experimental Value\n");
 					// loop through all species:
@@ -55,10 +55,10 @@ public class ParityWriter {
 					stringBuff.append("\n");
 					out_effluent.println(stringBuff.toString());
 				}
-				else if(experimentalValue.type.equals(ExperimentalValue.TYPE.IGNITION_DELAY)){
+				else if(experimentalValue.type.equals(ExperimentalValue.IGNITION_DELAY)){
 					out_ignition.println("Ignition Delay:\t"+((IgnitionDelayExperimentalValue)experimentalValue).value+"\t"+((IgnitionDelayModelValue)modelValue).value+","+((IgnitionDelayExperimentalValue)experimentalValue).value);
 				}
-				else if(experimentalValue.type.equals(ExperimentalValue.TYPE.FLAME_SPEED)){
+				else if(experimentalValue.type.equals(ExperimentalValue.FLAME_SPEED)){
 					out_flame_speed.println("Flame Speed:\t"+((FlameSpeedExperimentalValue)experimentalValue).value+"\t"+((FlameSpeedModelValue)modelValue).value+","+((FlameSpeedExperimentalValue)experimentalValue).value);
 				}
 			}
