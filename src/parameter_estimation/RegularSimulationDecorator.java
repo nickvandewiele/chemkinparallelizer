@@ -7,9 +7,7 @@ import java.io.FileReader;
 
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
-import chemkin_wrappers.GetSolutionDecorator;
 import readers.ReactorInput;
-import readers.ReactorSetupInput;
 
 public class RegularSimulationDecorator extends CKEmulationDecorator {
 
@@ -57,14 +55,9 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		//release the semaphore:
 		semaphore.release();
 		logger.info("license released!"+getReactorInput().filename);
-		/*
-		try {
-			modelValue.setValue(new BufferedReader(new FileReader(new File(getReactorDir(),ChemkinConstants.CKCSVNAME))));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-*/
+		
+		
+
 		
 		
 	}

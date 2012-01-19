@@ -17,7 +17,7 @@ public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecor
 		simulations = packager.runAllSimulations();
 		
 		for (int i = 0; i < simulations.length; i++){
-			modelValues[i] = simulations[i].modelValue; 
+			modelValues[i] = simulations[i].getModelValue(); 
 		}
 		
 		return simulations;

@@ -1,5 +1,6 @@
 package parameter_estimation;
 
+import datatypes.ModelValue;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
 
@@ -34,6 +35,10 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 	
 	public Runtime getRuntime() {
 		return simulation.getRuntime();
+	}
+	
+	public ModelValue getModelValue() {
+		return simulation.getModelValue();
 	}
 	
 }

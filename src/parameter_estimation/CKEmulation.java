@@ -59,7 +59,7 @@ public class CKEmulation extends AbstractCKEmulation{
 		Tools.copyFile(config.paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
 
 		ModelValueFactory factory = new ModelValueFactory(getReactorInput().type);
-		modelValue = factory.createModelValue();
+		super.modelValue = factory.createModelValue();
 
 		try {
 			copyLinkFiles(config.paths);

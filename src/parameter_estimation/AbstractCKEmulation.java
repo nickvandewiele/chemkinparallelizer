@@ -53,6 +53,10 @@ public abstract class AbstractCKEmulation extends Thread{
 	public Runtime getRuntime() {
 		return runtime;
 	}
+
+	public ModelValue getModelValue() {
+		return modelValue;
+	}
 }
 
 
