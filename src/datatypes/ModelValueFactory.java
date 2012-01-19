@@ -1,5 +1,6 @@
 package datatypes;
 
+import readers.ReactorInput;
 import readers.ReactorSetupInput;
 
 public class ModelValueFactory {
@@ -22,16 +23,16 @@ public class ModelValueFactory {
 	}
 	
 	public ModelValue createModelValue(){
-		if(model.equals(ReactorSetupInput.MODEL.PFR)){
+		if(model.equals(ReactorInput.PFR)){
 			return new EffluentModelValue();
 		}
-		else if(model.equals(ReactorSetupInput.MODEL.CSTR)){
+		else if(model.equals(ReactorInput.CSTR)){
 			return new EffluentModelValue();
 		}
-		else if(model.equals(ReactorSetupInput.MODEL.IGNITION_DELAY)){
+		else if(model.equals(ReactorInput.IGNITION_DELAY)){
 			return new IgnitionDelayModelValue();
 		}
-		else if(model.equals(ReactorSetupInput.MODEL.FLAME_SPEED)){
+		else if(model.equals(ReactorInput.FLAME_SPEED)){
 			return new FlameSpeedModelValue();
 		}
 		

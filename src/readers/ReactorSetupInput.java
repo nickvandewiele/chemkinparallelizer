@@ -1,7 +1,5 @@
 package readers;
 
-import java.io.File;
-
 /**
  * Type that is used to collect information on reactor input files.
  * @author nmvdewie
@@ -10,17 +8,12 @@ import java.io.File;
 public class ReactorSetupInput {
 	public static final String AUTO = "AUTO";
 	public static final String MANUAL = "MANUAL";
-	public enum TYPE {AUTO, MANUAL};
+	public String type;
 	
 	public static final String PFR = "PFR";
 	public static final String CSTR = "CSTR";
 	public static final String IGNITION_DELAY = "IGNITION_DELAY";
-	public static final String FLAME_SPEED = "IGNITION_DELAY";
-	
-	public enum MODEL {PFR, CSTR, IGNITION_DELAY, FLAME_SPEED};
-	
-	public String type;
-	
+	public static final String FLAME_SPEED = "FLAME_SPEED";
 	public String model;
 	
 	/**
