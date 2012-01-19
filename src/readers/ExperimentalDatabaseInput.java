@@ -4,11 +4,9 @@ import java.io.File;
 
 public class ExperimentalDatabaseInput{
 	
-		public static final String YIELDS = "Yields";
+		public static final String YIELDS = "YIELDS";
 		public static final String IGNITION_DELAY = "IGNITION_DELAY";
 		public static final String FLAME_SPEED = "FLAME_SPEED";
-		
-		public enum TYPE {YIELDS, IGNITION_DELAY, FLAME_SPEED}
 		
 		public String type;
 		

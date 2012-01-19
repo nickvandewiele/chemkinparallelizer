@@ -21,7 +21,7 @@ public class ExperimentalDatabaseReader {
 	static Logger logger = Logger.getLogger(ExperimentalDatabaseReader.class);
 	
 	public static List<ExperimentalValue> read(ExperimentalDatabaseInput input) {
-		if(input.type.equals(ExperimentalDatabaseInput.TYPE.YIELDS)){
+		if(input.type.equals(ExperimentalDatabaseInput.YIELDS)){
 			//read experimental database file:
 			try {
 				BufferedReader in =  new BufferedReader(new FileReader(input.location));
@@ -32,7 +32,7 @@ public class ExperimentalDatabaseReader {
 			}
 		}
 		
-		else if(input.type.equals(ExperimentalDatabaseInput.TYPE.IGNITION_DELAY)){
+		else if(input.type.equals(ExperimentalDatabaseInput.IGNITION_DELAY)){
 			try {
 				BufferedReader in =  new BufferedReader(new FileReader(input.location));
 				return readExperimentalIgnitionDelays(in);
@@ -42,7 +42,7 @@ public class ExperimentalDatabaseReader {
 			}
 		}
 		
-		else if(input.type.equals(ExperimentalDatabaseInput.TYPE.FLAME_SPEED)){
+		else if(input.type.equals(ExperimentalDatabaseInput.FLAME_SPEED)){
 			try {
 				BufferedReader in =  new BufferedReader(new FileReader(input.location));
 				return readExperimentalFlameSpeeds(in);
