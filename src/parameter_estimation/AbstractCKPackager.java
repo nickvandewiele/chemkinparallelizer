@@ -12,4 +12,12 @@ public abstract class AbstractCKPackager extends Loggable{
 	public ModelValue[] modelValues;
 	
 	public abstract AbstractCKEmulation []  runAllSimulations();
+
+	public ConfigurationInput getConfig() {
+		return config;
+	}
+
+	public ModelValue[] getModelValues() {
+		return modelValues;
+	}
 }

@@ -27,7 +27,7 @@ public class CKPackager extends AbstractCKPackager{
 
 	public AbstractCKEmulation []  runAllSimulations(){
 		Runtime rt = Runtime.getRuntime();
-		Semaphore semaphore = new Semaphore(config.licenses.getValue()); 
+		Semaphore semaphore = new Semaphore(getConfig().licenses.getValue()); 
 		/*
 		 * First simulation:
 		 * wait to start other threads before the first thread, 
