@@ -1,5 +1,8 @@
 package parameter_estimation;
 
+import parsers.ConfigurationInput;
+import readers.ReactorInput;
+
 /**
  * Supertype for decorators for {@link CKEmulation}
  * @author nmvdewie
@@ -7,8 +10,30 @@ package parameter_estimation;
  */
 public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 
+	public AbstractCKEmulation simulation;
+	
 	@Override
-	public void run() {
+	public abstract void run();
+
+	public ConfigurationInput getConfig(){
+		return simulation.getConfig();
+	}
+	
+
+	public String getReactorDir() {
+		return simulation.getReactorDir();
 	}
 
+	public ReactorInput getReactorInput() {
+		return simulation.getReactorInput();
+	}
+
+	public String getReactorOut() {
+		return simulation.getReactorOut();
+	}
+	
+	public Runtime getRuntime() {
+		return simulation.getRuntime();
+	}
+	
 }

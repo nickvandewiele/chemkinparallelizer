@@ -1,8 +1,5 @@
 package parameter_estimation;
 
-import java.io.*;
-import java.util.*;
-
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
@@ -10,14 +7,12 @@ import parsers.ConfigurationInput;
 import datatypes.ExperimentalValue;
 import datatypes.ModelValue;
 
-import readers.ReactorSetupInput;
+import readers.ReactorInput;
 
 public abstract class AbstractCKEmulation extends Thread{
 	static Logger logger = Logger.getLogger(AbstractCKEmulation.class);
 
 	ConfigurationInput config;
-
-	String reactorDir;
 
 	Runtime runtime;
 
@@ -25,8 +20,8 @@ public abstract class AbstractCKEmulation extends Thread{
 
 	protected ModelValue modelValue;
 	
-	ReactorSetupInput reactorSetupInput;
-	
+	public String reactorDir;
+	public ReactorInput reactorInput;
 	protected String reactorOut;
 
 	//Semaphore that controls chemkin license check-in and check-outs:
@@ -39,6 +34,25 @@ public abstract class AbstractCKEmulation extends Thread{
 	 */
 	public abstract void run();
 
+	public ConfigurationInput getConfig(){
+		return config;
+	}
+
+	public String getReactorDir() {
+		return reactorDir;
+	}
+
+	public ReactorInput getReactorInput() {
+		return reactorInput;
+	}
+
+	public String getReactorOut() {
+		return reactorOut;
+	}
+
+	public Runtime getRuntime() {
+		return runtime;
+	}
 }
 
 

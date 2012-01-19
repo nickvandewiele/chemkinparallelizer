@@ -1,5 +1,6 @@
 package parameter_estimation;
 
+import readers.ReactorInput;
 import readers.ReactorSetupInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.BatchDecorator;
@@ -17,24 +18,24 @@ public class CKEmulationFactory {
 
 	public AbstractChemkinRoutine createRoutine(String model) {
 		//PFR
-		if(model.equals(ReactorSetupInput.MODEL.PFR)){
+		if(model.equals(ReactorInput.PFR)){
 			return new PFRDecorator(routine);//decoration of parent chemkin routine:
 			
 		}
 
 		//CSTR
-		else if (model.equals(ReactorSetupInput.MODEL.CSTR)){
+		else if (model.equals(ReactorInput.CSTR)){
 			return new CSTRDecorator(routine);//decoration of parent chemkin routine:
 			
 		}
 
 		//ignition delay, batch reactor, transient solver, as in shock tube experiments
-		else if (model.equals(ReactorSetupInput.MODEL.IGNITION_DELAY)){
+		else if (model.equals(ReactorInput.IGNITION_DELAY)){
 			return new BatchDecorator(routine);//decoration of parent chemkin routine:
 			
 		}
 		//freely propagating laminar flame (flame speed experiments):
-		else if(model.equals(ReactorSetupInput.MODEL.FLAME_SPEED)	){
+		else if(model.equals(ReactorInput.FLAME_SPEED)	){
 			return new LaminarFlameDecorator(routine);//decoration of parent chemkin routine:
 			
 		}
