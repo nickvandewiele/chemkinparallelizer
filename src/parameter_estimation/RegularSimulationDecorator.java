@@ -1,14 +1,15 @@
 package parameter_estimation;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import readers.ReactorInput;
 
+/**
+ * Decorator implementation of {@link CKEmulationDecorator}.
+ * @author Nick
+ *
+ */
 public class RegularSimulationDecorator extends CKEmulationDecorator {
 
 	//Semaphore that controls chemkin license check-in and check-outs:

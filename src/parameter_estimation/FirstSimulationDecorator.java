@@ -14,7 +14,9 @@ import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.CreateSolnListDecorator;
 
 /**
- *  Create and adapt CKSolnList.txt file
+ * 
+ * Decorator implementation of {@link CKEmulationDecorator}.
+ *  Creates and adapts CKSolnList.txt file.
  * @author nmvdewie
  *
  */
