@@ -20,8 +20,7 @@ public class ParameterEstimationDriver {
 		long time = System.currentTimeMillis();
 		initializeLog();
 
-		BufferedReader in  = null;
-		in = readINPUT(args);
+		readINPUT(args);
 		
 		XMLInputParser read = new XMLInputParser();
 		//assume INPUT.xml is passed in as command line argument
