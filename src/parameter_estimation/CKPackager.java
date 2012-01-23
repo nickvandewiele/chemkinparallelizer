@@ -12,7 +12,9 @@ import readers.ReactorInput;
 import readers.ReactorSetupInput;
 
 /**
- * CKPackager is a type that bundles all executed CKEmulations into one data structure. It corresponds to the set of experiments that are executed 
+ * CKPackager is a type that bundles all executed CKEmulations into one data structure. 
+ * It corresponds to the set of experiments that are executed and are structured in the same way
+ * the reactor input files are provided in the input.xml file. 
  * @author nmvdewie
  *
  */
