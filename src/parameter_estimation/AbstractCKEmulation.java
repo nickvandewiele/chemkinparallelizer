@@ -18,7 +18,6 @@ import readers.ReactorInput;
  * Attributes are:
  * <LI> Configuration file
  * <LI> pointers to directories
- * <LI> a semaphore keeping track of the number of used licenses.
  * <LI> a model value object
  * <LI> a experimental value object
  * 
@@ -44,10 +43,6 @@ public abstract class AbstractCKEmulation extends Thread{
 	public ReactorInput reactorInput;
 	
 	protected String reactorOut;
-
-	//Semaphore that controls chemkin license check-in and check-outs:
-	Semaphore semaphore;
-
 
 	/**
 	 * run() is the method that will be executed when Thread.start() is executed.
