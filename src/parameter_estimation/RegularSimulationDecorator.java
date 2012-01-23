@@ -56,11 +56,7 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		//release the semaphore:
 		semaphore.release();
 		logger.info("license released!"+getReactorInput().filename);
-		
-		
-
-		
-		
+				
 	}
 
 

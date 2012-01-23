@@ -28,29 +28,23 @@ public class ParameterEstimationDriver {
 		List<ConfigurationInput> readConfig = read.readConfig(args[0]);
 		for (ConfigurationInput config : readConfig){
 		
-			//creation of the Receiver object that will perform the actual work:
-			/**
-			 * The entire configuration object is passed to the Param_Est constructor
-			 */
-			Param_Est param_est = new Param_Est(config);
-			
 			//creation of the invoker object:
 			ParamEstimationInvoker invoker = new ParamEstimationInvoker();
 
 			//parity command creation and binding to invoker:
-			Command parityCommand = new ParityPlotCommand(param_est);
+			Command parityCommand = new ParityPlotCommand(config);
 			invoker.setCommand(0, parityCommand);
 			
 			//kinetic parameters optimization command creation and binding to invoker:
-			Command optimCommand = new OptimizationCommand(param_est);
+			Command optimCommand = new OptimizationCommand(config);
 			invoker.setCommand(1, optimCommand);
 
 			//excel postprocessing command creation and binding to invoker:
-			Command excelCommand = new ExcelPostProcessingCommand(param_est);
+			Command excelCommand = new ExcelPostProcessingCommand(config);
 			invoker.setCommand(2, excelCommand);
 			
 			//statistics command creation and binding to invoker:
-			Command statisticsCommand = new OptimizationCommand(param_est);
+			Command statisticsCommand = new OptimizationCommand(config);
 			invoker.setCommand(3, statisticsCommand);
 			
 			//perform the request:

@@ -2,6 +2,8 @@ package parameter_estimation;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 /**
  * Command implementation that performs the excel postprocessing
  * option
@@ -10,10 +12,10 @@ import org.apache.log4j.Logger;
  */
 public class ExcelPostProcessingCommand implements Command {
 	public static Logger logger = Logger.getLogger(ExcelPostProcessingCommand.class);
-	Param_Est par_est;
+	ConfigurationInput config;
 	
-	public ExcelPostProcessingCommand(Param_Est p){
-		this.par_est = p;
+	public ExcelPostProcessingCommand(ConfigurationInput config){
+		this.config = config;
 	}
 	public void execute() {
 		try {
@@ -33,13 +35,13 @@ public class ExcelPostProcessingCommand implements Command {
 	public void excelFiles() throws Exception{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(par_est.config);
+		Command checkChemistry = new CheckChemistryFileCommand(config);
 		checkChemistry.execute();
 
-		AbstractCKPackager ckp = new CKPackager(par_est.config);
+		AbstractCKPackager ckp = new CKPackager(config);
 		ckp.runAllSimulations();
 		
-		Tools.moveOutputFiles(par_est.config.paths);
+		Tools.moveOutputFiles(config.paths);
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
