@@ -40,7 +40,7 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		}
 
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig(), getRuntime());
+		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig());
 		routine.reactorDir = getReactorDir();
 		routine.reactorOut = getReactorOut();
 		routine.reactorSetup = getReactorInput().filename;

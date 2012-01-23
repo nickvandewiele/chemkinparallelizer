@@ -24,7 +24,7 @@ public class CheckChemistryFileCommand implements Command {
 		Runtime runtime = Runtime.getRuntime();
 		CKEmulation c = new CKEmulation(config, runtime);
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
 		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 		

@@ -45,7 +45,7 @@ public class CKPackager extends AbstractCKPackager{
 			e1.printStackTrace();
 		}
 		
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, rt);
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
 		routine.reactorDir = simulations[0].getReactorDir();
 		//copy CKSolnList from working dir to specific reactor dir:
 		Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[0].getReactorDir()+ChemkinConstants.CKSOLNLIST);
@@ -100,7 +100,7 @@ public class CKPackager extends AbstractCKPackager{
 		
 		// run the GetSolution utility:
 		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
-			routine = new ChemkinRoutine(config, rt);
+			routine = new ChemkinRoutine(config);
 			routine.reactorDir = simulations[i].getReactorDir();
 			//copy CKSolnList from working dir to specific reactor dir:
 			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[i].getReactorDir()+ChemkinConstants.CKSOLNLIST);

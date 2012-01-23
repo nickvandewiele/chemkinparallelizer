@@ -28,8 +28,6 @@ public abstract class AbstractChemkinRoutine {
 	
 	public String reactorOut;//name of simulation output file.
 	
-	Runtime runtime;
-	
 	public abstract void executeCKRoutine();
 	
 	public String [] keywords;
@@ -48,9 +46,5 @@ public abstract class AbstractChemkinRoutine {
 
 	public ConfigurationInput getConfig() {
 		return config;
-	}
-
-	public Runtime getRuntime() {
-		return runtime;
 	}
 }
