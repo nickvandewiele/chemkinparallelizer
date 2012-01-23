@@ -35,15 +35,14 @@ public class CKEmulation extends AbstractCKEmulation{
 
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
-	public CKEmulation(ConfigurationInput config, Runtime runtime){
+	public CKEmulation(ConfigurationInput config){
 		super.config = config;
-		super.runtime = runtime;
 	}
 
 	public CKEmulation(ConfigurationInput config, Runtime rt,
 			ReactorInput reactorInput) {
 
-		this(config, rt);
+		this(config);
 
 		super.reactorInput = reactorInput;
 		int length = reactorInput.filename.length();

@@ -14,8 +14,6 @@ public abstract class AbstractCKEmulation extends Thread{
 
 	ConfigurationInput config;
 
-	Runtime runtime;
-
 	public ExperimentalValue experiment;
 
 	protected ModelValue modelValue;
@@ -50,10 +48,6 @@ public abstract class AbstractCKEmulation extends Thread{
 
 	public String getReactorOut() {
 		return reactorOut;
-	}
-
-	public Runtime getRuntime() {
-		return runtime;
 	}
 
 	public ModelValue getModelValue() {

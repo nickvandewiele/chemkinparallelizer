@@ -22,7 +22,7 @@ public class CheckChemistryFileCommand implements Command {
 	}
 	public void execute() {
 		Runtime runtime = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(config, runtime);
+		CKEmulation c = new CKEmulation(config);
 		//instantiation of parent chemkin routine:
 		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
 		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:

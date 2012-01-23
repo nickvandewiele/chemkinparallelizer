@@ -20,7 +20,6 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 		return simulation.getConfig();
 	}
 	
-
 	public String getReactorDir() {
 		return simulation.getReactorDir();
 	}
@@ -31,10 +30,6 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 
 	public String getReactorOut() {
 		return simulation.getReactorOut();
-	}
-	
-	public Runtime getRuntime() {
-		return simulation.getRuntime();
 	}
 	
 	public ModelValue getModelValue() {
