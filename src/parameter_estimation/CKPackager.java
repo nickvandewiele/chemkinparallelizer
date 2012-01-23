@@ -36,7 +36,7 @@ public class CKPackager extends AbstractCKPackager{
 		 * creating the CKSolnList.txt is completely finished:
 		 */
 		ReactorInput input = config.reactor_inputs.get(0);
-		simulations[0] =  new CKEmulation(config, rt, input);
+		simulations[0] =  new CKEmulation(config, input);
 		simulations[0] = new RegularSimulationDecorator(input, simulations[0], semaphore);
 		simulations[0] =  new FirstSimulationDecorator(simulations[0]);
 		simulations[0].start();
@@ -81,7 +81,7 @@ public class CKPackager extends AbstractCKPackager{
 		 */
 		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
 			ReactorInput input_i = config.reactor_inputs.get(i);
-			simulations[i] = new CKEmulation(config, rt, input_i);
+			simulations[i] = new CKEmulation(config, input_i);
 			simulations[i] = new RegularSimulationDecorator(config.reactor_inputs.get(i), simulations[i], semaphore);
 
 

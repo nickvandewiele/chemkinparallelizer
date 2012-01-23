@@ -39,8 +39,7 @@ public class CKEmulation extends AbstractCKEmulation{
 		super.config = config;
 	}
 
-	public CKEmulation(ConfigurationInput config, Runtime rt,
-			ReactorInput reactorInput) {
+	public CKEmulation(ConfigurationInput config, ReactorInput reactorInput) {
 
 		this(config);
 
