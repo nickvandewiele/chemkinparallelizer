@@ -34,14 +34,13 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 	@Override
 	public void executeCKRoutine() {
 		String s = null;
-		String [] environment = null;
 		Process p;
 		try {
 			if(getReactorDir() == null){
 				p = Runtime.getRuntime().exec(this.keywords);
 			}
 			else{
-				p = Runtime.getRuntime().exec(this.keywords, environment, new File(getReactorDir()));
+				p = Runtime.getRuntime().exec(this.keywords, null, new File(getReactorDir()));//environment = null
 			}
 			
 			BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));
