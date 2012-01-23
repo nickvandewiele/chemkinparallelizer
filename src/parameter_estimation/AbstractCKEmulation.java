@@ -21,7 +21,9 @@ public abstract class AbstractCKEmulation extends Thread{
 	protected ModelValue modelValue;
 	
 	public String reactorDir;
+	
 	public ReactorInput reactorInput;
+	
 	protected String reactorOut;
 
 	//Semaphore that controls chemkin license check-in and check-outs:

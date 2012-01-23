@@ -1,6 +1,13 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKReactorGenericPSR" of Chemkin.
+ * 
+ * Corresponds to CSTR model.
+ * @author Nick
+ *
+ */
 public class CSTRDecorator extends ChemkinRoutineDecorator {
 
 	public CSTRDecorator(AbstractChemkinRoutine routine){

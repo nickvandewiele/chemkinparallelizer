@@ -1,6 +1,13 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the batch "run_chemkin_env_setup.bat" of Chemkin.
+ * 
+ * The batch command sets a couple of environment variables required for chemkin to be run through the GUI. 
+ * @author Nick
+ *
+ */
 public class ChemkinEnvDecorator extends ChemkinRoutineDecorator {
 
 

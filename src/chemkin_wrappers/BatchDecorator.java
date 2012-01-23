@@ -1,6 +1,13 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKReactorGenericClosed" of Chemkin.
+ * 
+ * Corresponds to a batch reactor
+ * @author Nick
+ *
+ */
 public class BatchDecorator extends ChemkinRoutineDecorator {
 
 	public BatchDecorator(AbstractChemkinRoutine routine){

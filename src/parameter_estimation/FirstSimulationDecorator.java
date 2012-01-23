@@ -39,7 +39,7 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		routine.reactorDir = getReactorDir();
 		routine.reactorOut = getReactorOut();
 		routine.reactorSetup = getReactorInput().filename;
-		routine = new CreateSolnListDecorator(simulation, routine);//decoration of parent chemkin routine:
+		routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 
 		writeSolnList();

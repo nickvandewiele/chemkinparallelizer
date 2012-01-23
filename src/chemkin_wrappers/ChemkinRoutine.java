@@ -12,7 +12,9 @@ import parsers.ConfigurationInput;
 
 
 /**
- * Implementation of {@link AbstractChemkinRoutine}
+ * Implementation of {@link AbstractChemkinRoutine} that provides an
+ * implementation for the executeCKRoutine, namely executing a process with the 
+ * keywords specified in the keywords string array.
  * @author nmvdewie
  *
  */
@@ -28,7 +30,7 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 		super.runtime = runtime;
 	}
 	/**
-	 *  this routine overloads the standard execute_CKRoutine with a specified working directory, 
+	 *  This routine overloads the abstract executeCKRoutine with a specified working directory, 
 	 *  different from the standard working directory
 	 */
 	@Override

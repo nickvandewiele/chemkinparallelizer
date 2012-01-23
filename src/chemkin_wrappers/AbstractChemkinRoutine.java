@@ -5,6 +5,16 @@ import parsers.ConfigurationInput;
 
 /**
  * Abstract superclass that will commmon information for every chemkin routine that will be called.
+ * 
+ * Attributes are:
+ * <LI> the Configuration object
+ * <LI> pointers to reactor directory, reactor setup, reactor output file
+ * <LI> a runtime object
+ * <LI> a String array containing the keywords that will be passed as command line arguments.
+ * 
+ * A method {@link AbstractChemkinRoutine} executeCKRoutine() executes the keyword array.
+ * 
+ * For each of the attributes getters are provided and will be called by the decorators.
  * @author nmvdewie
  *
  */
