@@ -28,7 +28,6 @@ public class CKPackager extends AbstractCKPackager{
 	}
 
 	public AbstractCKEmulation []  runAllSimulations(){
-		Runtime rt = Runtime.getRuntime();
 		Semaphore semaphore = new Semaphore(getConfig().licenses.getValue()); 
 		/*
 		 * First simulation:
