@@ -1,8 +1,11 @@
 package datatypes;
 
 /**
- * superclass for Ignition Delay and Flame Speed experiment
- * getters and setters implemented for attribute 'value'
+ * Abstract superclass for all experimental data
+ * 
+ * Constants show the possibilities for the subtypes.
+ * 
+ * One attribute, type, holds the type of experimental value.
  * @author nmvdewie
  *
  */
