@@ -9,13 +9,19 @@ import java.io.BufferedReader;
  * 
  * the container of the data is not specified here because it varies among the model value types.
  * 
+ * The attribute type holds the nature of the model value.
+ * 
+ * Two required methods are defined: a setter for the value and a method that returns the sum of squares of the value(s).
  * @author nmvdewie
  *
  */
 public abstract class ModelValue {
-	public enum TYPE {PRODUCT_EFFLUENT, IGNITION_DELAY, FLAME_SPEED}
 	
-	public TYPE type;
+	public String type;
+	
+	public static final String PRODUCT_EFFLUENT = "PRODUCT_EFFLUENT";
+	public static final String IGNITION_DELAY = "IGNITION_DELAY";
+	public static final String FLAME_SPEED = "FLAME_SPEED";
 	
 	public abstract void setValue(BufferedReader bufferedReader);
 
