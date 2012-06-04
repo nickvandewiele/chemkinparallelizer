@@ -19,8 +19,6 @@ public class ParameterEstimationDriver {
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
 		initializeLog();
-
-		readINPUT(args);
 		
 		XMLInputParser read = new XMLInputParser();
 		//assume INPUT.xml is passed in as command line argument
@@ -52,20 +50,6 @@ public class ParameterEstimationDriver {
 		
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
-	}
-
-	private static BufferedReader readINPUT(String[] args)
-	throws FileNotFoundException {
-		BufferedReader in;
-		if(args.length == 0){
-			//input file will be searched in working directory under the name INPUT.txt:
-			in = new BufferedReader(new FileReader(System.getProperty("user.dir")+"/INPUT.txt"));	
-		}
-		else {
-			//specify user-defined input file:
-			in = new BufferedReader(new FileReader(args[0]));
-		}
-		return in;
 	}
 
 	
