@@ -1,6 +1,11 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKReactorFreelyPropagatingFlame" of Chemkin.
+ * @author Nick
+ *
+ */
 public class LaminarFlameDecorator extends ChemkinRoutineDecorator {
 
 	public LaminarFlameDecorator(AbstractChemkinRoutine routine){

@@ -10,18 +10,16 @@ public class ModelValueFactory {
 	public ModelValueFactory(String model2){
 		this.model = model2;
 	}
-	public ModelValue createEffluentModelValue() {
-		return null;
-	}
 	
-	public ModelValue createIgnitionDelayModelValue() {
-		return null;
-	}
-	
-	public ModelValue createFlameSpeedtModelValue() {
-		return null;
-	}
-	
+	/**
+	 * A model value is created based on the type of reactor setup that is specified. 
+	 * 
+	 * For example, in a PFR reactor product effluent data can be collected, but flame speeds, or 
+	 * ignition delays cannot be measured in this type of reactor.
+	 * 
+	 * 
+	 * @return
+	 */
 	public ModelValue createModelValue(){
 		if(model.equals(ReactorInput.PFR)){
 			return new EffluentModelValue();

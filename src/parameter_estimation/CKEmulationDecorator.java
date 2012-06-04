@@ -5,7 +5,9 @@ import parsers.ConfigurationInput;
 import readers.ReactorInput;
 
 /**
- * Supertype for decorators for {@link CKEmulation}
+ * Supertype for decorators for {@link AbstractCKEmulation} that will add new behaviour
+ * for particular chemkin simulations such as 
+ * <LI>the first one (that needs to create a CKSolnList)
  * @author nmvdewie
  *
  */
@@ -20,7 +22,6 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 		return simulation.getConfig();
 	}
 	
-
 	public String getReactorDir() {
 		return simulation.getReactorDir();
 	}
@@ -31,10 +32,6 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 
 	public String getReactorOut() {
 		return simulation.getReactorOut();
-	}
-	
-	public Runtime getRuntime() {
-		return simulation.getRuntime();
 	}
 	
 	public ModelValue getModelValue() {

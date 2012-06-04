@@ -12,7 +12,9 @@ import parsers.ConfigurationInput;
 
 
 /**
- * Implementation of {@link AbstractChemkinRoutine}
+ * Implementation of {@link AbstractChemkinRoutine} that provides an
+ * implementation for the executeCKRoutine, namely executing a process with the 
+ * keywords specified in the keywords string array.
  * @author nmvdewie
  *
  */
@@ -20,28 +22,25 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 	
 	static Logger logger = Logger.getLogger(ChemkinRoutine.class);
 	
-	public ChemkinRoutine(ConfigurationInput config,
-			Runtime runtime) {
+	public ChemkinRoutine(ConfigurationInput config) {
 		
 		super.config = config;
-		
-		super.runtime = runtime;
+
 	}
 	/**
-	 *  this routine overloads the standard execute_CKRoutine with a specified working directory, 
+	 *  This routine overloads the abstract executeCKRoutine with a specified working directory, 
 	 *  different from the standard working directory
 	 */
 	@Override
 	public void executeCKRoutine() {
 		String s = null;
-		String [] environment = null;
 		Process p;
 		try {
 			if(getReactorDir() == null){
-				p = getRuntime().exec(this.keywords);
+				p = Runtime.getRuntime().exec(this.keywords);
 			}
 			else{
-				p = getRuntime().exec(this.keywords, environment, new File(getReactorDir()));
+				p = Runtime.getRuntime().exec(this.keywords, null, new File(getReactorDir()));//environment = null
 			}
 			
 			BufferedReader stdInput_p = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -70,9 +69,5 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 			e.printStackTrace();
 		}
 	
-	}
-
-	public Runtime getRuntime() {
-		return super.getRuntime();
 	}
 }

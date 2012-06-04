@@ -1,13 +1,7 @@
 package parameter_estimation;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.junit.runners.ParentRunner;
+import parsers.ConfigurationInput;
 
 import datatypes.ExperimentalValue;
 
@@ -19,16 +13,16 @@ import datatypes.ExperimentalValue;
  */
 public class StatisticsCommand implements Command {
 	public static Logger logger = Logger.getLogger(StatisticsCommand.class);
-	Param_Est par_est;
+	ConfigurationInput config;
 
-	public StatisticsCommand(Param_Est p){
-		this.par_est = p;
+	public StatisticsCommand(ConfigurationInput config){
+		this.config = config;
 	}
 	public void execute() {
 		logger.info("STATISTICS MODE");
 		try {
 			statistics();
-			Command parity = new ParityPlotCommand(par_est);
+			Command parity = new ParityPlotCommand(config);
 			parity.execute();
 			
 		} catch (Exception e) {
@@ -43,16 +37,16 @@ public class StatisticsCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(par_est.config);
+		Command checkChemistry = new CheckChemistryFileCommand(config);
 		checkChemistry.execute();
 
 		// take initial guesses from chem.inp file:
-		par_est.config.chemistry.getParams().setBeta(par_est.config.chemistry.initialGuess(par_est.config.paths.getWorkingDir()));
+		config.chemistry.getParams().setBeta(config.chemistry.initialGuess(config.paths.getWorkingDir()));
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = par_est.config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
 
-		Optimization optimization = new Optimization(par_est.config);
+		Optimization optimization = new Optimization(config);
 
 		optimization.calcStatistics();
 		//moveOutputFiles();

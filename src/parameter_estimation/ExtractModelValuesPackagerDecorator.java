@@ -2,6 +2,12 @@ package parameter_estimation;
 
 import datatypes.ModelValue;
 
+/**
+ * The type extracts the model values from simulations array into an attribute in the 
+ * packager type itself.
+ * @author Nick
+ *
+ */
 public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecorator {
 	
 	public ExtractModelValuesPackagerDecorator(AbstractCKPackager packager){

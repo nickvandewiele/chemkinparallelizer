@@ -1,6 +1,13 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKReactorPlugFlow" of Chemkin.
+ * 
+ * Corresponds to PFR model.
+ * @author Nick
+ *
+ */
 public class PFRDecorator extends ChemkinRoutineDecorator {
 
 

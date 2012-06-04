@@ -12,7 +12,9 @@ import readers.ReactorInput;
 import readers.ReactorSetupInput;
 
 /**
- * CKPackager is a type that bundles all executed CKEmulations into one data structure. It corresponds to the set of experiments that are executed 
+ * CKPackager is a type that bundles all executed CKEmulations into one data structure. 
+ * It corresponds to the set of experiments that are executed and are structured in the same way
+ * the reactor input files are provided in the input.xml file. 
  * @author nmvdewie
  *
  */
@@ -26,7 +28,6 @@ public class CKPackager extends AbstractCKPackager{
 	}
 
 	public AbstractCKEmulation []  runAllSimulations(){
-		Runtime rt = Runtime.getRuntime();
 		Semaphore semaphore = new Semaphore(getConfig().licenses.getValue()); 
 		/*
 		 * First simulation:
@@ -34,7 +35,7 @@ public class CKPackager extends AbstractCKPackager{
 		 * creating the CKSolnList.txt is completely finished:
 		 */
 		ReactorInput input = config.reactor_inputs.get(0);
-		simulations[0] =  new CKEmulation(config, rt, input);
+		simulations[0] =  new CKEmulation(config, input);
 		simulations[0] = new RegularSimulationDecorator(input, simulations[0], semaphore);
 		simulations[0] =  new FirstSimulationDecorator(simulations[0]);
 		simulations[0].start();
@@ -45,7 +46,7 @@ public class CKPackager extends AbstractCKPackager{
 			e1.printStackTrace();
 		}
 		
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, rt);
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
 		routine.reactorDir = simulations[0].getReactorDir();
 		//copy CKSolnList from working dir to specific reactor dir:
 		Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[0].getReactorDir()+ChemkinConstants.CKSOLNLIST);
@@ -79,7 +80,7 @@ public class CKPackager extends AbstractCKPackager{
 		 */
 		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
 			ReactorInput input_i = config.reactor_inputs.get(i);
-			simulations[i] = new CKEmulation(config, rt, input_i);
+			simulations[i] = new CKEmulation(config, input_i);
 			simulations[i] = new RegularSimulationDecorator(config.reactor_inputs.get(i), simulations[i], semaphore);
 
 
@@ -100,7 +101,7 @@ public class CKPackager extends AbstractCKPackager{
 		
 		// run the GetSolution utility:
 		for (int i = 1; i < simulations.length; i++) {//start with 2nd simulation i = 1
-			routine = new ChemkinRoutine(config, rt);
+			routine = new ChemkinRoutine(config);
 			routine.reactorDir = simulations[i].getReactorDir();
 			//copy CKSolnList from working dir to specific reactor dir:
 			Tools.copyFile(config.paths.getWorkingDir()+ChemkinConstants.CKSOLNLIST,simulations[i].getReactorDir()+ChemkinConstants.CKSOLNLIST);

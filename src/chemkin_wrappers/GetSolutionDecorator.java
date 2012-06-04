@@ -2,6 +2,13 @@ package chemkin_wrappers;
 
 import parameter_estimation.ChemkinConstants;
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "GetSolution" of Chemkin.
+ * 
+ * Converts the XMLData.zip file into excel readable csv file with extension .ckcsv.
+ * @author Nick
+ *
+ */
 public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 
 	public GetSolutionDecorator(AbstractChemkinRoutine routine){

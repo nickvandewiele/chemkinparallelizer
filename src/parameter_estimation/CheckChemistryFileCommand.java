@@ -12,7 +12,6 @@ import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.PreProcessDecorator;
 
-
 public class CheckChemistryFileCommand implements Command {
 	public static Logger logger = Logger.getLogger(CheckChemistryFileCommand.class);
 	ConfigurationInput config;
@@ -21,10 +20,9 @@ public class CheckChemistryFileCommand implements Command {
 		this.config = config;
 	}
 	public void execute() {
-		Runtime runtime = Runtime.getRuntime();
-		CKEmulation c = new CKEmulation(config, runtime);
+		CKEmulation c = new CKEmulation(config);
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config, runtime);
+		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
 		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 		

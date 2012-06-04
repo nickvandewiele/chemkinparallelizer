@@ -5,14 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import datatypes.ModelValue.TYPE;
 
 
 public class FlameSpeedModelValue extends ModelValue {
-	TYPE type = ModelValue.TYPE.FLAME_SPEED;
-
+	
 	public double value;
 
+	public FlameSpeedModelValue(){
+		type = ModelValue.FLAME_SPEED;
+
+	}
 	@Override
 	public void setValue(BufferedReader bufferedReader) {
 		readCkcsvFlameSpeed(bufferedReader);

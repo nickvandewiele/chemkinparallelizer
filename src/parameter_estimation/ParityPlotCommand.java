@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 import datatypes.ExperimentalValue;
 import datatypes.ModelValue;
 
@@ -20,10 +22,10 @@ import datatypes.ModelValue;
  */
 public class ParityPlotCommand implements Command {
 	public static Logger logger = Logger.getLogger(ParityPlotCommand.class);
-	Param_Est parameter_estimation;
+	ConfigurationInput config;
 
-	public ParityPlotCommand(Param_Est p){
-		this.parameter_estimation = p;
+	public ParityPlotCommand(ConfigurationInput config){
+		this.config = config;
 	}
 	public void execute() {
 		logger.info("PARITY PLOT MODE");
@@ -40,25 +42,25 @@ public class ParityPlotCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(parameter_estimation.config);
+		Command checkChemistry = new CheckChemistryFileCommand(config);
 		checkChemistry.execute();
 
-		AbstractCKPackager ckp = new CKPackager(parameter_estimation.config);
+		AbstractCKPackager ckp = new CKPackager(config);
 		ckp = new ExtractModelValuesPackagerDecorator(ckp);
 		ckp.runAllSimulations();
 		ModelValue[] modelValues = ckp.getModelValues();
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = parameter_estimation.config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
 
-		String speciesPath = parameter_estimation.config.paths.getWorkingDir()+ChemkinConstants.CHEMASU;
+		String speciesPath = config.paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
 		List<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 
-		ParityWriter writer = new ParityWriter(parameter_estimation.config.paths, experimentalValues, modelValues, speciesNames);
+		ParityWriter writer = new ParityWriter(config.paths, experimentalValues, modelValues, speciesNames);
 		writer.write();
 
-		Tools.moveOutputFiles(parameter_estimation.config.paths);
+		Tools.moveOutputFiles(config.paths);
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Parity Mode to finish: (sec) "+timeTook);

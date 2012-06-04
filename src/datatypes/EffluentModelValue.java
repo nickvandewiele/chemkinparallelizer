@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import datatypes.ModelValue.TYPE;
 
 import parameter_estimation.Tools;
 /**
@@ -16,9 +15,7 @@ import parameter_estimation.Tools;
  *
  */
 public class EffluentModelValue extends ModelValue{
-
-	TYPE type = ModelValue.TYPE.PRODUCT_EFFLUENT;
-
+ 
 	public Map<String,Double> speciesFractions;
 	/**
 	 * @category getter
@@ -35,6 +32,7 @@ public class EffluentModelValue extends ModelValue{
 		this.speciesFractions = speciesFractions;
 	}
 	public EffluentModelValue(){
+		type = ModelValue.PRODUCT_EFFLUENT;
 		speciesFractions = new HashMap<String, Double>();
 	}
 	@Override

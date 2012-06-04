@@ -5,16 +5,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import datatypes.ModelValue.TYPE;
-
-
+/**
+ * The Ignition delay currently implemented is the defined as the first maximum
+ * in temperature increase as a function of reaction time.
+ * @author Nick
+ *
+ */
 public class IgnitionDelayModelValue extends ModelValue {
 
-	
-	TYPE type = ModelValue.TYPE.IGNITION_DELAY;
-	
 	public double value;
 
+	public IgnitionDelayModelValue(){
+		type = ModelValue.IGNITION_DELAY;
+	}
 	@Override
 	public void setValue(BufferedReader bufferedReader) {
 		readCkcsvIgnitionDelay(bufferedReader);

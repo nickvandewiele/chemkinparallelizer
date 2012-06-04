@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 import datatypes.ExperimentalValue;
 
 /**
@@ -14,17 +16,17 @@ import datatypes.ExperimentalValue;
  */
 public class OptimizationCommand implements Command {
 	public static Logger logger = Logger.getLogger(OptimizationCommand.class);
-	Param_Est par_est;
+	ConfigurationInput config;
 
-	public OptimizationCommand(Param_Est p){
-		this.par_est = p;
+	public OptimizationCommand(ConfigurationInput config){
+		this.config = config;
 	}
 
 	public void execute() {
 		logger.info("PARAMETER OPTIMIZATION MODE");
 		try {
 			optimizeParameters();
-			Command statisticsCommand = new StatisticsCommand(par_est);
+			Command statisticsCommand = new StatisticsCommand(config);
 			statisticsCommand.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -47,27 +49,27 @@ public class OptimizationCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(par_est.config);
+		Command checkChemistry = new CheckChemistryFileCommand(config);
 		checkChemistry.execute();
 		
 		// take initial guesses from chem.inp file:
-		par_est.config.chemistry.initialGuess(par_est.config.paths.getWorkingDir());
+		config.chemistry.initialGuess(config.paths.getWorkingDir());
 		logger.info("Initial Guesses of parameters are:");
 		//Printer.printMatrix(par_est.config.chemistry.getParams().getBeta(),System.out);
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = par_est.config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
 
-		Optimization optimization = new Optimization(par_est.config);
+		Optimization optimization = new Optimization(config);
 
 		//call optimization routine:
 		double [][]beta = optimization.optimize();
-		par_est.config.chemistry.getParams().setBeta(beta);
+		config.chemistry.getParams().setBeta(beta);
 
 		//write optimized parameters:
 		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
 		writeParameters(out);
-		Tools.moveFile(par_est.config.paths.getOutputDir(), "params.txt");
+		Tools.moveFile(config.paths.getOutputDir(), "params.txt");
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this optimization to finish: (sec) "+timeTook);
@@ -78,10 +80,10 @@ public class OptimizationCommand implements Command {
 	public void writeParameters(PrintWriter out){
 		logger.info("New values of parameters are: ");
 		StringBuffer stringBuff = new StringBuffer();
-		for (int i = 0; i < par_est.config.chemistry.getParams().getBeta().length; i++) {
+		for (int i = 0; i < config.chemistry.getParams().getBeta().length; i++) {
 			stringBuff.append("Reaction "+i+": \n");
-			for (int j = 0; j < par_est.config.chemistry.getParams().getBeta()[0].length; j++){
-				stringBuff.append(par_est.config.chemistry.getParams().getBeta()[i][j]+", \n");
+			for (int j = 0; j < config.chemistry.getParams().getBeta()[0].length; j++){
+				stringBuff.append(config.chemistry.getParams().getBeta()[i][j]+", \n");
 			}
 			stringBuff.append("\n");
 		}

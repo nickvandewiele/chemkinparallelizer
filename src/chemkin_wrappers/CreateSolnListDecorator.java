@@ -1,19 +1,21 @@
 package chemkin_wrappers;
 
-import parameter_estimation.AbstractCKEmulation;
 import parameter_estimation.ChemkinConstants;
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "GetSolution" of Chemkin. with the -listonly option.
+ * 
+ * This option does not retrieve model results but prints the CKSolnList.txt file with flags of which information of the 
+ * output that needs to be retrieved.
+ * @author Nick
+ *
+ */
 public class CreateSolnListDecorator extends ChemkinRoutineDecorator {
 
-	AbstractCKEmulation simulation;
-
-	public CreateSolnListDecorator(AbstractCKEmulation simulation, AbstractChemkinRoutine routine){
-		this.simulation = simulation;
+	public CreateSolnListDecorator(AbstractChemkinRoutine routine){
 		super.routine = routine;
 	}
-	/**
-	 * createSolnList creates the CKSolnList.txt file by calling the "GetSolution -listonly" routine<BR> 
-	 */
+
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
 		routine.keywords[0] = getConfig().paths.getBinDir()+"GetSolution";

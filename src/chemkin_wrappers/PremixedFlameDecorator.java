@@ -1,6 +1,11 @@
 package chemkin_wrappers;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKReactorBurnerStabilizedFlame" of Chemkin
+ * @author Nick
+ *
+ */
 public class PremixedFlameDecorator extends ChemkinRoutineDecorator {
 
 

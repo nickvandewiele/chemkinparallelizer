@@ -3,6 +3,11 @@ package chemkin_wrappers;
 import parameter_estimation.ChemkinConstants;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "Chem" of Chemkin.
+ * @author Nick
+ *
+ */
 public class ChemDecorator extends ChemkinRoutineDecorator {
 
 	public ChemDecorator(AbstractChemkinRoutine routine){

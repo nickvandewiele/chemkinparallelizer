@@ -14,7 +14,9 @@ import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.CreateSolnListDecorator;
 
 /**
- *  Create and adapt CKSolnList.txt file
+ * 
+ * Decorator implementation of {@link CKEmulationDecorator}.
+ *  Creates and adapts CKSolnList.txt file.
  * @author nmvdewie
  *
  */
@@ -35,11 +37,11 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 		}
 		//now create CKSolnList:
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig(), getRuntime());
+		AbstractChemkinRoutine routine = new ChemkinRoutine(getConfig());
 		routine.reactorDir = getReactorDir();
 		routine.reactorOut = getReactorOut();
 		routine.reactorSetup = getReactorInput().filename;
-		routine = new CreateSolnListDecorator(simulation, routine);//decoration of parent chemkin routine:
+		routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 
 		writeSolnList();

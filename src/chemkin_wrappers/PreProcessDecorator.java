@@ -6,7 +6,17 @@ import java.io.PrintWriter;
 
 import parameter_estimation.ChemkinConstants;
 
-//test
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKPreProcess" of Chemkin.
+ * 
+ * This Preprocessor checks whether the chemistry input file is error-free and writes diagnostics (.out) and 
+ * link file (.asc).
+ * 
+ * The Preprocessor takes a file "CKPreprocess.input" as an argument with pointers to chemisty input file and 
+ * filenames for output files.
+ * @author Nick
+ *
+ */
 public class PreProcessDecorator extends ChemkinRoutineDecorator {
 
 
@@ -31,7 +41,8 @@ public class PreProcessDecorator extends ChemkinRoutineDecorator {
 
 	}
 	/**
-	 * create CKPreprocess.input file with directions to chem_inp and output/link files of chemistry and transport:
+	 * Creates and writes a CKPreprocess.input file with directions to chemistry input file (chem.inp) 
+	 * and output/link files of chemistry and transport.
 	 * @param out TODO
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -51,17 +62,17 @@ public class PreProcessDecorator extends ChemkinRoutineDecorator {
 			else {
 				osChar = '\\';
 			}		
-			out.println("IN_CHEM_INPUT="+routine.config.paths.getWorkingDir()+osChar+routine.config.chemistry.getChemistryInput());
+			out.println("IN_CHEM_INPUT="+routine.getConfig().paths.getWorkingDir()+osChar+routine.config.chemistry.getChemistryInput());
 
 			//chemistry output, link and species list:
-			out.println("OUT_CHEM_OUTPUT="+routine.config.paths.getWorkingDir()+osChar+ChemkinConstants.CHEMOUT);
-			out.println("OUT_CHEM_ASC="+routine.config.paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASC);
-			out.println("OUT_CHEM_SPECIES="+routine.config.paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASU);
+			out.println("OUT_CHEM_OUTPUT="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMOUT);
+			out.println("OUT_CHEM_ASC="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASC);
+			out.println("OUT_CHEM_SPECIES="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASU);
 
 			//transport link files and log file:
 			out.println("FIT_TRANSPORT_PROPERTIES=1");
-			out.println("OUT_TRAN_OUTPUT="+routine.config.paths.getWorkingDir()+osChar+ChemkinConstants.TRANOUT);
-			out.println("OUT_TRAN_ASC="+routine.config.paths.getWorkingDir()+osChar+ChemkinConstants.TRANASC);
+			out.println("OUT_TRAN_OUTPUT="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.TRANOUT);
+			out.println("OUT_TRAN_ASC="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.TRANASC);
 
 			out.close();
 		} catch (IOException e) {

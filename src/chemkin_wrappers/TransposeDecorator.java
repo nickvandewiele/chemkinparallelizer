@@ -3,6 +3,13 @@ package chemkin_wrappers;
 import parameter_estimation.ChemkinConstants;
 
 
+/**
+ * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKSolnTranspose" of Chemkin.
+ * 
+ * The transpose utility converts the .ckcsv output of GetSolution into the transposed.
+ * @author Nick
+ *
+ */
 public class TransposeDecorator extends ChemkinRoutineDecorator {
 
 	public TransposeDecorator(AbstractChemkinRoutine routine){
