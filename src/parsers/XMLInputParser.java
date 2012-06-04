@@ -236,6 +236,15 @@ public class XMLInputParser {
 					
 					if (endElement.getName().getLocalPart() == (REACTOR_SETUPS)) {
 						configurationInput.reactor_setup = list_reactor_setup.toArray(new ReactorSetupInput[list_reactor_setup.size()]);
+						
+						/* Once all the reactor setup input are collected, transform them
+						* into reactor inputs and 
+						* create reactor input files, if necessary.
+						*
+						*/
+						for(ReactorSetupInput input : configurationInput.reactor_setup)
+							configurationInput.addReactorInput(input);
+						
 					}
 					
 					if (endElement.getName().getLocalPart() == (REACTIONS)) {
