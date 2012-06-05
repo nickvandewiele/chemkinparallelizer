@@ -46,7 +46,7 @@ public class CKEmulation extends AbstractCKEmulation{
 		super.reactorInput = reactorInput;
 		int length = reactorInput.filename.length();
 		super.reactorOut = reactorInput.filename.substring(0,(length-4))+".out";
-		super.reactorDir = config.paths.getWorkingDir()+"temp_ "+reactorInput.filename.substring(0,(length-4))+"/";
+		super.reactorDir = config.paths.getWorkingDir()+"temp_"+reactorInput.filename.substring(0,(length-4))+"/";
 
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
