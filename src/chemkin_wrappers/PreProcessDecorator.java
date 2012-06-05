@@ -49,30 +49,20 @@ public class PreProcessDecorator extends ChemkinRoutineDecorator {
 	 */
 	public void writeCKPreProcessInput(){
 
-		System.out.println(routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT);
 		PrintWriter out;
 		try {
-			out = new PrintWriter(new FileWriter(routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));
-			//in windows: user.dir needs to be followed by "\", in *nix by "/"... 
-			String osname = System.getProperty("os.name");
-			char osChar;
-			if (osname.equals("Linux")){
-				osChar = '/';
-			}
-			else {
-				osChar = '\\';
-			}		
-			out.println("IN_CHEM_INPUT="+routine.getConfig().paths.getWorkingDir()+osChar+routine.config.chemistry.getChemistryInput());
+			out = new PrintWriter(new FileWriter(routine.config.paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT));	
+			out.println("IN_CHEM_INPUT="+routine.getConfig().paths.getWorkingDir()+routine.config.chemistry.getChemistryInput());
 
 			//chemistry output, link and species list:
-			out.println("OUT_CHEM_OUTPUT="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMOUT);
-			out.println("OUT_CHEM_ASC="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASC);
-			out.println("OUT_CHEM_SPECIES="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.CHEMASU);
+			out.println("OUT_CHEM_OUTPUT="+routine.getConfig().paths.getWorkingDir()+ChemkinConstants.CHEMOUT);
+			out.println("OUT_CHEM_ASC="+routine.getConfig().paths.getWorkingDir()+ChemkinConstants.CHEMASC);
+			out.println("OUT_CHEM_SPECIES="+routine.getConfig().paths.getWorkingDir()+ChemkinConstants.CHEMASU);
 
 			//transport link files and log file:
 			out.println("FIT_TRANSPORT_PROPERTIES=1");
-			out.println("OUT_TRAN_OUTPUT="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.TRANOUT);
-			out.println("OUT_TRAN_ASC="+routine.getConfig().paths.getWorkingDir()+osChar+ChemkinConstants.TRANASC);
+			out.println("OUT_TRAN_OUTPUT="+routine.getConfig().paths.getWorkingDir()+ChemkinConstants.TRANOUT);
+			out.println("OUT_TRAN_ASC="+routine.getConfig().paths.getWorkingDir()+ChemkinConstants.TRANASC);
 
 			out.close();
 		} catch (IOException e) {
