@@ -99,51 +99,8 @@ public class FirstSimulationDecorator extends CKEmulationDecorator{
 				else {
 					//separator are TWO spaces, not just one space!
 					String[] st_dummy = dummy.split("  ");
-					//only species variables and molecular weight variable are reported:
-					if (st_dummy[0].trim().equals("VARIABLE")){
-						//check if the 2nd keyword matches "molecular weight":
-						if (st_dummy[1].trim().equals("molecular_weight")){							
-							//no sensitivity info for molecular weight variable
-							st_dummy[4]="0";
-						}
-						//check if the 2nd keyword matches "exit_mass_flow_rate":
-						else if(st_dummy[1].trim().equals("exit_mass_flow_rate")){
-							st_dummy[4]="0";
-						}
-						//check if 2nd keyword is one of the species names:
-						else if(speciesNames.contains(st_dummy[1])){
-							//no sensitivity info for species: set last number in the line to zero
-							st_dummy[4]="0";
-						}
-						//ignition data should also considered:
-						else if(st_dummy[1].trim().equals("ignition_data")){
-							//check whether this experiments is about ignition delays:
-
-							//no sensitivity
-							st_dummy[4]="0";
-
-
-						}
-						else if(st_dummy[1].trim().equals("flame_speed")){
-							//check whether this experiments is about flame speeds:
-
-							//no sensitivity
-							st_dummy[4]="0";
-
-
-						}
-
-						//the rest of the variables are set to zero and will not be reported in the .ckcsv file
-						else {
-
-							//st_dummy[3] is standard equal to zero
-							st_dummy[2]="0";
-							st_dummy[4]="0";
-
-						}
-					}
 					//set UNIT of Distance to m instead of cm:
-					else if(st_dummy[0].trim().equals("UNIT")){
+					if(st_dummy[0].trim().equals("UNIT")){
 						if (st_dummy[1].trim().equals("Distance")){
 							st_dummy[2]="(cm)";
 						}
