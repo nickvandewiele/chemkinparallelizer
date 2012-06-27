@@ -23,9 +23,9 @@ public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 		 */
 		routine.keywords = new String [5];
 		routine.keywords[0] = getConfig().paths.getBinDir()+"GetSolution";
-		routine.keywords[1] = "-nosen";
-		routine.keywords[2] = "-norop";
-		routine.keywords[3] = "-mass";
+		routine.keywords[1] = "-norop";
+		routine.keywords[2] = "";
+		routine.keywords[3] = "";
 		routine.keywords[4] = getReactorDir()+ChemkinConstants.XML;
 
 		return routine.keywords;
