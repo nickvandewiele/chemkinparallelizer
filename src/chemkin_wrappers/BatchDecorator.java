@@ -18,9 +18,9 @@ public class BatchDecorator extends ChemkinRoutineDecorator {
 		routine.keywords = new String [5];
 		routine.keywords[0] = getConfig().paths.getBinDir()+"CKReactorGenericClosed";
 		routine.keywords[1] = "-i";
-		routine.keywords[2] = routine.getReactorDir()+routine.reactorSetup;
+		routine.keywords[2] = getReactorDir()+getReactorSetup();
 		routine.keywords[3] = "-o";
-		routine.keywords[4] = routine.getReactorDir()+reactorOut;
+		routine.keywords[4] = getReactorDir()+getReactorOut();
 	
 		return routine.keywords;
 	}

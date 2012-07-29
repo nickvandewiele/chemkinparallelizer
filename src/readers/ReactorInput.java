@@ -12,6 +12,7 @@ public class ReactorInput {
 	public static final String CSTR = "CSTR";
 	public static final String IGNITION_DELAY = "IGNITION_DELAY";
 	public static final String FLAME_SPEED = "FLAME_SPEED";
+	public static final String BATCH = "BATCH";
 	
 	public String type;
 	

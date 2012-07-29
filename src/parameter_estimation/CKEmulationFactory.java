@@ -11,7 +11,7 @@ import chemkin_wrappers.PFRDecorator;
 public class CKEmulationFactory {
 
 	AbstractChemkinRoutine routine;
-	
+
 	public CKEmulationFactory(AbstractChemkinRoutine routine) {
 		this.routine = routine;
 	}
@@ -20,24 +20,30 @@ public class CKEmulationFactory {
 		//PFR
 		if(model.equals(ReactorInput.PFR)){
 			return new PFRDecorator(routine);//decoration of parent chemkin routine:
-			
+
 		}
 
 		//CSTR
 		else if (model.equals(ReactorInput.CSTR)){
 			return new CSTRDecorator(routine);//decoration of parent chemkin routine:
-			
+
 		}
 
 		//ignition delay, batch reactor, transient solver, as in shock tube experiments
 		else if (model.equals(ReactorInput.IGNITION_DELAY)){
 			return new BatchDecorator(routine);//decoration of parent chemkin routine:
-			
+
 		}
 		//freely propagating laminar flame (flame speed experiments):
 		else if(model.equals(ReactorInput.FLAME_SPEED)	){
 			return new LaminarFlameDecorator(routine);//decoration of parent chemkin routine:
-			
+
+		}
+
+		//batch reactor, transient solver
+		else if (model.equals(ReactorInput.BATCH)){
+			return new BatchDecorator(routine);//decoration of parent chemkin routine:
+
 		}
 		return null;
 	}
