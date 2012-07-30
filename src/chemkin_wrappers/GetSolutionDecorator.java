@@ -1,6 +1,8 @@
 package chemkin_wrappers;
 
 import parameter_estimation.ChemkinConstants;
+import parameter_estimation.ParamEstimationInvoker;
+import parameter_estimation.ParameterEstimationDriver;
 
 /**
  * Decorator for {@link AbstractChemkinRoutine} that calls the routine "GetSolution" of Chemkin.
@@ -24,7 +26,10 @@ public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 		routine.keywords = new String [5];
 		routine.keywords[0] = getConfig().paths.getBinDir()+"GetSolution";
 		routine.keywords[1] = "-norop";
-		routine.keywords[2] = "";
+		if (ParameterEstimationDriver.flagUseMassFractions)
+			routine.keywords[2] = "-mass";
+		else
+			routine.keywords[2] = "";
 		routine.keywords[3] = "";
 		routine.keywords[4] = getReactorDir()+ChemkinConstants.XML;
 

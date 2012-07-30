@@ -11,6 +11,8 @@ import readers.ReactorSetupInput;
 
 public class ParameterEstimationDriver {
 	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
+	public static Boolean flagUseMassFractions = null;
+	
 	/**
 	 * @param args
 	 * @throws Exception 
@@ -19,10 +21,12 @@ public class ParameterEstimationDriver {
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
 		initializeLog();
-
+		
+		flagUseMassFractions = args[0].equals("--mass") ? true : false;
+		
 		XMLInputParser read = new XMLInputParser();
 		//assume INPUT.xml is passed in as command line argument
-		List<ConfigurationInput> readConfig = read.readConfig(args[0]);
+		List<ConfigurationInput> readConfig = read.readConfig(args[1]);
 		for (ConfigurationInput config : readConfig){
 			checkPaths(config);
 			//creation of the invoker object:
