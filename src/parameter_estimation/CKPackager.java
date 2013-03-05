@@ -1,5 +1,9 @@
 package parameter_estimation;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.GetSolutionDecorator;
@@ -56,14 +60,14 @@ public class CKPackager extends AbstractCKPackager{
 						
 			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
 			routine.executeCKRoutine();//execution
-			/*
+			
 			try {
 				simulations[i].getModelValue().setValue(new BufferedReader(new FileReader(new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME))));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}	
-			*/
+			
 			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
 			dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
