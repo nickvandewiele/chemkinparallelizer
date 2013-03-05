@@ -129,10 +129,13 @@ public class Tools extends Loggable {
 		Map<String, Double> dummy = new HashMap<String, Double> ();
 		//loop through keys
 		for ( String s : m.keySet()){
-			//omit substring "Mass_fraction_" from key, i.e. take substring starting from character at position 14
-			String dummy_name = s.substring(14);
-			Double dummy_value = m.get(s);
-			dummy.put(dummy_name, dummy_value);
+			if(s.contains("fraction_")){
+				//omit substring "M***_fraction_" from key, i.e. take substring starting from character at position 14
+				String dummy_name = s.substring(14);
+				Double dummy_value = m.get(s);
+				dummy.put(dummy_name, dummy_value);
+			}
+			else dummy.put(s, m.get(s));
 		}
 		return dummy;
 	}	
