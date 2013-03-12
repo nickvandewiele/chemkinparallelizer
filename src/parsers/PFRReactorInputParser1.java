@@ -111,7 +111,8 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 
 			line = in_excel.readLine();
 			while(!(line == null)){
-
+				total_massflrt = 0.0;
+				total_molflrt = 0.0;
 				PFRReactorInput input = new PFRReactorInput(ReactorInput.PFR,workingDir);
 				input.length = length;
 				input.diameter = diameter;
