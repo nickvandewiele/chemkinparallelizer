@@ -1,1 +1,0 @@
-INDEX VERSION 1.126+C:\Documents and Settings\nmvdewie\My Documents\Nick's Black Magic Toolbox\Eclipse Workspace\be.ugent.lct.nbmt.git.github\.metadata\.plugins\org.eclipse.jdt.core
