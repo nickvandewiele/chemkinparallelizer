@@ -1,4 +1,4 @@
-package parameter_estimation;
+package chemkin_model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,6 +6,9 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
+import parameter_estimation.ChemkinConstants;
+import parameter_estimation.Paths;
+import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import datatypes.ModelValueFactory;

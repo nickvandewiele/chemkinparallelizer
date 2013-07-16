@@ -2,8 +2,9 @@ package commands;
 
 import org.apache.log4j.Logger;
 
-import parameter_estimation.AbstractCKPackager;
-import parameter_estimation.CKPackager;
+import chemkin_model.AbstractCKPackager;
+import chemkin_model.CKPackager;
+
 import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 

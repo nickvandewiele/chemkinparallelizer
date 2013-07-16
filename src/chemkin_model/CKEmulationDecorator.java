@@ -1,4 +1,4 @@
-package parameter_estimation;
+package chemkin_model;
 
 import parsers.ConfigurationInput;
 import readers.ReactorInput;

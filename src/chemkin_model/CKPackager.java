@@ -1,9 +1,12 @@
-package parameter_estimation;
+package chemkin_model;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import parameter_estimation.ChemkinConstants;
+import parameter_estimation.Semaphore;
+import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
