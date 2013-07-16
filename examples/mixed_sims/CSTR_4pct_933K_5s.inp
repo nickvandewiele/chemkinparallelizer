@@ -1,0 +1,23 @@
+! 
+! problem type definition
+! 
+STST   ! Steady State Solver
+TGIV   ! Fix Gas Temperature
+! 
+! physical property
+! 
+!Surface_Temperature   ! Surface Temperature Same as Gas Temperature
+PRES 1.04613838   ! Pressure (atm)
+TAU 5.0   ! Residence Time (sec)
+TEMP 933.0   ! Temperature (K)
+VOL 90.0   ! Volume (cm3)
+! 
+! species property
+! 
+REAC HE 0.96   ! Reactant Fraction (mole fraction)
+REAC JP10(1) 0.04   ! Reactant Fraction (mole fraction)
+! 
+! output control and other misc. property
+! 
+GFAC 1.0   ! Gas Reaction Rate Multiplier
+END
