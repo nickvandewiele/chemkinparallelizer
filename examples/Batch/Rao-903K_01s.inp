@@ -1,0 +1,25 @@
+! 
+! problem type definition
+! 
+TGIV   ! Constrain Pressure And Temperature
+TRAN   ! Transient Solver
+! 
+! physical property
+! 
+!Surface_Temperature   ! Surface Temperature Same as Gas Temperature
+PRES 1.0   ! Pressure (atm)
+TEMP 903   ! Temperature (K)
+! 
+! species property
+! 
+REAC JP10(1) 1.0   ! Reactant Fraction (mole fraction)
+! 
+! solver control
+! 
+ADAP   ! Save Additional Adaptive Points
+TIME 0.1   ! End Time (sec)
+! 
+! output control and other misc. property
+! 
+GFAC 1.0   ! Gas Reaction Rate Multiplier
+END

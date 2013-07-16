@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<input>
+		<chemkin_dir>C:/Program Files/Reaction/chemkin15101_pc</chemkin_dir>
+		
+		<no_licenses>1</no_licenses>
+		
+		<chemistry_input>chem.inp</chemistry_input>
+		
+		<total_number_of_experiments>1</total_number_of_experiments>
+		
+		<reactor_setups>
+			<reactor_setup type = "MANUAL" model = "BATCH">Rao-903K_01s.inp</reactor_setup>
+		</reactor_setups>
+		
+		<mode>2</mode>
+		
+		
+	</input>
+	
+</config>
