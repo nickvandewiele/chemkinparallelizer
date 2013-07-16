@@ -2,7 +2,7 @@ package chemkin_model;
 
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 
 /**
  * Supertype for decorators for {@link AbstractCKEmulation} that will add new behaviour

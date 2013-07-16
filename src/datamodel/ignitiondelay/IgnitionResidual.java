@@ -1,4 +1,8 @@
-package datatypes;
+package datamodel.ignitiondelay;
+
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
+import datamodel.Residual;
 
 
 public class IgnitionResidual extends Residual {

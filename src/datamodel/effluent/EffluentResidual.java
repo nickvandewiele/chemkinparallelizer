@@ -1,8 +1,13 @@
-package datatypes;
+package datamodel.effluent;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
+import datamodel.Residual;
+import datamodel.Residual.TYPE;
 
 
 public class EffluentResidual extends Residual {

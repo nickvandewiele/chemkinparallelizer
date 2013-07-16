@@ -8,14 +8,14 @@ import org.apache.commons.io.FileUtils;
 
 import parameter_estimation.Paths;
 
-import datatypes.EffluentExperimentalValue;
-import datatypes.EffluentModelValue;
-import datatypes.ExperimentalValue;
-import datatypes.FlameSpeedExperimentalValue;
-import datatypes.FlameSpeedModelValue;
-import datatypes.IgnitionDelayExperimentalValue;
-import datatypes.IgnitionDelayModelValue;
-import datatypes.ModelValue;
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
+import datamodel.effluent.EffluentExperimentalValue;
+import datamodel.effluent.EffluentModelValue;
+import datamodel.flamespeed.FlameSpeedExperimentalValue;
+import datamodel.flamespeed.FlameSpeedModelValue;
+import datamodel.ignitiondelay.IgnitionDelayExperimentalValue;
+import datamodel.ignitiondelay.IgnitionDelayModelValue;
 
 public class ParityWriter {
 

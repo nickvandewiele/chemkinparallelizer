@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import parameter_estimation.Loggable;
 
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 /**
  * Rosenbrock algorithm developed by Nick Vandewiele, February 2010 <BR>
  * inspired by B. Debrabandere's fortran implementation <BR>

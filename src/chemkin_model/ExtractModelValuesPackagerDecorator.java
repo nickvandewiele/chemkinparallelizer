@@ -1,6 +1,6 @@
 package chemkin_model;
 
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 
 /**
  * The type extracts the model values from simulations array into an attribute in the 

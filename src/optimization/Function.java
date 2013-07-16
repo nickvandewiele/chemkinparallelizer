@@ -6,12 +6,12 @@ import java.util.Map;
 
 import parameter_estimation.Loggable;
 
-import datatypes.EffluentResidual;
-import datatypes.ExperimentalValue;
-import datatypes.ModelValue;
-import datatypes.Residual;
-import datatypes.Residual.TYPE;
-import datatypes.ResidualFactory;
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
+import datamodel.Residual;
+import datamodel.ResidualFactory;
+import datamodel.Residual.TYPE;
+import datamodel.effluent.EffluentResidual;
 
 
 public class Function extends Loggable{

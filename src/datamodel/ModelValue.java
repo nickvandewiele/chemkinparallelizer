@@ -1,4 +1,4 @@
-package datatypes;
+package datamodel;
 
 import java.io.BufferedReader;
 

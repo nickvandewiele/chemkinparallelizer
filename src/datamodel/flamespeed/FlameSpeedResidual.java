@@ -1,4 +1,8 @@
-package datatypes;
+package datamodel.flamespeed;
+
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
+import datamodel.Residual;
 
 
 public class FlameSpeedResidual extends Residual {

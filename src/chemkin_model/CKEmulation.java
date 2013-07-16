@@ -11,7 +11,7 @@ import parameter_estimation.Paths;
 import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
-import datatypes.ModelValueFactory;
+import datamodel.ModelValueFactory;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
  * CKEmulation can call several Chemkin routines: Chem, CKReactorPlugFlow, GetSolution, GetSolnTranspose depending on the task to be executed<BR>

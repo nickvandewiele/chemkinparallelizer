@@ -15,8 +15,8 @@ import parameter_estimation.ChemkinConstants;
 import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import writers.ParityWriter;
-import datatypes.ExperimentalValue;
-import datatypes.ModelValue;
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
 
 /**
  * Command implementation that performs the parity plot

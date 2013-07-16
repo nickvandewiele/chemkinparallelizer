@@ -19,7 +19,7 @@ import parameter_estimation.Loggable;
 import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import stat.Statistics;
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 
 
 /**Optimization type is to be seen as the 'driver' class of the broad set of optimization algorithms available, e.g. Rosenbrock.

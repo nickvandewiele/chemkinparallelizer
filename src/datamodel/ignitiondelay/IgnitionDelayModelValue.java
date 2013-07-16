@@ -1,9 +1,11 @@
-package datatypes;
+package datamodel.ignitiondelay;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import datamodel.ModelValue;
 
 /**
  * The Ignition delay currently implemented is the defined as the first maximum

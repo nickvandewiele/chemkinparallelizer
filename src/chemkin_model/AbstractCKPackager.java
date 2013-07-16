@@ -2,7 +2,7 @@ package chemkin_model;
 
 import parameter_estimation.Loggable;
 import parsers.ConfigurationInput;
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 
 /**
  * The abstract type that collects a number of chemkin simulations.

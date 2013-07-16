@@ -1,4 +1,8 @@
-package datatypes;
+package datamodel;
+
+import datamodel.effluent.EffluentResidual;
+import datamodel.flamespeed.FlameSpeedResidual;
+import datamodel.ignitiondelay.IgnitionResidual;
 
 
 public class ResidualFactory {

@@ -1,10 +1,12 @@
-package datatypes;
+package datamodel.effluent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import datamodel.ModelValue;
 
 import parameter_estimation.Tools;
 /**

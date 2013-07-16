@@ -1,9 +1,11 @@
-package datatypes;
+package datamodel.flamespeed;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import datamodel.ModelValue;
 
 
 

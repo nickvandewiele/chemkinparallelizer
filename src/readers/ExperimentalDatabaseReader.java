@@ -12,10 +12,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import datatypes.EffluentExperimentalValue;
-import datatypes.ExperimentalValue;
-import datatypes.FlameSpeedExperimentalValue;
-import datatypes.IgnitionDelayExperimentalValue;
+import datamodel.ExperimentalValue;
+import datamodel.effluent.EffluentExperimentalValue;
+import datamodel.flamespeed.FlameSpeedExperimentalValue;
+import datamodel.ignitiondelay.IgnitionDelayExperimentalValue;
 
 public class ExperimentalDatabaseReader {
 	static Logger logger = Logger.getLogger(ExperimentalDatabaseReader.class);

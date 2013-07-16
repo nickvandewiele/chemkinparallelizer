@@ -1,5 +1,8 @@
-package datatypes;
+package datamodel;
 
+import datamodel.effluent.EffluentModelValue;
+import datamodel.flamespeed.FlameSpeedModelValue;
+import datamodel.ignitiondelay.IgnitionDelayModelValue;
 import readers.ReactorInput;
 
 public class ModelValueFactory {

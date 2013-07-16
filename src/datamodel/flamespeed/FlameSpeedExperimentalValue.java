@@ -1,4 +1,6 @@
-package datatypes;
+package datamodel.flamespeed;
+
+import datamodel.ExperimentalValue;
 
 
 public class FlameSpeedExperimentalValue extends ExperimentalValue {

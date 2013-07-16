@@ -5,7 +5,7 @@ import optimization.Optimization;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
-import datatypes.ExperimentalValue;
+import datamodel.ExperimentalValue;
 
 /**
  * Command that executes the statistics calculation via

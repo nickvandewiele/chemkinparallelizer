@@ -1,4 +1,4 @@
-package datatypes;
+package datamodel;
 
 
 public abstract class Residual {
@@ -7,9 +7,9 @@ public abstract class Residual {
 	
 	public TYPE type;
 	
-	ExperimentalValue experimentalValue;
+	protected ExperimentalValue experimentalValue;
 	
-	ModelValue modelValue;
+	protected ModelValue modelValue;
 	
 	public abstract void compute();
 

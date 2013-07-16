@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
-import datatypes.ExperimentalValue;
+import datamodel.ExperimentalValue;
 
 /**
  * Command implementation that performs the kinetic parameter optimization

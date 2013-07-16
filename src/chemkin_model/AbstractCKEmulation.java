@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
-import datatypes.ExperimentalValue;
-import datatypes.ModelValue;
+import datamodel.ExperimentalValue;
+import datamodel.ModelValue;
 
 /**
  * Abstract class that represents a chemkin simulation.

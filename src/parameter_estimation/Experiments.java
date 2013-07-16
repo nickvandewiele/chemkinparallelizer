@@ -5,7 +5,7 @@ import java.util.List;
 
 import readers.ExperimentalDatabaseInput;
 import readers.ExperimentalDatabaseReader;
-import datatypes.ExperimentalValue;
+import datamodel.ExperimentalValue;
 
 /**
  * type that groups information on the experimental setup of the system

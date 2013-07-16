@@ -1,4 +1,4 @@
-package datatypes;
+package datamodel;
 
 /**
  * Abstract superclass for all experimental data

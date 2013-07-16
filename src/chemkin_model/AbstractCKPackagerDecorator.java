@@ -1,7 +1,7 @@
 package chemkin_model;
 
 import parsers.ConfigurationInput;
-import datatypes.ModelValue;
+import datamodel.ModelValue;
 
 /**
  * Abstract decorator for {@link AbstractCKPackager} in case other things are done
