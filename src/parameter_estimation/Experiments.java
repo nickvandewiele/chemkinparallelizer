@@ -5,6 +5,7 @@ import java.util.List;
 
 import readers.ExperimentalDatabaseInput;
 import readers.ExperimentalDatabaseReader;
+import util.Loggable;
 import datamodel.ExperimentalValue;
 
 /**

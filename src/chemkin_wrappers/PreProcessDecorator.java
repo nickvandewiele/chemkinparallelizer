@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import parameter_estimation.ChemkinConstants;
+import util.ChemkinConstants;
 
 /**
  * Decorator for {@link AbstractChemkinRoutine} that calls the routine "CKPreProcess" of Chemkin.

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import parameter_estimation.Paths;
+import util.Paths;
 
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;

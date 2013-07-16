@@ -11,9 +11,9 @@ import chemkin_model.CKPackager;
 import chemkin_model.ExtractModelValuesPackagerDecorator;
 
 import parameter_estimation.Chemistry;
-import parameter_estimation.ChemkinConstants;
-import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
+import util.ChemkinConstants;
+import util.Tools;
 import writers.ParityWriter;
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;

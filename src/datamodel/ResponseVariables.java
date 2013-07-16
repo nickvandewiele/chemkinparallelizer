@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import parameter_estimation.Loggable;
+import util.Loggable;
 
 /**
  * collects response variables, which can not only be species names,

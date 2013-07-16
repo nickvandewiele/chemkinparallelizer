@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import parameter_estimation.ChemkinConstants;
-import parameter_estimation.Semaphore;
-import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
+import util.ChemkinConstants;
+import util.Semaphore;
+import util.Tools;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.GetSolutionDecorator;

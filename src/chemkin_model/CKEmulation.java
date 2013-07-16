@@ -6,11 +6,11 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
-import parameter_estimation.ChemkinConstants;
-import parameter_estimation.Paths;
-import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
+import util.ChemkinConstants;
+import util.Paths;
+import util.Tools;
 import datamodel.ModelValueFactory;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>

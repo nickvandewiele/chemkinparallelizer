@@ -15,10 +15,10 @@ import optimization.levenberg.NBMTHost;
 import commands.Command;
 import commands.UpdateChemistryCommand;
 
-import parameter_estimation.Loggable;
-import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
 import stat.Statistics;
+import util.Loggable;
+import util.Tools;
 import datamodel.ModelValue;
 
 

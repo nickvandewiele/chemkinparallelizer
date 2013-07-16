@@ -3,7 +3,7 @@ package optimization;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import parameter_estimation.Loggable;
+import util.Loggable;
 
 import datamodel.ModelValue;
 /**

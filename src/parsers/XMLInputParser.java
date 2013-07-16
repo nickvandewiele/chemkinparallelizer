@@ -18,9 +18,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import optimization.OptimizedReaction;
 
-import parameter_estimation.Licenses;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
+import util.Licenses;
 
 public class XMLInputParser {
 	

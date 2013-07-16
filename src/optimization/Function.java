@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import parameter_estimation.Loggable;
+import util.Loggable;
 
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;

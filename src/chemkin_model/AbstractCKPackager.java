@@ -1,7 +1,7 @@
 package chemkin_model;
 
-import parameter_estimation.Loggable;
 import parsers.ConfigurationInput;
+import util.Loggable;
 import datamodel.ModelValue;
 
 /**

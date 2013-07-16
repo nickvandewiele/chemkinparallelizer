@@ -8,10 +8,10 @@ import optimization.Parameters2D;
 
 import parameter_estimation.Chemistry;
 import parameter_estimation.Experiments;
-import parameter_estimation.Licenses;
-import parameter_estimation.Paths;
 import readers.ReactorInput;
 import readers.ReactorSetupInput;
+import util.Licenses;
+import util.Paths;
 
 /**
  * Class that contains all the input parameters.<p>

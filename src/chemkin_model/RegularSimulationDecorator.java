@@ -10,11 +10,11 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import parameter_estimation.Chemistry;
-import parameter_estimation.ChemkinConstants;
-import parameter_estimation.Semaphore;
-import parameter_estimation.Tools;
 
 import readers.ReactorInput;
+import util.ChemkinConstants;
+import util.Semaphore;
+import util.Tools;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.CreateSolnListDecorator;

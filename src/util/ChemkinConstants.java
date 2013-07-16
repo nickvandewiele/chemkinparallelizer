@@ -1,4 +1,4 @@
-package parameter_estimation;
+package util;
 
 public class ChemkinConstants {
 	public static final String CHEMOUT = "chem.out";

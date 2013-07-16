@@ -7,8 +7,8 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
-import parameter_estimation.ChemkinConstants;
 import parsers.ConfigurationInput;
+import util.ChemkinConstants;
 import chemkin_model.CKEmulation;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;

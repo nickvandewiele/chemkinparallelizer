@@ -1,6 +1,6 @@
 package chemkin_wrappers;
 
-import parameter_estimation.ChemkinConstants;
+import util.ChemkinConstants;
 import applications.ParameterEstimationDriver;
 
 /**

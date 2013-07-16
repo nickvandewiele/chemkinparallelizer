@@ -1,6 +1,6 @@
 package chemkin_wrappers;
 
-import parameter_estimation.ChemkinConstants;
+import util.ChemkinConstants;
 
 /**
  * Decorator for {@link AbstractChemkinRoutine} that calls the routine "GetSolution" of Chemkin. with the -listonly option.
