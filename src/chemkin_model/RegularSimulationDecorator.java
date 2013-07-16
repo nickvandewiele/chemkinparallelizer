@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import parameter_estimation.Chemistry;
 
 import readers.ReactorInput;
 import util.ChemkinConstants;

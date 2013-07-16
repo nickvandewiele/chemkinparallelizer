@@ -1,4 +1,4 @@
-package parameter_estimation;
+package datamodel;
 
 import readers.ReactorSetupInput;
 /**

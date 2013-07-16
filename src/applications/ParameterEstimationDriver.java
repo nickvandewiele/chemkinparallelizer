@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import commands.Command;
 import commands.ExcelPostProcessingCommand;
 import commands.OptimizationCommand;
+import commands.ParamEstimationInvoker;
 import commands.ParityPlotCommand;
 
-import parameter_estimation.ParamEstimationInvoker;
 import parsers.ConfigurationInput;
 import parsers.XMLInputParser;
 import readers.ExperimentalDatabaseInput;

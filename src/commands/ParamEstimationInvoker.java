@@ -1,7 +1,5 @@
-package parameter_estimation;
+package commands;
 
-import commands.Command;
-import commands.NoCommand;
 
 /**
  * The ParamEstimationInvoker manages a set of Command objects. 

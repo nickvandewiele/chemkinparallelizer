@@ -3,11 +3,12 @@ package parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import chemkin_model.Chemistry;
+import datamodel.Experiments;
+
 import optimization.Fitting;
 import optimization.Parameters2D;
 
-import parameter_estimation.Chemistry;
-import parameter_estimation.Experiments;
 import readers.ReactorInput;
 import readers.ReactorSetupInput;
 import util.Licenses;

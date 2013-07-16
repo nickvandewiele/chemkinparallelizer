@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 
 import chemkin_model.AbstractCKPackager;
 import chemkin_model.CKPackager;
+import chemkin_model.Chemistry;
 import chemkin_model.ExtractModelValuesPackagerDecorator;
 
-import parameter_estimation.Chemistry;
 import parsers.ConfigurationInput;
 import util.ChemkinConstants;
 import util.Tools;

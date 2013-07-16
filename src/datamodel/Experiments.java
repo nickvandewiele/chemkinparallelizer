@@ -1,12 +1,12 @@
-package parameter_estimation;
+package datamodel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 import readers.ExperimentalDatabaseInput;
 import readers.ExperimentalDatabaseReader;
 import util.Loggable;
-import datamodel.ExperimentalValue;
 
 /**
  * type that groups information on the experimental setup of the system

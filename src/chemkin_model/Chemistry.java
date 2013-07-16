@@ -1,4 +1,4 @@
-package parameter_estimation;
+package chemkin_model;
 
 import java.io.BufferedReader;
 import java.io.File;

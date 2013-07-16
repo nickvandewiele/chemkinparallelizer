@@ -13,7 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import parameter_estimation.Experiments;
+import datamodel.Experiments;
+
 
 public class ExperimentsTest {
 	Experiments experiments;
