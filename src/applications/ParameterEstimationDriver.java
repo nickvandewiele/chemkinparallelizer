@@ -1,9 +1,14 @@
-package parameter_estimation;
+package applications;
 import java.io.File;
 import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
+import parameter_estimation.Command;
+import parameter_estimation.ExcelPostProcessingCommand;
+import parameter_estimation.OptimizationCommand;
+import parameter_estimation.ParamEstimationInvoker;
+import parameter_estimation.ParityPlotCommand;
 import parsers.ConfigurationInput;
 import parsers.XMLInputParser;
 import readers.ExperimentalDatabaseInput;

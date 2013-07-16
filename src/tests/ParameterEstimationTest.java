@@ -10,7 +10,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import parameter_estimation.ParameterEstimationDriver;
+import applications.ParameterEstimationDriver;
+
 import parameter_estimation.Tools;
 
 public class ParameterEstimationTest {

@@ -7,7 +7,7 @@
     	<tstamp/>
         <jar destfile="${basedir}/build/nbmt-${DSTAMP}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="parameter_estimation.ParameterEstimationDriver"/>
+                <attribute name="Main-Class" value="applications.ParameterEstimationDriver"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${basedir}/bin"/>

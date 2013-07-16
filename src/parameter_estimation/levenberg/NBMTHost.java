@@ -5,9 +5,10 @@ import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import applications.ParameterEstimationDriver;
+
 import parameter_estimation.Function;
 import parameter_estimation.Optimization;
-import parameter_estimation.ParameterEstimationDriver;
 
 public class NBMTHost implements NBMThostI {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());

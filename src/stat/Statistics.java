@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import applications.ParameterEstimationDriver;
+
 import parameter_estimation.*;
 import cern.jet.stat.Probability;
 
