@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import readers.ReactorInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.CreateSolnListDecorator;
-import readers.ReactorInput;
 
 /**
  * Decorator implementation of {@link CKEmulationDecorator}.

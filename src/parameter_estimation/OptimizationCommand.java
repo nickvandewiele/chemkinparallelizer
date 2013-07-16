@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
-
 import datatypes.ExperimentalValue;
 
 /**

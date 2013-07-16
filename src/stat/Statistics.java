@@ -1,12 +1,12 @@
 package stat;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
+import parameter_estimation.Algebra;
+import parameter_estimation.Function;
+import parameter_estimation.Optimization;
 import applications.ParameterEstimationDriver;
-
-import parameter_estimation.*;
 import cern.jet.stat.Probability;
 
 public class Statistics {

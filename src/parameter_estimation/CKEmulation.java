@@ -1,26 +1,14 @@
 package parameter_estimation;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
-
-import chemkin_wrappers.AbstractChemkinRoutine;
-import chemkin_wrappers.BatchDecorator;
-import chemkin_wrappers.CSTRDecorator;
-import chemkin_wrappers.ChemkinRoutine;
-import chemkin_wrappers.CreateSolnListDecorator;
-import chemkin_wrappers.GetSolutionDecorator;
-import chemkin_wrappers.LaminarFlameDecorator;
-import chemkin_wrappers.PFRDecorator;
-import chemkin_wrappers.PreProcessDecorator;
-import chemkin_wrappers.PremixedFlameDecorator;
-import datatypes.ModelValueFactory;
-
 import readers.ReactorInput;
-import readers.ReactorSetupInput;
+import datatypes.ModelValueFactory;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
  * CKEmulation can call several Chemkin routines: Chem, CKReactorPlugFlow, GetSolution, GetSolnTranspose depending on the task to be executed<BR>

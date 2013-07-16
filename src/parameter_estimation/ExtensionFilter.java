@@ -1,5 +1,6 @@
 package parameter_estimation;
-import java.io.*;
+import java.io.File;
+import java.io.FilenameFilter;
 
 
 public class ExtensionFilter implements FilenameFilter{

@@ -1,7 +1,6 @@
 package parameter_estimation;
 
 import readers.ReactorInput;
-import readers.ReactorSetupInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.BatchDecorator;
 import chemkin_wrappers.CSTRDecorator;

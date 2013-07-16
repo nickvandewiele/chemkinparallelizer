@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-
 import parameter_estimation.Tools;
 /**
  * type that unites effluent information of a reactor type, i.e.

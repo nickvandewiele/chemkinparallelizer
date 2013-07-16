@@ -1,10 +1,8 @@
 package parameter_estimation;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-
 
 import datatypes.EffluentResidual;
 import datatypes.ExperimentalValue;

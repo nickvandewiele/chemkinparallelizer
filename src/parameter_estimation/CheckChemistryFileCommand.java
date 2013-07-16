@@ -8,7 +8,6 @@ import java.io.FileReader;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
-
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.PreProcessDecorator;

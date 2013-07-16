@@ -2,8 +2,6 @@ package parameter_estimation;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
-
 /**
  * Paths contains paths to directories, files that are important in the Parameter Estimation program<BR>
  * Paths serves as a supertype to Param_Est, CKPackager, Rosenbrock types

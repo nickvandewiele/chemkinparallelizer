@@ -1,15 +1,13 @@
 package parameter_estimation.levenberg;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.apache.log4j.Logger;
 
-import applications.ParameterEstimationDriver;
-
 import parameter_estimation.Algebra;
 import parameter_estimation.Printer;
+import applications.ParameterEstimationDriver;
 
 /**
   *  class LM   Levenberg Marquardt w/ Lampton improvements

@@ -3,11 +3,9 @@ package parameter_estimation;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
-
+import readers.ReactorInput;
 import datatypes.ExperimentalValue;
 import datatypes.ModelValue;
-
-import readers.ReactorInput;
 
 /**
  * Abstract class that represents a chemkin simulation.

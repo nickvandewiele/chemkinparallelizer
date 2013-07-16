@@ -1,8 +1,8 @@
 package parameter_estimation;
 
-import datatypes.ModelValue;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
+import datatypes.ModelValue;
 
 /**
  * Supertype for decorators for {@link AbstractCKEmulation} that will add new behaviour

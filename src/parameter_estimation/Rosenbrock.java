@@ -1,13 +1,7 @@
 package parameter_estimation;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import datatypes.ModelValue;
 /**

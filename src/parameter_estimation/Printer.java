@@ -2,10 +2,6 @@ package parameter_estimation;
 
 import java.io.PrintWriter;
 
-import org.apache.log4j.Logger;
-
-import parameter_estimation.levenberg.LM_NBMT;
-
 public class Printer extends Loggable{
 	public static void printArray(double [] d, PrintWriter out){
 		for (int i = 0; i < d.length; i++) {

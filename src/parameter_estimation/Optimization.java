@@ -1,26 +1,15 @@
 package parameter_estimation;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
-import datatypes.ModelValue;
 
 import parameter_estimation.levenberg.NBMTHost;
 import parsers.ConfigurationInput;
-
 import stat.Statistics;
+import datatypes.ModelValue;
 
 
 /**Optimization type is to be seen as the 'driver' class of the broad set of optimization algorithms available, e.g. Rosenbrock.

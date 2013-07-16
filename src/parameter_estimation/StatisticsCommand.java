@@ -1,8 +1,8 @@
 package parameter_estimation;
 
 import org.apache.log4j.Logger;
-import parsers.ConfigurationInput;
 
+import parsers.ConfigurationInput;
 import datatypes.ExperimentalValue;
 
 /**

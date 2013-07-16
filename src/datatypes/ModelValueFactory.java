@@ -1,7 +1,6 @@
 package datatypes;
 
 import readers.ReactorInput;
-import readers.ReactorSetupInput;
 
 public class ModelValueFactory {
 	

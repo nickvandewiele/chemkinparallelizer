@@ -1,14 +1,10 @@
 package parameter_estimation.levenberg;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.apache.log4j.Logger;
-
-import applications.ParameterEstimationDriver;
 
 import parameter_estimation.Function;
 import parameter_estimation.Optimization;
+import applications.ParameterEstimationDriver;
 
 public class NBMTHost implements NBMThostI {
 	static Logger logger = Logger.getLogger(ParameterEstimationDriver.logger.getName());

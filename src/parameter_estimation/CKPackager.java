@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import parsers.ConfigurationInput;
+import readers.ReactorInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.GetSolutionDecorator;
-import parsers.ConfigurationInput;
-import readers.ReactorInput;
 
 /**
  * CKPackager is a type that bundles all executed CKEmulations into one data structure. 

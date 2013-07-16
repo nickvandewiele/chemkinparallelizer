@@ -1,6 +1,5 @@
 package parsers;
 
-import java.io.File;
 import java.util.List;
 
 import readers.ReactorInput;
