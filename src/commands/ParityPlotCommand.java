@@ -1,4 +1,4 @@
-package parameter_estimation;
+package commands;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +6,14 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import parameter_estimation.AbstractCKPackager;
+import parameter_estimation.CKPackager;
+import parameter_estimation.Chemistry;
+import parameter_estimation.ChemkinConstants;
+import parameter_estimation.ExtractModelValuesPackagerDecorator;
+import parameter_estimation.Tools;
 import parsers.ConfigurationInput;
+import writers.ParityWriter;
 import datatypes.ExperimentalValue;
 import datatypes.ModelValue;
 

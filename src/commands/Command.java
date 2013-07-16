@@ -1,4 +1,4 @@
-package parameter_estimation;
+package commands;
 
 /**
  * The Command interface encapsulates all the specific tasks that can be

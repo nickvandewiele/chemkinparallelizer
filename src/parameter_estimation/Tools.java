@@ -22,7 +22,7 @@ public class Tools extends Loggable {
 	 * @param dest_dir
 	 * @param e
 	 */
-	protected static void moveFiles( String orig_dir, String dest_dir, String e ) {
+	public static void moveFiles( String orig_dir, String dest_dir, String e ) {
 		ExtensionFilter filter = new ExtensionFilter(e);
 		File original_dir = new File(orig_dir);
 		String[] list = original_dir.list(filter);
@@ -38,7 +38,7 @@ public class Tools extends Loggable {
 		}    
 	}
 
-	protected static void moveFile(String dest_dir, String filename){
+	public static void moveFile(String dest_dir, String filename){
 		// File (or directory) to be moved
 		File file = new File(filename);
 
@@ -164,7 +164,7 @@ public class Tools extends Loggable {
 		}
 	}
 	
-	protected static void moveOutputFiles (Paths paths){
+	public static void moveOutputFiles (Paths paths){
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".out");
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asu");
 		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".input");

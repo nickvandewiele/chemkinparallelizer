@@ -5,11 +5,12 @@ import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
-import parameter_estimation.Command;
-import parameter_estimation.ExcelPostProcessingCommand;
-import parameter_estimation.OptimizationCommand;
+import commands.Command;
+import commands.ExcelPostProcessingCommand;
+import commands.OptimizationCommand;
+import commands.ParityPlotCommand;
+
 import parameter_estimation.ParamEstimationInvoker;
-import parameter_estimation.ParityPlotCommand;
 import parsers.ConfigurationInput;
 import parsers.XMLInputParser;
 import readers.ExperimentalDatabaseInput;

@@ -1,5 +1,7 @@
 package parameter_estimation;
 
+import commands.Command;
+
 /**
  * The ParamEstimationInvoker manages a set of Command objects. 
  * When a specific command is called, via an integer called "mode",

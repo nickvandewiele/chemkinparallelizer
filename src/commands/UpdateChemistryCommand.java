@@ -1,4 +1,4 @@
-package parameter_estimation;
+package commands;
 
 import java.io.BufferedReader;
 import java.io.File;

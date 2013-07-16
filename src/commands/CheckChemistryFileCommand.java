@@ -1,4 +1,4 @@
-package parameter_estimation;
+package commands;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,8 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
+import parameter_estimation.CKEmulation;
+import parameter_estimation.ChemkinConstants;
 import parsers.ConfigurationInput;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;

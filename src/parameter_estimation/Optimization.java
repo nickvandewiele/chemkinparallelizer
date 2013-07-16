@@ -6,6 +6,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
+import commands.Command;
+import commands.UpdateChemistryCommand;
+
 import parameter_estimation.levenberg.NBMTHost;
 import parsers.ConfigurationInput;
 import stat.Statistics;
