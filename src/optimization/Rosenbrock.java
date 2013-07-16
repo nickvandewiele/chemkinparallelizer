@@ -1,7 +1,9 @@
-package parameter_estimation;
+package optimization;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
+
+import parameter_estimation.Loggable;
 
 import datatypes.ModelValue;
 /**

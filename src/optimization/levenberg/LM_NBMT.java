@@ -1,12 +1,13 @@
-package parameter_estimation.levenberg;
+package optimization.levenberg;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import optimization.Algebra;
+import optimization.Printer;
+
 import org.apache.log4j.Logger;
 
-import parameter_estimation.Algebra;
-import parameter_estimation.Printer;
 import applications.ParameterEstimationDriver;
 
 /**

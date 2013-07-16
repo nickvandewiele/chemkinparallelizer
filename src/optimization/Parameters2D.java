@@ -1,4 +1,4 @@
-package parameter_estimation;
+package optimization;
 /**
  * Parameters2D stores information about the parameters in 2D format, as obtained from the user (chemInp, INPUT.txt)
  * @author nmvdewie

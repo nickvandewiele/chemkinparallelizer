@@ -3,11 +3,12 @@ package parsers;
 import java.util.ArrayList;
 import java.util.List;
 
+import optimization.Fitting;
+import optimization.Parameters2D;
+
 import parameter_estimation.Chemistry;
 import parameter_estimation.Experiments;
-import parameter_estimation.Fitting;
 import parameter_estimation.Licenses;
-import parameter_estimation.Parameters2D;
 import parameter_estimation.Paths;
 import readers.ReactorInput;
 import readers.ReactorSetupInput;

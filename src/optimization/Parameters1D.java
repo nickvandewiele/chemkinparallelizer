@@ -1,4 +1,4 @@
-package parameter_estimation;
+package optimization;
 /**
  * Parameters1D stores the parameters in 1D (Vector) format, as requested for the optimization routines 
  * @author nmvdewie

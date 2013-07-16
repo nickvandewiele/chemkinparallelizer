@@ -1,6 +1,8 @@
-package parameter_estimation;
+package optimization;
 
 import java.io.PrintWriter;
+
+import parameter_estimation.Loggable;
 
 public class Printer extends Loggable{
 	public static void printArray(double [] d, PrintWriter out){

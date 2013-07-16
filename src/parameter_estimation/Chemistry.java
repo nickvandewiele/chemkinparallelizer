@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import optimization.Parameters2D;
+
 /**
  * type that groups information on chemistry of the system
  * @author nmvdewie

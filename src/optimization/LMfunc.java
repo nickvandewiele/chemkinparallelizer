@@ -1,6 +1,6 @@
 // LMfunc.java
 
-package lmnist;
+package optimization;
 
 /**
  * Caller implement this interface to specify the

@@ -2,11 +2,12 @@ package tests;
 
 import junit.framework.Assert;
 
+import optimization.Algebra;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import parameter_estimation.Algebra;
 	
 public class AlgebraTest {
 	double[][] matrix;

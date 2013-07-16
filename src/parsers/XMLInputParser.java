@@ -16,8 +16,9 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import optimization.OptimizedReaction;
+
 import parameter_estimation.Licenses;
-import parameter_estimation.OptimizedReaction;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
 

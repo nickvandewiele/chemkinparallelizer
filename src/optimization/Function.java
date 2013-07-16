@@ -1,8 +1,10 @@
-package parameter_estimation;
+package optimization;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+
+import parameter_estimation.Loggable;
 
 import datatypes.EffluentResidual;
 import datatypes.ExperimentalValue;
