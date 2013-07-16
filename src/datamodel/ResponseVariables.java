@@ -1,10 +1,12 @@
-package parameter_estimation;
+package datamodel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import parameter_estimation.Loggable;
 
 /**
  * collects response variables, which can not only be species names,
