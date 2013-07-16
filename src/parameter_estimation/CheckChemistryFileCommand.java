@@ -1,6 +1,7 @@
 package parameter_estimation;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -36,7 +37,7 @@ public class CheckChemistryFileCommand implements Command {
 		
 		BufferedReader in;
 		try {
-			String path = config.paths.getWorkingDir()+ChemkinConstants.CHEMOUT;
+			File path = new File(config.paths.getWorkingDir(),ChemkinConstants.CHEMOUT);
 			in = new BufferedReader(new FileReader(path));
 			checkChemOutput(in);
 		} catch (FileNotFoundException e) {

@@ -71,15 +71,6 @@ public class XMLInputParser {
 					if (startElement.getName().getLocalPart() == (INPUT)) {
 						configurationInput = new ConfigurationInput();
 					}
-
-					if (event.isStartElement()) {
-						if (event.asStartElement().getName().getLocalPart()
-								.equals(WORKING_DIR)) {
-							event = eventReader.nextEvent();
-							configurationInput.paths.setWorkingDir(event.asCharacters().getData());
-							continue;
-						}
-					}
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMKIN_DIR)) {
 						event = eventReader.nextEvent();

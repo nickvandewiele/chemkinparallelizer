@@ -25,6 +25,7 @@ public class ParameterEstimationDriver {
 	 */
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
+		System.out.println("Reading from: "+System.getProperty("user.dir"));
 		initializeLog();
 		
 		flagUseMassFractions = args[0].equals("--mass") ? true : false;

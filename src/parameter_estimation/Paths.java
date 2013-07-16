@@ -11,20 +11,13 @@ import org.apache.log4j.Logger;
  *
  */
 public class Paths extends Loggable{
-	public String workingDir;
+	public String workingDir = System.getProperty("user.dir")+"/";
+	public String outputDir = workingDir+"output/";
 	public String chemkinDir;
 	
 	//user-defined ROP calc: folder, called UDROP, with necessary files.
 	public File UDROPDir = new File(workingDir,"UDROP");
 	
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public void setWorkingDir(String workingDir) {
-		this.workingDir = workingDir;
-		setOutputDir();
-	}
 	/**
 	 * @category setter
 	 * @return
@@ -41,10 +34,9 @@ public class Paths extends Loggable{
 		binDir = chemkinDir+"/bin/";
 	}
 	protected String binDir = chemkinDir+"/bin/";;
-	protected String outputDir;
 
 	public Paths(){
-		
+		checkOutputDir();
 	}
 	protected void checkOutputDir (){
 		boolean temp = new File(outputDir).mkdir();
@@ -59,14 +51,6 @@ public class Paths extends Loggable{
 	 */
 	public String getOutputDir() {
 		return outputDir;
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	private void setOutputDir() {
-		outputDir = workingDir+"output/";
-		checkOutputDir();
 	}
 	/**
 	 * @category getter
