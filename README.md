@@ -16,4 +16,19 @@ Next, ChemkinParallelizer runs all the simulations you defined in the XML file. 
 
 ChemkinParallelizer is more flexible than the continuations feature of Chemkin because it supports running multiple reactor configurations at the same time. Moreover, since you specify the reactor configuration files yourself, you can change whatever parameter you want. Finally, ChemkinParallelizer is entirily command-line based, and thus much more prone to automatization in environments like linux.
 
+Right now, the following reactor types are supported (by calling to the respective chemkin solver)
+- Plug flow reactor (CKReactorPlugFlow)
+- CSTR (CKReactorGenericPSR)
+- Batch (CKReactorGenericClosed)
+- Flame speed calculations; freely propagating laminar flame (CKReactorFreelyPropagatingFlame)
+- Ignition Delay calculations; transient solver, as in shock tube experiments (CKReactorGenericClosed)
+
+Each of the supported reactor models assumes a particular output value to be monitored. For example, in the case
+of PFR, the effluent composition will be parsed. This is the summary of the monitored properties as a function of the
+reactor type:
+
+- PFR, CSTR, Batch: effluent at outlet, or end time
+- Freely propagating laminar flame: flame speed
+- Ignition Delay: 1_by_max_dT/dt
+
 See the examples section for some examples.
