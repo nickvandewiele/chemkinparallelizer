@@ -5,7 +5,7 @@
     <target name="create_run_jar">
     	<!-- Create the time stamp -->
     	<tstamp/>
-        <jar destfile="${basedir}/build/nbmt-${DSTAMP}.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="${basedir}/build/chemkinparallelizer-${DSTAMP}.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="applications.ParameterEstimationDriver"/>
                 <attribute name="Class-Path" value="."/>
