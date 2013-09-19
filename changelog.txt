@@ -1,0 +1,9 @@
+CHANGELOG
+---------
+This changelog is automatically generated from the:
+
+git log --pretty=format:"* %s (%aN <%ae>)" --no-merges v0.1..HEAD >> changelog.txt
+
+* make some constants public (nmvdewie <nickvandewiele@gmail.com>)
+* add logger error if reactor type is not recognized (nmvdewie <nickvandewiele@gmail.com>)
+* use FileUtils.readFileToString to check presence of string in chem/tran (nmvdewie <nickvandewiele@gmail.com>)
