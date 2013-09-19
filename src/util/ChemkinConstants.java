@@ -8,9 +8,9 @@ public class ChemkinConstants {
 	public static final String TRANOUT = "tran.out";
 	public static final String TRANASC = "tran.asc";
 	
-	static final String CHEMKINDATADTD = "chemkindata.dtd";
+	public static final String CHEMKINDATADTD = "chemkindata.dtd";
 	
-	static final String CKSOLNLIST = "CKSolnList.txt";
+	public static final String CKSOLNLIST = "CKSolnList.txt";
 	
 	public static final String XML = "XMLdata.zip";
 	
