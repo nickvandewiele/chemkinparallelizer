@@ -87,7 +87,7 @@ public class Function extends Loggable{
 		Double average = 0.0;
 		
 		for(Iterator<String> it = responseVars.iterator(); it.hasNext();){
-			String s = (String) it.next();
+			String s = it.next();
 			Double dummy = 0.0;
 			for(int i = 0; i < experimentalValues.getExperimentalValues().getExperimentalEffluentValues().size(); i++){
 				dummy = dummy + (experimentalValues.getExperimentalValues().getExperimentalEffluentValues().get(i).get(s) - modelValues.getModelEffluentValues().get(i).get(s));

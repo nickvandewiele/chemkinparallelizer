@@ -46,6 +46,7 @@ public abstract class AbstractCKEmulation extends Thread{
 	 * run() is the method that will be executed when Thread.start() is executed.
 	 * Its argument list is void (mandatory I think).
 	 */
+	@Override
 	public abstract void run();
 
 	public ConfigurationInput getConfig(){

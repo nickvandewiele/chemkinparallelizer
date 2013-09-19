@@ -104,7 +104,7 @@ public class Chemistry extends Loggable{
 			in.close();
 	
 		} catch (IOException e) {
-			Tools.logger.error("Problem with obtaining initial parameter guesses!");
+			Loggable.logger.error("Problem with obtaining initial parameter guesses!");
 			System.exit(-1);
 		}
 		return beta;

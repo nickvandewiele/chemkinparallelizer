@@ -11,8 +11,8 @@ public class FlameSpeedResidual extends Residual {
 	
 	public FlameSpeedResidual(ExperimentalValue experimentalValue,
 			ModelValue modelValue) {
-		super.experimentalValue = (FlameSpeedExperimentalValue)experimentalValue;
-		super.modelValue = (FlameSpeedModelValue)modelValue;
+		super.experimentalValue = experimentalValue;
+		super.modelValue = modelValue;
 		compute();
 	}
 

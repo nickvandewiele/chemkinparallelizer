@@ -16,6 +16,7 @@ public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecor
 		super.packager.modelValues = new ModelValue[getConfig().reactor_inputs.size()];
 	}
 	
+	@Override
 	public AbstractCKEmulation []  runAllSimulations(){
 		simulations = packager.runAllSimulations();
 		
@@ -26,6 +27,7 @@ public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecor
 		return simulations;
 	}
 	
+	@Override
 	public ModelValue[] getModelValues() {
 		return packager.getModelValues();
 	}

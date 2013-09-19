@@ -13,10 +13,12 @@ public abstract class AbstractCKPackagerDecorator extends AbstractCKPackager {
 
 	AbstractCKPackager packager;
 	
+	@Override
 	public ConfigurationInput getConfig() {
 		return packager.getConfig();
 	}
 	
+	@Override
 	public ModelValue[] getModelValues() {
 		return packager.getModelValues();
 	}

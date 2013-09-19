@@ -11,8 +11,8 @@ public class IgnitionResidual extends Residual {
 	
 	public IgnitionResidual(ExperimentalValue experimentalValue,
 			ModelValue modelValue) {
-		super.experimentalValue = (IgnitionDelayExperimentalValue)experimentalValue;
-		super.modelValue = (IgnitionDelayModelValue)modelValue;
+		super.experimentalValue = experimentalValue;
+		super.modelValue = modelValue;
 		compute();
 	}
 

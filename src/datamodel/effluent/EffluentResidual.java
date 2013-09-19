@@ -7,7 +7,6 @@ import java.util.Map;
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;
 import datamodel.Residual;
-import datamodel.Residual.TYPE;
 
 
 public class EffluentResidual extends Residual {
@@ -18,8 +17,8 @@ public class EffluentResidual extends Residual {
 	
 	public EffluentResidual(ExperimentalValue experimentalValue,
 			ModelValue modelValue) {
-		super.experimentalValue = (EffluentExperimentalValue)experimentalValue;
-		super.modelValue = (EffluentModelValue)modelValue;
+		super.experimentalValue = experimentalValue;
+		super.modelValue = modelValue;
 		compute();
 	}
 

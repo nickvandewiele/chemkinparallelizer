@@ -87,7 +87,7 @@ public class EffluentModelValue extends ModelValue{
 					list_temp.add(st_temp[i]);
 				}
 				if(!(list_temp.get(0)).equals("Molecular_weight")){				
-					speciesFractions.put((String)list_temp.get(0), Double.parseDouble(list_temp.get(list_temp.size()-1)));
+					speciesFractions.put(list_temp.get(0), Double.parseDouble(list_temp.get(list_temp.size()-1)));
 
 				}
 			} while (!(list_temp.get(0)).equals("Molecular_weight"));

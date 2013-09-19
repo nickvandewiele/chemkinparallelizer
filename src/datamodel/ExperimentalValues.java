@@ -25,7 +25,7 @@ public class ExperimentalValues {
 		Map<String,Double> average = new HashMap<String,Double>();
 		Set<String> response_vars = experimentalEffluentValues.get(0).keySet();
 		for(Iterator<String> it = response_vars.iterator(); it.hasNext();){
-			String s = (String) it.next();
+			String s = it.next();
 			Double dummy = 0.0;
 			for(int i = 0; i < experimentalEffluentValues.size(); i++){
 				dummy = dummy + experimentalEffluentValues.get(i).get(s);

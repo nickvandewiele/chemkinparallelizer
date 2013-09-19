@@ -19,18 +19,22 @@ public abstract class ChemkinRoutineDecorator extends AbstractChemkinRoutine {
 	public abstract String[] getKeyword();
 	
 	
+	@Override
 	public String getReactorDir() {
 		return routine.getReactorDir();
 	}
 
+	@Override
 	public String getReactorSetup() {
 		return routine.getReactorSetup();
 	}
 
+	@Override
 	public String getReactorOut() {
 		return routine.getReactorOut();
 	}
 	
+	@Override
 	public ConfigurationInput getConfig() {
 		return routine.getConfig();
 	}

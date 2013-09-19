@@ -86,7 +86,7 @@ public class ConfigurationInput {
 		
 		int noFittedReactions = fitting.optimizedReactions.size();
 		
-		int [][] fixRxns = new int [noFittedReactions][chemistry.getNoparametersperreaction()];
+		int [][] fixRxns = new int [noFittedReactions][Chemistry.getNoparametersperreaction()];
 		for (int i = 0; i < noFittedReactions; i++){
 			fixRxns[i][0] = fitting.optimizedReactions.get(i).A;
 			fixRxns[i][1] = fitting.optimizedReactions.get(i).N;

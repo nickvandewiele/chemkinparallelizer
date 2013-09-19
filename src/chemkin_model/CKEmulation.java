@@ -78,6 +78,7 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * run() is the method that will be executed when Thread.start() is executed.
 	 * Its argument list is void (mandatory I think).
 	 */
+	@Override
 	public void run(){
 
 	}

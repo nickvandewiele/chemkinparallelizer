@@ -31,7 +31,7 @@ public class ResponseVariables extends Loggable {
 		//PrintWriter out_species = new PrintWriter(new FileWriter("response_vars.txt"));
 		//print effluent responses:
 		for(Iterator<String> it = effluentResponses.iterator(); it.hasNext();){
-			out.println((String)it.next());
+			out.println(it.next());
 		}
 		
 		//print ignition delay:
