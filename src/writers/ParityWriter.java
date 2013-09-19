@@ -10,8 +10,8 @@ import util.Paths;
 
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;
-import datamodel.effluent.EffluentExperimentalValue;
 import datamodel.effluent.EffluentModelValue;
+import datamodel.effluent.EffluentExperimentalValue;
 import datamodel.flamespeed.FlameSpeedExperimentalValue;
 import datamodel.flamespeed.FlameSpeedModelValue;
 import datamodel.ignitiondelay.IgnitionDelayExperimentalValue;

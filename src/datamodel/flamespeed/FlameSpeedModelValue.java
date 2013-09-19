@@ -1,9 +1,19 @@
 package datamodel.flamespeed;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+
+import util.Tools;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 
 import datamodel.ModelValue;
 
@@ -18,42 +28,28 @@ public class FlameSpeedModelValue extends ModelValue {
 
 	}
 	@Override
-	public void setValue(BufferedReader bufferedReader) {
-		readCkcsvFlameSpeed(bufferedReader);
+	public void setValue(File f) {
+		read(f);
 
 	}
-	public void readCkcsvFlameSpeed(BufferedReader in){
-		readCkcsv(in, "Flame_speed");
 
-	}
-	public void readCkcsv(BufferedReader in, String CkcsvType){
-
+	public void read(File f){
+		List<String> lines = null;
 		try {
-			String temp;
-			String [] st_temp;
-			LinkedList<String> list_temp;
-			list_temp = new LinkedList<String>();
-			do {
-				list_temp.clear();
-				try {
-					temp = in.readLine();
-					st_temp = temp.split(", ");
-					for (int i=0;i<st_temp.length;i++){
-						list_temp.add(st_temp[i]);
-					}
-
-				} catch (IOException e) {
-				}
-			} while (!(list_temp.get(0)).equals(CkcsvType));
-			in.close();
-			//take last value in row:
-			value = new Double(list_temp.get(list_temp.size()-1));
-
-		} catch (FileNotFoundException e) {
+			lines = FileUtils.readLines(f, "UTF-8");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}			
+		}
+		for (String line : lines) {
+			Iterable<String> results = Splitter.on(CharMatcher.anyOf(","))
+					.trimResults().omitEmptyStrings().split(line);
+			String[] pieces = Iterables.toArray(results, String.class);
+			if (line.startsWith("Flame_speed")) {
+				value = Double.parseDouble(pieces[pieces.length-1]);
+			}
+			
+		}
 
 	}
 	@Override

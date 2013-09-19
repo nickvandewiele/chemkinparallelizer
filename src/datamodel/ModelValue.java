@@ -1,6 +1,7 @@
 package datamodel;
 
 import java.io.BufferedReader;
+import java.io.File;
 
 /**
  * ModelValue is a piece of data we are interested in that emerges from the chemkin simulation.
@@ -23,7 +24,7 @@ public abstract class ModelValue {
 	public static final String IGNITION_DELAY = "IGNITION_DELAY";
 	public static final String FLAME_SPEED = "FLAME_SPEED";
 	
-	public abstract void setValue(BufferedReader bufferedReader);
+	public abstract void setValue(File file);
 
 	public abstract double getSSQValue();
 

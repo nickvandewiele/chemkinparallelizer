@@ -37,6 +37,9 @@ public class ModelValueFactory {
 		else if(model.equals(ReactorInput.FLAME_SPEED)){
 			return new FlameSpeedModelValue();
 		}
+		else if(model.equals(ReactorInput.BATCH)){
+			return new EffluentModelValue();
+		}
 		else logger.error("Did not recognize reactor input type: "+model);
 		return null;
 	}

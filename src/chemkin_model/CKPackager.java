@@ -66,12 +66,7 @@ public class CKPackager extends AbstractCKPackager{
 			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:
 			routine.executeCKRoutine();//execution
 			
-			try {
-				simulations[i].getModelValue().setValue(new BufferedReader(new FileReader(new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME))));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+			simulations[i].getModelValue().setValue(new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME));	
 			
 			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
