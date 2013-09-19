@@ -13,6 +13,7 @@ import chemkin_model.ExtractModelValuesPackagerDecorator;
 
 import parsers.ConfigurationInput;
 import util.ChemkinConstants;
+import util.Paths;
 import util.Tools;
 import writers.ParityWriter;
 import datamodel.ExperimentalValue;
@@ -57,14 +58,14 @@ public class ParityPlotCommand implements Command {
 		//read experimental data file:
 		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
 
-		String speciesPath = config.paths.getWorkingDir()+ChemkinConstants.CHEMASU;
+		String speciesPath = Paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));
 		List<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 
-		ParityWriter writer = new ParityWriter(config.paths, experimentalValues, modelValues, speciesNames);
+		ParityWriter writer = new ParityWriter(experimentalValues, modelValues, speciesNames);
 		writer.write();
 
-		Tools.moveOutputFiles(config.paths);
+		Tools.moveOutputFiles();
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Parity Mode to finish: (sec) "+timeTook);

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
 import util.ChemkinConstants;
+import util.Paths;
 import chemkin_model.CKEmulation;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
@@ -51,14 +52,11 @@ public class CheckChemistryFileCommand implements Command {
 	 * If this String is not present, System.exit(-1) is called<BR>
 	 */
 	public void checkChemOutput(){
-		File file = new File(config.paths.getWorkingDir(),ChemkinConstants.CHEMOUT);
+		File file = new File(Paths.getWorkingDir(),ChemkinConstants.CHEMOUT);
 		boolean found = false;
 		try {
 			found = FileUtils.readFileToString(file).contains(NO_ERRORS_FOUND_ON_INPUT);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		} catch (IOException e1) {}
 		if(!found){
 			logger.debug("Initial chemistry input file contains errors. Revision required!");
 			System.exit(-1);

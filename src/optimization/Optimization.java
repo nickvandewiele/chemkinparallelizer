@@ -86,17 +86,17 @@ public class Optimization extends Loggable{
 
 		// move Rosenbrock monitors:
 		if(new File("SSQ_Rosenbrock.csv").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "SSQ_Rosenbrock.csv");
+			Tools.moveFile(Paths.getOutputDir(), "SSQ_Rosenbrock.csv");
 		if(new File("output_Rosenbrock.txt").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "output_Rosenbrock.txt");
+			Tools.moveFile(Paths.getOutputDir(), "output_Rosenbrock.txt");
 
 		//move LM monitors:
 		if(new File("LM.txt").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "LM.txt");
+			Tools.moveFile(Paths.getOutputDir(), "LM.txt");
 		if(new File("SSQ_LM.txt").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "SSQ_LM.txt");
+			Tools.moveFile(Paths.getOutputDir(), "SSQ_LM.txt");
 		if(new File("response_vars.txt").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "response_vars.txt");
+			Tools.moveFile(Paths.getOutputDir(), "response_vars.txt");
 		return beta_new;
 	}
 	
@@ -223,7 +223,7 @@ public class Optimization extends Loggable{
 */		
 		out.close();
 		if(new File("statistics.txt").exists())
-			Tools.moveFile(config.paths.getOutputDir(), "statistics.txt");
+			Tools.moveFile(Paths.getOutputDir(), "statistics.txt");
 	}
 
 	public boolean isWeightedRegression() {

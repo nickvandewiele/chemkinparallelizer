@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
+import util.Paths;
 
 
 public class UpdateChemistryCommand implements Command {
@@ -37,8 +38,8 @@ public class UpdateChemistryCommand implements Command {
 	public void updateChemistryInput () {
 		BufferedReader in;
 		try {
-			in = new BufferedReader(new FileReader(new File(config.paths.getWorkingDir(),config.chemistry.getChemistryInput())));
-			PrintWriter out = new PrintWriter(new FileWriter(new File(config.paths.getWorkingDir(),"temp.inp")));
+			in = new BufferedReader(new FileReader(new File(Paths.getWorkingDir(),Paths.chemistryInput)));
+			PrintWriter out = new PrintWriter(new FileWriter(new File(Paths.getWorkingDir(),"temp.inp")));
 			String dummy = in.readLine();
 			
 			//just copy part of chem.inp about Elements, Species, Thermo
@@ -89,10 +90,10 @@ public class UpdateChemistryCommand implements Command {
 			in.close();
 			out.close();
 			
-			File f_old = new File(config.paths.getWorkingDir(),config.chemistry.getChemistryInput());
+			File f_old = new File(Paths.getWorkingDir(),Paths.chemistryInput);
 			f_old.delete();
-			File f = new File(config.paths.getWorkingDir(),"temp.inp");
-			f.renameTo(new File(config.paths.getWorkingDir(),config.chemistry.getChemistryInput()));
+			File f = new File(Paths.getWorkingDir(),"temp.inp");
+			f.renameTo(new File(Paths.getWorkingDir(),Paths.chemistryInput));
 			
 			//check if initial input file is error-free:
 			Command checkChemistry = new CheckChemistryFileCommand(config);

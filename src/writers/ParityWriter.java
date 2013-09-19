@@ -24,8 +24,8 @@ public class ParityWriter {
 	ExperimentalValue[] experimentalValues;
 	ModelValue[] modelValues;
 	List<String> speciesNames;
-	public ParityWriter(Paths paths, ExperimentalValue[] experimentalValues,
-			ModelValue[] modelValues, List<String> speciesNames) {
+	public ParityWriter(ExperimentalValue[] experimentalValues, ModelValue[] modelValues,
+			List<String> speciesNames) {
 		this.paths = paths;
 		this.experimentalValues = experimentalValues;
 		this.modelValues = modelValues;

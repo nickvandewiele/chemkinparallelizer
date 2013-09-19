@@ -8,6 +8,7 @@ import optimization.Optimization;
 import org.apache.log4j.Logger;
 
 import parsers.ConfigurationInput;
+import util.Paths;
 import util.Tools;
 import datamodel.ExperimentalValue;
 
@@ -55,7 +56,7 @@ public class OptimizationCommand implements Command {
 		checkChemistry.execute();
 		
 		// take initial guesses from chem.inp file:
-		config.chemistry.initialGuess(config.paths.getWorkingDir());
+		config.chemistry.initialGuess();
 		logger.info("Initial Guesses of parameters are:");
 		//Printer.printMatrix(par_est.config.chemistry.getParams().getBeta(),System.out);
 
@@ -71,7 +72,7 @@ public class OptimizationCommand implements Command {
 		//write optimized parameters:
 		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
 		writeParameters(out);
-		Tools.moveFile(config.paths.getOutputDir(), "params.txt");
+		Tools.moveFile(Paths.getOutputDir(), "params.txt");
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this optimization to finish: (sec) "+timeTook);

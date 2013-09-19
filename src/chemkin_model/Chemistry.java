@@ -9,6 +9,7 @@ import java.util.List;
 
 import optimization.Parameters2D;
 import util.Loggable;
+import util.Paths;
 import util.Tools;
 
 /**
@@ -32,18 +33,11 @@ public class Chemistry extends Loggable{
 	
 	
 	/**
-	 * filename of the chemistry input that contains info on elements,
-	 * species, TD, TP, mechanism
-	 */
-	private String chemistryInput;
-	
-	/**
 	 * ############
 	 * CONSTRUCTORS
 	 * ############
 	 */
 	public Chemistry(String chemistryInput, Parameters2D params){
-		this.chemistryInput = chemistryInput;
 		this.params = params;
 	}
 	
@@ -59,11 +53,11 @@ public class Chemistry extends Loggable{
 	 * @return initial guesses for kinetic parameters, as double array 
 	 * @throws IOException
 	 */
-	public double[][] initialGuess (String workingDir) throws IOException{
+	public double[][] initialGuess () throws IOException{
 	
 		double[][] beta = new double[params.getFixRxns().length][params.getFixRxns()[0].length];
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(new File(workingDir,chemistryInput)));
+			BufferedReader in = new BufferedReader(new FileReader(new File(Paths.getWorkingDir(),Paths.chemistryInput)));
 			String dummy = in.readLine();
 	
 			//skip part of chem.inp about Elements, Species, Thermo
@@ -137,20 +131,6 @@ public class Chemistry extends Loggable{
 	 */
 	public static int getNoparametersperreaction() {
 		return NOPARAMETERSPERREACTION;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public String getChemistryInput() {
-		return chemistryInput;
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public void setChemistryInput(String chemistryInpput) {
-		this.chemistryInput = chemistryInpput;
 	}
 	/**
 	 * @category getter

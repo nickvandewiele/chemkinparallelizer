@@ -21,6 +21,7 @@ import optimization.OptimizedReaction;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
 import util.Licenses;
+import util.Paths;
 
 public class XMLInputParser {
 	
@@ -74,7 +75,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMKIN_DIR)) {
 						event = eventReader.nextEvent();
-						configurationInput.paths.setChemkinDir(event.asCharacters().getData());
+						Paths.setChemkinDir(event.asCharacters().getData());
 						continue;
 					}
 
@@ -88,7 +89,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMISTRY_INPUT)) {
 						event = eventReader.nextEvent();
-						configurationInput.chemistry.setChemistryInput(event.asCharacters().getData());
+						Paths.chemistryInput=event.asCharacters().getData();
 						continue;
 					}
 

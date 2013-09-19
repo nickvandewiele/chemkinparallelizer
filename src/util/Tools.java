@@ -164,15 +164,15 @@ public class Tools extends Loggable {
 		}
 	}
 	
-	public static void moveOutputFiles (Paths paths){
-		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".out");
-		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asu");
-		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".input");
-		Tools.moveFiles(paths.getWorkingDir(), paths.getOutputDir(), ".asc");
-		Tools.moveFile(paths.getOutputDir(),"SpeciesParity.csv");
-		Tools.moveFile(paths.getOutputDir(),"IgnitionDelayParity.csv");
-		Tools.moveFile(paths.getOutputDir(),"FlameSpeedParity.csv");
-		Tools.moveFile(paths.getOutputDir(),"CKSolnList.txt");
+	public static void moveOutputFiles (){
+		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".out");
+		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".asu");
+		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".input");
+		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".asc");
+		Tools.moveFile(Paths.getOutputDir(),"SpeciesParity.csv");
+		Tools.moveFile(Paths.getOutputDir(),"IgnitionDelayParity.csv");
+		Tools.moveFile(Paths.getOutputDir(),"FlameSpeedParity.csv");
+		Tools.moveFile(Paths.getOutputDir(),"CKSolnList.txt");
 
 	}
 }

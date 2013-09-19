@@ -2,6 +2,8 @@ package util;
 
 import java.io.File;
 
+import com.google.common.base.StandardSystemProperty;
+
 /**
  * Paths contains paths to directories, files that are important in the Parameter Estimation program<BR>
  * Paths serves as a supertype to Param_Est, CKPackager, Rosenbrock types
@@ -9,66 +11,59 @@ import java.io.File;
  *
  */
 public class Paths extends Loggable{
-	public String workingDir = System.getProperty("user.dir")+"/";
-	public String outputDir = workingDir+"output/";
-	public String chemkinDir;
-	
-	//user-defined ROP calc: folder, called UDROP, with necessary files.
-	public File UDROPDir = new File(workingDir,"UDROP");
+	public static final String workingDir = StandardSystemProperty.USER_DIR.value()
+			+StandardSystemProperty.FILE_SEPARATOR.value();
+	public static final String outputDir = workingDir+"output/";
+	public static String UDROPDir = workingDir+"UDROP/";
+	public static String chemkinDir;
 	
 	/**
 	 * @category setter
 	 * @return
 	 */
-	public void setChemkinDir(String chemkinDir) {
-		this.chemkinDir = chemkinDir;
+	public static void setChemkinDir(String cd) {
+		chemkinDir = cd;
 		setBinDir();
 	}
 	/**
 	 * @category setter
 	 * @return
 	 */
-	private void setBinDir() {
+	private static void setBinDir() {
 		binDir = chemkinDir+"/bin/";
 	}
-	protected String binDir = chemkinDir+"/bin/";;
+	protected static String binDir = chemkinDir+"/bin/";
+	public static String chemistryInput;;
 
-	public Paths(){
-		checkOutputDir();
-	}
-	protected void checkOutputDir (){
-		boolean temp = new File(outputDir).mkdir();
-		if(!temp){
-			logger.debug("Creation of output directory failed!");
-			System.exit(-1);
-		}
-	}
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public String getOutputDir() {
+	public static String getOutputDir() {
 		return outputDir;
 	}
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public String getWorkingDir() {
+	public static String getWorkingDir() {
 		return workingDir;
 	}
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public String getChemkinDir() {
+	public static String getChemkinDir() {
 		return chemkinDir;
 	}
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public String getBinDir() {
+	public static String getBinDir() {
 		return binDir;
+	}
+	public static String getUDROPDir() {
+		return UDROPDir;
 	}
 }

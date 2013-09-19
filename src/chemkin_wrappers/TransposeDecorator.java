@@ -1,6 +1,7 @@
 package chemkin_wrappers;
 
 import util.ChemkinConstants;
+import util.Paths;
 
 
 /**
@@ -19,9 +20,9 @@ public class TransposeDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
-		routine.keywords[0] = getConfig().paths.getBinDir()+"CKSolnTranspose";
+		routine.keywords[0] = Paths.getBinDir()+"CKSolnTranspose";
 		routine.keywords[1] = "-i";
-		routine.keywords[2] = getConfig().paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
+		routine.keywords[2] = Paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
 
 		return routine.keywords;
 

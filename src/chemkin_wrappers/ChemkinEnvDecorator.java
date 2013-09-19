@@ -1,5 +1,7 @@
 package chemkin_wrappers;
 
+import util.Paths;
+
 
 /**
  * Decorator for {@link AbstractChemkinRoutine} that calls the batch "run_chemkin_env_setup.bat" of Chemkin.
@@ -18,7 +20,7 @@ public class ChemkinEnvDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [1];
-		routine.keywords[0] = getConfig().paths.getBinDir()+"run_chemkin_env_setup.bat";
+		routine.keywords[0] = Paths.getBinDir()+"run_chemkin_env_setup.bat";
 
 		return routine.keywords;
 	}

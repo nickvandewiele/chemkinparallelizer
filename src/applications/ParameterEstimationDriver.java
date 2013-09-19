@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
+import com.google.common.base.StandardSystemProperty;
+
 import commands.Command;
 import commands.ExcelPostProcessingCommand;
 import commands.OptimizationCommand;
@@ -15,6 +17,7 @@ import parsers.ConfigurationInput;
 import parsers.XMLInputParser;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
+import util.Paths;
 
 public class ParameterEstimationDriver {
 	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
@@ -27,10 +30,9 @@ public class ParameterEstimationDriver {
 	 */
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
-		System.out.println("Reading from: "+System.getProperty("user.dir"));
+		System.out.println("Reading from: "+StandardSystemProperty.USER_DIR.value());
 		initializeLog();
-		
-		flagUseMassFractions = args[0].equals("--mass") ? true : false;
+		flagUseMassFractions = args[0].equals("--mass");
 		
 		XMLInputParser read = new XMLInputParser();
 		//assume INPUT.xml is passed in as command line argument
@@ -66,20 +68,22 @@ public class ParameterEstimationDriver {
 
 
 	private static void checkPaths(ConfigurationInput config) {
-
-		if(!new File(config.paths.chemkinDir).exists()){
+		boolean temp = new File(Paths.getOutputDir()).mkdir();
+		if(!temp){
+			logger.debug("Creation of output directory failed!");
+			System.exit(-1);
+		}
+		if(!new File(Paths.getChemkinDir()).exists()){
 			logger.error("Chemkin folder not found!");
 			System.exit(-1);
 		}
-		if(!new File(config.paths.workingDir).exists()){
-			logger.error("Working directory not found!");
-			System.exit(-1);
-		}
-		if(!config.paths.UDROPDir.exists()){
+		
+		if(!new File(Paths.getUDROPDir()).exists()){
 			logger.error("UDROP Folder not found!");
 			System.exit(-1);
 		}
-		if(!new File(config.paths.workingDir,config.chemistry.getChemistryInput()).exists()){
+		
+		if(!new File(Paths.getWorkingDir(),Paths.chemistryInput).exists()){
 			logger.error("Chemistry Input not found!");
 			System.exit(-1);
 		}
@@ -92,7 +96,7 @@ public class ParameterEstimationDriver {
 			System.exit(-1);
 		}
 		for(ReactorSetupInput rsi: config.reactor_setup){
-			if(!new File(config.paths.workingDir,rsi.getLocation()).exists()){
+			if(!new File(Paths.getWorkingDir(),rsi.getLocation()).exists()){
 				logger.error(rsi.getLocation()+" not found!");
 				System.exit(-1);
 			}

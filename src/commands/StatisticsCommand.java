@@ -43,7 +43,7 @@ public class StatisticsCommand implements Command {
 		checkChemistry.execute();
 
 		// take initial guesses from chem.inp file:
-		config.chemistry.getParams().setBeta(config.chemistry.initialGuess(config.paths.getWorkingDir()));
+		config.chemistry.getParams().setBeta(config.chemistry.initialGuess());
 
 		//read experimental data file:
 		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 

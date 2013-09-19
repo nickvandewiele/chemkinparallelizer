@@ -40,7 +40,7 @@ public class CKEmulation extends AbstractCKEmulation{
 		this.reactorInput = reactorInput;
 		int length = reactorInput.filename.length();
 		this.reactorOut = reactorInput.filename.substring(0,(length-4))+".out";
-		this.reactorDir = config.paths.getWorkingDir()+"temp_"+reactorInput.filename.substring(0,(length-4))+"/";
+		this.reactorDir = Paths.getWorkingDir()+"temp_"+reactorInput.filename.substring(0,(length-4))+"/";
 
 		boolean temp = new File(reactorDir).mkdir();
 		if(!temp){
@@ -48,29 +48,29 @@ public class CKEmulation extends AbstractCKEmulation{
 			System.exit(-1);
 		}
 		//reactor setup:
-		Tools.copyFile(config.paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
+		Tools.copyFile(Paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
 
 		ModelValueFactory factory = new ModelValueFactory(getReactorInput().type);
 		this.modelValue = factory.createModelValue();
 
 		try {
-			copyLinkFiles(config.paths);
+			copyLinkFiles();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private void copyLinkFiles(Paths paths) throws Exception {
+	private void copyLinkFiles() throws Exception {
 		//copy chemistry and transport link files:
-		if(new File(paths.getWorkingDir()+ChemkinConstants.CHEMASC).exists()){
-			Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.CHEMASC,getReactorDir()+ChemkinConstants.CHEMASC);	
+		if(new File(Paths.getWorkingDir()+ChemkinConstants.CHEMASC).exists()){
+			Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.CHEMASC,getReactorDir()+ChemkinConstants.CHEMASC);	
 		}
 		else throw new Exception("Could not find chem link file!");
 
-		if(new File(paths.getWorkingDir()+ChemkinConstants.TRANASC).exists()){
-			if(checkTranOutput(paths)){
-				Tools.copyFile(paths.getWorkingDir()+ChemkinConstants.TRANASC,getReactorDir()+ChemkinConstants.TRANASC);	
+		if(new File(Paths.getWorkingDir()+ChemkinConstants.TRANASC).exists()){
+			if(checkTranOutput()){
+				Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.TRANASC,getReactorDir()+ChemkinConstants.TRANASC);	
 			}	
 		}
 		else throw new Exception("Could not find tran link file!");
@@ -89,11 +89,10 @@ public class CKEmulation extends AbstractCKEmulation{
 	 * Checks if errors are present in the transport output file. If so, this means that either:
 	 * -no transport data was present in chemistry input file
 	 * -something went wrong with processing the transport data
-	 * @param paths TODO
 	 * @return false if errors is found in transport file, if not, returns true
 	 */
-	public boolean checkTranOutput(Paths paths){
-		File file = new File(paths.getWorkingDir()+ChemkinConstants.TRANOUT);
+	public boolean checkTranOutput(){
+		File file = new File(Paths.getWorkingDir()+ChemkinConstants.TRANOUT);
 		boolean ok = false;
 		try {
 			ok = !FileUtils.readFileToString(file).contains(ERROR_THERE_IS_AN_ERROR_IN_THE_TRANSPORT_LINKFILE);

@@ -1,6 +1,7 @@
 package chemkin_wrappers;
 
 import util.ChemkinConstants;
+import util.Paths;
 
 
 /**
@@ -18,9 +19,9 @@ public class ChemDecorator extends ChemkinRoutineDecorator {
 	public String[] getKeyword() {
 		
 		routine.keywords = new String [7];
-		routine.keywords[0] = getConfig().paths.getBinDir()+"chem";
+		routine.keywords[0] = Paths.getBinDir()+"chem";
 		routine.keywords[1] = "-i";
-		routine.keywords[2] = config.chemistry.getChemistryInput();
+		routine.keywords[2] = Paths.chemistryInput;
 		routine.keywords[3] = "-o";
 		routine.keywords[4] = ChemkinConstants.CHEMOUT;
 		routine.keywords[5] = "-c";

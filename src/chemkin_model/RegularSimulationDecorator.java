@@ -12,6 +12,7 @@ import java.util.List;
 
 import readers.ReactorInput;
 import util.ChemkinConstants;
+import util.Paths;
 import util.Semaphore;
 import util.Tools;
 import chemkin_wrappers.AbstractChemkinRoutine;
@@ -42,14 +43,14 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		semaphore.acquire();
 		logger.info("license acquired!"+getReactorInput().filename);	
 		//copy chemistry input to the reactorDir:
-		Tools.copyFile(getConfig().paths.getWorkingDir()+getConfig().chemistry.getChemistryInput(),
-				getReactorDir()+getConfig().chemistry.getChemistryInput());
+		Tools.copyFile(Paths.getWorkingDir()+Paths.chemistryInput,
+				getReactorDir()+Paths.chemistryInput);
 		
 		//chemkindataDTD:
-		Tools.copyFile(getConfig().paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,getReactorDir()+ChemkinConstants.CHEMKINDATADTD);
+		Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,getReactorDir()+ChemkinConstants.CHEMKINDATADTD);
 
 		//Input Folder with user-defined ROP:
-		for(File filename: getConfig().paths.UDROPDir.listFiles()){//copy all files in this folder to reactor dir
+		for(File filename: new File(Paths.UDROPDir).listFiles()){//copy all files in this folder to reactor dir
 			new File(getReactorDir(), filename.getName());
 		}
 
@@ -66,7 +67,7 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		
 		
 		//copy reactor diagnostics file to workingdir:
-		Tools.copyFile(getReactorDir()+getReactorOut(),getConfig().paths.getWorkingDir()+getReactorOut());
+		Tools.copyFile(getReactorDir()+getReactorOut(),Paths.getWorkingDir()+getReactorOut());
 
 		//release the semaphore:
 		semaphore.release();
@@ -96,7 +97,7 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 			out = new PrintWriter(new FileWriter(new File(getReactorDir(),temp)));
 
 
-			File speciesFile = new File(getConfig().paths.getWorkingDir(),ChemkinConstants.CHEMASU);
+			File speciesFile = new File(Paths.getWorkingDir(),ChemkinConstants.CHEMASU);
 			BufferedReader inSpecies = new BufferedReader (new FileReader(speciesFile));
 			List<String> speciesNames = Chemistry.readSpeciesNames(inSpecies);
 			String dummy = null;

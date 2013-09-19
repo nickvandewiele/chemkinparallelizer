@@ -13,6 +13,7 @@ import java.util.List;
 
 import readers.PFRReactorInput;
 import readers.ReactorInput;
+import util.Paths;
 
 public class PFRReactorInputParser1 implements ReactorInputParsable {
 
@@ -31,8 +32,8 @@ public class PFRReactorInputParser1 implements ReactorInputParsable {
 	int position_P_profile;
 	List<Double> axialPositionPprofile;
 
-	public PFRReactorInputParser1(String workingDir, String string) {
-		this.workingDir = workingDir;
+	public PFRReactorInputParser1(String string) {
+		this.workingDir = Paths.getWorkingDir();
 		this.reactor_input_database_filename = string;
 	}
 

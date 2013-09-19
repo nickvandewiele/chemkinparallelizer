@@ -30,8 +30,6 @@ import util.Paths;
  */
 public class ConfigurationInput {
 	
-	public Paths paths;
-	
 	public Chemistry chemistry;
 	
 	public Experiments experiments;
@@ -49,7 +47,6 @@ public class ConfigurationInput {
 	public ConfigurationInput(){
 		chemistry = new Chemistry();
 		experiments = new Experiments();
-		paths = new Paths();
 		fitting = new Fitting();
 
 	}
@@ -68,10 +65,10 @@ public class ConfigurationInput {
 		for(int i = 0; i < experiments.exp_db.length; i++){
 		}
 		return "Configuration Input [" +
-				"\nWorking Directory =" + paths.getWorkingDir() + 
-				",\nChemkin Executable Directory = " + paths.getChemkinDir() + 
+				"\nWorking Directory =" + Paths.getWorkingDir() + 
+				",\nChemkin Executable Directory = " + Paths.getChemkinDir() + 
 				",\nNumber of Licenses = " + licenses.getValue() + 
-				",\nChemistry Input = " + chemistry.getChemistryInput() +
+				",\nChemistry Input = " + Paths.chemistryInput +
 				",\nMode = " + MODE + 
 				"\nExperiments Database: " + experiments.exp_db + 
 				"\nReactor Setups : " + reactor_setup
@@ -118,7 +115,7 @@ public class ConfigurationInput {
 		}
 		if(input.type.equals(ReactorSetupInput.AUTO)){
 			ReactorInputParsable parser;
-			parser = new PFRReactorInputParser1(paths.getWorkingDir(),input.location);
+			parser = new PFRReactorInputParser1(input.location);
 			List<ReactorInput> list = parser.parse();
 			reactor_inputs.addAll(list);
 

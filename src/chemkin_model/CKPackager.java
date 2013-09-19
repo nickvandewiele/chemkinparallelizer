@@ -7,6 +7,7 @@ import java.io.FileReader;
 import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import util.ChemkinConstants;
+import util.Paths;
 import util.Semaphore;
 import util.Tools;
 import chemkin_wrappers.AbstractChemkinRoutine;
@@ -74,7 +75,7 @@ public class CKPackager extends AbstractCKPackager{
 			
 			//the postprocessed CKSoln.ckcsv file needs to be written to the parent directory (working directory)
 			excel_file = new File(simulations[i].getReactorDir(),ChemkinConstants.CKCSVNAME);
-			dummy = new File (config.paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
+			dummy = new File (Paths.getOutputDir()+ChemkinConstants.CKCSVNAME+"_"+simulations[i].getReactorInput().filename+".csv");
 			excel_file.renameTo(dummy);
 
 			try {

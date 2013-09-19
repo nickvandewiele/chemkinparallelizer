@@ -45,7 +45,7 @@ public class ExcelPostProcessingCommand implements Command {
 		AbstractCKPackager ckp = new CKPackager(config);
 		ckp.runAllSimulations();
 		
-		Tools.moveOutputFiles(config.paths);
+		Tools.moveOutputFiles();
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for Excel Postprocessing mode to finish: (sec) "+timeTook);
 	}
