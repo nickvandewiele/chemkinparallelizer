@@ -1,15 +1,11 @@
 package commands;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import parsers.ConfigurationInput;
 import util.ChemkinConstants;
 import util.Paths;
 import chemkin_model.CKEmulation;
@@ -20,15 +16,12 @@ import chemkin_wrappers.PreProcessDecorator;
 public class CheckChemistryFileCommand implements Command {
 	private static final String NO_ERRORS_FOUND_ON_INPUT = "NO ERRORS FOUND ON INPUT:";
 	public static Logger logger = Logger.getLogger(CheckChemistryFileCommand.class);
-	ConfigurationInput config;
-
-	public CheckChemistryFileCommand(ConfigurationInput config){
-		this.config = config;
+	public CheckChemistryFileCommand(){
 	}
 	public void execute() {
-		CKEmulation c = new CKEmulation(config);
+		CKEmulation c = new CKEmulation();
 		//instantiation of parent chemkin routine:
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
+		AbstractChemkinRoutine routine = new ChemkinRoutine();
 		routine = new PreProcessDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
 		

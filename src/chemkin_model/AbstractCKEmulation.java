@@ -2,7 +2,6 @@ package chemkin_model;
 
 import org.apache.log4j.Logger;
 
-import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import datamodel.ExperimentalValue;
 import datamodel.ModelValue;
@@ -30,8 +29,6 @@ import datamodel.ModelValue;
 public abstract class AbstractCKEmulation extends Thread{
 	static Logger logger = Logger.getLogger(AbstractCKEmulation.class);
 
-	ConfigurationInput config;
-
 	public ExperimentalValue experiment;
 
 	protected ModelValue modelValue;
@@ -48,10 +45,6 @@ public abstract class AbstractCKEmulation extends Thread{
 	 */
 	@Override
 	public abstract void run();
-
-	public ConfigurationInput getConfig(){
-		return config;
-	}
 
 	public String getReactorDir() {
 		return reactorDir;

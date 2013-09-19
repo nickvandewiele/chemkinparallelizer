@@ -1,6 +1,5 @@
 package chemkin_model;
 
-import parsers.ConfigurationInput;
 import datamodel.ModelValue;
 
 /**
@@ -12,11 +11,6 @@ import datamodel.ModelValue;
 public abstract class AbstractCKPackagerDecorator extends AbstractCKPackager {
 
 	AbstractCKPackager packager;
-	
-	@Override
-	public ConfigurationInput getConfig() {
-		return packager.getConfig();
-	}
 	
 	@Override
 	public ModelValue[] getModelValues() {

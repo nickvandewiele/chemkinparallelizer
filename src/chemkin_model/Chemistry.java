@@ -10,7 +10,6 @@ import java.util.List;
 import optimization.Parameters2D;
 import util.Loggable;
 import util.Paths;
-import util.Tools;
 
 /**
  * type that groups information on chemistry of the system

@@ -7,6 +7,8 @@ import optimization.Optimization;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 import applications.ParameterEstimationDriver;
 import cern.jet.stat.Probability;
 
@@ -32,9 +34,9 @@ public class Statistics {
 	
 public Statistics(Optimization optimization){
 	this.optimization = optimization;
-	noParams = optimization.config.chemistry.getParams().getNoFittedParameters();
-	noExperiments = optimization.config.experiments.total_no_experiments;
-	noResp = optimization.config.experiments.experimentalValues.length;
+	noParams = ConfigurationInput.chemistry.getParams().getNoFittedParameters();
+	noExperiments = ConfigurationInput.experiments.total_no_experiments;
+	noResp = ConfigurationInput.experiments.experimentalValues.length;
 }
 
 /**
@@ -70,7 +72,7 @@ private void calcCorr(){
         }
 }
 private void calcANOVA() throws Exception{
-	Function function = new Function (optimization.config.experiments.experimentalValues,
+	Function function = new Function (ConfigurationInput.experiments.experimentalValues,
 			optimization.testNewParameters(optimization.buildFullParamVector(optimization.retrieveFittedParameters()),true));
 	SREG = function.getSREG();
 	SRES = function.getSRES();

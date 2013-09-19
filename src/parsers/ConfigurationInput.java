@@ -30,33 +30,25 @@ import util.Paths;
  */
 public class ConfigurationInput {
 	
-	public Chemistry chemistry;
+	public static Chemistry chemistry = new Chemistry();
 	
-	public Experiments experiments;
+	public static Experiments experiments = new Experiments();
 	
-	public Licenses licenses;
+	public static Licenses licenses;
 	
-	public ReactorSetupInput [] reactor_setup;
+	public static ReactorSetupInput [] reactor_setup;
 	
-	public List<ReactorInput> reactor_inputs;
+	public static List<ReactorInput> reactor_inputs;
 	
-	public Fitting fitting;
+	public static Fitting fitting = new Fitting();
 	
-	public Integer MODE;
+	public static Integer MODE;
 
-	public ConfigurationInput(){
-		chemistry = new Chemistry();
-		experiments = new Experiments();
-		fitting = new Fitting();
-
-	}
-
-	
-	public Integer getMODE() {
+	public static Integer getMODE() {
 		return MODE;
 	}
 
-	public void setMODE(Integer mODE) {
+	public static void setMODE(Integer mODE) {
 		MODE = mODE;
 	}
 
@@ -79,7 +71,7 @@ public class ConfigurationInput {
 	/**
 	 * Method that converts the read-in info on optimized parameters to a Parameters2D type
 	 */
-	public void setParameters() {
+	public static void setParameters() {
 		
 		int noFittedReactions = fitting.optimizedReactions.size();
 		

@@ -1,7 +1,5 @@
 package chemkin_wrappers;
 
-import parsers.ConfigurationInput;
-
 
 /**
  * Abstract decorator for chemkin routines, extending {@link AbstractChemkinRoutine}.
@@ -32,10 +30,5 @@ public abstract class ChemkinRoutineDecorator extends AbstractChemkinRoutine {
 	@Override
 	public String getReactorOut() {
 		return routine.getReactorOut();
-	}
-	
-	@Override
-	public ConfigurationInput getConfig() {
-		return routine.getConfig();
 	}
 }

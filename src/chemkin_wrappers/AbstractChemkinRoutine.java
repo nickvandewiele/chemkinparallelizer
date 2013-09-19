@@ -1,7 +1,5 @@
 package chemkin_wrappers;
 
-import parsers.ConfigurationInput;
-
 
 /**
  * Abstract superclass that will commmon information for every chemkin routine that will be called.
@@ -19,8 +17,6 @@ import parsers.ConfigurationInput;
  *
  */
 public abstract class AbstractChemkinRoutine {
-	
-	public ConfigurationInput config;
 	
 	public String reactorDir;//name of dir in which the routine will be executed
 	
@@ -42,9 +38,5 @@ public abstract class AbstractChemkinRoutine {
 
 	public String getReactorOut() {
 		return reactorOut;
-	}
-
-	public ConfigurationInput getConfig() {
-		return config;
 	}
 }

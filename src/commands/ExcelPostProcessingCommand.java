@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import chemkin_model.AbstractCKPackager;
 import chemkin_model.CKPackager;
 
-import parsers.ConfigurationInput;
 import util.Tools;
 
 /**
@@ -16,10 +15,7 @@ import util.Tools;
  */
 public class ExcelPostProcessingCommand implements Command {
 	public static Logger logger = Logger.getLogger(ExcelPostProcessingCommand.class);
-	ConfigurationInput config;
-	
-	public ExcelPostProcessingCommand(ConfigurationInput config){
-		this.config = config;
+	public ExcelPostProcessingCommand(){
 	}
 	public void execute() {
 		try {
@@ -39,10 +35,10 @@ public class ExcelPostProcessingCommand implements Command {
 	public void excelFiles() throws Exception{
 		long time = System.currentTimeMillis();
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(config);
+		Command checkChemistry = new CheckChemistryFileCommand();
 		checkChemistry.execute();
 
-		AbstractCKPackager ckp = new CKPackager(config);
+		AbstractCKPackager ckp = new CKPackager();
 		ckp.runAllSimulations();
 		
 		Tools.moveOutputFiles();

@@ -21,7 +21,7 @@ public class OptimizationCommand implements Command {
 	public static Logger logger = Logger.getLogger(OptimizationCommand.class);
 	ConfigurationInput config;
 
-	public OptimizationCommand(ConfigurationInput config){
+	public OptimizationCommand(){
 		this.config = config;
 	}
 
@@ -52,22 +52,22 @@ public class OptimizationCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(config);
+		Command checkChemistry = new CheckChemistryFileCommand();
 		checkChemistry.execute();
 		
 		// take initial guesses from chem.inp file:
-		config.chemistry.initialGuess();
+		ConfigurationInput.chemistry.initialGuess();
 		logger.info("Initial Guesses of parameters are:");
 		//Printer.printMatrix(par_est.config.chemistry.getParams().getBeta(),System.out);
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = ConfigurationInput.experiments.getExperimentalData(); 
 
 		Optimization optimization = new Optimization(config);
 
 		//call optimization routine:
 		double [][]beta = optimization.optimize();
-		config.chemistry.getParams().setBeta(beta);
+		ConfigurationInput.chemistry.getParams().setBeta(beta);
 
 		//write optimized parameters:
 		PrintWriter out = new PrintWriter(new FileWriter("params.txt"));
@@ -83,10 +83,10 @@ public class OptimizationCommand implements Command {
 	public void writeParameters(PrintWriter out){
 		logger.info("New values of parameters are: ");
 		StringBuffer stringBuff = new StringBuffer();
-		for (int i = 0; i < config.chemistry.getParams().getBeta().length; i++) {
+		for (int i = 0; i < ConfigurationInput.chemistry.getParams().getBeta().length; i++) {
 			stringBuff.append("Reaction "+i+": \n");
-			for (int j = 0; j < config.chemistry.getParams().getBeta()[0].length; j++){
-				stringBuff.append(config.chemistry.getParams().getBeta()[i][j]+", \n");
+			for (int j = 0; j < ConfigurationInput.chemistry.getParams().getBeta()[0].length; j++){
+				stringBuff.append(ConfigurationInput.chemistry.getParams().getBeta()[i][j]+", \n");
 			}
 			stringBuff.append("\n");
 		}

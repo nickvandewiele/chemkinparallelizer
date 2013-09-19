@@ -1,7 +1,5 @@
 package util;
 
-import java.io.File;
-
 import com.google.common.base.StandardSystemProperty;
 
 /**
@@ -16,7 +14,8 @@ public class Paths extends Loggable{
 	public static final String outputDir = workingDir+"output/";
 	public static String UDROPDir = workingDir+"UDROP/";
 	public static String chemkinDir;
-	
+	protected static String binDir = chemkinDir+"/bin/";
+	public static String chemistryInput;;
 	/**
 	 * @category setter
 	 * @return
@@ -32,8 +31,8 @@ public class Paths extends Loggable{
 	private static void setBinDir() {
 		binDir = chemkinDir+"/bin/";
 	}
-	protected static String binDir = chemkinDir+"/bin/";
-	public static String chemistryInput;;
+	
+	
 
 	/**
 	 * @category getter

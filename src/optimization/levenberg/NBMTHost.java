@@ -5,6 +5,8 @@ import optimization.Optimization;
 
 import org.apache.log4j.Logger;
 
+import parsers.ConfigurationInput;
+
 import applications.ParameterEstimationDriver;
 
 public class NBMTHost implements NBMThostI {
@@ -33,8 +35,8 @@ public class NBMTHost implements NBMThostI {
     	this.parms = optimization.retrieveFittedParameters();
     	
     	NPARMS = parms.length;
-    	NPTS = optimization.config.experiments.total_no_experiments;
-    	NRESP = optimization.config.experiments.experimentalValues.length;
+    	NPTS = ConfigurationInput.experiments.total_no_experiments;
+    	NRESP = ConfigurationInput.experiments.experimentalValues.length;
     	
     	//resid = new double[NPTS][NRESP];
     	resid = new double[NPTS*NRESP];
@@ -208,9 +210,9 @@ public class NBMTHost implements NBMThostI {
 		/**
 		 * TODO deal with CKSolnList flag, employed in .getModelValues()
 		 */
-		function = new Function (optimization.config.experiments.experimentalValues,
+		function = new Function (ConfigurationInput.experiments.experimentalValues,
 				optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
-		function = new Function (optimization.config.experiments.experimentalValues,optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
+		function = new Function (ConfigurationInput.experiments.experimentalValues,optimization.testNewParameters(optimization.buildFullParamVector(parms),true));
 		resid = function.getResid();
 		return function.getSRES();
 	}

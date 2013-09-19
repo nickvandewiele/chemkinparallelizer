@@ -60,10 +60,10 @@ public class UpdateChemistryCommand implements Command {
 			out.println(dummy);
 			
 			int counter = 0;
-			for (int i = 0; i < config.chemistry.getParams().getFixRxns().length; i++){
+			for (int i = 0; i < ConfigurationInput.chemistry.getParams().getFixRxns().length; i++){
 				dummy = in.readLine();
 				String[] st_dummy = dummy.split("\\s");
-				for (int j = 0; j < config.chemistry.getParams().getFixRxns()[0].length; j++){
+				for (int j = 0; j < ConfigurationInput.chemistry.getParams().getFixRxns()[0].length; j++){
 					//put new values of kinetic parameters (at position 1, 2, 3 of st_dummy[]):
 					st_dummy[j+1] = Double.toString(parameter_guesses[counter]);
 					counter++;
@@ -96,7 +96,7 @@ public class UpdateChemistryCommand implements Command {
 			f.renameTo(new File(Paths.getWorkingDir(),Paths.chemistryInput));
 			
 			//check if initial input file is error-free:
-			Command checkChemistry = new CheckChemistryFileCommand(config);
+			Command checkChemistry = new CheckChemistryFileCommand();
 			checkChemistry.execute();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

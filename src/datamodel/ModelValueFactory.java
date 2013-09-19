@@ -2,7 +2,6 @@ package datamodel;
 
 import org.apache.log4j.Logger;
 
-import applications.ParameterEstimationDriver;
 import datamodel.effluent.EffluentModelValue;
 import datamodel.flamespeed.FlameSpeedModelValue;
 import datamodel.ignitiondelay.IgnitionDelayModelValue;

@@ -1,5 +1,6 @@
 package chemkin_model;
 
+import parsers.ConfigurationInput;
 import datamodel.ModelValue;
 
 /**
@@ -13,7 +14,7 @@ public class ExtractModelValuesPackagerDecorator extends AbstractCKPackagerDecor
 	public ExtractModelValuesPackagerDecorator(AbstractCKPackager packager){
 		super.packager = packager;
 		
-		super.packager.modelValues = new ModelValue[getConfig().reactor_inputs.size()];
+		super.packager.modelValues = new ModelValue[ConfigurationInput.reactor_inputs.size()];
 	}
 	
 	@Override

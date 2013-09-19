@@ -57,7 +57,7 @@ public class ParityWriter {
 				}
 			}
 		}
-		File file = new File(paths.getWorkingDir()+"SpeciesParity.csv");
+		File file = new File(Paths.getWorkingDir()+"SpeciesParity.csv");
 		if(!s.equals(" , ,"+"Experimental Value ,"+"Model Value ,"+"Experimental Value\n")) write(file,s);
 
 	}
@@ -73,7 +73,7 @@ public class ParityWriter {
 				s+="Flame Speed:\t"+((FlameSpeedExperimentalValue)experimentalValue).value+"\t"+((FlameSpeedModelValue)modelValue).value+","+((FlameSpeedExperimentalValue)experimentalValue).value+"\n";
 			}
 		}
-		File file = new File(paths.getWorkingDir()+"FlameSpeedParity.csv");
+		File file = new File(Paths.getWorkingDir()+"FlameSpeedParity.csv");
 		if(!s.isEmpty()) write(file,s);
 
 	}
@@ -89,7 +89,7 @@ public class ParityWriter {
 				s+="Ignition Delay:\t"+((IgnitionDelayExperimentalValue)experimentalValue).value+"\t"+((IgnitionDelayModelValue)modelValue).value+","+((IgnitionDelayExperimentalValue)experimentalValue).value+"\n";
 			}
 		}
-		File file = new File(paths.getWorkingDir()+"IgnitionDelayParity.csv");
+		File file = new File(Paths.getWorkingDir()+"IgnitionDelayParity.csv");
 		if(!s.isEmpty()) write(file,s);
 
 	}

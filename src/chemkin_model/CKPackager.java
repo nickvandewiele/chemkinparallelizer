@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 import parsers.ConfigurationInput;
+
 import readers.ReactorInput;
 import util.ChemkinConstants;
 import util.Paths;
@@ -24,23 +25,22 @@ import chemkin_wrappers.GetSolutionDecorator;
 public class CKPackager extends AbstractCKPackager{
 
 	//constructor for parameter optimization option:
-	public CKPackager(ConfigurationInput config){
-		this.config = config;
-		int length = config.reactor_inputs.size();
+	public CKPackager(){
+		int length = ConfigurationInput.reactor_inputs.size();
 		simulations = new AbstractCKEmulation[length];
 	}
 
 	@Override
 	public AbstractCKEmulation []  runAllSimulations(){
-		Semaphore semaphore = new Semaphore(getConfig().licenses.getValue()); 
-		AbstractChemkinRoutine routine = new ChemkinRoutine(config);
+		Semaphore semaphore = new Semaphore(ConfigurationInput.licenses.getValue()); 
+		AbstractChemkinRoutine routine = new ChemkinRoutine();
 		File excel_file = null;
 		File dummy = null;
 		
 		for (int i = 0; i < simulations.length; i++) {//start with 2nd simulation i = 1
-			ReactorInput input_i = config.reactor_inputs.get(i);
-			simulations[i] = new CKEmulation(config, input_i);
-			simulations[i] = new RegularSimulationDecorator(config.reactor_inputs.get(i), simulations[i], semaphore);
+			ReactorInput input_i = ConfigurationInput.reactor_inputs.get(i);
+			simulations[i] = new CKEmulation(input_i);
+			simulations[i] = new RegularSimulationDecorator(ConfigurationInput.reactor_inputs.get(i), simulations[i], semaphore);
 
 
 			//start a new thread that redirects to the run() method, which contains the  chemkin procedure
@@ -60,7 +60,7 @@ public class CKPackager extends AbstractCKPackager{
 		
 		// run the GetSolution utility:
 		for (int i = 0; i < simulations.length; i++) {//start with 2nd simulation i = 1
-			routine = new ChemkinRoutine(config);
+			routine = new ChemkinRoutine();
 			routine.reactorDir = simulations[i].getReactorDir();
 						
 			routine = new GetSolutionDecorator(routine);//decoration of parent chemkin routine:

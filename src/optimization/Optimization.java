@@ -60,15 +60,15 @@ public class Optimization extends Loggable{
 //constructor:
 	public Optimization (ConfigurationInput config){
 		
-		beta_new = new double [config.chemistry.getParams().getBeta().length][config.chemistry.getParams().getBeta()[0].length];		
+		beta_new = new double [ConfigurationInput.chemistry.getParams().getBeta().length][ConfigurationInput.chemistry.getParams().getBeta()[0].length];		
 //		weighted_regression = w_r;
 	}
 	
 	
 	public double [][] optimize() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(config.chemistry.getParams());
-		if(config.fitting.method.equals(Fitting.ROSENBROCK)){
+		params1D.convert2Dto1D(ConfigurationInput.chemistry.getParams());
+		if(ConfigurationInput.fitting.method.equals(Fitting.ROSENBROCK)){
 			//Rosenbrock parameters:
 			double efrac = 0.5;//0.3
 			double succ = 3.0;
@@ -76,12 +76,12 @@ public class Optimization extends Loggable{
 			logger.info("Start of Rosenbrock!");
 			rosenbrock = new Rosenbrock(this, efrac, succ, fail);
 			double [] optimizedParameters = rosenbrock.returnOptimizedParameters(); 
-			beta_new = Tools.convert1Dto2D(optimizedParameters, config.chemistry.getParams().getBeta());
+			beta_new = Tools.convert1Dto2D(optimizedParameters, ConfigurationInput.chemistry.getParams().getBeta());
 		}
-		if(config.fitting.method.equals(Fitting.LEVENBERG)){
+		if(ConfigurationInput.fitting.method.equals(Fitting.LEVENBERG)){
 			logger.info("Start of Levenberg-Marquardt!");
 			nbmthost = new NBMTHost(this);
-			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), config.chemistry.getParams().getBeta());		
+			beta_new = Tools.convert1Dto2D(buildFullParamVector(nbmthost.getParms()), ConfigurationInput.chemistry.getParams().getBeta());		
 		}
 
 		// move Rosenbrock monitors:
@@ -107,7 +107,7 @@ public class Optimization extends Loggable{
 		updateChemistry.execute();
 		
 	
-		AbstractCKPackager ckp = new CKPackager(config);
+		AbstractCKPackager ckp = new CKPackager();
 		ckp = new ExtractModelValuesPackagerDecorator(ckp);
 		ckp.runAllSimulations();
 		ModelValue[] modelValues = ckp.getModelValues();
@@ -146,9 +146,9 @@ public class Optimization extends Loggable{
 	public double[] retrieveFittedParameters(){
 		//count the number of fitted parameters:
 		int no_fitted_parameters = 0;
-		for (int i = 0; i < config.chemistry.getParams().getFixRxns().length; i++){
-			for (int j = 0; j < config.chemistry.getParams().getFixRxns()[0].length; j++){
-				no_fitted_parameters += config.chemistry.getParams().getFixRxns()[i][j];
+		for (int i = 0; i < ConfigurationInput.chemistry.getParams().getFixRxns().length; i++){
+			for (int j = 0; j < ConfigurationInput.chemistry.getParams().getFixRxns()[0].length; j++){
+				no_fitted_parameters += ConfigurationInput.chemistry.getParams().getFixRxns()[i][j];
 			}
 		}
 		
@@ -181,7 +181,7 @@ public class Optimization extends Loggable{
 	
 	public void calcStatistics() throws Exception{
 		params1D = new Parameters1D();
-		params1D.convert2Dto1D(config.chemistry.getParams());
+		params1D.convert2Dto1D(ConfigurationInput.chemistry.getParams());
 		nbmthost = new NBMTHost(this);
 		nbmthost.bBuildJacobian();
 		Statistics s = new Statistics(this);
@@ -205,11 +205,11 @@ public class Optimization extends Loggable{
 		Printer.printMatrix(s.getConfIntervals(), out);
 		out.println();
 		out.println("Number of experiments:");
-		out.println(config.experiments.experimentalValues.length);
+		out.println(ConfigurationInput.experiments.experimentalValues.length);
 		out.println("Number of fitted parameters:");
-		out.println(config.chemistry.getParams().getNoFittedParameters());
+		out.println(ConfigurationInput.chemistry.getParams().getNoFittedParameters());
 		out.println("Number of responses:");
-		out.println(config.experiments.experimentalValues.length);
+		out.println(ConfigurationInput.experiments.experimentalValues.length);
 		out.println("ANOVA: ");//Analysis of Variance:
 		out.println("SRES: ");
 		out.println(s.getSRES());

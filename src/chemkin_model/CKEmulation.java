@@ -1,14 +1,11 @@
 package chemkin_model;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import util.ChemkinConstants;
 import util.Paths;
@@ -29,13 +26,12 @@ public class CKEmulation extends AbstractCKEmulation{
 
 	//CONSTRUCTORS:
 	//constructor for checking validity of chemistry input file:
-	public CKEmulation(ConfigurationInput config){
-		super.config = config;
+	public CKEmulation(){
 	}
 
-	public CKEmulation(ConfigurationInput config, ReactorInput reactorInput) {
+	public CKEmulation(ReactorInput reactorInput) {
 
-		this(config);
+		this();
 
 		this.reactorInput = reactorInput;
 		int length = reactorInput.filename.length();

@@ -24,7 +24,7 @@ public class StatisticsCommand implements Command {
 		logger.info("STATISTICS MODE");
 		try {
 			statistics();
-			Command parity = new ParityPlotCommand(config);
+			Command parity = new ParityPlotCommand();
 			parity.execute();
 			
 		} catch (Exception e) {
@@ -39,14 +39,14 @@ public class StatisticsCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(config);
+		Command checkChemistry = new CheckChemistryFileCommand();
 		checkChemistry.execute();
 
 		// take initial guesses from chem.inp file:
-		config.chemistry.getParams().setBeta(config.chemistry.initialGuess());
+		ConfigurationInput.chemistry.getParams().setBeta(ConfigurationInput.chemistry.initialGuess());
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = ConfigurationInput.experiments.getExperimentalData(); 
 
 		Optimization optimization = new Optimization(config);
 

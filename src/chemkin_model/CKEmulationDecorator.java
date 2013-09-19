@@ -1,6 +1,5 @@
 package chemkin_model;
 
-import parsers.ConfigurationInput;
 import readers.ReactorInput;
 import datamodel.ModelValue;
 
@@ -18,11 +17,6 @@ public abstract class CKEmulationDecorator extends AbstractCKEmulation {
 	@Override
 	public abstract void run();
 
-	@Override
-	public ConfigurationInput getConfig(){
-		return simulation.getConfig();
-	}
-	
 	@Override
 	public String getReactorDir() {
 		return simulation.getReactorDir();

@@ -49,8 +49,8 @@ public class XMLInputParser {
 	static final String EA = "Ea";
 
 	@SuppressWarnings({ "unchecked", "null" })
-	public List<ConfigurationInput> readConfig(String configFile) {
-		List<ConfigurationInput> configurationInputs = new ArrayList<ConfigurationInput>();
+	public static ConfigurationInput readConfig(String configFile) {
+		ConfigurationInput configurationInput = null;
 		try {
 			// First create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -58,7 +58,7 @@ public class XMLInputParser {
 			InputStream in = new FileInputStream(configFile);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			// Read the XML document
-			ConfigurationInput configurationInput = null;
+			
 
 			List<ExperimentalDatabaseInput> list_expdb = null;
 			List<ReactorSetupInput> list_reactor_setup = null;
@@ -82,7 +82,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(NO_LICENSES)) {
 						event = eventReader.nextEvent();
-						configurationInput.licenses = new Licenses(Integer.parseInt(event.asCharacters().getData()));
+						ConfigurationInput.licenses = new Licenses(Integer.parseInt(event.asCharacters().getData()));
 						continue;
 					}
 
@@ -96,7 +96,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(TOTAL_NUMBER_OF_EXPERIMENTS)) {
 						event = eventReader.nextEvent();
-						configurationInput.experiments.total_no_experiments = Integer.parseInt(event.asCharacters().getData());
+						ConfigurationInput.experiments.total_no_experiments = Integer.parseInt(event.asCharacters().getData());
 						continue;
 					}
 
@@ -156,7 +156,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(MODE)) {
 						event = eventReader.nextEvent();
-						configurationInput.setMODE(Integer.parseInt(event.asCharacters().getData()));
+						ConfigurationInput.setMODE(Integer.parseInt(event.asCharacters().getData()));
 						continue;
 					}
 					
@@ -164,7 +164,7 @@ public class XMLInputParser {
 							.equals(FITTING)) {
 						event = eventReader.nextEvent();
 						//
-						configurationInput.fitting.method = event.asCharacters().getData();
+						ConfigurationInput.fitting.method = event.asCharacters().getData();
 						continue;
 					}
 					
@@ -176,7 +176,7 @@ public class XMLInputParser {
 						while (attributes.hasNext()) {
 							Attribute attribute = attributes.next();
 							if (attribute.getName().toString().equals(NUMBEROFEVALUATIONS)) {
-								configurationInput.fitting.setMaxNoRosenbrockEvaluations(Integer.parseInt(attribute.getValue()));
+								ConfigurationInput.fitting.setMaxNoRosenbrockEvaluations(Integer.parseInt(attribute.getValue()));
 							}
 						}
 						event = eventReader.nextEvent();
@@ -218,30 +218,28 @@ public class XMLInputParser {
 					EndElement endElement = event.asEndElement();
 					
 					if (endElement.getName().getLocalPart() == (INPUT)) {
-						
-						configurationInputs.add(configurationInput);
 					}
 					
 					if (endElement.getName().getLocalPart() == (EXPERIMENTAL_DATABASES)) {
-						configurationInput.experiments.exp_db = list_expdb.toArray(new ExperimentalDatabaseInput[list_expdb.size()]);
+						ConfigurationInput.experiments.exp_db = list_expdb.toArray(new ExperimentalDatabaseInput[list_expdb.size()]);
 					}
 					
 					if (endElement.getName().getLocalPart() == (REACTOR_SETUPS)) {
-						configurationInput.reactor_setup = list_reactor_setup.toArray(new ReactorSetupInput[list_reactor_setup.size()]);
+						ConfigurationInput.reactor_setup = list_reactor_setup.toArray(new ReactorSetupInput[list_reactor_setup.size()]);
 						
 						/* Once all the reactor setup input are collected, transform them
 						* into reactor inputs and 
 						* create reactor input files, if necessary.
 						*
 						*/
-						for(ReactorSetupInput input : configurationInput.reactor_setup)
+						for(ReactorSetupInput input : ConfigurationInput.reactor_setup)
 							configurationInput.addReactorInput(input);
 						
 					}
 					
 					if (endElement.getName().getLocalPart() == (REACTIONS)) {
-						configurationInput.fitting.optimizedReactions = reactions;
-						configurationInput.setParameters();
+						ConfigurationInput.fitting.optimizedReactions = reactions;
+						ConfigurationInput.setParameters();
 					}
 				}
 
@@ -251,7 +249,7 @@ public class XMLInputParser {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
-		return configurationInputs;
+		return configurationInput;
 	}
 
 }

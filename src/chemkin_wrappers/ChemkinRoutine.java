@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 
 import org.apache.log4j.Logger;
 
-import parsers.ConfigurationInput;
 
 
 
@@ -22,9 +21,7 @@ public class ChemkinRoutine extends AbstractChemkinRoutine {
 	
 	static Logger logger = Logger.getLogger(ChemkinRoutine.class);
 	
-	public ChemkinRoutine(ConfigurationInput config) {
-		
-		super.config = config;
+	public ChemkinRoutine() {
 
 	}
 	/**

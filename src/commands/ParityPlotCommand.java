@@ -29,7 +29,7 @@ public class ParityPlotCommand implements Command {
 	public static Logger logger = Logger.getLogger(ParityPlotCommand.class);
 	ConfigurationInput config;
 
-	public ParityPlotCommand(ConfigurationInput config){
+	public ParityPlotCommand(){
 		this.config = config;
 	}
 	public void execute() {
@@ -47,16 +47,16 @@ public class ParityPlotCommand implements Command {
 		long time = System.currentTimeMillis();
 
 		//check if initial input file is error-free:
-		Command checkChemistry = new CheckChemistryFileCommand(config);
+		Command checkChemistry = new CheckChemistryFileCommand();
 		checkChemistry.execute();
 
-		AbstractCKPackager ckp = new CKPackager(config);
+		AbstractCKPackager ckp = new CKPackager();
 		ckp = new ExtractModelValuesPackagerDecorator(ckp);
 		ckp.runAllSimulations();
 		ModelValue[] modelValues = ckp.getModelValues();
 
 		//read experimental data file:
-		ExperimentalValue[] experimentalValues = config.experiments.getExperimentalData(); 
+		ExperimentalValue[] experimentalValues = ConfigurationInput.experiments.getExperimentalData(); 
 
 		String speciesPath = Paths.getWorkingDir()+ChemkinConstants.CHEMASU;
 		BufferedReader inSpecies = new BufferedReader (new FileReader(speciesPath));

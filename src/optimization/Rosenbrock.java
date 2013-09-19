@@ -3,6 +3,8 @@ package optimization;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
+import parsers.ConfigurationInput;
+
 import util.Loggable;
 
 import datamodel.ModelValue;
@@ -72,7 +74,7 @@ public class Rosenbrock extends Loggable{
 		ModelValue[] modelValues = optimization.testNewParameters(optimization.getParams1D().getBeta(),true); 
 
 		// function evaluation in initial point
-		Function f = new Function(optimization.config.experiments.experimentalValues,modelValues);
+		Function f = new Function(ConfigurationInput.experiments.experimentalValues,modelValues);
 		
 		//even in the initial point, one already has model values, error variance matrix can thus be taken, not just response variables
 		double initial = f.getSRES();
@@ -89,7 +91,7 @@ public class Rosenbrock extends Loggable{
 		
 		Function fNew;
 		// Main rosenbrock loop
-		while (neval < optimization.config.fitting.getMaxNoRosenbrockEvaluations()) {
+		while (neval < ConfigurationInput.fitting.getMaxNoRosenbrockEvaluations()) {
 			for (int i = 0; i < optimization.getParams1D().getBeta().length; i++) {
 				if (optimization.getParams1D().getFixRxns()[i]==1){
 					logger.info("Beta: ");
@@ -128,7 +130,7 @@ public class Rosenbrock extends Loggable{
 				
 					//Evaluate (value 'trial') cost function with new parameter guesses [beta_new(j)]
 					
-					fNew = new Function(optimization.config.experiments.experimentalValues,modelValuesTest);
+					fNew = new Function(ConfigurationInput.experiments.experimentalValues,modelValuesTest);
 					double trial = fNew.getSRES();
 					
 					out.println("Trial SSQ: "+trial);
@@ -179,7 +181,7 @@ public class Rosenbrock extends Loggable{
 				}
 				
 				//If number of evaluations exceeds maxeval, jump out of 'for' loop and evaluate once more:
-				if (neval >= optimization.config.fitting.getMaxNoRosenbrockEvaluations()){
+				if (neval >= ConfigurationInput.fitting.getMaxNoRosenbrockEvaluations()){
 					i = optimization.getParams1D().getBeta().length;
 				}
 			}
