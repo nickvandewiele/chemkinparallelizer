@@ -1,12 +1,15 @@
 package datamodel;
 
+import org.apache.log4j.Logger;
+
+import applications.ParameterEstimationDriver;
 import datamodel.effluent.EffluentModelValue;
 import datamodel.flamespeed.FlameSpeedModelValue;
 import datamodel.ignitiondelay.IgnitionDelayModelValue;
 import readers.ReactorInput;
 
 public class ModelValueFactory {
-	
+	public static Logger logger = Logger.getLogger(ModelValueFactory.class);
 	String model;
 	
 	public ModelValueFactory(String model2){
@@ -35,7 +38,7 @@ public class ModelValueFactory {
 		else if(model.equals(ReactorInput.FLAME_SPEED)){
 			return new FlameSpeedModelValue();
 		}
-		
+		else logger.error("Did not recognize reactor input type: "+model);
 		return null;
 	}
 }
