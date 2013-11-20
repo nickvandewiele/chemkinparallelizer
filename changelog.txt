@@ -6,4 +6,13 @@ git log --pretty=format:"* %s (%aN <%ae>)" --no-merges v0.1..HEAD >> changelog.t
 
 * make some constants public (nmvdewie <nickvandewiele@gmail.com>)
 * add logger error if reactor type is not recognized (nmvdewie <nickvandewiele@gmail.com>)
+* use FileUtils.readFileToString to check presence of string in chem/tran (nmvdewie <nickvandewiele@gmail.com>)* add guava to dependency folder (nmvdewie <nickvandewiele@gmail.com>)
+* remove deprecated file (nmvdewie <nickvandewiele@gmail.com>)
+* update readme with more info on the supported reactor types (nmvdewie <nickvandewiele@gmail.com>)
+* support for batch reactors (nmvdewie <nickvandewiele@gmail.com>)
+* acces data of ConfigurationInput in a static way (nmvdewie <nickvandewiele@gmail.com>)
+* make path strings static constants (nmvdewie <nickvandewiele@gmail.com>)
+* add changelog (nmvdewie <nickvandewiele@gmail.com>)
+* make some constants public (nmvdewie <nickvandewiele@gmail.com>)
+* add logger error if reactor type is not recognized (nmvdewie <nickvandewiele@gmail.com>)
 * use FileUtils.readFileToString to check presence of string in chem/tran (nmvdewie <nickvandewiele@gmail.com>)
