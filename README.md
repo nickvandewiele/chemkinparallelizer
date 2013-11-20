@@ -9,7 +9,7 @@ Chemkin already provided this somewhat similar functionality through the "contin
 
 How?
 - you define an XML file with all the simulations you want to carry out. 
-- you specify the kinetic model input file, the reactor configuration files.
+- you specify the kinetic model input file, the reactor configuration files, and the transport file in case that is required. thermo file is supposed to be part of the kinetic model.
 - the rest of the processing is done by ChemkinParallelizer. It calls the necessary sub-processes that the Chemkin GUI also calls and makes the temporarily created files find each other.
 
 Next, ChemkinParallelizer runs all the simulations you defined in the XML file. If you dispose of multiple chemkin licenses, you can take advantage of this. ChemkinParallelizer is programmed to run as many simulations in parallel as there are licenses available. It uses as many CPU's at the same time as your computer has. 
