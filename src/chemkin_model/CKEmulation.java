@@ -45,7 +45,12 @@ public class CKEmulation extends AbstractCKEmulation{
 		}
 		//reactor setup:
 		Tools.copyFile(Paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
-
+		File udrop = new File(Paths.getUDROPDir());
+		for (File child : udrop.listFiles()) {
+			String filename = child.getName();
+			Tools.copyFile(Paths.getUDROPDir()+filename, getReactorDir()+filename);
+		}
+		
 		ModelValueFactory factory = new ModelValueFactory(getReactorInput().type);
 		this.modelValue = factory.createModelValue();
 
