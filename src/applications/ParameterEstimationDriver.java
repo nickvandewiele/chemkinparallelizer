@@ -94,14 +94,6 @@ public class ParameterEstimationDriver {
 			logger.error("Chemistry Input not found!");
 			System.exit(-1);
 		}
-		if(!new File(ConfigurationInput.experiments.getPathCSTRTemplate()).exists()){
-			logger.error("CSTRTemplate not found!");
-			System.exit(-1);
-		}
-		if(!new File(ConfigurationInput.experiments.getPathPFRTemplate()).exists()){
-			logger.error("PFRTemplate not found!");
-			System.exit(-1);
-		}
 		for(ReactorSetupInput rsi: ConfigurationInput.reactor_setup){
 			if(!new File(Paths.getWorkingDir(),rsi.getLocation()).exists()){
 				logger.error(rsi.getLocation()+" not found!");

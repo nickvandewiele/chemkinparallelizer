@@ -16,7 +16,6 @@ public class Paths extends Loggable{
 	public static File EXEC_LOCATION;
 	
 	public static final String outputDir = workingDir+"output/";
-	private static String UDROPDir;
 	public static String chemkinDir;
 	protected static String binDir = chemkinDir+"/bin/";
 	public static String chemistryInput;

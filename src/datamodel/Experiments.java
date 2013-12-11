@@ -14,11 +14,7 @@ import util.Loggable;
  *
  */
 public class Experiments extends Loggable{
-
 	private ReactorInputCollector reactorInputCollector;
-	private String pathPFRTemplate = System.getProperty("user.dir")+"/reactortemplates/PFR_template.inp";
-	private String pathCSTRTemplate = System.getProperty("user.dir")+"/reactortemplates/CSTR_template.inp";
-
 	public ExperimentalValue[] experimentalValues;
 	public Integer total_no_experiments;
 	public ExperimentalDatabaseInput[] exp_db;
@@ -47,35 +43,6 @@ public class Experiments extends Loggable{
 	public void setReactorInputCollector(ReactorInputCollector reactorInputCollector) {
 		this.reactorInputCollector = reactorInputCollector;
 	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public String getPathPFRTemplate() {
-		return pathPFRTemplate;
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public void setPathPFRTemplate(String pathPFRTemplate) {
-		this.pathPFRTemplate = pathPFRTemplate;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public String getPathCSTRTemplate() {
-		return pathCSTRTemplate;
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public void setPathCSTRTemplate(String pathCSTRTemplate) {
-		this.pathCSTRTemplate = pathCSTRTemplate;
-	}
-	
 	public ExperimentalValue[] getExperimentalData() {
 			readExperimentalValues();
 			return experimentalValues;
