@@ -9,12 +9,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+
 
 import readers.ReactorInput;
 import util.ChemkinConstants;
 import util.Paths;
 import util.Semaphore;
-import util.Tools;
 import chemkin_wrappers.AbstractChemkinRoutine;
 import chemkin_wrappers.ChemkinRoutine;
 import chemkin_wrappers.CreateSolnListDecorator;
@@ -42,12 +43,12 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 
 		semaphore.acquire();
 		logger.info("license acquired!"+getReactorInput().filename);	
-		//copy chemistry input to the reactorDir:
-		Tools.copyFile(Paths.getWorkingDir()+Paths.chemistryInput,
-				getReactorDir()+Paths.chemistryInput);
-		
-		//chemkindataDTD:
-		Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.CHEMKINDATADTD,getReactorDir()+ChemkinConstants.CHEMKINDATADTD);
+		try {
+			//copy chemistry input to the reactorDir:
+			FileUtils.copyFile(new File(Paths.getWorkingDir(),Paths.chemistryInput), new File(getReactorDir(),Paths.chemistryInput));
+			//chemkindataDTD:
+			FileUtils.copyFile(new File(Paths.getWorkingDir(),ChemkinConstants.CHEMKINDATADTD),new File(getReactorDir(),ChemkinConstants.CHEMKINDATADTD));
+		} catch (IOException e) {}
 
 		//Input Folder with user-defined ROP:
 		for(File filename: new File(Paths.UDROPDir).listFiles()){//copy all files in this folder to reactor dir
@@ -64,10 +65,10 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		//now create CKSolnList:
 		routine = new CreateSolnListDecorator(routine);//decoration of parent chemkin routine:
 		routine.executeCKRoutine();//execution
-		
-		
-		//copy reactor diagnostics file to workingdir:
-		Tools.copyFile(getReactorDir()+getReactorOut(),Paths.getWorkingDir()+getReactorOut());
+		try {
+			//copy reactor diagnostics file to workingdir:
+			FileUtils.copyFile(new File(getReactorDir(),getReactorOut()), new File(Paths.getWorkingDir(),getReactorOut()));
+		} catch (IOException e) {}
 
 		//release the semaphore:
 		semaphore.release();

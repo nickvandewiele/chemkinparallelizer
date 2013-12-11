@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import readers.ReactorInput;
 import util.ChemkinConstants;
 import util.Paths;
-import util.Tools;
 import datamodel.ModelValueFactory;
 /**
  * CKEmulation is designed as a Thread type, implying that multiple CKEmulations can be initiated, allowing multithreading and possible speed-up<BR>
@@ -44,12 +43,16 @@ public class CKEmulation extends AbstractCKEmulation{
 			System.exit(-1);
 		}
 		//reactor setup:
-		Tools.copyFile(Paths.getWorkingDir()+getReactorInput().filename,getReactorDir()+getReactorInput().filename);
-		File udrop = new File(Paths.getUDROPDir());
-		for (File child : udrop.listFiles()) {
-			String filename = child.getName();
-			Tools.copyFile(Paths.getUDROPDir()+filename, getReactorDir()+filename);
-		}
+		try {
+			FileUtils.copyFile(new File(Paths.getWorkingDir(),getReactorInput().filename),new File(getReactorDir(),getReactorInput().filename));
+			File udrop = new File(Paths.getUDROPDir());
+			for (File child : udrop.listFiles()) {
+				String filename = child.getName();
+				FileUtils.copyFile(new File(Paths.getUDROPDir(),filename), new File(getReactorDir(),filename));
+			}
+		} catch (IOException e1) {}
+		
+		
 		
 		ModelValueFactory factory = new ModelValueFactory(getReactorInput().type);
 		this.modelValue = factory.createModelValue();
@@ -65,13 +68,13 @@ public class CKEmulation extends AbstractCKEmulation{
 	private void copyLinkFiles() throws Exception {
 		//copy chemistry and transport link files:
 		if(new File(Paths.getWorkingDir()+ChemkinConstants.CHEMASC).exists()){
-			Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.CHEMASC,getReactorDir()+ChemkinConstants.CHEMASC);	
+			FileUtils.copyFile(new File(Paths.getWorkingDir(),ChemkinConstants.CHEMASC), new File(getReactorDir(),ChemkinConstants.CHEMASC));	
 		}
 		else throw new Exception("Could not find chem link file!");
 
 		if(new File(Paths.getWorkingDir()+ChemkinConstants.TRANASC).exists()){
 			if(checkTranOutput()){
-				Tools.copyFile(Paths.getWorkingDir()+ChemkinConstants.TRANASC,getReactorDir()+ChemkinConstants.TRANASC);	
+				FileUtils.copyFile(new File(Paths.getWorkingDir(),ChemkinConstants.TRANASC), new File(getReactorDir(),ChemkinConstants.TRANASC));
 			}	
 		}
 		else throw new Exception("Could not find tran link file!");

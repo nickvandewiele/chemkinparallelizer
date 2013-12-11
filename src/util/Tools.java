@@ -134,36 +134,6 @@ public class Tools extends Loggable {
 		}
 		return dummy;
 	}	
-	/**
-	 * from: http://www.roseindia.net/java/beginners/CopyFile.shtml
-	 * @param srFile
-	 * @param dtFile
-	 */
-	public static void copyFile(String srFile, String dtFile){
-		try{
-			File f1 = new File(srFile);
-			File f2 = new File(dtFile);
-			InputStream in = new FileInputStream(f1);
-			OutputStream out = new FileOutputStream(f2);
-
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0){
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
-			logger.info("File copied.");
-		}
-		catch(FileNotFoundException ex){
-			logger.error("Error while copying file",ex);
-			System.exit(0);
-		}
-		catch(IOException e){
-			logger.error("Error while copying file",e);;      
-		}
-	}
-	
 	public static void moveOutputFiles (){
 		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".out");
 		Tools.moveFiles(Paths.getWorkingDir(), Paths.getOutputDir(), ".asu");
