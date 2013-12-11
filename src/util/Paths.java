@@ -15,7 +15,8 @@ public class Paths extends Loggable{
 	public static String UDROPDir = workingDir+"UDROP/";
 	public static String chemkinDir;
 	protected static String binDir = chemkinDir+"/bin/";
-	public static String chemistryInput;;
+	public static String chemistryInput;
+	public static boolean flagUseMassFractions;
 	/**
 	 * @category setter
 	 * @return
@@ -64,5 +65,9 @@ public class Paths extends Loggable{
 	}
 	public static String getUDROPDir() {
 		return UDROPDir;
+	}
+	public static void setConcentration(String data) {
+		flagUseMassFractions = data.equals("mass");
+		
 	}
 }

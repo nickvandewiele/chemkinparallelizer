@@ -24,9 +24,8 @@ import util.Licenses;
 import util.Paths;
 
 public class XMLInputParser {
-	
+	static final String CONCENTRATIONS  = "concentrations";
 	static final String INPUT = "input";
-	static final String WORKING_DIR = "working_dir";
 	static final String CHEMKIN_DIR = "chemkin_dir";
 	static final String NO_LICENSES = "no_licenses";
 	static final String CHEMISTRY_INPUT = "chemistry_input";
@@ -71,6 +70,12 @@ public class XMLInputParser {
 					// If we have a ConfigurationInput element we create a new ConfigurationInput
 					if (startElement.getName().getLocalPart() == (INPUT)) {
 						configurationInput = new ConfigurationInput();
+					}
+					if (event.asStartElement().getName().getLocalPart()
+							.equals(CONCENTRATIONS)) {
+						event = eventReader.nextEvent();
+						Paths.setConcentration(event.asCharacters().getData());
+						continue;
 					}
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMKIN_DIR)) {

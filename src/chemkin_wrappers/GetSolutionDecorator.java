@@ -27,7 +27,7 @@ public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 		routine.keywords = new String [5];
 		routine.keywords[0] = Paths.getBinDir()+"GetSolution";//GetSolution
 		routine.keywords[1] = "-norop";//-norop
-		if (ParameterEstimationDriver.flagUseMassFractions)
+		if (Paths.flagUseMassFractions)
 			routine.keywords[2] = "-mass";
 		else
 			routine.keywords[2] = "";

@@ -40,10 +40,9 @@ public class ParameterEstimationDriver {
 		FileUtils.copyFile(new File(required, CHEMKINDATA_DTD), new File(homedir, CHEMKINDATA_DTD));
 		
 		initializeLog();
-		flagUseMassFractions = args[0].equals("--mass");
 
 		//assume INPUT.xml is passed in as command line argument
-		XMLInputParser.readConfig(args[1]);
+		XMLInputParser.readConfig(args[0]);
 
 		checkPaths();
 		//creation of the invoker object:
