@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<input>
-		
+		<concentrations>mole</concentrations>
 		<chemkin_dir>C:/Program Files/Reaction/chemkin15101_pc</chemkin_dir>
 		
 		<no_licenses>1</no_licenses>
