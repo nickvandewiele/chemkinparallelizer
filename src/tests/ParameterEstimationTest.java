@@ -1,9 +1,11 @@
 package tests;
 
 import java.io.File;
+import java.io.IOException;
 
 import junit.framework.Assert;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +63,8 @@ public class ParameterEstimationTest {
 	}
 	public void deleteOutput(String pathWorkingDir){
 		File outputFolder = new File(pathWorkingDir+"/output/");
-		Tools.deleteDir(outputFolder);
+		try {
+			FileUtils.deleteDirectory(outputFolder);
+		} catch (IOException e) {}
 	}
 }

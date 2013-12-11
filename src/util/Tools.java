@@ -49,57 +49,6 @@ public class Tools extends Loggable {
 		}
 	}
 	/**
-	 * from: http://forums.sun.com/thread.jspa?threadID=563148
-	 * @param n
-	 * @return
-	 */
-	public static void deleteDir(File dir){
-		Stack<File> dirStack = new Stack<File>();
-		dirStack.push(dir);
-
-		boolean containsSubFolder;
-		while(!dirStack.isEmpty()){
-			File currDir = dirStack.peek();
-			containsSubFolder = false;
-
-			String[] fileArray = currDir.list();
-			for(int i=0; i<fileArray.length; i++){
-				String fileName = currDir.getAbsolutePath() + File.separator + fileArray[i];
-				File file = new File(fileName);
-				if(file.isDirectory()){
-					dirStack.push(file);
-					containsSubFolder = true;
-				}else{
-					file.delete(); //delete file
-				}       
-			}
-
-			if(!containsSubFolder){
-				dirStack.pop(); //remove curr dir from stack
-				currDir.delete(); //delete curr dir
-			}
-		}
-	}
-	/**
-	 * delete all files in directory d with extension e<BR>
-	 * @param d
-	 * @param e
-	 */
-	public static void deleteFiles( String d, String e ) {
-		ExtensionFilter filter = new ExtensionFilter(e);
-		File dir = new File(d);
-		String[] list = dir.list(filter);
-		File file;
-		if (list.length == 0) return;
-
-		for (int i = 0; i < list.length; i++) {
-			file = new File(d + list[i]);
-			boolean isdeleted =   file.delete();
-			logger.info(file);
-			logger.info( "  deleted " + isdeleted);
-		}
-	}
-	/**
 	 * convert 1D vector into 2D matrix: 
 	 * @return
 	 */

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.apache.commons.io.FileUtils;
+
 import parsers.ConfigurationInput;
 
 import readers.ReactorInput;
@@ -74,9 +76,8 @@ public class CKPackager extends AbstractCKPackager{
 			excel_file.renameTo(dummy);
 
 			try {
-				Tools.deleteFiles(simulations[i].getReactorDir(), ".zip");
 				//delete complete reactorDir folder:
-				Tools.deleteDir(new File(simulations[i].getReactorDir()));
+				FileUtils.deleteDirectory(new File(simulations[i].getReactorDir()));
 
 			} catch(Exception exc){
 				logger.error("Exception happened in CKEmulation run() method! - here's what I know: ", exc);
