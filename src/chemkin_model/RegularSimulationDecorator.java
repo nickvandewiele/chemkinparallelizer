@@ -51,7 +51,7 @@ public class RegularSimulationDecorator extends CKEmulationDecorator {
 		} catch (IOException e) {}
 
 		//Input Folder with user-defined ROP:
-		for(File filename: new File(Paths.UDROPDir).listFiles()){//copy all files in this folder to reactor dir
+		for(File filename: new File(Paths.getUDROPDir()).listFiles()){//copy all files in this folder to reactor dir
 			new File(getReactorDir(), filename.getName());
 		}
 

@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import com.google.common.base.StandardSystemProperty;
 
 /**
@@ -11,12 +12,17 @@ import com.google.common.base.StandardSystemProperty;
 public class Paths extends Loggable{
 	public static final String workingDir = StandardSystemProperty.USER_DIR.value()
 			+StandardSystemProperty.FILE_SEPARATOR.value();
+	//folder where ParameterEstimationDriver is located
+	public static File EXEC_LOCATION;
+	
 	public static final String outputDir = workingDir+"output/";
-	public static String UDROPDir = workingDir+"UDROP/";
+	private static String UDROPDir;
 	public static String chemkinDir;
 	protected static String binDir = chemkinDir+"/bin/";
 	public static String chemistryInput;
 	public static boolean flagUseMassFractions;
+	
+
 	/**
 	 * @category setter
 	 * @return
@@ -64,10 +70,14 @@ public class Paths extends Loggable{
 		return binDir;
 	}
 	public static String getUDROPDir() {
-		return UDROPDir;
+		return new File(EXEC_LOCATION,"UDROP").getAbsolutePath();
 	}
 	public static void setConcentration(String data) {
 		flagUseMassFractions = data.equals("mass");
+		
+	}
+	public static void setJarLocation(File file) {
+		EXEC_LOCATION = file;
 		
 	}
 }

@@ -30,19 +30,19 @@ public class ParameterEstimationDriver {
 	 */
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
-		System.out.println("Reading from: "+StandardSystemProperty.USER_DIR.value());
-		
-		//copy chemkindata.dtd from required files folder to home directory:
-		File homedir = new File(StandardSystemProperty.USER_DIR.value());
-		File required = new File(homedir,REQUIRED_FILES);
-		FileUtils.copyFile(new File(required, CHEMKINDATA_DTD), new File(homedir, CHEMKINDATA_DTD));
-		
+		System.out.println("Reading from: "+StandardSystemProperty.USER_DIR.value());	
 		initializeLog();
 
 		//assume INPUT.xml is passed in as command line argument
 		XMLInputParser.readConfig(args[0]);
 
 		checkPaths();
+		
+		//copy chemkindata.dtd from required files folder to home directory:
+		File homedir = new File(StandardSystemProperty.USER_DIR.value());
+		File required = new File(Paths.EXEC_LOCATION,REQUIRED_FILES);
+		FileUtils.copyFile(new File(required, CHEMKINDATA_DTD), new File(homedir, CHEMKINDATA_DTD));
+		
 		//creation of the invoker object:
 		ParamEstimationInvoker invoker = new ParamEstimationInvoker();
 

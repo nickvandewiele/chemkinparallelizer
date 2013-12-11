@@ -26,6 +26,7 @@ import util.Paths;
 public class XMLInputParser {
 	static final String CONCENTRATIONS  = "concentrations";
 	static final String INPUT = "input";
+	static final String JAR_DIR = "jar_location";
 	static final String CHEMKIN_DIR = "chemkin_dir";
 	static final String NO_LICENSES = "no_licenses";
 	static final String CHEMISTRY_INPUT = "chemistry_input";
@@ -70,6 +71,12 @@ public class XMLInputParser {
 					// If we have a ConfigurationInput element we create a new ConfigurationInput
 					if (startElement.getName().getLocalPart() == (INPUT)) {
 						configurationInput = new ConfigurationInput();
+					}
+					if (event.asStartElement().getName().getLocalPart()
+							.equals(JAR_DIR)) {
+						event = eventReader.nextEvent();
+						Paths.setJarLocation(new File(event.asCharacters().getData()));
+						continue;
 					}
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CONCENTRATIONS)) {
