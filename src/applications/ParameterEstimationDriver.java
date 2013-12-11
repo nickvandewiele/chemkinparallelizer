@@ -23,8 +23,6 @@ public class ParameterEstimationDriver {
 	private static final String REQUIRED_FILES = "requiredFiles";
 	private static final String CHEMKINDATA_DTD = "chemkindata.dtd";
 	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
-	public static Boolean flagUseMassFractions = null;
-
 	/**
 	 * @param args
 	 * @throws Exception 
