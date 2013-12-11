@@ -20,7 +20,7 @@ public class TransposeDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
-		routine.keywords[0] = Paths.getBinDir()+"CKSolnTranspose";
+		routine.keywords[0] = Paths.getBinDirLocation()+"CKSolnTranspose";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = Paths.getWorkingDir()+ChemkinConstants.PREPROCESSINPUT;
 

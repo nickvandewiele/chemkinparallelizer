@@ -20,7 +20,7 @@ public class CreateSolnListDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [3];
-		routine.keywords[0] = Paths.getBinDir()+"GetSolution";
+		routine.keywords[0] = Paths.getBinDirLocation()+"GetSolution";
 		routine.keywords[1] = "-listonly";
 		routine.keywords[2] = getReactorDir()+ChemkinConstants.XML;
 

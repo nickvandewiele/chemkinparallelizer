@@ -80,7 +80,7 @@ public class ParameterEstimationDriver {
 			logger.debug("Creation of output directory failed!");
 			System.exit(-1);
 		}
-		if(!new File(Paths.getChemkinDir()).exists()){
+		if(!Paths.getChemkinDir().exists()){
 			logger.error("Chemkin folder not found!");
 			System.exit(-1);
 		}

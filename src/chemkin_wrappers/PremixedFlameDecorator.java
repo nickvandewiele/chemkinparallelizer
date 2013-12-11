@@ -18,7 +18,7 @@ public class PremixedFlameDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [5];
-		routine.keywords[0] = Paths.getBinDir()+"CKReactorBurnerStabilizedFlame";
+		routine.keywords[0] = Paths.getBinDirLocation()+"CKReactorBurnerStabilizedFlame";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = getReactorDir()+getReactorSetup();
 		routine.keywords[3] = "-o";

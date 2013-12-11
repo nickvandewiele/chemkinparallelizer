@@ -19,7 +19,7 @@ public class ChemDecorator extends ChemkinRoutineDecorator {
 	public String[] getKeyword() {
 		
 		routine.keywords = new String [7];
-		routine.keywords[0] = Paths.getBinDir()+"chem";
+		routine.keywords[0] = Paths.getBinDirLocation()+"chem";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = Paths.chemistryInput;
 		routine.keywords[3] = "-o";

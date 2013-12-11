@@ -17,7 +17,7 @@ public class LaminarFlameDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [5];
-		routine.keywords[0] = Paths.getBinDir()+"CKReactorFreelyPropagatingFlame";
+		routine.keywords[0] = Paths.getBinDirLocation()+"CKReactorFreelyPropagatingFlame";
 		routine.keywords[1] = "-i";
 		routine.keywords[2] = getReactorDir()+getReactorSetup();
 		routine.keywords[3] = "-o";

@@ -87,7 +87,7 @@ public class XMLInputParser {
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMKIN_DIR)) {
 						event = eventReader.nextEvent();
-						Paths.setChemkinDir(event.asCharacters().getData());
+						Paths.setChemkinDir(new File(event.asCharacters().getData()));
 						continue;
 					}
 

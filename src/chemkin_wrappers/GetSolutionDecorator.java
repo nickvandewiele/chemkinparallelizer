@@ -25,7 +25,7 @@ public class GetSolutionDecorator extends ChemkinRoutineDecorator {
 		 * norop: no rate of production info is included
 		 */
 		routine.keywords = new String [5];
-		routine.keywords[0] = Paths.getBinDir()+"GetSolution";//GetSolution
+		routine.keywords[0] = Paths.getBinDirLocation()+"GetSolution";//GetSolution
 		routine.keywords[1] = "-norop";//-norop
 		if (Paths.flagUseMassFractions)
 			routine.keywords[2] = "-mass";

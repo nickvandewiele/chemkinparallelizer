@@ -16,8 +16,8 @@ public class Paths extends Loggable{
 	public static File EXEC_LOCATION;
 	
 	public static final String outputDir = workingDir+"output/";
-	public static String chemkinDir;
-	protected static String binDir = chemkinDir+"/bin/";
+	public static File chemkinDir;
+	protected static File binDir = new File(chemkinDir,"bin");
 	public static String chemistryInput;
 	public static boolean flagUseMassFractions;
 	
@@ -26,8 +26,8 @@ public class Paths extends Loggable{
 	 * @category setter
 	 * @return
 	 */
-	public static void setChemkinDir(String cd) {
-		chemkinDir = cd;
+	public static void setChemkinDir(File file) {
+		chemkinDir = file;
 		setBinDir();
 	}
 	/**
@@ -35,7 +35,7 @@ public class Paths extends Loggable{
 	 * @return
 	 */
 	private static void setBinDir() {
-		binDir = chemkinDir+"/bin/";
+		binDir = new File(chemkinDir,"bin");
 	}
 	
 	
@@ -58,15 +58,15 @@ public class Paths extends Loggable{
 	 * @category getter
 	 * @return
 	 */
-	public static String getChemkinDir() {
+	public static File getChemkinDir() {
 		return chemkinDir;
 	}
 	/**
 	 * @category getter
 	 * @return
 	 */
-	public static String getBinDir() {
-		return binDir;
+	public static String getBinDirLocation() {
+		return binDir.getAbsolutePath()+StandardSystemProperty.FILE_SEPARATOR.value();
 	}
 	public static String getUDROPDir() {
 		return new File(EXEC_LOCATION,"UDROP").getAbsolutePath();

@@ -20,7 +20,7 @@ public class ChemkinEnvDecorator extends ChemkinRoutineDecorator {
 	@Override
 	public String[] getKeyword() {
 		routine.keywords = new String [1];
-		routine.keywords[0] = Paths.getBinDir()+"run_chemkin_env_setup.bat";
+		routine.keywords[0] = Paths.getBinDirLocation()+"run_chemkin_env_setup.bat";
 
 		return routine.keywords;
 	}
