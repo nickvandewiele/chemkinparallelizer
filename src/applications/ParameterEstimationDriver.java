@@ -6,7 +6,6 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import com.google.common.base.StandardSystemProperty;
-
 import commands.Command;
 import commands.ExcelPostProcessingCommand;
 import commands.OptimizationCommand;
@@ -17,11 +16,11 @@ import parsers.ConfigurationInput;
 import parsers.XMLInputParser;
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
+import util.ChemkinConstants;
 import util.Paths;
 
 public class ParameterEstimationDriver {
 	private static final String REQUIRED_FILES = "requiredFiles";
-	private static final String CHEMKINDATA_DTD = "chemkindata.dtd";
 	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
 	/**
 	 * @param args
@@ -41,7 +40,7 @@ public class ParameterEstimationDriver {
 		//copy chemkindata.dtd from required files folder to home directory:
 		File homedir = new File(StandardSystemProperty.USER_DIR.value());
 		File required = new File(Paths.EXEC_LOCATION,REQUIRED_FILES);
-		FileUtils.copyFile(new File(required, CHEMKINDATA_DTD), new File(homedir, CHEMKINDATA_DTD));
+		FileUtils.copyFile(new File(required, ChemkinConstants.CHEMKINDATADTD), new File(homedir, ChemkinConstants.CHEMKINDATADTD));
 		
 		//creation of the invoker object:
 		ParamEstimationInvoker invoker = new ParamEstimationInvoker();
@@ -70,7 +69,7 @@ public class ParameterEstimationDriver {
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
 		
 		//delete chemkindata.dtd file in home directory:
-		FileUtils.deleteQuietly(new File(homedir, CHEMKINDATA_DTD));
+		FileUtils.deleteQuietly(new File(homedir, ChemkinConstants.CHEMKINDATADTD));
 	}
 
 
