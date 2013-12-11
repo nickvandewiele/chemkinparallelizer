@@ -52,22 +52,6 @@ public class ConfigurationInput {
 		MODE = mODE;
 	}
 
-	@Override
-	public String toString() {
-		for(int i = 0; i < experiments.exp_db.length; i++){
-		}
-		return "Configuration Input [" +
-				"\nWorking Directory =" + Paths.getWorkingDir() + 
-				",\nChemkin Executable Directory = " + Paths.getChemkinDir() + 
-				",\nNumber of Licenses = " + licenses.getValue() + 
-				",\nChemistry Input = " + Paths.chemistryInput +
-				",\nMode = " + MODE + 
-				"\nExperiments Database: " + experiments.exp_db + 
-				"\nReactor Setups : " + reactor_setup
-				+ "]";
-	}
-
-	
 	/**
 	 * Method that converts the read-in info on optimized parameters to a Parameters2D type
 	 */
