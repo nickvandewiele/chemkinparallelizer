@@ -1,5 +1,7 @@
 package applications;
 import java.io.File;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
@@ -18,6 +20,8 @@ import readers.ReactorSetupInput;
 import util.Paths;
 
 public class ParameterEstimationDriver {
+	private static final String REQUIRED_FILES = "requiredFiles";
+	private static final String CHEMKINDATA_DTD = "chemkindata.dtd";
 	public static Logger logger = Logger.getLogger(ParameterEstimationDriver.class);
 	public static Boolean flagUseMassFractions = null;
 
@@ -29,6 +33,12 @@ public class ParameterEstimationDriver {
 	public static void main(String[] args) throws Exception {
 		long time = System.currentTimeMillis();
 		System.out.println("Reading from: "+StandardSystemProperty.USER_DIR.value());
+		
+		//copy chemkindata.dtd from required files folder to home directory:
+		File homedir = new File(StandardSystemProperty.USER_DIR.value());
+		File required = new File(homedir,REQUIRED_FILES);
+		FileUtils.copyFile(new File(required, CHEMKINDATA_DTD), new File(homedir, CHEMKINDATA_DTD));
+		
 		initializeLog();
 		flagUseMassFractions = args[0].equals("--mass");
 
@@ -61,6 +71,9 @@ public class ParameterEstimationDriver {
 
 		long timeTook = (System.currentTimeMillis() - time)/1000;
 		logger.info("Time needed for this program to finish: (sec) "+timeTook);
+		
+		//delete chemkindata.dtd file in home directory:
+		FileUtils.deleteQuietly(new File(homedir, CHEMKINDATA_DTD));
 	}
 
 
