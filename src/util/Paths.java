@@ -16,29 +16,9 @@ public class Paths extends Loggable{
 	public static File EXEC_LOCATION;
 	
 	public static final String outputDir = workingDir+"output/";
-	public static File chemkinDir;
-	protected static File binDir = new File(chemkinDir,"bin");
+	protected static File binDir = new File(System.getenv("CHEMKIN"),"bin");
 	public static String chemistryInput;
-	public static boolean flagUseMassFractions;
-	
-
-	/**
-	 * @category setter
-	 * @return
-	 */
-	public static void setChemkinDir(File file) {
-		chemkinDir = file;
-		setBinDir();
-	}
-	/**
-	 * @category setter
-	 * @return
-	 */
-	private static void setBinDir() {
-		binDir = new File(chemkinDir,"bin");
-	}
-	
-	
+	public static boolean flagUseMassFractions;	
 
 	/**
 	 * @category getter
@@ -53,13 +33,6 @@ public class Paths extends Loggable{
 	 */
 	public static String getWorkingDir() {
 		return workingDir;
-	}
-	/**
-	 * @category getter
-	 * @return
-	 */
-	public static File getChemkinDir() {
-		return chemkinDir;
 	}
 	/**
 	 * @category getter

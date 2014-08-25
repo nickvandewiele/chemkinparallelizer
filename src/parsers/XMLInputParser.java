@@ -17,7 +17,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import optimization.OptimizedReaction;
-
 import readers.ExperimentalDatabaseInput;
 import readers.ReactorSetupInput;
 import util.Licenses;
@@ -86,8 +85,9 @@ public class XMLInputParser {
 					}
 					if (event.asStartElement().getName().getLocalPart()
 							.equals(CHEMKIN_DIR)) {
-						event = eventReader.nextEvent();
-						Paths.setChemkinDir(new File(event.asCharacters().getData()));
+						System.out.println("The element chemkin_dir is deprecated. Instead, the path to the Chemkin home folder should"
+								+ "be set through an environment variable named CHEMKIN.");
+						
 						continue;
 					}
 

@@ -79,8 +79,9 @@ public class ParameterEstimationDriver {
 			logger.debug("Creation of output directory failed!");
 			System.exit(-1);
 		}
-		if(!Paths.getChemkinDir().exists()){
-			logger.error("Chemkin folder not found!");
+		if(System.getenv("CHEMKIN") == null){
+			logger.error(	"Set the CHEMKIN environment variable to the Home directory of the Chemkin program. "
+					+ 		"\nFor example: CHEMKIN=C:/Program Files/Reaction/chemkin15101_win64");
 			System.exit(-1);
 		}
 
